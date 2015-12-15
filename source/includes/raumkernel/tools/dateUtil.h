@@ -54,8 +54,10 @@ namespace Raumkernel
 
                 static DateTimeStamp getCurrentDateTimeStamp()
                 {
-                    auto timePoint = std::chrono::steady_clock::now();
-                    auto timeNow = std::chrono::steady_clock::to_time_t(timePoint);
+                    // we have to use 'system_clock' instead of 'steady_clock' because 'to_time_t' is not defined in gcc 4.9, so the code
+                    // won't be compileable with 'steady_clock'
+                    auto timePoint = std::chrono::system_clock::now();
+                    auto timeNow = std::chrono::system_clock::to_time_t(timePoint);
                     auto miliseconds = std::chrono::duration_cast<std::chrono::milliseconds>(timePoint.time_since_epoch());
                     auto seconds = std::chrono::duration_cast<std::chrono::seconds>(miliseconds);
                     std::size_t fractionalSeconds = miliseconds.count() % 1000;                    

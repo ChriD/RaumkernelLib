@@ -61,7 +61,7 @@ int main()
     testLog(logObject);
     timePointEnd = std::chrono::steady_clock::now();
     miliseconds = std::chrono::duration_cast<std::chrono::milliseconds>(timePointEnd.time_since_epoch() - timePointStart.time_since_epoch());
-    std::cout << "Average time to create one log entry [FILE]: " + std::to_string((float)miliseconds.count() / 1000) + "ms";
+    std::cout << "Average time to create one log entry [FILE][CONSOLE]: " + std::to_string((float)miliseconds.count() / 1000) + "ms";
 
 
     rlutil::getkey();
