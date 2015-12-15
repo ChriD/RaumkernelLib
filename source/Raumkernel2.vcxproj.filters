@@ -1,0 +1,83 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="includes">
+      <UniqueIdentifier>{434e214f-7340-49f3-8bf4-9bf537146b2a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="includes\raumkernel">
+      <UniqueIdentifier>{0c66982c-cdfa-476d-8aed-dc6844347890}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="includes\raumkernel\logger">
+      <UniqueIdentifier>{9705deba-6b23-4c97-84b2-4ff9fd9aaf38}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="includes\raumkernel\os">
+      <UniqueIdentifier>{0992a14b-15bb-4a52-bfe6-d7088d92c6ce}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="includes\raumkernel\rlutil">
+      <UniqueIdentifier>{08bae692-a726-43ca-b310-72d0e8e4b68e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="logger">
+      <UniqueIdentifier>{1953bbba-1553-4bd9-9994-394d0062a4ae}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="includes\raumkernel\signals">
+      <UniqueIdentifier>{fe0e430e-e951-41ff-971b-0a3654533ace}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="includes\raumkernel\tools">
+      <UniqueIdentifier>{0d5694ed-941a-4b12-879d-8c859d61f90d}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="includes\raumkernel\os\os.h">
+      <Filter>includes\raumkernel\os</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\raumkernel\rlutil\rlutil.h">
+      <Filter>includes\raumkernel\rlutil</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\raumkernel\logger\logger.h">
+      <Filter>includes\raumkernel\logger</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\raumkernel\signals\config.hpp">
+      <Filter>includes\raumkernel\signals</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\raumkernel\signals\connection.hpp">
+      <Filter>includes\raumkernel\signals</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\raumkernel\signals\connections.hpp">
+      <Filter>includes\raumkernel\signals</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\raumkernel\signals\signal.hpp">
+      <Filter>includes\raumkernel\signals</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\raumkernel\signals\signals.hpp">
+      <Filter>includes\raumkernel\signals</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\raumkernel\raumkernel.h">
+      <Filter>includes\raumkernel</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\raumkernel\raumkernelBase.h">
+      <Filter>includes\raumkernel</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\raumkernel\logger\loggerAdapter.h">
+      <Filter>includes\raumkernel\logger</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\raumkernel\logger\loggerBase.h">
+      <Filter>includes\raumkernel\logger</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\raumkernel\tools\dateUtil.h">
+      <Filter>includes\raumkernel\tools</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\raumkernel\tools\stringUtil.h">
+      <Filter>includes\raumkernel\tools</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="logger\logger.cpp">
+      <Filter>logger</Filter>
+    </ClCompile>
+    <ClCompile Include="raumkernel.cpp" />
+    <ClCompile Include="raumkernelBase.cpp" />
+    <ClCompile Include="logger\loggerAdapter.cpp">
+      <Filter>logger</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>

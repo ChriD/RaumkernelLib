@@ -1,0 +1,15 @@
+﻿Der Buildvorgang wurde am 14.12.2015 21:39:36 gestartet.
+     1>Projekt "D:\Develop\Raumfeld\Raumkernel2\source\RaumkernelTest.vcxproj" auf Knoten "2", Build Ziel(e).
+     1>ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /I"D:\Projekte\Visual Leak Detector\include" /ZI /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _DEBUG /D _CONSOLE /D _LIB /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"D:\Develop\Raumfeld\Raumkernel2\source\_temp2\Debug\\" /Fd"D:\Develop\Raumfeld\Raumkernel2\source\_temp2\Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt test.cpp
+         test.cpp
+     1>d:\develop\raumfeld\raumkernel2\source\includes\raumkernel\tools\dateutil.h(64): warning C4996: 'localtime': This function or variable may be unsafe. Consider using localtime_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\program files (x86)\microsoft visual studio 12.0\vc\include\time.inl(112): Siehe Deklaration von 'localtime'
+       Link:
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"D:\Develop\Raumfeld\Raumkernel2\source\Debug\RaumkernelTest.exe" /INCREMENTAL /NOLOGO /LIBPATH:"D:\Projekte\Visual Leak Detector\lib\Win32" D:\Develop\Raumfeld\Raumkernel2\source\Debug\raumkernel.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"D:\Develop\Raumfeld\Raumkernel2\source\Debug\RaumkernelTest.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"D:\Develop\Raumfeld\Raumkernel2\source\Debug\RaumkernelTest.lib" /MACHINE:X86 D:\Develop\Raumfeld\Raumkernel2\source\_temp2\Debug\test.obj
+         RaumkernelTest.vcxproj -> D:\Develop\Raumfeld\Raumkernel2\source\Debug\RaumkernelTest.exe
+     1>Die Erstellung des Projekts "D:\Develop\Raumfeld\Raumkernel2\source\RaumkernelTest.vcxproj" ist abgeschlossen, Build Ziel(e).
+
+Build erfolgreich.
+
+Verstrichene Zeit 00:00:01.13
