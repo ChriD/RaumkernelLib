@@ -31,23 +31,36 @@ namespace Raumkernel
     namespace Exception
     {
 
+        enum class ExceptionType : int8_t { EXCEPTIONTYPE_APPCRASH = 0, EXCEPTIONTYPE_RECOVERABLE = 1 };
+
         class RaumkernelException :public std::exception
         {
             public:
-                RaumkernelException(const std::string _exceptionLocation, const std::string _exceptionInfo)
+                EXPORT RaumkernelException(ExceptionType _exceptionType, const std::string _exceptionLocation, const std::string _exceptionInfo)
                 {
+                    exceptionTyp = _exceptionType;
                     exceptionInfo = _exceptionInfo;
                     exceptionLocation = _exceptionLocation;
-                }
-                ~RaumkernelException(void);
-                const char* what()
+                };
+
+                EXPORT ~RaumkernelException(void)
+                {
+                };
+
+                EXPORT const char* what()
                 {
                     return (exceptionLocation + ": " + exceptionInfo).c_str();
-                }
+                };
+
+                EXPORT ExceptionType type()
+                {
+                    return exceptionTyp;
+                };
 
             private:
                 std::string exceptionInfo;
-                std::string exceptionLocation;
+                std::string exceptionLocation;   
+                ExceptionType exceptionTyp;
         };
 
     }

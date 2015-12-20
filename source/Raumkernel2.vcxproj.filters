@@ -25,6 +25,9 @@
     <Filter Include="includes\raumkernel\tools">
       <UniqueIdentifier>{0d5694ed-941a-4b12-879d-8c859d61f90d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="includes\raumkernel\exception">
+      <UniqueIdentifier>{1f44167c-4ec5-4915-aae4-57a867ba0d36}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="includes\raumkernel\os\os.h">
@@ -68,6 +71,9 @@
     </ClInclude>
     <ClInclude Include="includes\raumkernel\tools\stringUtil.h">
       <Filter>includes\raumkernel\tools</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\raumkernel\exception\exception.h">
+      <Filter>includes\raumkernel\exception</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

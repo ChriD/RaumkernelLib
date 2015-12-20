@@ -27,7 +27,7 @@
 #if defined(_MSC_VER)
     #define EXPORT __declspec(dllexport)
     #define IMPORT __declspec(dllimport)
-    #define CURRENT_FUNCTION __func__
+    #define CURRENT_FUNCTION __FUNCTION__
 //  GCC
 #elif defined(_GCC)
     #define EXPORT __attribute__((visibility("default")))

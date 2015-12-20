@@ -34,6 +34,7 @@
 #include <raumkernel/os/os.h>
 #include <raumkernel/tools/stringUtil.h>
 #include <raumkernel/tools/dateUtil.h>
+#include <raumkernel/exception/exception.h>
 #include <raumkernel/signals/signals.hpp>
 
 namespace Raumkernel

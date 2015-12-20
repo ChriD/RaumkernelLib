@@ -55,14 +55,7 @@ namespace Raumkernel
         {
             addLog(LogType::LOGTYPE_CRITICALERROR, _log);
         }
-
-        void Log::handleException(/*std::string _what*/)
-        {
-            std::cout << "EXCEPTION [CLASS:LOGADAPTER]: " << _what << std::endl;
-            // TODO: raise or not? // raise Raumkernel exception
-            //throw std::exception("EXCEPTION RAISED IN [CLASS:LOG]");
-        }
-
+  
 
         void Log::addLog(LogType _logType, std::string _log)
         {
@@ -89,19 +82,24 @@ namespace Raumkernel
                 }
                 // catch all the stuff the attached adapters may throw, those may be some standard exception or an RaumkernelException 
                 // its a pitty that the exception occoured in the log class itself, so we are not able to log this exception.
-                // TODO: handle excelption.. only cou? or abort all?
-                // TODO: chatch Raumkernel Exception
+                catch (Raumkernel::Exception::RaumkernelException &e)
+                {
+                    if (e.type() == Raumkernel::Exception::ExceptionType::EXCEPTIONTYPE_APPCRASH)
+                        throw e;   
+                    // if the raumkenrel exception is recoverable (no appcrash) we so nothing. We can not log any error because the error happend in 
+                    // the log object
+                }
                 catch (std::exception &e)
                 {
-                    //handleException(e.what());
+                    throw e;
                 }
-                catch (std::string &se)
+                catch (std::string &e)
                 {
-                    //handleException(se);
+                    throw e;
                 }
                 catch (...)
                 {
-                    //handleException("Undefined");
+                    throw std::exception("Unknown exception!");
                 }
             }
                                     

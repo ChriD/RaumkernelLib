@@ -81,6 +81,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="includes\raumkernel\exception\exception.h" />
     <ClInclude Include="includes\raumkernel\logger\logger.h" />
     <ClInclude Include="includes\raumkernel\logger\loggerAdapter.h" />
     <ClInclude Include="includes\raumkernel\logger\loggerBase.h" />
