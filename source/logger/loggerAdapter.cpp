@@ -80,10 +80,15 @@ namespace Raumkernel
             logFile.open(logFilePath + logFileName, std::fstream::out | std::fstream::app);
             if (logFile.is_open())
             {
-                logFile << logString + "\n";
+                logFile << logString << std::endl;
                 logFile.flush();
                 logFile.close();
-            }            
+            }   
+            else
+            {
+                // TODO:  @@@ raise raumfeld exceoption
+                throw std::exception(std::string("File '" + logFilePath + logFileName + "' could not be opened/created").c_str());
+            }
         }
 
 
@@ -118,7 +123,7 @@ namespace Raumkernel
 
             // output of log to console (here we are limited to 79 on windows, linux provides more cols)       
             logString.resize(79);
-            std::cout << logString + "\n";
+            std::cout << logString << std::endl;
         }
     }
 }

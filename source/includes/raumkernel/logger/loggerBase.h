@@ -29,6 +29,7 @@
 #include <chrono>
 #include <ctime>
 #include <fstream>
+#include <exception>
 
 #include <raumkernel/os/os.h>
 #include <raumkernel/tools/stringUtil.h>

@@ -34,6 +34,7 @@ namespace Raumkernel
         public:
             EXPORT Raumkernel();
             EXPORT virtual ~Raumkernel();
+            EXPORT virtual void init();
 
     };
 

@@ -24,8 +24,11 @@
 #pragma once
 
 
+#include <memory>
+
 #include <raumkernel/os/os.h>
 #include <raumkernel/signals/signals.hpp>
+#include <raumkernel/logger/logger.h>
 
 
 namespace Raumkernel
@@ -36,6 +39,12 @@ namespace Raumkernel
         public:
             RaumkernelBase();
             virtual ~RaumkernelBase();
+            void setLogObject(std::shared_ptr<Log::Log> _log);
+
+    protected:
+        // all modules and classes wich are attached to the raumkernel itself will have the ability to log into the same log file
+        // therfore we define a shared pointer to a log which creating and distribution has to be handled by the main kernel class
+        std::shared_ptr<Log::Log> logObject;
 
     };
 

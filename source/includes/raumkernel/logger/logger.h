@@ -49,6 +49,7 @@ namespace Raumkernel
 
             protected:			                
                 std::string getLogTypeString(LogType _logType);
+                void handleException(/*TODO: RF Exception*/);
 
                 // use this one to define the lowest log level that should be logged 
                 LogType			logTypeLevel;
