@@ -19,11 +19,12 @@ namespace Raumkernel
 
 
         // We pass the logAdapter shared_ptr per value. This code is non performance relevant and therfore we do not need to pass it by reference
-        // (but of course this would be ok in this case because "pushing back" to the vector would create a copy again and  so the usage count would 
+        // (but of course this would be ok in this case because "pushing back" to the vector would create a copy again and so the usage count would 
         // never fall down to 0 and we keep the vector elements alive as long as the class is existent!)
         void Log::registerAdapter(std::shared_ptr<LogAdapter> _logAdapter)
         {
-            logAdapterList.push_back(_logAdapter);
+            std::lock_guard<std::mutex> lock(mutexLog);
+            logAdapterList.push_back(_logAdapter);         
         }
 
 
@@ -56,6 +57,13 @@ namespace Raumkernel
             addLog(LogType::LOGTYPE_CRITICALERROR, _log);
         }
   
+
+        void Log::setLogLevel(LogType _logTypeLevel)
+        {
+            std::lock_guard<std::mutex> lock(mutexLog);
+            logTypeLevel = _logTypeLevel;          
+        }
+
 
         void Log::addLog(LogType _logType, std::string _log)
         {

@@ -5,6 +5,7 @@ namespace Raumkernel
 {
     RaumkernelBase::RaumkernelBase()
     {
+        logObject = nullptr;
     }
 
 

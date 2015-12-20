@@ -86,4 +86,7 @@
       <Filter>logger</Filter>
     </ClCompile>
   </ItemGroup>
+  <ItemGroup>
+    <Xml Include="raumkernel.xml" />
+  </ItemGroup>
 </Project>

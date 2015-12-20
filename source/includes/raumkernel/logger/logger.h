@@ -39,6 +39,7 @@ namespace Raumkernel
                 EXPORT virtual ~Log();
                 EXPORT void registerAdapter(std::shared_ptr<LogAdapter> _logAdapter);
                 EXPORT void addLog(LogType _logType, std::string _log);
+                EXPORT void setLogLevel(LogType _logTypeLevel);
                 EXPORT void debug(std::string _log);
                 EXPORT void warning(std::string _log);
                 EXPORT void info(std::string _log);

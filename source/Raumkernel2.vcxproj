@@ -103,6 +103,9 @@
     <ClCompile Include="raumkernel.cpp" />
     <ClCompile Include="raumkernelBase.cpp" />
   </ItemGroup>
+  <ItemGroup>
+    <Xml Include="raumkernel.xml" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

@@ -39,7 +39,7 @@ namespace Raumkernel
         public:
             RaumkernelBase();
             virtual ~RaumkernelBase();
-            void setLogObject(std::shared_ptr<Log::Log> _log);
+            EXPORT void setLogObject(std::shared_ptr<Log::Log> _log);
 
     protected:
         // all modules and classes wich are attached to the raumkernel itself will have the ability to log into the same log file
