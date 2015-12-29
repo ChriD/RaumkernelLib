@@ -107,7 +107,7 @@ namespace Raumkernel
                 }
                 catch (...)
                 {
-                    throw std::exception("Unknown exception!");
+                    throw std::runtime_error("Unknown exception!");
                 }
             }
                                     

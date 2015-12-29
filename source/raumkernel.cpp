@@ -1,6 +1,6 @@
 
 #include <raumkernel/raumkernel.h>
-#include <raumkernel/manager/managerengineer.h>
+#include <raumkernel/manager/managerEngineer.h>
 
 namespace Raumkernel
 {

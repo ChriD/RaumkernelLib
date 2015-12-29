@@ -34,12 +34,12 @@
 #elif defined(_GCC)
     #define EXPORT __attribute__((visibility("default")))
     #define IMPORT
-    #define CURRENT_FUNCTION __FUNCTION__
+    #define CURRENT_FUNCTION __func__
 // no idea which compiler	
 #else
     #define EXPORT
     #define IMPORT
-    #define CURRENT_FUNCTION
+    #define CURRENT_FUNCTION __func__
     #pragma warning Unknown dynamic link import/export semantics.
 #endif
 

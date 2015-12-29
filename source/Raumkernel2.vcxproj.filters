@@ -117,4 +117,10 @@
   <ItemGroup>
     <Xml Include="raumkernel.xml" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="makefile_linux_ARMV6" />
+    <None Include="makefile_linux_ARMV7" />
+    <None Include="makefile_linux_X86" />
+    <None Include="makefile_linux_X86 _test" />
+  </ItemGroup>
 </Project>
