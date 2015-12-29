@@ -36,4 +36,5 @@ include $(SRCS:.cpp=.d)
 
 .PHONY: clean
 clean:
-	-${RM} ${TARGET_LIB} ${OBJS} $(SRCS:.cpp=.d) 
+    -${RM} ${OBJS} $(SRCS:.cpp=.d) 
+	#-${RM} ${TARGET_LIB} ${OBJS} $(SRCS:.cpp=.d) 

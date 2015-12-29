@@ -1,5 +1,5 @@
 # Makefile template for shared library
- 
+
 INCPATH = -I includes/
 
 CC = g++-4.9
@@ -12,7 +12,7 @@ LIBSDEF =
 
 RM = rm -f 
 TARGET_LIB = libs/linux_x86/raumkern.so
- 
+
 SRCS = raumkernelBase.cpp raumkernelBaseMgr.cpp  raumkernel.cpp logger/loggerAdapter.cpp logger/logger.cpp manager/managerBase.cpp manager/managerEngineer.cpp manager/settingsManager.cpp
 
 OBJS = $(SRCS:.cpp=.o)
