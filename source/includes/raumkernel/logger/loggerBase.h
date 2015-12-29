@@ -22,6 +22,8 @@
 //
 
 #pragma once
+#ifndef RAUMKERNEL_LOGGERBASE_H
+#define RAUMKERNEL_LOGGERBASE_H
 
 #include <string>
 #include <iostream>
@@ -53,3 +55,5 @@ namespace Raumkernel
 
     }
 }
+
+#endif

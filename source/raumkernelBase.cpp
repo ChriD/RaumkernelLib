@@ -18,4 +18,10 @@ namespace Raumkernel
     {
         logObject = _logObject;
     }
+
+
+    std::shared_ptr<Log::Log> RaumkernelBase::getLogObject()
+    {
+        return logObject;
+    }
 }

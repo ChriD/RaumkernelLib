@@ -22,6 +22,8 @@
 //
 
 #pragma once
+#ifndef RAUMKERNEL_OS_H
+#define RAUMKERNEL_OS_H
 
 // Microsoft
 #if defined(_MSC_VER)
@@ -39,4 +41,6 @@
     #define IMPORT
     #define CURRENT_FUNCTION
     #pragma warning Unknown dynamic link import/export semantics.
+#endif
+
 #endif

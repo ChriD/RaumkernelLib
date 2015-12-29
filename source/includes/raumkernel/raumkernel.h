@@ -22,14 +22,15 @@
 //
 
 #pragma once
+#ifndef RAUMKERNEL_RAUMKERNEL_H
+#define RAUMKERNEL_RAUMKERNEL_H
 
-
-#include <raumkernel/raumkernelBase.h>
+#include <raumkernel/raumkernelBaseMgr.h>
 
 
 namespace Raumkernel
 {
-    class Raumkernel : public RaumkernelBase
+    class Raumkernel : public RaumkernelBaseMgr
     {
         public:
             EXPORT Raumkernel();
@@ -39,3 +40,6 @@ namespace Raumkernel
     };
 
 }
+
+
+#endif

@@ -22,6 +22,8 @@
 //
 
 #pragma once
+#ifndef RAUMKERNEL_STRINGUTIL_H
+#define RAUMKERNEL_STRINGUTIL_H
 
 #include <stdio.h>
 #include <iostream>
@@ -82,3 +84,6 @@ namespace Raumkernel
             
     }
 }
+
+
+#endif

@@ -22,6 +22,8 @@
 //
 
 #pragma once
+#ifndef RAUMKERNEL_DATEUTIL_H
+#define RAUMKERNEL_DATEUTIL_H
 
 #include <stdio.h>
 #include <iostream>
@@ -80,3 +82,5 @@ namespace Raumkernel
 
     }
 }
+
+#endif

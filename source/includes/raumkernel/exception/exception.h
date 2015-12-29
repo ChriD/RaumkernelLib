@@ -22,6 +22,8 @@
 //
 
 #pragma once
+#ifndef RAUMKERNEL_EXCEPTION_H
+#define RAUMKERNEL_EXCEPTION_H
 
 #include <exception>
 #include <string>
@@ -65,3 +67,5 @@ namespace Raumkernel
 
     }
 }
+
+#endif

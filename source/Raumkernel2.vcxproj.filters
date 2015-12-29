@@ -28,6 +28,12 @@
     <Filter Include="includes\raumkernel\exception">
       <UniqueIdentifier>{1f44167c-4ec5-4915-aae4-57a867ba0d36}</UniqueIdentifier>
     </Filter>
+    <Filter Include="includes\raumkernel\manager">
+      <UniqueIdentifier>{13fcb5d3-3dfe-453f-ab4e-bc32b4e50064}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="manager">
+      <UniqueIdentifier>{41720c54-9e6c-4404-827d-6d2c1df3fe4c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="includes\raumkernel\os\os.h">
@@ -75,6 +81,18 @@
     <ClInclude Include="includes\raumkernel\exception\exception.h">
       <Filter>includes\raumkernel\exception</Filter>
     </ClInclude>
+    <ClInclude Include="includes\raumkernel\manager\managerEngineer.h">
+      <Filter>includes\raumkernel\manager</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\raumkernel\manager\settingsManager.h">
+      <Filter>includes\raumkernel\manager</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\raumkernel\manager\managerBase.h">
+      <Filter>includes\raumkernel\manager</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\raumkernel\raumkernelBaseMgr.h">
+      <Filter>includes\raumkernel</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="logger\logger.cpp">
@@ -85,6 +103,16 @@
     <ClCompile Include="logger\loggerAdapter.cpp">
       <Filter>logger</Filter>
     </ClCompile>
+    <ClCompile Include="manager\managerEngineer.cpp">
+      <Filter>manager</Filter>
+    </ClCompile>
+    <ClCompile Include="manager\settingsManager.cpp">
+      <Filter>manager</Filter>
+    </ClCompile>
+    <ClCompile Include="manager\managerBase.cpp">
+      <Filter>manager</Filter>
+    </ClCompile>
+    <ClCompile Include="raumkernelBaseMgr.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Xml Include="raumkernel.xml" />

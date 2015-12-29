@@ -22,6 +22,8 @@
 //
 
 #pragma once
+#ifndef RAUMKERNEL_LOGGER_H
+#define RAUMKERNEL_LOGGER_H
 
 #include <raumkernel/logger/loggerBase.h>
 #include <raumkernel/logger/loggerAdapter.h>
@@ -63,3 +65,5 @@ namespace Raumkernel
 
     }
 }
+
+#endif

@@ -1,10 +1,11 @@
 
 #include <raumkernel/raumkernel.h>
+#include <raumkernel/manager/managerengineer.h>
 
 namespace Raumkernel
 {
 
-    Raumkernel::Raumkernel() : RaumkernelBase()
+    Raumkernel::Raumkernel() : RaumkernelBaseMgr()
     {
     }
 
@@ -20,7 +21,7 @@ namespace Raumkernel
         if (logObject == nullptr)
         {
             // we do register some log adapters for the log object with standard values and set to log only ERRORS and CRITICALERRORS
-            // the log levele itself will be set after reading the settings file but we want to have logginf while reading settings file
+            // the log level itself will be set after reading the settings file but we want to have logging while reading settings file
             // so we create the logObject with some standard values
             logObject = std::shared_ptr<Log::Log>(new Log::Log());            
             logObject->registerAdapter(std::shared_ptr<Log::LogAdapter>(new Log::LogAdapter_Console()));
@@ -28,7 +29,15 @@ namespace Raumkernel
             logObject->setLogLevel(Log::LogType::LOGTYPE_ERROR);
         }
 
-        // TODO: create the settings object (if not already provided)
+        // create the manager engineer which will hold references to all managers. this engineer will be present in each manager and each class
+        // which is inherited from 'RaumfeldBaseMgr', but has to be set explicit
+        managerEngineer = std::shared_ptr<Manager::ManagerEngineer>(new Manager::ManagerEngineer());
+        managerEngineer->setLogObject(logObject);
+        managerEngineer->createManagers();
+
+        // all managers are now created and we can work with them. so first lets get the settings manager in action and let it read our kernel 
+        // and application settings
+
 
         // TODO: get settings from ini file or xml settings file?
 

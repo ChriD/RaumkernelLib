@@ -22,7 +22,8 @@
 //
 
 #pragma once
-
+#ifndef RAUMKERNEL_RAUMKERNELBASE_H
+#define RAUMKERNEL_RAUMKERNELBASE_H
 
 #include <memory>
 
@@ -36,10 +37,11 @@ namespace Raumkernel
 
     class RaumkernelBase
     {
-        public:
-            RaumkernelBase();
-            virtual ~RaumkernelBase();
-            EXPORT void setLogObject(std::shared_ptr<Log::Log> _log);
+    public:
+        RaumkernelBase();
+        virtual ~RaumkernelBase();
+        EXPORT void setLogObject(std::shared_ptr<Log::Log> _log);
+        EXPORT std::shared_ptr<Log::Log> getLogObject();
 
     protected:
         // all modules and classes wich are attached to the raumkernel itself will have the ability to log into the same log file
@@ -48,5 +50,7 @@ namespace Raumkernel
 
     };
 
-
 }
+
+
+#endif
