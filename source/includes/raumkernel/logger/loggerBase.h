@@ -50,6 +50,7 @@ namespace Raumkernel
         {
             LogType type;
             std::string log;
+            std::string location;
             Raumkernel::Tools::DateTimeStamp logDateTimeStamp;
         };
 

@@ -15,7 +15,7 @@ namespace Raumkernel
     }
 
 
-    void Raumkernel::init()
+    void Raumkernel::init(Log::LogType _defaultLogLevel)
     {
         // create the log object (if not already provided) which will be used throughout the whole kernel and his modules 
         if (logObject == nullptr)
@@ -26,8 +26,10 @@ namespace Raumkernel
             logObject = std::shared_ptr<Log::Log>(new Log::Log());            
             logObject->registerAdapter(std::shared_ptr<Log::LogAdapter>(new Log::LogAdapter_Console()));
             logObject->registerAdapter(std::shared_ptr<Log::LogAdapter>(new Log::LogAdapter_File()));
-            logObject->setLogLevel(Log::LogType::LOGTYPE_ERROR);
+            logObject->setLogLevel(_defaultLogLevel);
         }
+
+        logDebug("Preparing Manager-Engineer...", CURRENT_POSITION);
 
         // create the manager engineer which will hold references to all managers. this engineer will be present in each manager and each class
         // which is inherited from 'RaumfeldBaseMgr', but has to be set explicit
@@ -35,13 +37,22 @@ namespace Raumkernel
         managerEngineer->setLogObject(logObject);
         managerEngineer->createManagers();
 
+        logDebug("Manager-Engineer is prepared", CURRENT_POSITION);
+
         // all managers are now created and we can work with them. so first lets get the settings manager in action and let it read our kernel 
-        // and application settings
+        // and application settings.      
+        managerEngineer->getSettingsManager()->loadSettings();
+
+        // okay now, when the settingsManager is ready and we have loaded the settings we may get the log settings (log level)   
+        std::string logLevelString = managerEngineer->getSettingsManager()->getValue(Manager::SETTINGS_RAUMKERNEL_LOGLEVEL);
+        logObject->setLogLevel(Log::Log::logTypeStringToLogType(logLevelString));
+        logDebug("Log level was set to: " + logLevelString, CURRENT_POSITION);
+
+   
+        // TODO: wake up other managers like UPNPDeviceManager
 
 
-        // TODO: get settings from ini file or xml settings file?
-
-        // TODO: update log settings after reading the raumkernel settings
+        logInfo("Kernel initialized!", CURRENT_POSITION);
 
     }
 

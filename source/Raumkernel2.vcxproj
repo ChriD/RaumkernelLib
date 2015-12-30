@@ -100,6 +100,10 @@
     <ClInclude Include="includes\raumkernel\signals\signals.hpp" />
     <ClInclude Include="includes\raumkernel\tools\dateUtil.h" />
     <ClInclude Include="includes\raumkernel\tools\stringUtil.h" />
+    <ClInclude Include="includes\raumkernel\xml\rapidxml.hpp" />
+    <ClInclude Include="includes\raumkernel\xml\rapidxml_iterators.hpp" />
+    <ClInclude Include="includes\raumkernel\xml\rapidxml_print.hpp" />
+    <ClInclude Include="includes\raumkernel\xml\rapidxml_utils.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="logger\logger.cpp" />

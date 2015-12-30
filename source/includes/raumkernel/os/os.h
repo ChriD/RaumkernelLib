@@ -25,22 +25,31 @@
 #ifndef RAUMKERNEL_OS_H
 #define RAUMKERNEL_OS_H
 
+
 // Microsoft
 #if defined(_MSC_VER)
     #define EXPORT __declspec(dllexport)
     #define IMPORT __declspec(dllimport)
     #define CURRENT_FUNCTION __FUNCTION__
+    #define CURRENT_LINE __LINE__    
+    #define CONSOLE_COLS 79
 //  GCC
 #elif defined(_GCC)
     #define EXPORT __attribute__((visibility("default")))
     #define IMPORT
     #define CURRENT_FUNCTION __func__
+    #define CURRENT_LINE __LINE__
+    #define CONSOLE_COLS 0
 // no idea which compiler	
 #else
     #define EXPORT
     #define IMPORT
     #define CURRENT_FUNCTION __func__
+    #define CURRENT_LINE __LINE__
+    #define CONSOLE_COLS 0
     #pragma warning Unknown dynamic link import/export semantics.
 #endif
+
+#define CURRENT_POSITION CURRENT_FUNCTION
 
 #endif

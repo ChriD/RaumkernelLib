@@ -27,6 +27,7 @@
 
 #include <exception>
 #include <string>
+#include <cstdint>
 
 namespace Raumkernel
 {
@@ -38,12 +39,13 @@ namespace Raumkernel
         class RaumkernelException :public std::exception
         {
             public:
-                EXPORT RaumkernelException(ExceptionType _exceptionType, const std::string _exceptionLocation, const std::string _exceptionInfo)
+                EXPORT RaumkernelException(ExceptionType _exceptionType, const std::string _exceptionLocation, const std::string _exceptionInfo, const std::int16_t _errorCode = 999)
                 {
                     exceptionTyp = _exceptionType;
                     exceptionInfo = _exceptionInfo;
                     exceptionLocation = _exceptionLocation;
-                };
+                    errorCode = _errorCode;
+                };           
 
                 EXPORT ~RaumkernelException(void)
                 {
@@ -62,6 +64,7 @@ namespace Raumkernel
             private:
                 std::string exceptionInfo;
                 std::string exceptionLocation;   
+                std::int16_t errorCode;
                 ExceptionType exceptionTyp;
         };
 

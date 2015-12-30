@@ -25,18 +25,54 @@
 #ifndef RAUMKERNEL_SETTINGSMANAGER_H
 #define RAUMKERNEL_SETTINGSMANAGER_H
 
+#include <map>
 #include <raumkernel/manager/managerBase.h>
+#include <raumkernel/xml/rapidxml.hpp>
+
 
 
 namespace Raumkernel
 {
     namespace Manager
     {
+
+        const std::string SETTINGS_RAUMKERNEL_LOGLEVEL = "/Raumkernel/Log/Level";
+        const std::string SETTINGS_RAUMKERNEL_LOGADAPTERS = "/Raumkernel/Log/Adapters";
+        const std::string SETTINGS_RAUMKERNEL_NETWORKADAPTERNAME = "/Raumkernel/NetworkAdapterName";
+        const std::string SETTINGS_RAUMKERNEL_HOSTCONFIGDEVICENAME = "/Raumkernel/Raumfeld/HostConfigDeviceName";
+        const std::string SETTINGS_RAUMKERNEL_MEDIASERVERNAME = "/Raumkernel/Raumfeld/MediaServerName";
+        const std::string SETTINGS_RAUMKERNEL_HOSTREQUESTPORT = "/Raumkernel/Raumfeld/HostRequestPort";
+        const std::string SETTINGS_RAUMKERNEL_MEDIARENDERERIDENTIFICATION = "/Raumkernel/Raumfeld/MediaRendererIdentification";
+        const std::string SETTINGS_RAUMKERNEL_MEDIASERVERIDENTIFICATION = "/Raumkernel/Raumfeld/MediaServerIdentification";
+        const std::string SETTINGS_RAUMKERNEL_RAUMFELDDESCRIPTIONVIRTUALMEDIAPLAYER = "/Raumkernel/Raumfeld/RaumfeldDescriptionVirtualMediaPlayer";
+        const std::string SETTINGS_RAUMKERNEL_RAUMFELDMANUFACTURER = "/Raumkernel/Raumfeld/RaumfeldManufacturer";
+
+
         class SettingsManager : public ManagerBase
         {
             public:
                 EXPORT SettingsManager();
                 EXPORT virtual ~SettingsManager();
+                EXPORT void loadSettings();   
+                EXPORT void setFileName(std::string _settingsFileName);
+                EXPORT std::string getValue(std::string _settingsPath, std::uint16_t _index = 0);
+                
+
+            protected:
+                void loadSettingsFromFile(std::string _fileName);
+                void walkNode(const rapidxml::xml_node<>* _node, std::string _path = "", int _indent = 0);                
+                void validateSetting(std::string _settingPath);
+                void validateSettings();
+
+                // a mutex that will secure our settings map 
+                std::mutex mutexSettingsMapAccess;
+
+                // filename and path for settings file
+                std::string settingsFileName;
+
+                // a map whicxh contains a path as id to the settings and the value
+                std::map<std::string, std::string> settingsMap;
+                
         };
     }
 }

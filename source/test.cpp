@@ -1,5 +1,5 @@
 
-#include <raumkernel/logger/logger.h>
+#include <raumkernel/raumkernel.h>
 #include <raumkernel/rlutil/rlutil.h>
 
 
@@ -8,11 +8,11 @@ static void testLog(Raumkernel::Log::Log &_logObject)
 {
     for (unsigned int i = 0; i <= 200; ++i)
     {
-        _logObject.addLog(Raumkernel::Log::LogType::LOGTYPE_CRITICALERROR, "I am a fatal error log! I am a fatal error log! I am a fatal error log");
-        _logObject.addLog(Raumkernel::Log::LogType::LOGTYPE_ERROR, "I am a error log! I am a error log! I am a error log! I am a error log!");
-        _logObject.addLog(Raumkernel::Log::LogType::LOGTYPE_WARNING, "I am a warning log! I am a warning log! I am a warning log! I am a warning log!");
-        _logObject.addLog(Raumkernel::Log::LogType::LOGTYPE_INFO, "I am a info log! I am a info log! I am a info log! I am a info log! I am a info log!");
-        _logObject.addLog(Raumkernel::Log::LogType::LOGTYPE_DEBUG, "I am a debug log! I am a debug log! I am a debug log! I am a debug log! I am a debug log!");
+        _logObject.addLog(Raumkernel::Log::LogType::LOGTYPE_CRITICALERROR, "I am a fatal error log! I am a fatal error log! I am a fatal error log", CURRENT_FUNCTION);
+        _logObject.addLog(Raumkernel::Log::LogType::LOGTYPE_ERROR, "I am a error log! I am a error log! I am a error log! I am a error log!", CURRENT_FUNCTION);
+        _logObject.addLog(Raumkernel::Log::LogType::LOGTYPE_WARNING, "I am a warning log! I am a warning log! I am a warning log! I am a warning log!", CURRENT_FUNCTION);
+        _logObject.addLog(Raumkernel::Log::LogType::LOGTYPE_INFO, "I am a info log! I am a info log! I am a info log! I am a info log! I am a info log!", CURRENT_FUNCTION);
+        _logObject.addLog(Raumkernel::Log::LogType::LOGTYPE_DEBUG, "I am a debug log! I am a debug log! I am a debug log! I am a debug log! I am a debug log!", CURRENT_FUNCTION);
     }
 }
 
@@ -20,10 +20,9 @@ static void testLog(Raumkernel::Log::Log &_logObject)
 
 int main()
 {
+    /*
     std::chrono::steady_clock::time_point timePointStart, timePointEnd;
     std::chrono::milliseconds miliseconds;
-
-    
 
     // test object and the performance of the logger by writing 1000 log entries to file 
     Raumkernel::Log::Log	logObjectFile; 
@@ -33,13 +32,16 @@ int main()
     
     timePointEnd = std::chrono::steady_clock::now();
     miliseconds = std::chrono::duration_cast<std::chrono::milliseconds>(timePointEnd.time_since_epoch() - timePointStart.time_since_epoch());
-    std::cout << "Average time to create one log entry [FILE]: " + std::to_string((float)miliseconds.count() / 1000) + "ms";
+    std::cout << "Average time to create one log entry [FILE]: " + std::to_string((float)miliseconds.count() / 1000) + "ms\n";
+    */
 
+    Raumkernel::Raumkernel  raumkernel;
+
+    raumkernel.init(Raumkernel::Log::LogType::LOGTYPE_DEBUG);
 
     rlutil::getkey();
-
     
-
+    /*
     // test object and the performance of the logger by writing 1000 log entries to console 
     Raumkernel::Log::Log	logObjectConsole;
     logObjectConsole.registerAdapter(std::shared_ptr<Raumkernel::Log::LogAdapter>(new Raumkernel::Log::LogAdapter_Console()));
@@ -65,6 +67,7 @@ int main()
 
 
     rlutil::getkey();
+    */
 
    
     return 0;

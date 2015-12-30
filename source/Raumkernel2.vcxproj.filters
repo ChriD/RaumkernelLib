@@ -34,6 +34,9 @@
     <Filter Include="manager">
       <UniqueIdentifier>{41720c54-9e6c-4404-827d-6d2c1df3fe4c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="includes\raumkernel\xml">
+      <UniqueIdentifier>{ad8b8fd6-f976-4c3c-b490-21e949517514}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="includes\raumkernel\os\os.h">
@@ -92,6 +95,18 @@
     </ClInclude>
     <ClInclude Include="includes\raumkernel\raumkernelBaseMgr.h">
       <Filter>includes\raumkernel</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\raumkernel\xml\rapidxml.hpp">
+      <Filter>includes\raumkernel\xml</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\raumkernel\xml\rapidxml_iterators.hpp">
+      <Filter>includes\raumkernel\xml</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\raumkernel\xml\rapidxml_print.hpp">
+      <Filter>includes\raumkernel\xml</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\raumkernel\xml\rapidxml_utils.hpp">
+      <Filter>includes\raumkernel\xml</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

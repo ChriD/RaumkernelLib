@@ -5,15 +5,14 @@
          To get the available options for 'LogLevel' and 'LogAdapter' please take a look at the documentation -->
     <Log>
       <Level>DEBUG</Level>
-      <Adapter>FILE</Adapter>
-      <Adapter>CONSOLE</Adapter>
+      <Adapters>FILE;CONSOLE</Adapters>         
     </Log>
     
     <!-- the kernel uses the first available networkadapter found in the system. This may not be the one you like to use! -->
     <!-- so you can type in the network adapter name the application should use!-->
     <NetworkAdapterName>Killer Wireless-N 1202 (2.4GHz and 5GHz)</NetworkAdapterName>
               
-    <!-- Some basic kernel setting for recognizing the RaumfeldUPNP devices adn for requesting the host -->
+    <!-- Some basic kernel setting for recognizing the RaumfeldUPNP devices and for requesting the host -->
     <Raumfeld>
       <HostConfigDeviceName>Raumfeld ConfigDevice</HostConfigDeviceName>
       <MediaServerName>Raumfeld MediaServer</MediaServerName>

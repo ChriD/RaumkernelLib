@@ -48,6 +48,13 @@ namespace Raumkernel
         // therfore we define a shared pointer to a log which creating and distribution has to be handled by the main kernel class
         std::shared_ptr<Log::Log> logObject;
 
+        // 
+        void logDebug(std::string _log, std::string _location);
+        void logWarning(std::string _log, std::string _location);
+        void logInfo(std::string _log, std::string _location);
+        void logError(std::string _log, std::string _location);
+        void logCritical(std::string _log, std::string _location);
+
     };
 
 }

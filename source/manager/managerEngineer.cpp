@@ -19,6 +19,7 @@ namespace Raumkernel
         void ManagerEngineer::createManagers()
         {
             // create the settings manager wich will hold all of the settings for the kernel and the corresponding app
+            logDebug("Create Settings Manager...", CURRENT_FUNCTION);
             settingsManager = std::shared_ptr<Manager::SettingsManager>(new Manager::SettingsManager());
             settingsManager->setLogObject(getLogObject());
         }

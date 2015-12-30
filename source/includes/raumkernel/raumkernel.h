@@ -35,7 +35,7 @@ namespace Raumkernel
         public:
             EXPORT Raumkernel();
             EXPORT virtual ~Raumkernel();
-            EXPORT virtual void init();
+            EXPORT virtual void init(Log::LogType _defaultLogLevel = Log::LogType::LOGTYPE_ERROR);
 
     };
 

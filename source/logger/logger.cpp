@@ -28,33 +28,33 @@ namespace Raumkernel
         }
 
 
-        void Log::debug(std::string _log)
+        void Log::debug(std::string _log, std::string _location)
         {
-            addLog(LogType::LOGTYPE_DEBUG, _log);
+            addLog(LogType::LOGTYPE_DEBUG, _log, _location);
         }
 
 
-        void Log::warning(std::string _log)
+        void Log::warning(std::string _log, std::string _location)
         {
-            addLog(LogType::LOGTYPE_WARNING, _log);
+            addLog(LogType::LOGTYPE_WARNING, _log, _location);
         }
 
 
-        void Log::info(std::string _log)
+        void Log::info(std::string _log, std::string _location)
         {
-            addLog(LogType::LOGTYPE_INFO, _log);
+            addLog(LogType::LOGTYPE_INFO, _log, _location);
         }
 
 
-        void Log::error(std::string _log)
+        void Log::error(std::string _log, std::string _location)
         {
-            addLog(LogType::LOGTYPE_ERROR, _log);
+            addLog(LogType::LOGTYPE_ERROR, _log, _location);
         }
 
 
-        void Log::critical(std::string _log)
+        void Log::critical(std::string _log, std::string _location)
         {
-            addLog(LogType::LOGTYPE_CRITICALERROR, _log);
+            addLog(LogType::LOGTYPE_CRITICALERROR, _log, _location);
         }
   
 
@@ -65,7 +65,7 @@ namespace Raumkernel
         }
 
 
-        void Log::addLog(LogType _logType, std::string _log)
+        void Log::addLog(LogType _logType, std::string _log, std::string _location)
         {
             // check log level of log so we can decide if we should log or not
             if (_logType > logTypeLevel)
@@ -78,6 +78,7 @@ namespace Raumkernel
             LogData logData;
             logData.type = _logType;
             logData.log = _log;
+            logData.location = _location;
             logData.logDateTimeStamp = Raumkernel::Tools::DateUtil::getCurrentDateTimeStamp();
             
             // run through all defined adapters (shared pointers) and call 'log' on them 
@@ -95,7 +96,7 @@ namespace Raumkernel
                     if (e.type() == Raumkernel::Exception::ExceptionType::EXCEPTIONTYPE_APPCRASH)
                         throw e;   
                     // if the raumkenrel exception is recoverable (no appcrash) we so nothing. We can not log any error because the error happend in 
-                    // the log object
+                    // the log object.        
                 }
                 catch (std::exception &e)
                 {
@@ -116,7 +117,17 @@ namespace Raumkernel
             // after we have release the lock we can signal attached subscribers
             // we do not want the subscriber to be in the same mutex lock. The subscriber should handle this by himself            
             sigLog.fire(logData);
-        }      
+        }  
 
+
+        LogType Log::logTypeStringToLogType(std::string _logTypeString)
+        {
+            if (_logTypeString == "DEBUG") return LogType::LOGTYPE_DEBUG;
+            if (_logTypeString == "ERROR") return LogType::LOGTYPE_ERROR;
+            if (_logTypeString == "INFO") return LogType::LOGTYPE_INFO;
+            if (_logTypeString == "WARNING") return LogType::LOGTYPE_WARNING;
+            if (_logTypeString == "CRITICAL") return LogType::LOGTYPE_CRITICALERROR;    
+            return LogType::LOGTYPE_DEBUG;
+        }       
     }
 }

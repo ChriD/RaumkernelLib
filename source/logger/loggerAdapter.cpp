@@ -72,7 +72,7 @@ namespace Raumkernel
 
         void LogAdapter_File::log(LogData _logData)
         {            
-            std::string logString = getFormattedCurrentDateTimeString(_logData.logDateTimeStamp) + " " + Raumkernel::Tools::StringUtil::padR(getLogTypeString(_logData.type) + ":", 10) + _logData.log;
+            std::string logString = getFormattedCurrentDateTimeString(_logData.logDateTimeStamp) + " " + Raumkernel::Tools::StringUtil::padR(getLogTypeString(_logData.type) + ":", 10) + _logData.log + " [" + _logData.location + "]";
 
             // write log into logFile. we do open and close the file each time we write a log. This is a little bit slower than keeping the handle open (about 0.3ms per log entry)  
             // But we will be sure the log file is not locked in the worst case of an unexpected application shutdown.            
@@ -87,7 +87,7 @@ namespace Raumkernel
             else
             {
                 // we throw an exception if we can not open the log file, but we throw it of type recoverable, that means the app won't crash in this situation
-                throw Raumkernel::Exception::RaumkernelException(Raumkernel::Exception::ExceptionType::EXCEPTIONTYPE_RECOVERABLE, CURRENT_FUNCTION, "File '" + logFilePath + logFileName + "' could not be created");
+                throw Raumkernel::Exception::RaumkernelException(Raumkernel::Exception::ExceptionType::EXCEPTIONTYPE_RECOVERABLE, CURRENT_POSITION, "File '" + logFilePath + logFileName + "' could not be created");
             }
         }
 
@@ -122,7 +122,7 @@ namespace Raumkernel
             std::string logString = getFormattedCurrentDateTimeString(_logData.logDateTimeStamp) + " " + Raumkernel::Tools::StringUtil::padR(getLogTypeString(_logData.type) + ":", 10) + _logData.log;
 
             // output of log to console (here we are limited to 79 on windows, linux provides more cols)       
-            logString.resize(79);
+            logString.resize(CONSOLE_COLS);
             std::cout << logString << std::endl;
         }
     }
