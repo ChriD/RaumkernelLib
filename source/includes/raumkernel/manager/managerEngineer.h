@@ -27,6 +27,8 @@
 
 #include <raumkernel/raumkernelBase.h>
 #include <raumkernel/manager/settingsManager.h>
+#include <raumkernel/manager/upnpManager.h>
+#include <raumkernel/manager/deviceManager.h>
 
 namespace Raumkernel
 {
@@ -43,9 +45,13 @@ namespace Raumkernel
                 void createManagers();
 
                 std::shared_ptr<SettingsManager> getSettingsManager();
+                std::shared_ptr<UPNPManager> getUPNPManager();
+                std::shared_ptr<DeviceManager> getDeviceManager();
 
             protected:
                 std::shared_ptr<SettingsManager> settingsManager;
+                std::shared_ptr<UPNPManager> upnpManager;
+                std::shared_ptr<DeviceManager> deviceManager;
         };
     }
 }

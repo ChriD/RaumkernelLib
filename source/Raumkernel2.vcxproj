@@ -22,13 +22,13 @@
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v120</PlatformToolset>
     <CLRSupport>false</CLRSupport>
-    <CharacterSet>Unicode</CharacterSet>
+    <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v120</PlatformToolset>
-    <CLRSupport>true</CLRSupport>
+    <CLRSupport>false</CLRSupport>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
@@ -46,9 +46,10 @@
     <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);includes</IncludePath>
     <TargetName>raumkernel</TargetName>
     <IntDir>$(SolutionDir)_temp\$(Configuration)\</IntDir>
+    <IgnoreImportLibrary>true</IgnoreImportLibrary>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <LinkIncremental>false</LinkIncremental>
+    <LinkIncremental>true</LinkIncremental>
     <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);includes</IncludePath>
     <IntDir>$(SolutionDir)temp\$(Configuration)\</IntDir>
   </PropertyGroup>
@@ -56,23 +57,26 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>WIN32;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_SCL_SECURE_NO_WARNINGS;%(PreprocessorDefinitions);_WIN32_WINNT=0x0501;_CRT_SECURE_NO_WARNINGS;WIN32;_DEBUG</PreprocessorDefinitions>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <AdditionalIncludeDirectories>D:\Develop\Raumfeld\Raumkernel2\source\includes;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies />
+      <AdditionalDependencies>ohNetCore.lib;ohNetProxies.lib;ohNetDevices.lib;Ws2_32.lib;Dbghelp.lib;Iphlpapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>D:\Packages\ohNet_x86_1_1_1429_VC13\Debug\lib;D:\Develop\Raumfeld\Raumkernel2\source\libs\windows_x86\VS2013\Debug\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
-      <PreprocessorDefinitions>WIN32;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PreprocessorDefinitions>_SCL_SECURE_NO_WARNINGS;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies />
+      <AdditionalDependencies>ohNetCore.lib;ohNetProxies.lib;ohNetDevices.lib;Ws2_32.lib;Dbghelp.lib;Iphlpapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>D:\Develop\Raumfeld\Raumkernel2\source\libs\windows_x86\VS2013\Release\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -85,9 +89,11 @@
     <ClInclude Include="includes\raumkernel\logger\logger.h" />
     <ClInclude Include="includes\raumkernel\logger\loggerAdapter.h" />
     <ClInclude Include="includes\raumkernel\logger\loggerBase.h" />
+    <ClInclude Include="includes\raumkernel\manager\deviceManager.h" />
     <ClInclude Include="includes\raumkernel\manager\managerBase.h" />
     <ClInclude Include="includes\raumkernel\manager\managerEngineer.h" />
     <ClInclude Include="includes\raumkernel\manager\settingsManager.h" />
+    <ClInclude Include="includes\raumkernel\manager\upnpManager.h" />
     <ClInclude Include="includes\raumkernel\os\os.h" />
     <ClInclude Include="includes\raumkernel\raumkernel.h" />
     <ClInclude Include="includes\raumkernel\raumkernelBase.h" />
@@ -98,8 +104,10 @@
     <ClInclude Include="includes\raumkernel\signals\connections.hpp" />
     <ClInclude Include="includes\raumkernel\signals\signal.hpp" />
     <ClInclude Include="includes\raumkernel\signals\signals.hpp" />
+    <ClInclude Include="includes\raumkernel\tools\commonUtil.h" />
     <ClInclude Include="includes\raumkernel\tools\dateUtil.h" />
     <ClInclude Include="includes\raumkernel\tools\stringUtil.h" />
+    <ClInclude Include="includes\raumkernel\tools\uriUtil.h" />
     <ClInclude Include="includes\raumkernel\xml\rapidxml.hpp" />
     <ClInclude Include="includes\raumkernel\xml\rapidxml_iterators.hpp" />
     <ClInclude Include="includes\raumkernel\xml\rapidxml_print.hpp" />
@@ -108,9 +116,11 @@
   <ItemGroup>
     <ClCompile Include="logger\logger.cpp" />
     <ClCompile Include="logger\loggerAdapter.cpp" />
+    <ClCompile Include="manager\deviceManager.cpp" />
     <ClCompile Include="manager\managerBase.cpp" />
     <ClCompile Include="manager\managerEngineer.cpp" />
     <ClCompile Include="manager\settingsManager.cpp" />
+    <ClCompile Include="manager\upnpManager.cpp" />
     <ClCompile Include="raumkernel.cpp" />
     <ClCompile Include="raumkernelBase.cpp" />
     <ClCompile Include="raumkernelBaseMgr.cpp" />

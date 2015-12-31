@@ -143,7 +143,7 @@ namespace Raumkernel
             }
             catch (...)
             {
-                throw std::runtime_error("Unknown exception!");
+                throw std::runtime_error("Unknown exception! [SettingsManager::loadSettingsFromFile]");
             }
 
         }

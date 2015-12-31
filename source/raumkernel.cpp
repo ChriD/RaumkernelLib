@@ -37,6 +37,11 @@ namespace Raumkernel
         managerEngineer->setLogObject(logObject);
         managerEngineer->createManagers();
 
+        // set links to the manager engineer for all managers (this is a little bit of circular dependencies because the managers have a link to the
+        // managerEngineer, which has links to the managers again. But this should be no problem, in this case)
+        managerEngineer->getSettingsManager()->setManagerEngineer(managerEngineer);
+        managerEngineer->getUPNPManager()->setManagerEngineer(managerEngineer);
+
         logDebug("Manager-Engineer is prepared", CURRENT_POSITION);
 
         // all managers are now created and we can work with them. so first lets get the settings manager in action and let it read our kernel 
@@ -48,11 +53,16 @@ namespace Raumkernel
         logObject->setLogLevel(Log::Log::logTypeStringToLogType(logLevelString));
         logDebug("Log level was set to: " + logLevelString, CURRENT_POSITION);
 
-   
+        // let's wake up the UPNP Stack and start discovering UPNP devices of all kinds
+        managerEngineer->getUPNPManager()->init();        
+        managerEngineer->getUPNPManager()->discover();
+
         // TODO: wake up other managers like UPNPDeviceManager
 
+      
 
-        logInfo("Kernel initialized!", CURRENT_POSITION);
+
+        logInfo("Kernel initialized! Waiting for Raumfeld System to appear!", CURRENT_POSITION);
 
     }
 

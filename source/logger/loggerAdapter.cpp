@@ -51,7 +51,7 @@ namespace Raumkernel
                 Raumkernel::Tools::StringUtil::padL(std::to_string(_stamp.hour), 2, '0') + ":" +
                 Raumkernel::Tools::StringUtil::padL(std::to_string(_stamp.minute), 2, '0') + ":" +
                 Raumkernel::Tools::StringUtil::padL(std::to_string(_stamp.second), 2, '0') + "." +
-                Raumkernel::Tools::StringUtil::padL(std::to_string(_stamp.millisecond), 2, '0');
+                Raumkernel::Tools::StringUtil::padL(std::to_string(_stamp.millisecond), 3, '0');
         }
 
 
