@@ -121,8 +121,9 @@ namespace Raumkernel
         {            
             std::string logString = getFormattedCurrentDateTimeString(_logData.logDateTimeStamp) + " " + Raumkernel::Tools::StringUtil::padR(getLogTypeString(_logData.type) + ":", 10) + _logData.log;
 
-            // output of log to console (here we are limited to 79 on windows, linux provides more cols)       
-            logString.resize(CONSOLE_COLS);
+            // output of log to console (here we are limited to 79 on windows, linux provides more cols)    
+            if(CONSOLE_COLS > 0)
+                logString.resize(CONSOLE_COLS);
             std::cout << logString << std::endl;
         }
     }
