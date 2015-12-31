@@ -8,7 +8,7 @@ CFLAGS = -std=c++0x -fPIC -Wall -Wextra -O2 -c -pthread $(INCPATH)
 CXXFLAGS = -std=c++0x -fPIC -Wall -Wextra -O2 -c -pthread $(INCPATH)
 LDFLAGS = -shared -pthread -static-libgcc -static-libstdc++
 
-LIBSDEF = 
+LIBSDEF = libs/linux_ARMV7/libohNetCore.a libs/linux_ARMV7/libohNetDevices.a libs/linux_ARMV7/libohNetProxies.a
 
 RM = rm -f 
 TARGET_LIB = libs/linux_ARMV7/raumkern.so
