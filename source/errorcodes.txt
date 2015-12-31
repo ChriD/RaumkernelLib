@@ -1,0 +1,7 @@
+999	undefined error
+100	settings file is undefined
+101	can not open settings file
+102	settings file does not contain the "Application" node
+103	settings file does not contain the "Raumkernel" node
+110	missconfigured settings file
+200	no network adapter present!
