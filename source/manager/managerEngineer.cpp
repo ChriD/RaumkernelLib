@@ -9,6 +9,7 @@ namespace Raumkernel
         {
             settingsManager = nullptr;
             upnpManager = nullptr;
+            deviceManager = nullptr;
         }
 
 
@@ -20,14 +21,19 @@ namespace Raumkernel
         void ManagerEngineer::createManagers()
         {
             // create the settings manager wich will hold all of the settings for the kernel and the corresponding app
-            logDebug("Create Settings Manager...", CURRENT_FUNCTION);
+            logDebug("Create Settings-Manager...", CURRENT_FUNCTION);
             settingsManager = std::shared_ptr<Manager::SettingsManager>(new Manager::SettingsManager());            
             settingsManager->setLogObject(getLogObject());
 
-            // create the UPNPDevice Manager which will hold all UPNP devices found in the networt (OhNetDevices)
-            logDebug("Create UPNP-Device Manager...", CURRENT_FUNCTION);
+            // create the UPNP-Manager which will hold all UPNP devices found in the networt (OhNetDevices)
+            logDebug("Create UPNP-Manager...", CURRENT_FUNCTION);
             upnpManager = std::shared_ptr<Manager::UPNPManager>(new Manager::UPNPManager());            
             upnpManager->setLogObject(getLogObject());
+
+            // create the Device-Manager which will hold all UPNP devices found in the networt (OhNetDevices)
+            logDebug("Create Device-Manager...", CURRENT_FUNCTION);
+            deviceManager = std::shared_ptr<Manager::DeviceManager>(new Manager::DeviceManager());
+            deviceManager->setLogObject(getLogObject());
         }
 
 

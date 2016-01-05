@@ -13,7 +13,7 @@ LIBSDEF =  libs/linux_x86/libohNetCore.a libs/linux_x86/libohNetDevices.a libs/l
 RM = rm -f 
 TARGET_LIB = libs/linux_x86/raumkern.so
 
-SRCS = raumkernelBase.cpp raumkernelBaseMgr.cpp  raumkernel.cpp logger/loggerAdapter.cpp logger/logger.cpp manager/managerBase.cpp manager/managerEngineer.cpp manager/settingsManager.cpp manager/upnpManager.cpp manager/deviceManager.cpp
+SRCS = raumkernelBase.cpp raumkernelBaseMgr.cpp  raumkernel.cpp logger/loggerAdapter.cpp logger/logger.cpp manager/managerBase.cpp manager/managerEngineer.cpp manager/settingsManager.cpp manager/upnpManager.cpp manager/deviceManager.cpp device/device.cpp device/deviceMediaRenderer.cpp device/deviceMediaRenderer_RF.cpp device/deviceMediaRenderer_RFVirtual.cpp device/proxies/CpUpnpOrgAVTransport1Std.cpp device/proxies/CpUpnpOrgConnectionManager1Std.cpp device/proxies/CpUpnpOrgRenderingControl1Std.cpp device/proxies/CpUpnpOrgConnectionManager_RaumfeldVirtual1Std.cpp device/proxies/CpUpnpOrgRenderingControl_RaumfeldVirtual1Std.cpp device/proxies/CpUpnpOrgAVTransport_RaumfeldVirtual1Std.cpp
 
 OBJS = $(SRCS:.cpp=.o)
 

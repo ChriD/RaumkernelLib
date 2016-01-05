@@ -85,6 +85,23 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="includes\raumkernel\device\device.h" />
+    <ClInclude Include="includes\raumkernel\device\deviceCreator.h" />
+    <ClInclude Include="includes\raumkernel\device\deviceMediaRenderer_RF.h" />
+    <ClInclude Include="includes\raumkernel\device\deviceMediaRenderer_RFVirtual.h" />
+    <ClInclude Include="includes\raumkernel\device\deviceMediaRenderer.h" />
+    <ClInclude Include="includes\raumkernel\device\proxies\CpUpnpOrgAVTransport1.h" />
+    <ClInclude Include="includes\raumkernel\device\proxies\CpUpnpOrgAVTransport2.h" />
+    <ClInclude Include="includes\raumkernel\device\proxies\CpUpnpOrgAVTransport_RaumfeldVirtual1.h" />
+    <ClInclude Include="includes\raumkernel\device\proxies\CpUpnpOrgConnectionManager1.h" />
+    <ClInclude Include="includes\raumkernel\device\proxies\CpUpnpOrgConnectionManager2.h" />
+    <ClInclude Include="includes\raumkernel\device\proxies\CpUpnpOrgConnectionManager_RaumfeldVirtual1.h" />
+    <ClInclude Include="includes\raumkernel\device\proxies\CpUpnpOrgContentDirectory1.h" />
+    <ClInclude Include="includes\raumkernel\device\proxies\CpUpnpOrgContentDirectory2.h" />
+    <ClInclude Include="includes\raumkernel\device\proxies\CpUpnpOrgContentDirectory3.h" />
+    <ClInclude Include="includes\raumkernel\device\proxies\CpUpnpOrgRenderingControl1.h" />
+    <ClInclude Include="includes\raumkernel\device\proxies\CpUpnpOrgRenderingControl2.h" />
+    <ClInclude Include="includes\raumkernel\device\proxies\CpUpnpOrgRenderingControl_RaumfeldVirtual1.h" />
     <ClInclude Include="includes\raumkernel\exception\exception.h" />
     <ClInclude Include="includes\raumkernel\logger\logger.h" />
     <ClInclude Include="includes\raumkernel\logger\loggerAdapter.h" />
@@ -114,6 +131,23 @@
     <ClInclude Include="includes\raumkernel\xml\rapidxml_utils.hpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="device\device.cpp" />
+    <ClCompile Include="device\deviceCreator.cpp" />
+    <ClCompile Include="device\deviceMediaRenderer.cpp" />
+    <ClCompile Include="device\deviceMediaRenderer_RF.cpp" />
+    <ClCompile Include="device\deviceMediaRenderer_RFVirtual.cpp" />
+    <ClCompile Include="device\proxies\CpUpnpOrgAVTransport1Std.cpp" />
+    <ClCompile Include="device\proxies\CpUpnpOrgAVTransport2Std.cpp" />
+    <ClCompile Include="device\proxies\CpUpnpOrgAVTransport_RaumfeldVirtual1Std.cpp" />
+    <ClCompile Include="device\proxies\CpUpnpOrgConnectionManager1Std.cpp" />
+    <ClCompile Include="device\proxies\CpUpnpOrgConnectionManager2Std.cpp" />
+    <ClCompile Include="device\proxies\CpUpnpOrgConnectionManager_RaumfeldVirtual1Std.cpp" />
+    <ClCompile Include="device\proxies\CpUpnpOrgContentDirectory1Std.cpp" />
+    <ClCompile Include="device\proxies\CpUpnpOrgContentDirectory2Std.cpp" />
+    <ClCompile Include="device\proxies\CpUpnpOrgContentDirectory3Std.cpp" />
+    <ClCompile Include="device\proxies\CpUpnpOrgRenderingControl1Std.cpp" />
+    <ClCompile Include="device\proxies\CpUpnpOrgRenderingControl2Std.cpp" />
+    <ClCompile Include="device\proxies\CpUpnpOrgRenderingControl_RaumfeldVirtual1Std.cpp" />
     <ClCompile Include="logger\logger.cpp" />
     <ClCompile Include="logger\loggerAdapter.cpp" />
     <ClCompile Include="manager\deviceManager.cpp" />

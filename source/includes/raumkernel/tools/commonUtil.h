@@ -35,8 +35,16 @@ namespace Raumkernel
         class CommonUtil
         {
             public:
-                // FORMAT UDN
-                // GET RANDOM NUMBER
+
+                /**
+                * use it to get the UDN into a format we want to have
+                */
+                static std::string CommonUtil::FormatUDN(std::string _udn)
+                {
+                    if (_udn.find("uuid:") != std::string::npos)
+                        return _udn;
+                    return "uuid:" + _udn;
+                }
 
         };
 

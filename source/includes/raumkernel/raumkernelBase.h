@@ -28,6 +28,7 @@
 #include <memory>
 
 #include <raumkernel/os/os.h>
+#include <raumkernel/tools/commonUtil.h>
 #include <raumkernel/signals/signals.hpp>
 #include <raumkernel/logger/logger.h>
 

@@ -46,7 +46,7 @@ namespace Raumkernel
             RaumkernelBaseMgr();
             virtual ~RaumkernelBaseMgr();
             void setManagerEngineer(std::shared_ptr<Manager::ManagerEngineer> _managerEngineer);
-            std::shared_ptr<Manager::ManagerEngineer> getManagerEngineer();
+            EXPORT std::shared_ptr<Manager::ManagerEngineer> getManagerEngineer();
 
         protected:
             std::shared_ptr<Manager::ManagerEngineer> managerEngineer;

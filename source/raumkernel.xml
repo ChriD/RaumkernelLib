@@ -12,7 +12,7 @@
     <!-- so you can type in the network adapter name the application should use!-->
     <NetworkAdapterName>Killer Wireless-N 1202 (2.4GHz and 5GHz)</NetworkAdapterName>
               
-    <!-- Some basic kernel setting for recognizing the RaumfeldUPNP devices and for requesting the host -->
+    <!-- Some basic kernel setting for recognizing the RaumfeldUPNP devices and for requesting the host when using RAUMFELD system -->
     <Raumfeld>
       <HostConfigDeviceName>Raumfeld ConfigDevice</HostConfigDeviceName>
       <MediaServerName>Raumfeld MediaServer</MediaServerName>

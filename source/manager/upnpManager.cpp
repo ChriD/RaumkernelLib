@@ -132,75 +132,7 @@ namespace Raumkernel
             std::string deviceFriendlyName;
             _device.GetAttribute("Upnp.FriendlyName", deviceFriendlyName);
             logDebug("UPNP Device found: " + deviceFriendlyName + "(" + _device.Udn() + ")", CURRENT_POSITION);
-            //getManagerEngineer()->getDeviceManager()->addDevice(_device);
-
-            /*
-            bool deviceAlreadyInList = false;
-            std::string friendlyName, location, deviceXML, deviceUDN;
-            UPNPDevice *upnpDevice = nullptr;
-
-            this->Lock();
-
-            try
-            {
-                deviceUDN = Utils::FormatUDN(_device.Udn());
-
-                _device.GetAttribute("Upnp.DeviceXml", deviceXML);
-                _device.GetAttribute("Upnp.Location", location);
-                _device.GetAttribute("Upnp.FriendlyName", friendlyName);
-
-                this->Log(LogType::LOGDEBUG, "Found device: " + friendlyName, __FUNCTION__);
-
-                // we add a refrence of the device to our internal list and to be sure we do not store it twice we do delete
-                // all devices with the same UDN before. This should normaly not happen because "onDeviceLost" should be called before
-                this->RemoveDeviceClassRef(deviceUDN);
-                this->RemoveDeviceRef(deviceUDN);
-
-                // create the proper UPNPDevice class derviate and add it to the clasDevice ref map
-                // we do set a pointer link to the CPDevice the UPNPDevice is attached to
-                upnpDevice = this->CreateUPNPDeviceObjectFromDeviceXML(deviceXML);
-                if (upnpDevice)
-                {
-                    upnpDevice->SetCpDevice(&_device);
-                    this->AddDeviceClassRef(upnpDevice);
-                }
-
-                this->AddDeviceRef(_device);
-                _device.AddRef();
-
-            }
-            catch (std::exception &ex)
-            {
-                this->Log(LogType::LOGERROR, ex.what(), __FUNCTION__);
-            }
-            catch (const std::string& ex)
-            {
-                this->Log(LogType::LOGERROR, ex, __FUNCTION__);
-            }
-            catch (...)
-            {
-                this->Log(LogType::LOGERROR, "Unresolved Error", __FUNCTION__);
-            }
-
-            this->UnLock();
-
-
-            if (friendlyName == raumkernSettings.RAUMKERNEL_FRIENDLYNAME_CONFIGDEVICE)
-            {
-                this->Log(LogType::LOGINFO, "Configuration service found! (Location: " + location + ")", __FUNCTION__);
-                this->OnConfigDeviceFound(_device);
-            }
-
-            // if we found a raumfeld media server, then signal out!
-            if (upnpDevice && dynamic_cast<RaumfeldMediaServer*>(upnpDevice))
-            {
-                // if we found the raumfeld media server, the content manager has to subscribe to it, so that the content manager is aware of list changes, ect...
-                managerList.contentManager->SubscribeToMediaServer();
-                signalMediaServerFound();
-            }
-
-            signalDeviceListChanged();
-            */
+            getManagerEngineer()->getDeviceManager()->addDevice(_device);           
         }
 
 
@@ -211,60 +143,7 @@ namespace Raumkernel
             std::string deviceFriendlyName;
             _device.GetAttribute("Upnp.FriendlyName", deviceFriendlyName);
             logDebug("UPNP Device lost: " + deviceFriendlyName + "(" + _device.Udn() + ")", CURRENT_POSITION);
-            //getManagerEngineer()->getDeviceManager()->removeDevice(_device);
-
-
-            /*
-            std::string friendlyName, location;
-            std::string deviceUDN;
-            bool mediaServerRemoved = false;
-
-            this->Lock();
-
-            try
-            {
-                deviceUDN = Utils::FormatUDN(_device.Udn());
-
-                _device.GetAttribute("Upnp.Location", location);
-                _device.GetAttribute("Upnp.FriendlyName", friendlyName);
-
-                this->Log(LogType::LOGDEBUG, "Lost device: " + friendlyName, __FUNCTION__);
-
-                // remove the DeviceClass (eg. MediaRenderer, MediaServer,..) and the device reference (CPdevice) itself
-                if (this->GetMediaServer(deviceUDN))
-                    mediaServerRemoved = true;
-
-                this->RemoveDeviceClassRef(deviceUDN);
-                this->RemoveDeviceRef(deviceUDN);
-
-            }
-            catch (std::exception &ex)
-            {
-                this->Log(LogType::LOGERROR, ex.what(), __FUNCTION__);
-            }
-            catch (const std::string& ex)
-            {
-                this->Log(LogType::LOGERROR, ex, __FUNCTION__);
-            }
-            catch (...)
-            {
-                this->Log(LogType::LOGERROR, "Unresolved Error", __FUNCTION__);
-            }
-
-            this->UnLock();
-
-            if (friendlyName == raumkernSettings.RAUMKERNEL_FRIENDLYNAME_CONFIGDEVICE)
-            {
-                this->Log(LogType::LOGWARNING, "Configuration service lost! (Location: " + location + ")", __FUNCTION__);
-                this->OnConfigDeviceLost(_device);
-            }
-
-            if (mediaServerRemoved)
-                signalMediaServerFound();
-
-            signalDeviceListChanged();
-            */
-
+            getManagerEngineer()->getDeviceManager()->removeDevice(_device);
         }
 
     }

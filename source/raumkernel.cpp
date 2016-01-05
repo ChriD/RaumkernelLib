@@ -39,8 +39,9 @@ namespace Raumkernel
 
         // set links to the manager engineer for all managers (this is a little bit of circular dependencies because the managers have a link to the
         // managerEngineer, which has links to the managers again. But this should be no problem, in this case)
-        managerEngineer->getSettingsManager()->setManagerEngineer(managerEngineer);
+        managerEngineer->getSettingsManager()->setManagerEngineer(managerEngineer);        
         managerEngineer->getUPNPManager()->setManagerEngineer(managerEngineer);
+        managerEngineer->getDeviceManager()->setManagerEngineer(managerEngineer);        
 
         logDebug("Manager-Engineer is prepared", CURRENT_POSITION);
 

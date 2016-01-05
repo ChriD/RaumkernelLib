@@ -44,9 +44,9 @@ namespace Raumkernel
                 EXPORT virtual ~ManagerEngineer();
                 void createManagers();
 
-                std::shared_ptr<SettingsManager> getSettingsManager();
-                std::shared_ptr<UPNPManager> getUPNPManager();
-                std::shared_ptr<DeviceManager> getDeviceManager();
+                EXPORT std::shared_ptr<SettingsManager> getSettingsManager();
+                EXPORT std::shared_ptr<UPNPManager> getUPNPManager();
+                EXPORT std::shared_ptr<DeviceManager> getDeviceManager();
 
             protected:
                 std::shared_ptr<SettingsManager> settingsManager;

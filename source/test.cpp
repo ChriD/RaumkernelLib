@@ -1,5 +1,7 @@
 
 #include <raumkernel/raumkernel.h>
+#include <raumkernel/manager/managerEngineer.h>
+#include <raumkernel/device/deviceMediaRenderer_RFVirtual.h>
 #include <raumkernel/rlutil/rlutil.h>
 
 
@@ -38,6 +40,33 @@ int main()
     Raumkernel::Raumkernel  raumkernel;
 
     raumkernel.init(Raumkernel::Log::LogType::LOGTYPE_DEBUG);
+
+    rlutil::getkey();
+
+    std::shared_ptr<Raumkernel::Devices::MediaRenderer_RaumfeldVirtual> renderer = std::dynamic_pointer_cast<Raumkernel::Devices::MediaRenderer_RaumfeldVirtual>(raumkernel.getManagerEngineer()->getDeviceManager()->getMediaRenderer("uuid:b1b6b57e-5a8f-4286-b7b0-22568beb83f6"));
+    renderer->play();
+
+
+    rlutil::getkey();
+
+    renderer->pause();
+
+    rlutil::getkey();
+
+    renderer->play();
+
+    rlutil::getkey();
+
+    renderer->next();
+
+    rlutil::getkey();
+
+    renderer->previous();
+
+    rlutil::getkey();
+
+    renderer->stop();
+
 
     rlutil::getkey();
     
