@@ -42,7 +42,7 @@
     #define CONSOLE_COLS 0
 // no idea which compiler	
 #else
-    #define EXPORT
+    #define EXPORT __attribute__((visibility("default")))
     #define IMPORT
     #define CURRENT_FUNCTION __func__
     #define CURRENT_LINE __LINE__
