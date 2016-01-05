@@ -44,13 +44,13 @@ namespace Raumkernel
         class DeviceCreator : public RaumkernelBaseMgr
         {
             public:
-                EXPORT DeviceCreator();
-                EXPORT virtual ~DeviceCreator();
+                DeviceCreator();
+                virtual ~DeviceCreator();
                 /**
                 * Not intended for external use
                 * Please use the 'virtual' media renderer!
                 */
-                EXPORT std::shared_ptr<Devices::Device>  createDeviceFromDeviceXML(std::string _deviceXML);
+                std::shared_ptr<Devices::Device>  createDeviceFromDeviceXML(std::string _deviceXML);
                 
             protected:
                 void setDeviceInformationFromDeviceXML(std::shared_ptr<Device> _device, rapidxml::xml_node<> *_deviceNode);
