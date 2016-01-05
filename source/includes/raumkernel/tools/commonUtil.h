@@ -39,7 +39,7 @@ namespace Raumkernel
                 /**
                 * use it to get the UDN into a format we want to have
                 */
-                static std::string FormatUDN(std::string _udn)
+                EXPORT static std::string FormatUDN(std::string _udn)
                 {
                     if (_udn.find("uuid:") != std::string::npos)
                         return _udn;

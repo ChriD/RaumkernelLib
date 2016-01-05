@@ -102,27 +102,27 @@ namespace Raumkernel
                 * Not intended for external use
                 * Please use the 'virtual' media renderer!
                 */
-                virtual void play(bool _sync = true);
+                EXPORT virtual void play(bool _sync = true);
                 /**
                 * Not intended for external use
                 * Please use the 'virtual' media renderer!
                 */
-                virtual void stop(bool _sync = true);
+                EXPORT virtual void stop(bool _sync = true);
                 /**
                 * Not intended for external use
                 * Please use the 'virtual' media renderer!
                 */
-                virtual void pause(bool _sync = true);
+                EXPORT virtual void pause(bool _sync = true);
                 /**
                 * Not intended for external use
                 * Please use the 'virtual' media renderer!
                 */
-                virtual void next(bool _sync = true);
+                EXPORT virtual void next(bool _sync = true);
                 /**
                 * Not intended for external use
                 * Please use the 'virtual' media renderer!
                 */
-                virtual void previous(bool _sync = true);
+                EXPORT virtual void previous(bool _sync = true);
 
                 /*
                 EXPORT virtual void seek(boost::int32_t _seekToMs, bool _sync = true);
