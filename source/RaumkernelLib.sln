@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.21005.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "RaumkernelLib", "RaumkernelLib.vcxproj", "{9032EC79-F52E-480B-A2ED-99D49AD0C79D}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "RaumkernelTest", "RaumkernelTest.vcxproj", "{566C10A5-4DE9-46C2-BA62-03FDCFA05C3B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{9032EC79-F52E-480B-A2ED-99D49AD0C79D}.Debug|Win32.ActiveCfg = Debug|Win32
+		{9032EC79-F52E-480B-A2ED-99D49AD0C79D}.Debug|Win32.Build.0 = Debug|Win32
+		{9032EC79-F52E-480B-A2ED-99D49AD0C79D}.Release|Win32.ActiveCfg = Release|Win32
+		{9032EC79-F52E-480B-A2ED-99D49AD0C79D}.Release|Win32.Build.0 = Release|Win32
+		{566C10A5-4DE9-46C2-BA62-03FDCFA05C3B}.Debug|Win32.ActiveCfg = Debug|Win32
+		{566C10A5-4DE9-46C2-BA62-03FDCFA05C3B}.Debug|Win32.Build.0 = Debug|Win32
+		{566C10A5-4DE9-46C2-BA62-03FDCFA05C3B}.Release|Win32.ActiveCfg = Release|Win32
+		{566C10A5-4DE9-46C2-BA62-03FDCFA05C3B}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

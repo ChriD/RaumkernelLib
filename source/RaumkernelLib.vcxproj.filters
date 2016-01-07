@@ -1,0 +1,267 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="includes">
+      <UniqueIdentifier>{434e214f-7340-49f3-8bf4-9bf537146b2a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="includes\raumkernel">
+      <UniqueIdentifier>{0c66982c-cdfa-476d-8aed-dc6844347890}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="includes\raumkernel\logger">
+      <UniqueIdentifier>{9705deba-6b23-4c97-84b2-4ff9fd9aaf38}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="includes\raumkernel\os">
+      <UniqueIdentifier>{0992a14b-15bb-4a52-bfe6-d7088d92c6ce}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="includes\raumkernel\rlutil">
+      <UniqueIdentifier>{08bae692-a726-43ca-b310-72d0e8e4b68e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="logger">
+      <UniqueIdentifier>{1953bbba-1553-4bd9-9994-394d0062a4ae}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="includes\raumkernel\signals">
+      <UniqueIdentifier>{fe0e430e-e951-41ff-971b-0a3654533ace}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="includes\raumkernel\tools">
+      <UniqueIdentifier>{0d5694ed-941a-4b12-879d-8c859d61f90d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="includes\raumkernel\exception">
+      <UniqueIdentifier>{1f44167c-4ec5-4915-aae4-57a867ba0d36}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="includes\raumkernel\manager">
+      <UniqueIdentifier>{13fcb5d3-3dfe-453f-ab4e-bc32b4e50064}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="manager">
+      <UniqueIdentifier>{41720c54-9e6c-4404-827d-6d2c1df3fe4c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="includes\raumkernel\xml">
+      <UniqueIdentifier>{ad8b8fd6-f976-4c3c-b490-21e949517514}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="includes\raumkernel\device">
+      <UniqueIdentifier>{0095d10d-398c-4901-9ab9-9184cd7d177d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="device">
+      <UniqueIdentifier>{153cab5d-b085-47b7-8d9f-1a3b9e244600}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="includes\raumkernel\device\proxies">
+      <UniqueIdentifier>{a6c653fc-74dc-4c75-b260-fc008284ffd1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="device\proxies">
+      <UniqueIdentifier>{33df1c3f-7edc-4108-8d4b-3841cb08962a}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="includes\raumkernel\os\os.h">
+      <Filter>includes\raumkernel\os</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\raumkernel\rlutil\rlutil.h">
+      <Filter>includes\raumkernel\rlutil</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\raumkernel\logger\logger.h">
+      <Filter>includes\raumkernel\logger</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\raumkernel\signals\config.hpp">
+      <Filter>includes\raumkernel\signals</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\raumkernel\signals\connection.hpp">
+      <Filter>includes\raumkernel\signals</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\raumkernel\signals\connections.hpp">
+      <Filter>includes\raumkernel\signals</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\raumkernel\signals\signal.hpp">
+      <Filter>includes\raumkernel\signals</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\raumkernel\signals\signals.hpp">
+      <Filter>includes\raumkernel\signals</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\raumkernel\raumkernel.h">
+      <Filter>includes\raumkernel</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\raumkernel\raumkernelBase.h">
+      <Filter>includes\raumkernel</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\raumkernel\logger\loggerAdapter.h">
+      <Filter>includes\raumkernel\logger</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\raumkernel\logger\loggerBase.h">
+      <Filter>includes\raumkernel\logger</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\raumkernel\tools\dateUtil.h">
+      <Filter>includes\raumkernel\tools</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\raumkernel\tools\stringUtil.h">
+      <Filter>includes\raumkernel\tools</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\raumkernel\exception\exception.h">
+      <Filter>includes\raumkernel\exception</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\raumkernel\manager\managerEngineer.h">
+      <Filter>includes\raumkernel\manager</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\raumkernel\manager\settingsManager.h">
+      <Filter>includes\raumkernel\manager</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\raumkernel\manager\managerBase.h">
+      <Filter>includes\raumkernel\manager</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\raumkernel\raumkernelBaseMgr.h">
+      <Filter>includes\raumkernel</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\raumkernel\xml\rapidxml.hpp">
+      <Filter>includes\raumkernel\xml</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\raumkernel\xml\rapidxml_iterators.hpp">
+      <Filter>includes\raumkernel\xml</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\raumkernel\xml\rapidxml_print.hpp">
+      <Filter>includes\raumkernel\xml</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\raumkernel\xml\rapidxml_utils.hpp">
+      <Filter>includes\raumkernel\xml</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\raumkernel\manager\upnpManager.h">
+      <Filter>includes\raumkernel\manager</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\raumkernel\tools\uriUtil.h">
+      <Filter>includes\raumkernel\tools</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\raumkernel\tools\commonUtil.h">
+      <Filter>includes\raumkernel\tools</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\raumkernel\manager\deviceManager.h">
+      <Filter>includes\raumkernel\manager</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\raumkernel\device\device.h">
+      <Filter>includes\raumkernel\device</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\raumkernel\device\deviceMediaRenderer.h">
+      <Filter>includes\raumkernel\device</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\raumkernel\device\deviceCreator.h">
+      <Filter>includes\raumkernel\device</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\raumkernel\device\proxies\CpUpnpOrgAVTransport1.h">
+      <Filter>includes\raumkernel\device\proxies</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\raumkernel\device\proxies\CpUpnpOrgAVTransport2.h">
+      <Filter>includes\raumkernel\device\proxies</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\raumkernel\device\proxies\CpUpnpOrgConnectionManager1.h">
+      <Filter>includes\raumkernel\device\proxies</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\raumkernel\device\proxies\CpUpnpOrgConnectionManager2.h">
+      <Filter>includes\raumkernel\device\proxies</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\raumkernel\device\proxies\CpUpnpOrgContentDirectory1.h">
+      <Filter>includes\raumkernel\device\proxies</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\raumkernel\device\proxies\CpUpnpOrgContentDirectory2.h">
+      <Filter>includes\raumkernel\device\proxies</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\raumkernel\device\proxies\CpUpnpOrgContentDirectory3.h">
+      <Filter>includes\raumkernel\device\proxies</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\raumkernel\device\proxies\CpUpnpOrgRenderingControl1.h">
+      <Filter>includes\raumkernel\device\proxies</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\raumkernel\device\proxies\CpUpnpOrgRenderingControl2.h">
+      <Filter>includes\raumkernel\device\proxies</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\raumkernel\device\deviceMediaRenderer_RFVirtual.h">
+      <Filter>device</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\raumkernel\device\deviceMediaRenderer_RF.h">
+      <Filter>device</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\raumkernel\device\proxies\CpUpnpOrgConnectionManager_RaumfeldVirtual1.h">
+      <Filter>includes\raumkernel\device\proxies</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\raumkernel\device\proxies\CpUpnpOrgRenderingControl_RaumfeldVirtual1.h">
+      <Filter>includes\raumkernel\device\proxies</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\raumkernel\device\proxies\CpUpnpOrgAVTransport_RaumfeldVirtual1.h">
+      <Filter>device\proxies</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="logger\logger.cpp">
+      <Filter>logger</Filter>
+    </ClCompile>
+    <ClCompile Include="raumkernel.cpp" />
+    <ClCompile Include="raumkernelBase.cpp" />
+    <ClCompile Include="logger\loggerAdapter.cpp">
+      <Filter>logger</Filter>
+    </ClCompile>
+    <ClCompile Include="manager\managerEngineer.cpp">
+      <Filter>manager</Filter>
+    </ClCompile>
+    <ClCompile Include="manager\settingsManager.cpp">
+      <Filter>manager</Filter>
+    </ClCompile>
+    <ClCompile Include="manager\managerBase.cpp">
+      <Filter>manager</Filter>
+    </ClCompile>
+    <ClCompile Include="raumkernelBaseMgr.cpp" />
+    <ClCompile Include="manager\upnpManager.cpp">
+      <Filter>manager</Filter>
+    </ClCompile>
+    <ClCompile Include="manager\deviceManager.cpp">
+      <Filter>manager</Filter>
+    </ClCompile>
+    <ClCompile Include="device\device.cpp">
+      <Filter>device</Filter>
+    </ClCompile>
+    <ClCompile Include="device\deviceMediaRenderer.cpp">
+      <Filter>device</Filter>
+    </ClCompile>
+    <ClCompile Include="device\deviceCreator.cpp">
+      <Filter>device</Filter>
+    </ClCompile>
+    <ClCompile Include="device\proxies\CpUpnpOrgAVTransport1Std.cpp">
+      <Filter>device\proxies</Filter>
+    </ClCompile>
+    <ClCompile Include="device\proxies\CpUpnpOrgAVTransport2Std.cpp">
+      <Filter>device\proxies</Filter>
+    </ClCompile>
+    <ClCompile Include="device\proxies\CpUpnpOrgConnectionManager1Std.cpp">
+      <Filter>device\proxies</Filter>
+    </ClCompile>
+    <ClCompile Include="device\proxies\CpUpnpOrgConnectionManager2Std.cpp">
+      <Filter>device\proxies</Filter>
+    </ClCompile>
+    <ClCompile Include="device\proxies\CpUpnpOrgContentDirectory1Std.cpp">
+      <Filter>device\proxies</Filter>
+    </ClCompile>
+    <ClCompile Include="device\proxies\CpUpnpOrgContentDirectory2Std.cpp">
+      <Filter>device\proxies</Filter>
+    </ClCompile>
+    <ClCompile Include="device\proxies\CpUpnpOrgContentDirectory3Std.cpp">
+      <Filter>device\proxies</Filter>
+    </ClCompile>
+    <ClCompile Include="device\proxies\CpUpnpOrgRenderingControl1Std.cpp">
+      <Filter>device\proxies</Filter>
+    </ClCompile>
+    <ClCompile Include="device\proxies\CpUpnpOrgRenderingControl2Std.cpp">
+      <Filter>device\proxies</Filter>
+    </ClCompile>
+    <ClCompile Include="device\deviceMediaRenderer_RF.cpp">
+      <Filter>includes\raumkernel\device</Filter>
+    </ClCompile>
+    <ClCompile Include="device\deviceMediaRenderer_RFVirtual.cpp">
+      <Filter>includes\raumkernel\device</Filter>
+    </ClCompile>
+    <ClCompile Include="device\proxies\CpUpnpOrgConnectionManager_RaumfeldVirtual1Std.cpp">
+      <Filter>device\proxies</Filter>
+    </ClCompile>
+    <ClCompile Include="device\proxies\CpUpnpOrgRenderingControl_RaumfeldVirtual1Std.cpp">
+      <Filter>device\proxies</Filter>
+    </ClCompile>
+    <ClCompile Include="device\proxies\CpUpnpOrgAVTransport_RaumfeldVirtual1Std.cpp">
+      <Filter>includes\raumkernel\device\proxies</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Xml Include="raumkernel.xml" />
+  </ItemGroup>
+</Project>
