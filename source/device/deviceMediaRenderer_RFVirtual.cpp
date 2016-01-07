@@ -157,6 +157,53 @@ namespace Raumkernel
         }
 
 
+        void MediaRenderer_RaumfeldVirtual::seekProxy(std::string _unit, std::string _target, bool _sync)
+        {
+            auto proxy = std::dynamic_pointer_cast<OpenHome::Net::CpProxyUpnpOrgAVTransport_RaumfeldVirtual1Cpp>(getAvTransportProxy());
+
+            if (_sync)
+                proxy->SyncSeek(instance, _unit, _target);
+            else
+            {
+                OpenHome::Net::FunctorAsync functorAsync = OpenHome::Net::MakeFunctorAsync(*this, &MediaRenderer_RaumfeldVirtual::onSeekExecuted);
+                proxy->BeginSeek(instance, _unit, _target, functorAsync);
+            }
+        }
+
+
+        void MediaRenderer_RaumfeldVirtual::onSeekExecuted(OpenHome::Net::IAsync& _aAsync)
+        {
+            if (!isAvTransportProxyAvailable())
+                return;
+
+            auto proxy = std::dynamic_pointer_cast<OpenHome::Net::CpProxyUpnpOrgAVTransport_RaumfeldVirtual1Cpp>(getAvTransportProxy());
+            proxy->EndSeek(_aAsync);
+        }
+
+
+        void MediaRenderer_RaumfeldVirtual::setPlayModeProxy(std::string _playMode, bool _sync)
+        {
+            auto proxy = std::dynamic_pointer_cast<OpenHome::Net::CpProxyUpnpOrgAVTransport_RaumfeldVirtual1Cpp>(getAvTransportProxy());
+
+            if (_sync)
+                proxy->SyncSetPlayMode(instance, _playMode);
+            else
+            {
+                OpenHome::Net::FunctorAsync functorAsync = OpenHome::Net::MakeFunctorAsync(*this, &MediaRenderer_RaumfeldVirtual::onSetPlayModeExecuted);
+                proxy->BeginSetPlayMode(instance, _playMode, functorAsync);
+            }
+        }
+
+
+        void MediaRenderer_RaumfeldVirtual::onSetPlayModeExecuted(OpenHome::Net::IAsync& _aAsync)
+        {
+            if (!isAvTransportProxyAvailable())
+                return;
+
+            auto proxy = std::dynamic_pointer_cast<OpenHome::Net::CpProxyUpnpOrgAVTransport_RaumfeldVirtual1Cpp>(getAvTransportProxy());
+            proxy->EndSetPlayMode(_aAsync);
+        }
+
       
     }
 

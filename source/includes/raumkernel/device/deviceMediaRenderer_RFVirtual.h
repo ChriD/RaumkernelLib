@@ -43,6 +43,14 @@ namespace Raumkernel
             public:
                 MediaRenderer_RaumfeldVirtual();
                 virtual ~MediaRenderer_RaumfeldVirtual();
+
+                /*
+                EXPORT virtual void setRoomMute(std::string _roomUDN, bool _mute, bool _sync = true);
+                EXPORT virtual void setRoomVolume(std::string _roomUDN, boost::uint8_t _volume, bool _sync = true);
+                EXPORT virtual void changeVolume(boost::int8_t _amount, bool _sync = true);
+                EXPORT virtual bool getRoomMute(std::string _roomUDN);
+                EXPORT virtual boost::uint8_t  getRoomVolume(std::string _roomUDN);
+                */
                              
             protected:                
                 virtual void createProxyAvTransport() override;
@@ -54,12 +62,16 @@ namespace Raumkernel
                 virtual void pauseProxy(bool _sync = true) override;
                 virtual void nextProxy(bool _sync = true) override;
                 virtual void previousProxy(bool _sync = true) override;
+                virtual void seekProxy(std::string _unit, std::string _target, bool _sync = true) override;
+                virtual void setPlayModeProxy(std::string _playMode, bool _sync = true) override;
 
                 virtual void onPlayExecuted(OpenHome::Net::IAsync& _aAsync) override;
                 virtual void onStopExecuted(OpenHome::Net::IAsync& _aAsync) override;
                 virtual void onPauseExecuted(OpenHome::Net::IAsync& _aAsync) override;
                 virtual void onNextExecuted(OpenHome::Net::IAsync& _aAsync) override;
                 virtual void onPreviousExecuted(OpenHome::Net::IAsync& _aAsync) override;
+                virtual void onSeekExecuted(OpenHome::Net::IAsync& _aAsync) override;
+                virtual void onSetPlayModeExecuted(OpenHome::Net::IAsync& _aAsync) override;
 
         };
 

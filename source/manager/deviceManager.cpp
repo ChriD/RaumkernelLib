@@ -105,8 +105,7 @@ namespace Raumkernel
             unlockDeviceList(); 
 
             // list is unlocked. now fire signals
-            //sigMediaRendererAdded.fire(std::dynamic_pointer_cast<Devices::MediaRenderer>(device));
-            // TODO: signal device list changed
+            //sigMediaRendererAdded.fire(std::dynamic_pointer_cast<Devices::MediaRenderer>(device));    
             sigMediaRendererAdded.fire_if(std::dynamic_pointer_cast<Devices::MediaRenderer>(device) != nullptr, std::dynamic_pointer_cast<Devices::MediaRenderer>(device));
             sigDeviceListChanged.fire();
         }

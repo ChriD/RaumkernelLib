@@ -1,5 +1,8 @@
-# Raumkernel v2
-This library will replace the old "Raumkernel v1" library.
+# Raumkernel
+
+A C/C++ Library which can be used to control the Raumfeld Multiroom System
+
+This library replaces the old "Raumkernel v1" library.
 Be aware that it is not compatible with the version 1 library.
 
 It's a redesigned kernel without the use of boost libraries (instead using C++11)

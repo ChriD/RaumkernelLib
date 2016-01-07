@@ -37,9 +37,10 @@ namespace Raumkernel
 {
     namespace Devices
     {
-        enum class MediaRendererPlayMode { MRPLAYMODE_NORMAL = 0, MRPLAYMODE_SHUFFLE = 1, MRPLAYMODE_REPEAT_ONE = 2, MRPLAYMODE_REPEAT_ALL = 3, MRPLAYMODE_RANDOM = 4, MRPLAYMODE_DIRECT_1 = 5, MRPLAYMODE_INTRO = 6 };
-        enum class MediaRendererMuteState { MRPMUTE_NONE, MRPMUTE_ALL, MRPMUTE_PARTIAL };
-        enum class MediaRendererTransportState { MRTS_STOPPED, MRTS_PLAYING, MRTS_TRANSITIONING };
+        enum class MediaRenderer_PlayMode { MRPLAYMODE_NORMAL = 0, MRPLAYMODE_SHUFFLE = 1, MRPLAYMODE_REPEAT_ONE = 2, MRPLAYMODE_REPEAT_ALL = 3, MRPLAYMODE_RANDOM = 4, MRPLAYMODE_DIRECT_1 = 5, MRPLAYMODE_INTRO = 6 };
+        enum class MediaRenderer_MuteState { MRPMUTE_NONE, MRPMUTE_ALL, MRPMUTE_PARTIAL };
+        enum class MediaRenderer_TransportState { MRTS_STOPPED, MRTS_PLAYING, MRTS_TRANSITIONING };
+        enum class MediaRenderer_Seek { MRSEEK_ABS_TIME, MRSEEK_REL_TIME, MRSEEK_TRACK_NR };
 
 
         struct AvTransportMediaInfo
@@ -75,8 +76,8 @@ namespace Raumkernel
 
         struct MediaRendererState
         {
-            MediaRendererMuteState muteState;
-            MediaRendererTransportState transportState;
+            MediaRenderer_MuteState muteState;
+            MediaRenderer_TransportState transportState;
             std::uint8_t volume;
             std::uint32_t currentTrack;
             std::uint32_t numberOfTracks;
@@ -89,6 +90,87 @@ namespace Raumkernel
             std::uint32_t currentTrackDurationMS;
             std::string contentType;
             std::uint32_t bitrate;
+        };
+
+
+        class ConversionTool
+        {
+            public:
+                static std::string playModeToString(MediaRenderer_PlayMode _playMode)
+                {
+                    switch (_playMode)
+                    {
+                    case MediaRenderer_PlayMode::MRPLAYMODE_NORMAL:
+                        return "NORMAL";
+                    case MediaRenderer_PlayMode::MRPLAYMODE_SHUFFLE:
+                        return "SHUFFLE";
+                    case MediaRenderer_PlayMode::MRPLAYMODE_RANDOM:
+                        return "RANDOM";
+                    case MediaRenderer_PlayMode::MRPLAYMODE_REPEAT_ONE:
+                        return "REPEAT_ONE";
+                    case MediaRenderer_PlayMode::MRPLAYMODE_REPEAT_ALL:
+                        return "REPEAT_ALL";
+                    case MediaRenderer_PlayMode::MRPLAYMODE_DIRECT_1:
+                        return "DIRECT_1";
+                    case MediaRenderer_PlayMode::MRPLAYMODE_INTRO:
+                        return "INTRO";
+                    }
+                    return "NORMAL";
+                }
+
+                static MediaRenderer_PlayMode stringToPlayMode(std::string _playModeString)
+                {
+                    if (_playModeString == "NORMAL")
+                        return MediaRenderer_PlayMode::MRPLAYMODE_NORMAL;
+                    if (_playModeString == "SHUFFLE")
+                        return MediaRenderer_PlayMode::MRPLAYMODE_SHUFFLE;
+                    if (_playModeString == "RANDOM")
+                        return MediaRenderer_PlayMode::MRPLAYMODE_RANDOM;
+                    if (_playModeString == "REPEAT_ONE")
+                        return MediaRenderer_PlayMode::MRPLAYMODE_REPEAT_ONE;
+                    if (_playModeString == "REPEAT_ALL")
+                        return MediaRenderer_PlayMode::MRPLAYMODE_REPEAT_ALL;
+                    if (_playModeString == "DIRECT_1")
+                        return MediaRenderer_PlayMode::MRPLAYMODE_DIRECT_1;
+                    if (_playModeString == "INTRO")
+                        return MediaRenderer_PlayMode::MRPLAYMODE_INTRO;
+                    return MediaRenderer_PlayMode::MRPLAYMODE_NORMAL;
+                }
+
+                static MediaRenderer_TransportState stringToTransportState(std::string _transportState)
+                {
+                    if (_transportState == "PLAYING")
+                        return MediaRenderer_TransportState::MRTS_PLAYING;
+                    if (_transportState == "STOPPED")
+                        return MediaRenderer_TransportState::MRTS_STOPPED;
+                    if (_transportState == "TRANSITIONING")
+                        return MediaRenderer_TransportState::MRTS_TRANSITIONING;
+                    return MediaRenderer_TransportState::MRTS_STOPPED;
+                }
+
+
+                static std::string transportStateToString(MediaRenderer_TransportState _transportState)
+                {
+                    if (_transportState == MediaRenderer_TransportState::MRTS_PLAYING)
+                        return "PLAYING";
+                    if (_transportState == MediaRenderer_TransportState::MRTS_STOPPED)
+                        return "STOPPED";
+                    if (_transportState == MediaRenderer_TransportState::MRTS_TRANSITIONING)
+                        return "TRANSITIONING";
+                    return "STOPPED";
+                }
+
+
+                static std::string muteStateToString(MediaRenderer_MuteState _muteState)
+                {
+                    if (_muteState == MediaRenderer_MuteState::MRPMUTE_ALL)
+                        return "ALL";
+                    if (_muteState == MediaRenderer_MuteState::MRPMUTE_NONE)
+                        return "NONE";
+                    if (_muteState == MediaRenderer_MuteState::MRPMUTE_PARTIAL)
+                        return "PARTIAL";
+                    return "NONE";
+                }
         };
 
 
@@ -122,25 +204,34 @@ namespace Raumkernel
                 * Not intended for external use
                 * Please use the 'virtual' media renderer!
                 */
-                EXPORT virtual void previous(bool _sync = true);
-
+                EXPORT virtual void previous(bool _sync = true);           
+                /**
+                * Not intended for external use
+                * Please use the 'virtual' media renderer!
+                */
+                EXPORT virtual void seek(MediaRenderer_Seek _seekType, std::uint32_t _seekToMsOrTrack, bool _sync = true);
                 /*
-                EXPORT virtual void seek(boost::int32_t _seekToMs, bool _sync = true);
-                EXPORT virtual void setPlayMode(MediaRendererPlayMode _playMode, bool _sync = true);
+                /**
+                * Not intended for external use
+                * Please use the 'virtual' media renderer!
+                */
+                EXPORT virtual void setPlayMode(MediaRenderer_PlayMode _playMode, bool _sync = true);
+                
+                /*                
+                SetAvTransportUri
                 EXPORT virtual AvTransportMediaInfo getMediaInfo();
                 EXPORT virtual AvTransportPositionInfo getPositionInfo();
+                getTransportInfo()
+                getTransportSettings()
 
                 // basic media renderer functions
                 EXPORT virtual void setMute(bool _mute, bool _sync = true);
                 EXPORT virtual void setVolume(boost::uint8_t _volume, bool _sync = true);
-                EXPORT virtual void setRoomMute(std::string _roomUDN, bool _mute, bool _sync = true);
-                EXPORT virtual void setRoomVolume(std::string _roomUDN, boost::uint8_t _volume, bool _sync = true);
-                EXPORT virtual void changeVolume(boost::int8_t _amount, bool _sync = true);
+                
 
                 EXPORT virtual bool getMute();
                 EXPORT virtual boost::uint8_t getVolume();
-                EXPORT virtual bool getRoomMute(std::string _roomUDN);
-                EXPORT virtual boost::uint8_t  getRoomVolume(std::string _roomUDN);
+              
                 */
 
                 EXPORT bool isRenderingProxyAvailable();
@@ -173,12 +264,19 @@ namespace Raumkernel
                 virtual void pauseProxy(bool _sync = true);
                 virtual void nextProxy(bool _sync = true);
                 virtual void previousProxy(bool _sync = true);
+                virtual void seekProxy(std::string _unit, std::string _target, bool _sync = true);
+                virtual void setPlayModeProxy(std::string _playMode, bool _sync = true);
+
+                //virtual void setMuteProxy(bool _sync = true);
+                //virtual void setVolumeProxy(bool _sync = true);
 
                 virtual void onPlayExecuted(OpenHome::Net::IAsync& _aAsync);
                 virtual void onStopExecuted(OpenHome::Net::IAsync& _aAsync);
                 virtual void onPauseExecuted(OpenHome::Net::IAsync& _aAsync);
                 virtual void onNextExecuted(OpenHome::Net::IAsync& _aAsync);
                 virtual void onPreviousExecuted(OpenHome::Net::IAsync& _aAsync);
+                virtual void onSeekExecuted(OpenHome::Net::IAsync& _aAsync);
+                virtual void onSetPlayModeExecuted(OpenHome::Net::IAsync& _aAsync);
            
 
                 void logRendererError(std::string _error, std::string _location);

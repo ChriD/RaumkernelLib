@@ -15,7 +15,7 @@ namespace Raumkernel
     }
 
 
-    void Raumkernel::init(Log::LogType _defaultLogLevel)
+    void Raumkernel::init(Log::LogType _defaultLogLevel, std::string _settingsFileName)
     {
         // create the log object (if not already provided) which will be used throughout the whole kernel and his modules 
         if (logObject == nullptr)
@@ -47,6 +47,8 @@ namespace Raumkernel
 
         // all managers are now created and we can work with them. so first lets get the settings manager in action and let it read our kernel 
         // and application settings.      
+        if (!_settingsFileName.empty())
+            managerEngineer->getSettingsManager()->setFileName(_settingsFileName);
         managerEngineer->getSettingsManager()->loadSettings();
 
         // okay now, when the settingsManager is ready and we have loaded the settings we may get the log settings (log level)   

@@ -39,8 +39,8 @@ namespace Raumkernel
     class RaumkernelBase
     {
     public:
-        RaumkernelBase();
-        virtual ~RaumkernelBase();
+        EXPORT RaumkernelBase();
+        EXPORT virtual ~RaumkernelBase();
         EXPORT void setLogObject(std::shared_ptr<Log::Log> _log);
         EXPORT std::shared_ptr<Log::Log> getLogObject();
 
@@ -50,11 +50,11 @@ namespace Raumkernel
         std::shared_ptr<Log::Log> logObject;
 
         // 
-        void logDebug(std::string _log, std::string _location);
-        void logWarning(std::string _log, std::string _location);
-        void logInfo(std::string _log, std::string _location);
-        void logError(std::string _log, std::string _location);
-        void logCritical(std::string _log, std::string _location);
+        EXPORT void logDebug(std::string _log, std::string _location);
+        EXPORT void logWarning(std::string _log, std::string _location);
+        EXPORT void logInfo(std::string _log, std::string _location);
+        EXPORT void logError(std::string _log, std::string _location);
+        EXPORT void logCritical(std::string _log, std::string _location);
 
     };
 

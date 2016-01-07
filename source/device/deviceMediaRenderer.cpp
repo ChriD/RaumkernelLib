@@ -247,6 +247,7 @@ namespace Raumkernel
             callAvTransportProxyAction("pause", _sync);
         }
 
+
         void MediaRenderer::pauseProxy(bool _sync)
         {
             auto proxy = std::dynamic_pointer_cast<OpenHome::Net::CpProxyUpnpOrgAVTransport1Cpp>(getAvTransportProxy());
@@ -328,6 +329,166 @@ namespace Raumkernel
 
             auto proxy = std::dynamic_pointer_cast<OpenHome::Net::CpProxyUpnpOrgAVTransport1Cpp>(getAvTransportProxy());
             proxy->EndPrevious(_aAsync);
+        }
+
+
+        void MediaRenderer::seek(MediaRenderer_Seek _seekType, std::uint32_t _seekToMsOrTrack, bool _sync)
+        {
+            std::string seekUnit, seekTarget;
+         
+            if (!isAvTransportProxyAvailable())
+            {
+                logWarning("Calling 'seek' on renderer '" + getDeviceDescription() + "' without AvTransportProxy!", CURRENT_FUNCTION);
+                return;
+            }
+
+            logDebug("Calling 'seek' on renderer '" + getDeviceDescription() + "'", CURRENT_FUNCTION);
+
+            switch (_seekType)
+            {
+                case MediaRenderer_Seek::MRSEEK_ABS_TIME: seekUnit = "ABS_TIME"; break;
+                case MediaRenderer_Seek::MRSEEK_REL_TIME: seekUnit = "REL_TIME"; break;
+                case MediaRenderer_Seek::MRSEEK_TRACK_NR: seekUnit = "TRACK_NR"; break;
+                default: logError("Wrong seek type!", CURRENT_POSITION); return;
+            }
+
+
+            if (_seekType == MediaRenderer_Seek::MRSEEK_TRACK_NR)
+            {
+                seekTarget = std::to_string(_seekToMsOrTrack);
+            }
+            else
+            {
+                char buffer[30];
+                time_t timeToSeek(_seekToMsOrTrack / 1000);
+                tm *timeStruct = gmtime(&timeToSeek);
+                if (strftime(buffer, sizeof(buffer), "%H:%M:%S", timeStruct) == 0)
+                {
+                    logError("'seek' for renderer '" + getDeviceDescription() + "' Time: '" + std::to_string(_seekToMsOrTrack) + "' failed!", CURRENT_POSITION);
+                    return;
+                }
+                seekTarget = buffer;
+            }
+
+            try
+            {
+                seekProxy(seekUnit, seekTarget, _sync);
+            }
+            catch (Raumkernel::Exception::RaumkernelException &e)
+            {
+                if (e.type() == Raumkernel::Exception::ExceptionType::EXCEPTIONTYPE_APPCRASH)
+                    throw e;
+                logRendererError(e.what(), CURRENT_FUNCTION);
+            }
+            catch (std::exception &e)
+            {
+                logRendererError(e.what(), CURRENT_FUNCTION);
+            }
+            catch (std::string &e)
+            {
+                logRendererError(e, CURRENT_FUNCTION);
+            }
+            catch (OpenHome::Exception &e)
+            {
+                logRendererError(e.Message(), CURRENT_FUNCTION);
+            }
+            catch (...)
+            {
+                logRendererError("Unknown Exception", CURRENT_FUNCTION);
+            }
+ 
+        }
+
+
+        void MediaRenderer::seekProxy(std::string _unit, std::string _target, bool _sync)
+        {
+            auto proxy = std::dynamic_pointer_cast<OpenHome::Net::CpProxyUpnpOrgAVTransport1Cpp>(getAvTransportProxy());
+           
+            if (_sync)
+                proxy->SyncSeek(instance, _unit, _target);
+            else
+            {
+                OpenHome::Net::FunctorAsync functorAsync = OpenHome::Net::MakeFunctorAsync(*this, &MediaRenderer::onSeekExecuted);
+                proxy->BeginSeek(instance, _unit, _target, functorAsync);
+            }
+        }
+
+
+        void MediaRenderer::onSeekExecuted(OpenHome::Net::IAsync& _aAsync)
+        {
+            if (!isAvTransportProxyAvailable())
+                return;
+
+            auto proxy = std::dynamic_pointer_cast<OpenHome::Net::CpProxyUpnpOrgAVTransport1Cpp>(getAvTransportProxy());
+            proxy->EndSeek(_aAsync);
+        }
+
+
+        void MediaRenderer::setPlayMode(MediaRenderer_PlayMode _playMode, bool _sync)
+        {
+            std::string playMode;
+
+            if (!isAvTransportProxyAvailable())
+            {
+                logWarning("Calling 'setPlayMode' on renderer '" + getDeviceDescription() + "' without AvTransportProxy!", CURRENT_FUNCTION);
+                return;
+            }
+
+            logDebug("Calling 'setPlayMode' on renderer '" + getDeviceDescription() + "'", CURRENT_FUNCTION);
+
+            playMode = ConversionTool::playModeToString(_playMode);
+          
+            try
+            {
+                setPlayModeProxy(playMode, _sync);
+            }
+            catch (Raumkernel::Exception::RaumkernelException &e)
+            {
+                if (e.type() == Raumkernel::Exception::ExceptionType::EXCEPTIONTYPE_APPCRASH)
+                    throw e;
+                logRendererError(e.what(), CURRENT_FUNCTION);
+            }
+            catch (std::exception &e)
+            {
+                logRendererError(e.what(), CURRENT_FUNCTION);
+            }
+            catch (std::string &e)
+            {
+                logRendererError(e, CURRENT_FUNCTION);
+            }
+            catch (OpenHome::Exception &e)
+            {
+                logRendererError(e.Message(), CURRENT_FUNCTION);
+            }
+            catch (...)
+            {
+                logRendererError("Unknown Exception", CURRENT_FUNCTION);
+            }
+
+        }
+
+
+        void MediaRenderer::setPlayModeProxy(std::string _playMode, bool _sync)
+        {
+            auto proxy = std::dynamic_pointer_cast<OpenHome::Net::CpProxyUpnpOrgAVTransport1Cpp>(getAvTransportProxy());
+
+            if (_sync)
+                proxy->SyncSetPlayMode(instance, _playMode);
+            else
+            {
+                OpenHome::Net::FunctorAsync functorAsync = OpenHome::Net::MakeFunctorAsync(*this, &MediaRenderer::onSetPlayModeExecuted);
+                proxy->BeginSetPlayMode(instance, _playMode, functorAsync);
+            }
+        }
+
+
+        void MediaRenderer::onSetPlayModeExecuted(OpenHome::Net::IAsync& _aAsync)
+        {
+            if (!isAvTransportProxyAvailable())
+                return;
+
+            auto proxy = std::dynamic_pointer_cast<OpenHome::Net::CpProxyUpnpOrgAVTransport1Cpp>(getAvTransportProxy());
+            proxy->EndSetPlayMode(_aAsync);
         }
        
     }
