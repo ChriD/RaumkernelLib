@@ -204,6 +204,98 @@ namespace Raumkernel
             proxy->EndSetPlayMode(_aAsync);
         }
 
+
+        AvTransportMediaInfo MediaRenderer_RaumfeldVirtual::getMediaInfoProxy(bool _sync)
+        {
+            AvTransportMediaInfo mediaInfo;
+            auto proxy = std::dynamic_pointer_cast<OpenHome::Net::CpProxyUpnpOrgAVTransport_RaumfeldVirtual1Cpp>(getAvTransportProxy());
+
+            if (_sync)
+            {
+                proxy->SyncGetMediaInfo(instance, mediaInfo.nrTracks, mediaInfo.mediaDuration, mediaInfo.currentUri, mediaInfo.currentUriMetaData, mediaInfo.nextUri, mediaInfo.nextUriMetaData, mediaInfo.playMedium, mediaInfo.recordMedium, mediaInfo.writeStatus);
+                if (mediaInfo.mediaDuration == MEDIARENDERER_NOT_IMPLEMENTED)
+                    mediaInfo.mediaDurationMS = 0;
+                else
+                    mediaInfo.mediaDurationMS = Tools::StringUtil::toTimeMs(mediaInfo.mediaDuration);
+            }
+            else
+            {
+                OpenHome::Net::FunctorAsync functorAsync = OpenHome::Net::MakeFunctorAsync(*this, &MediaRenderer_RaumfeldVirtual::onGetMediaInfoExecuted);
+                proxy->BeginGetMediaInfo(instance, functorAsync);
+            }
+            return mediaInfo;
+        }
+
+
+        void MediaRenderer_RaumfeldVirtual::onGetMediaInfoExecuted(OpenHome::Net::IAsync& _aAsync)
+        {
+            AvTransportMediaInfo mediaInfo;
+
+            if (!isAvTransportProxyAvailable())
+                return;
+
+            auto proxy = std::dynamic_pointer_cast<OpenHome::Net::CpProxyUpnpOrgAVTransport_RaumfeldVirtual1Cpp>(getAvTransportProxy());
+            proxy->EndGetMediaInfo(_aAsync, mediaInfo.nrTracks, mediaInfo.mediaDuration, mediaInfo.currentUri, mediaInfo.currentUriMetaData, mediaInfo.nextUri, mediaInfo.nextUriMetaData, mediaInfo.playMedium, mediaInfo.recordMedium, mediaInfo.writeStatus);
+            if (mediaInfo.mediaDuration == MEDIARENDERER_NOT_IMPLEMENTED)
+                mediaInfo.mediaDurationMS = 0;
+            else
+                mediaInfo.mediaDurationMS = Tools::StringUtil::toTimeMs(mediaInfo.mediaDuration);
+            sigGetMediaInfoExecuted.fire(mediaInfo);
+        }
+
+
+        AvTransportPositionInfo MediaRenderer_RaumfeldVirtual::getPositionInfoProxy(bool _sync)
+        {
+            AvTransportPositionInfo positionInfo;
+            auto proxy = std::dynamic_pointer_cast<OpenHome::Net::CpProxyUpnpOrgAVTransport_RaumfeldVirtual1Cpp>(getAvTransportProxy());
+
+            if (_sync)
+            {
+                proxy->SyncGetPositionInfo(instance, positionInfo.track, positionInfo.trackDuration, positionInfo.trackMetaData, positionInfo.trackUri, positionInfo.relTime, positionInfo.absTime, positionInfo.relCount, positionInfo.absCount);
+                positionInfo.absTimeMS = Tools::StringUtil::toTimeMs(positionInfo.absTime);
+                positionInfo.relTimeMS = Tools::StringUtil::toTimeMs(positionInfo.relTime);
+                positionInfo.trackDurationMS = Tools::StringUtil::toTimeMs(positionInfo.trackDuration);
+
+                if (positionInfo.absTime == MEDIARENDERER_NOT_IMPLEMENTED)
+                    positionInfo.absTimeMS = 0;
+                if (positionInfo.relTime == MEDIARENDERER_NOT_IMPLEMENTED)
+                    positionInfo.relTimeMS = 0;
+                if (positionInfo.trackDuration == MEDIARENDERER_NOT_IMPLEMENTED)
+                    positionInfo.trackDurationMS = 0;
+
+            }
+            else
+            {
+                OpenHome::Net::FunctorAsync functorAsync = OpenHome::Net::MakeFunctorAsync(*this, &MediaRenderer_RaumfeldVirtual::onGetPositionInfoExecuted);
+                proxy->BeginGetMediaInfo(instance, functorAsync);
+            }
+            return positionInfo;
+        }
+
+
+        void MediaRenderer_RaumfeldVirtual::onGetPositionInfoExecuted(OpenHome::Net::IAsync& _aAsync)
+        {
+            AvTransportPositionInfo positionInfo;
+
+            if (!isAvTransportProxyAvailable())
+                return;
+
+            auto proxy = std::dynamic_pointer_cast<OpenHome::Net::CpProxyUpnpOrgAVTransport_RaumfeldVirtual1Cpp>(getAvTransportProxy());
+            proxy->EndGetPositionInfo(_aAsync, positionInfo.track, positionInfo.trackDuration, positionInfo.trackMetaData, positionInfo.trackUri, positionInfo.relTime, positionInfo.absTime, positionInfo.relCount, positionInfo.absCount);
+            positionInfo.absTimeMS = Tools::StringUtil::toTimeMs(positionInfo.absTime);
+            positionInfo.relTimeMS = Tools::StringUtil::toTimeMs(positionInfo.relTime);
+            positionInfo.trackDurationMS = Tools::StringUtil::toTimeMs(positionInfo.trackDuration);
+
+            if (positionInfo.absTime == MEDIARENDERER_NOT_IMPLEMENTED)
+                positionInfo.absTimeMS = 0;
+            if (positionInfo.relTime == MEDIARENDERER_NOT_IMPLEMENTED)
+                positionInfo.relTimeMS = 0;
+            if (positionInfo.trackDuration == MEDIARENDERER_NOT_IMPLEMENTED)
+                positionInfo.trackDurationMS = 0;
+
+            sigGetPositionInfoExecuted.fire(positionInfo);
+        }
+
       
     }
 

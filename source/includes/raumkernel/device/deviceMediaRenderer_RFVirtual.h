@@ -64,6 +64,8 @@ namespace Raumkernel
                 virtual void previousProxy(bool _sync = true) override;
                 virtual void seekProxy(std::string _unit, std::string _target, bool _sync = true) override;
                 virtual void setPlayModeProxy(std::string _playMode, bool _sync = true) override;
+                virtual AvTransportMediaInfo getMediaInfoProxy(bool _sync = true) override;
+                virtual AvTransportPositionInfo getPositionInfoProxy(bool _sync = true) override;
 
                 virtual void onPlayExecuted(OpenHome::Net::IAsync& _aAsync) override;
                 virtual void onStopExecuted(OpenHome::Net::IAsync& _aAsync) override;
@@ -72,6 +74,8 @@ namespace Raumkernel
                 virtual void onPreviousExecuted(OpenHome::Net::IAsync& _aAsync) override;
                 virtual void onSeekExecuted(OpenHome::Net::IAsync& _aAsync) override;
                 virtual void onSetPlayModeExecuted(OpenHome::Net::IAsync& _aAsync) override;
+                virtual void onGetMediaInfoExecuted(OpenHome::Net::IAsync& _aAsync) override;
+                virtual void onGetPositionInfoExecuted(OpenHome::Net::IAsync& _aAsync) override;
 
         };
 

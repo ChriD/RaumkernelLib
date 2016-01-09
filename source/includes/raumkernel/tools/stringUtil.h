@@ -31,6 +31,9 @@
 #include <string>
 #include <algorithm>
 #include <ctype.h>
+#include <cstdint>
+#include <iostream>
+#include <sstream>
 
 namespace Raumkernel
 {
@@ -80,6 +83,30 @@ namespace Raumkernel
                     _s = StringUtil::ltrim(StringUtil::rtrim(_s));
                     return std::string((_width - _s.length()) / 2, ' ') + _s;
                 }
+
+
+                static std::uint32_t toTimeMs(std::string _timeString)
+                {
+                    // eg.: 00:04:02
+                    if (_timeString.empty())
+                        return 0;
+                    
+                    std::uint32_t timeInSeconds = 0;
+                    struct std::tm tm;
+
+                    try
+                    {                       
+                        std::istringstream ss(_timeString);
+                        ss >> std::get_time(&tm, "%H:%M:%S");                                             
+                        timeInSeconds = (tm.tm_hour * 60 * 60) + (tm.tm_min * 60) + tm.tm_sec;
+                    }
+                    catch (...)
+                    {
+                        // TODO: what to do?
+                    }
+            
+                    return timeInSeconds * 1000;
+                 }
         };
             
     }

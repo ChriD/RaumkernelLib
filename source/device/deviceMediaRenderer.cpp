@@ -207,7 +207,7 @@ namespace Raumkernel
                 return;
 
             auto proxy = std::dynamic_pointer_cast<OpenHome::Net::CpProxyUpnpOrgAVTransport1Cpp>(getAvTransportProxy());
-            proxy->EndPlay(_aAsync);
+            proxy->EndPlay(_aAsync);          
         }
 
 
@@ -489,6 +489,189 @@ namespace Raumkernel
 
             auto proxy = std::dynamic_pointer_cast<OpenHome::Net::CpProxyUpnpOrgAVTransport1Cpp>(getAvTransportProxy());
             proxy->EndSetPlayMode(_aAsync);
+        }
+
+
+        AvTransportMediaInfo MediaRenderer::getMediaInfo(bool _sync)
+        {         
+            AvTransportMediaInfo        mediaInfo;
+
+            if (!isAvTransportProxyAvailable())
+            {
+                logWarning("Calling 'getMediaInfo' on renderer '" + getDeviceDescription() + "' without AvTransportProxy!", CURRENT_FUNCTION);
+                return mediaInfo;
+            }
+
+            logDebug("Calling 'getMediaInfo' on renderer '" + getDeviceDescription() + "'", CURRENT_FUNCTION);
+           
+
+            try
+            {
+                mediaInfo = getMediaInfoProxy(_sync);
+            }
+            catch (Raumkernel::Exception::RaumkernelException &e)
+            {
+                if (e.type() == Raumkernel::Exception::ExceptionType::EXCEPTIONTYPE_APPCRASH)
+                    throw e;
+                logRendererError(e.what(), CURRENT_FUNCTION);
+            }
+            catch (std::exception &e)
+            {
+                logRendererError(e.what(), CURRENT_FUNCTION);
+            }
+            catch (std::string &e)
+            {
+                logRendererError(e, CURRENT_FUNCTION);
+            }
+            catch (OpenHome::Exception &e)
+            {
+                logRendererError(e.Message(), CURRENT_FUNCTION);
+            }
+            catch (...)
+            {
+                logRendererError("Unknown Exception", CURRENT_FUNCTION);
+            }
+
+            return mediaInfo;
+
+        }
+
+
+        AvTransportMediaInfo MediaRenderer::getMediaInfoProxy(bool _sync)
+        {
+            AvTransportMediaInfo mediaInfo;
+            auto proxy = std::dynamic_pointer_cast<OpenHome::Net::CpProxyUpnpOrgAVTransport1Cpp>(getAvTransportProxy());
+
+            if (_sync)
+            {
+                proxy->SyncGetMediaInfo(instance, mediaInfo.nrTracks, mediaInfo.mediaDuration, mediaInfo.currentUri, mediaInfo.currentUriMetaData, mediaInfo.nextUri, mediaInfo.nextUriMetaData, mediaInfo.playMedium, mediaInfo.recordMedium, mediaInfo.writeStatus);
+                if (mediaInfo.mediaDuration == MEDIARENDERER_NOT_IMPLEMENTED)
+                    mediaInfo.mediaDurationMS = 0;
+                else
+                    mediaInfo.mediaDurationMS = Tools::StringUtil::toTimeMs(mediaInfo.mediaDuration);
+            }
+            else
+            {
+                OpenHome::Net::FunctorAsync functorAsync = OpenHome::Net::MakeFunctorAsync(*this, &MediaRenderer::onGetMediaInfoExecuted);
+                proxy->BeginGetMediaInfo(instance, functorAsync);
+            }
+            return mediaInfo;
+        }
+
+
+        void MediaRenderer::onGetMediaInfoExecuted(OpenHome::Net::IAsync& _aAsync)
+        {
+            AvTransportMediaInfo mediaInfo;
+
+            if (!isAvTransportProxyAvailable())
+                return;
+
+            auto proxy = std::dynamic_pointer_cast<OpenHome::Net::CpProxyUpnpOrgAVTransport1Cpp>(getAvTransportProxy());            
+            proxy->EndGetMediaInfo(_aAsync, mediaInfo.nrTracks, mediaInfo.mediaDuration, mediaInfo.currentUri, mediaInfo.currentUriMetaData, mediaInfo.nextUri, mediaInfo.nextUriMetaData, mediaInfo.playMedium, mediaInfo.recordMedium, mediaInfo.writeStatus);
+            if (mediaInfo.mediaDuration == MEDIARENDERER_NOT_IMPLEMENTED)
+                mediaInfo.mediaDurationMS = 0;
+            else
+                mediaInfo.mediaDurationMS = Tools::StringUtil::toTimeMs(mediaInfo.mediaDuration);
+            sigGetMediaInfoExecuted.fire(mediaInfo);
+        }
+
+
+
+        AvTransportPositionInfo MediaRenderer::getPositionInfo(bool _sync)
+        {
+            AvTransportPositionInfo        positionInfo;
+
+            if (!isAvTransportProxyAvailable())
+            {
+                logWarning("Calling 'getPositionInfo' on renderer '" + getDeviceDescription() + "' without AvTransportProxy!", CURRENT_FUNCTION);
+                return positionInfo;
+            }
+
+            logDebug("Calling 'getPositionInfo' on renderer '" + getDeviceDescription() + "'", CURRENT_FUNCTION);
+
+
+            try
+            {
+                positionInfo = getPositionInfoProxy(_sync);
+            }
+            catch (Raumkernel::Exception::RaumkernelException &e)
+            {
+                if (e.type() == Raumkernel::Exception::ExceptionType::EXCEPTIONTYPE_APPCRASH)
+                    throw e;
+                logRendererError(e.what(), CURRENT_FUNCTION);
+            }
+            catch (std::exception &e)
+            {
+                logRendererError(e.what(), CURRENT_FUNCTION);
+            }
+            catch (std::string &e)
+            {
+                logRendererError(e, CURRENT_FUNCTION);
+            }
+            catch (OpenHome::Exception &e)
+            {
+                logRendererError(e.Message(), CURRENT_FUNCTION);
+            }
+            catch (...)
+            {
+                logRendererError("Unknown Exception", CURRENT_FUNCTION);
+            }
+
+            return positionInfo;
+
+        }
+
+
+        AvTransportPositionInfo MediaRenderer::getPositionInfoProxy(bool _sync)
+        {
+            AvTransportPositionInfo positionInfo;
+            auto proxy = std::dynamic_pointer_cast<OpenHome::Net::CpProxyUpnpOrgAVTransport1Cpp>(getAvTransportProxy());
+
+            if (_sync)
+            {
+                proxy->SyncGetPositionInfo(instance, positionInfo.track, positionInfo.trackDuration, positionInfo.trackMetaData, positionInfo.trackUri, positionInfo.relTime, positionInfo.absTime, positionInfo.relCount, positionInfo.absCount);                
+                positionInfo.absTimeMS = Tools::StringUtil::toTimeMs(positionInfo.absTime);
+                positionInfo.relTimeMS = Tools::StringUtil::toTimeMs(positionInfo.relTime);
+                positionInfo.trackDurationMS = Tools::StringUtil::toTimeMs(positionInfo.trackDuration);
+
+                if (positionInfo.absTime == MEDIARENDERER_NOT_IMPLEMENTED)
+                    positionInfo.absTimeMS = 0;
+                if (positionInfo.relTime == MEDIARENDERER_NOT_IMPLEMENTED)
+                    positionInfo.relTimeMS = 0;
+                if (positionInfo.trackDuration == MEDIARENDERER_NOT_IMPLEMENTED)
+                    positionInfo.trackDurationMS = 0;
+               
+            }
+            else
+            {
+                OpenHome::Net::FunctorAsync functorAsync = OpenHome::Net::MakeFunctorAsync(*this, &MediaRenderer::onGetPositionInfoExecuted);
+                proxy->BeginGetMediaInfo(instance, functorAsync);
+            }
+            return positionInfo;
+        }
+
+
+        void MediaRenderer::onGetPositionInfoExecuted(OpenHome::Net::IAsync& _aAsync)
+        {
+            AvTransportPositionInfo positionInfo;
+
+            if (!isAvTransportProxyAvailable())
+                return;
+
+            auto proxy = std::dynamic_pointer_cast<OpenHome::Net::CpProxyUpnpOrgAVTransport1Cpp>(getAvTransportProxy());
+            proxy->EndGetPositionInfo(_aAsync, positionInfo.track, positionInfo.trackDuration, positionInfo.trackMetaData, positionInfo.trackUri, positionInfo.relTime, positionInfo.absTime, positionInfo.relCount, positionInfo.absCount);
+            positionInfo.absTimeMS = Tools::StringUtil::toTimeMs(positionInfo.absTime);
+            positionInfo.relTimeMS = Tools::StringUtil::toTimeMs(positionInfo.relTime);
+            positionInfo.trackDurationMS = Tools::StringUtil::toTimeMs(positionInfo.trackDuration);
+
+            if (positionInfo.absTime == MEDIARENDERER_NOT_IMPLEMENTED)
+                positionInfo.absTimeMS = 0;
+            if (positionInfo.relTime == MEDIARENDERER_NOT_IMPLEMENTED)
+                positionInfo.relTimeMS = 0;
+            if (positionInfo.trackDuration == MEDIARENDERER_NOT_IMPLEMENTED)
+                positionInfo.trackDurationMS = 0;
+
+            sigGetPositionInfoExecuted.fire(positionInfo);
         }
        
     }

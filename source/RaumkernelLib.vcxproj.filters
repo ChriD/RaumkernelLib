@@ -168,12 +168,6 @@
     <ClInclude Include="includes\raumkernel\device\proxies\CpUpnpOrgRenderingControl2.h">
       <Filter>includes\raumkernel\device\proxies</Filter>
     </ClInclude>
-    <ClInclude Include="includes\raumkernel\device\deviceMediaRenderer_RFVirtual.h">
-      <Filter>device</Filter>
-    </ClInclude>
-    <ClInclude Include="includes\raumkernel\device\deviceMediaRenderer_RF.h">
-      <Filter>device</Filter>
-    </ClInclude>
     <ClInclude Include="includes\raumkernel\device\proxies\CpUpnpOrgConnectionManager_RaumfeldVirtual1.h">
       <Filter>includes\raumkernel\device\proxies</Filter>
     </ClInclude>
@@ -182,6 +176,12 @@
     </ClInclude>
     <ClInclude Include="includes\raumkernel\device\proxies\CpUpnpOrgAVTransport_RaumfeldVirtual1.h">
       <Filter>device\proxies</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\raumkernel\device\deviceMediaRenderer_RF.h">
+      <Filter>includes\raumkernel\device</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\raumkernel\device\deviceMediaRenderer_RFVirtual.h">
+      <Filter>includes\raumkernel\device</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -245,12 +245,6 @@
     <ClCompile Include="device\proxies\CpUpnpOrgRenderingControl2Std.cpp">
       <Filter>device\proxies</Filter>
     </ClCompile>
-    <ClCompile Include="device\deviceMediaRenderer_RF.cpp">
-      <Filter>includes\raumkernel\device</Filter>
-    </ClCompile>
-    <ClCompile Include="device\deviceMediaRenderer_RFVirtual.cpp">
-      <Filter>includes\raumkernel\device</Filter>
-    </ClCompile>
     <ClCompile Include="device\proxies\CpUpnpOrgConnectionManager_RaumfeldVirtual1Std.cpp">
       <Filter>device\proxies</Filter>
     </ClCompile>
@@ -259,6 +253,12 @@
     </ClCompile>
     <ClCompile Include="device\proxies\CpUpnpOrgAVTransport_RaumfeldVirtual1Std.cpp">
       <Filter>includes\raumkernel\device\proxies</Filter>
+    </ClCompile>
+    <ClCompile Include="device\deviceMediaRenderer_RF.cpp">
+      <Filter>device</Filter>
+    </ClCompile>
+    <ClCompile Include="device\deviceMediaRenderer_RFVirtual.cpp">
+      <Filter>device</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
