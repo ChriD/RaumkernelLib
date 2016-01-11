@@ -77,6 +77,21 @@ namespace Raumkernel
         };
 
 
+        struct AvTransportInfo
+        {        
+            std::string currentTransportState;            
+            std::string currentTransportStatus;
+            std::string currentSpeed;
+        };
+
+
+        struct AvTransportSettings
+        {
+            std::string playMode;
+            std::string recQualityMode; 
+        };
+
+
         struct MediaRendererState
         {
             MediaRenderer_MuteState muteState;
@@ -231,13 +246,24 @@ namespace Raumkernel
                 * Please use the 'virtual' media renderer!
                 */
                 EXPORT virtual AvTransportPositionInfo getPositionInfo(bool _sync = true);
+                /**
+                * Not intended for external use
+                * Please use the 'virtual' media renderer!
+                */
+                EXPORT virtual void setAvTransportUri(std::string _avTransportUri, std::string _avTransportUriMetaData, bool _sync = true);
+                /**
+                * Not intended for external use
+                * Please use the 'virtual' media renderer!
+                */
+                EXPORT virtual AvTransportInfo getTransportInfo(bool _sync = true);
+                /**
+                * Not intended for external use
+                * Please use the 'virtual' media renderer!
+                */
+                EXPORT virtual AvTransportSettings getTransportSettings(bool _sync = true);
 
 
-                /*                
-                SetAvTransportUri               
-                EXPORT virtual AvTransportPositionInfo getPositionInfo();
-                getTransportInfo()
-                getTransportSettings()
+                /*                                                
 
                 // basic media renderer functions
                 EXPORT virtual void setMute(bool _mute, bool _sync = true);
@@ -283,6 +309,10 @@ namespace Raumkernel
                 virtual void setPlayModeProxy(std::string _playMode, bool _sync = true);
                 virtual AvTransportMediaInfo getMediaInfoProxy(bool _sync = true);
                 virtual AvTransportPositionInfo getPositionInfoProxy(bool _sync = true);
+                virtual AvTransportInfo getTransportInfoProxy(bool _sync = true);
+                virtual AvTransportSettings getTransportSettingsProxy(bool _sync = true);
+                virtual void setAvTransportUriProxy(std::string _avTransportUri, std::string _avTransportUriMetaData, bool _sync = true);
+  
 
                 //virtual void setMuteProxy(bool _sync = true);
                 //virtual void setVolumeProxy(bool _sync = true);
@@ -296,11 +326,16 @@ namespace Raumkernel
                 virtual void onSetPlayModeExecuted(OpenHome::Net::IAsync& _aAsync);
                 virtual void onGetMediaInfoExecuted(OpenHome::Net::IAsync& _aAsync);
                 virtual void onGetPositionInfoExecuted(OpenHome::Net::IAsync& _aAsync);
+                virtual void onSetAvTransportUriExecuted(OpenHome::Net::IAsync& _aAsync);
+                virtual void onGetTransportInfoExecuted(OpenHome::Net::IAsync& _aAsync);
+                virtual void onGetTransportSettingsExecuted(OpenHome::Net::IAsync& _aAsync);
            
                 void logRendererError(std::string _error, std::string _location);
 
                 sigs::signal<void(AvTransportMediaInfo)> sigGetMediaInfoExecuted;
                 sigs::signal<void(AvTransportPositionInfo)> sigGetPositionInfoExecuted;
+                sigs::signal<void(AvTransportInfo)> sigGetTransportInfoExecuted;
+                sigs::signal<void(AvTransportSettings)> sigGetTransportSettingsExecuted;
         };
 
     }

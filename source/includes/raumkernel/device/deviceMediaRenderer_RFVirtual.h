@@ -45,11 +45,17 @@ namespace Raumkernel
                 virtual ~MediaRenderer_RaumfeldVirtual();
 
                 /*
+                BendAvTransportUri
+                LikeCurrentTrack
+                UnlickCurrentTrack
+                startsleeptimer
+
                 EXPORT virtual void setRoomMute(std::string _roomUDN, bool _mute, bool _sync = true);
                 EXPORT virtual void setRoomVolume(std::string _roomUDN, boost::uint8_t _volume, bool _sync = true);
                 EXPORT virtual void changeVolume(boost::int8_t _amount, bool _sync = true);
-                EXPORT virtual bool getRoomMute(std::string _roomUDN);
+                EXPORT virtual bool getRoomMute(std::string _roomUDN);                
                 EXPORT virtual boost::uint8_t  getRoomVolume(std::string _roomUDN);
+                
                 */
                              
             protected:                
@@ -66,6 +72,9 @@ namespace Raumkernel
                 virtual void setPlayModeProxy(std::string _playMode, bool _sync = true) override;
                 virtual AvTransportMediaInfo getMediaInfoProxy(bool _sync = true) override;
                 virtual AvTransportPositionInfo getPositionInfoProxy(bool _sync = true) override;
+                virtual AvTransportInfo getTransportInfoProxy(bool _sync = true) override;
+                virtual AvTransportSettings getTransportSettingsProxy(bool _sync = true) override;
+                virtual void setAvTransportUriProxy(std::string _avTransportUri, std::string _avTransportUriMetaData, bool _sync = true) override;
 
                 virtual void onPlayExecuted(OpenHome::Net::IAsync& _aAsync) override;
                 virtual void onStopExecuted(OpenHome::Net::IAsync& _aAsync) override;
@@ -76,6 +85,9 @@ namespace Raumkernel
                 virtual void onSetPlayModeExecuted(OpenHome::Net::IAsync& _aAsync) override;
                 virtual void onGetMediaInfoExecuted(OpenHome::Net::IAsync& _aAsync) override;
                 virtual void onGetPositionInfoExecuted(OpenHome::Net::IAsync& _aAsync) override;
+                virtual void onSetAvTransportUriExecuted(OpenHome::Net::IAsync& _aAsync) override;
+                virtual void onGetTransportInfoExecuted(OpenHome::Net::IAsync& _aAsync) override;
+                virtual void onGetTransportSettingsExecuted(OpenHome::Net::IAsync& _aAsync) override;
 
         };
 

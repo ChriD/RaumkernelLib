@@ -296,6 +296,92 @@ namespace Raumkernel
             sigGetPositionInfoExecuted.fire(positionInfo);
         }
 
+
+        void MediaRenderer_RaumfeldVirtual::setAvTransportUriProxy(std::string _avTransportUri, std::string _avTransportUriMetaData, bool _sync)
+        {
+            auto proxy = std::dynamic_pointer_cast<OpenHome::Net::CpProxyUpnpOrgAVTransport_RaumfeldVirtual1Cpp>(getAvTransportProxy());
+
+            if (_sync)
+                proxy->SyncSetAVTransportURI(instance, _avTransportUri, _avTransportUriMetaData);
+            else
+            {
+                OpenHome::Net::FunctorAsync functorAsync = OpenHome::Net::MakeFunctorAsync(*this, &MediaRenderer_RaumfeldVirtual::onSetAvTransportUriExecuted);
+                proxy->BeginSetAVTransportURI(instance, _avTransportUri, _avTransportUriMetaData, functorAsync);
+            }
+        }
+
+
+        void MediaRenderer_RaumfeldVirtual::onSetAvTransportUriExecuted(OpenHome::Net::IAsync& _aAsync)
+        {
+            if (!isAvTransportProxyAvailable())
+                return;
+
+            auto proxy = std::dynamic_pointer_cast<OpenHome::Net::CpProxyUpnpOrgAVTransport_RaumfeldVirtual1Cpp>(getAvTransportProxy());
+            proxy->EndSetAVTransportURI(_aAsync);
+        }
+
+
+        AvTransportInfo MediaRenderer_RaumfeldVirtual::getTransportInfoProxy(bool _sync)
+        {
+            AvTransportInfo transportInfo;
+            auto proxy = std::dynamic_pointer_cast<OpenHome::Net::CpProxyUpnpOrgAVTransport_RaumfeldVirtual1Cpp>(getAvTransportProxy());
+
+            if (_sync)
+            {
+                proxy->SyncGetTransportInfo(instance, transportInfo.currentTransportState, transportInfo.currentTransportStatus, transportInfo.currentSpeed);
+            }
+            else
+            {
+                OpenHome::Net::FunctorAsync functorAsync = OpenHome::Net::MakeFunctorAsync(*this, &MediaRenderer_RaumfeldVirtual::onGetTransportInfoExecuted);
+                proxy->BeginGetMediaInfo(instance, functorAsync);
+            }
+            return transportInfo;
+        }
+
+
+        void MediaRenderer_RaumfeldVirtual::onGetTransportInfoExecuted(OpenHome::Net::IAsync& _aAsync)
+        {
+            AvTransportInfo transportInfo;
+
+            if (!isAvTransportProxyAvailable())
+                return;
+
+            auto proxy = std::dynamic_pointer_cast<OpenHome::Net::CpProxyUpnpOrgAVTransport_RaumfeldVirtual1Cpp>(getAvTransportProxy());
+            proxy->EndGetTransportInfo(_aAsync, transportInfo.currentTransportState, transportInfo.currentTransportStatus, transportInfo.currentSpeed);
+            sigGetTransportInfoExecuted.fire(transportInfo);
+        }
+
+
+        AvTransportSettings MediaRenderer_RaumfeldVirtual::getTransportSettingsProxy(bool _sync)
+        {
+            AvTransportSettings transportSettings;
+            auto proxy = std::dynamic_pointer_cast<OpenHome::Net::CpProxyUpnpOrgAVTransport_RaumfeldVirtual1Cpp>(getAvTransportProxy());
+
+            if (_sync)
+            {
+                proxy->SyncGetTransportSettings(instance, transportSettings.playMode, transportSettings.recQualityMode);
+            }
+            else
+            {
+                OpenHome::Net::FunctorAsync functorAsync = OpenHome::Net::MakeFunctorAsync(*this, &MediaRenderer_RaumfeldVirtual::onGetTransportSettingsExecuted);
+                proxy->BeginGetTransportInfo(instance, functorAsync);
+            }
+            return transportSettings;
+        }
+
+
+        void MediaRenderer_RaumfeldVirtual::onGetTransportSettingsExecuted(OpenHome::Net::IAsync& _aAsync)
+        {
+            AvTransportSettings transportSettings;
+
+            if (!isAvTransportProxyAvailable())
+                return;
+
+            auto proxy = std::dynamic_pointer_cast<OpenHome::Net::CpProxyUpnpOrgAVTransport_RaumfeldVirtual1Cpp>(getAvTransportProxy());
+            proxy->EndGetTransportSettings(_aAsync, transportSettings.playMode, transportSettings.recQualityMode);
+            sigGetTransportSettingsExecuted.fire(transportSettings);
+        }
+
       
     }
 
