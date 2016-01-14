@@ -106,7 +106,11 @@ namespace Raumkernel
                         */      
 
                         int hh, mm, ss;
+                        #ifdef _MSC_VER
                         sscanf_s(_timeString.c_str(), "%d:%d:%d", &hh, &mm, &ss);
+                        #else
+                        sscanf(_timeString.c_str(), "%d:%d:%d", &hh, &mm, &ss);
+                        #endif
                         timeInSeconds = (hh * 60 * 60) + (mm * 60) + ss;
                     }
                     catch (...)
