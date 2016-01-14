@@ -34,6 +34,7 @@
 #include <cstdint>
 #include <iostream>
 #include <sstream>
+#include <time.h>
 
 namespace Raumkernel
 {
@@ -91,14 +92,22 @@ namespace Raumkernel
                     if (_timeString.empty())
                         return 0;
                     
-                    std::uint32_t timeInSeconds = 0;
-                    struct std::tm tm;
+                    std::uint32_t timeInSeconds = 0;                    
 
                     try
-                    {                       
+                    {                                              
+                        // Get_Time wont work with gcc compilers older than 4.9?!
+                        // So we do need an alternative for that (see C code below)
+                        /*
+                        struct std::tm tm;
                         std::istringstream ss(_timeString);
                         ss >> std::get_time(&tm, "%H:%M:%S");                                             
                         timeInSeconds = (tm.tm_hour * 60 * 60) + (tm.tm_min * 60) + tm.tm_sec;
+                        */      
+
+                        int hh, mm, ss;
+                        sscanf_s(_timeString.c_str(), "%d:%d:%d", &hh, &mm, &ss);
+                        timeInSeconds = (hh * 60 * 60) + (mm * 60) + ss;
                     }
                     catch (...)
                     {
