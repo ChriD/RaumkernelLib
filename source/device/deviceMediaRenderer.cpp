@@ -232,7 +232,6 @@ namespace Raumkernel
 
         void MediaRenderer::stop(bool _sync)
         {
-
             callAvTransportProxyAction("stop", _sync);
         }
 
@@ -1038,7 +1037,7 @@ namespace Raumkernel
 
         bool MediaRenderer::getMute(bool _sync)
         {
-            bool mute;
+            bool mute = false;
 
             if (!isRenderingControlProxyAvailable())
             {
@@ -1110,7 +1109,7 @@ namespace Raumkernel
 
         std::uint32_t MediaRenderer::getVolume(bool _sync)
         {
-            std::uint32_t volume;
+            std::uint32_t volume = 0;
 
             if (!isRenderingControlProxyAvailable())
             {

@@ -467,7 +467,7 @@ namespace Raumkernel
 
         void MediaRenderer_RaumfeldVirtual::onGetMuteExecuted(OpenHome::Net::IAsync& _aAsync)
         {
-            bool mute;
+            bool mute = false;
 
             if (!isRenderingControlProxyAvailable())
                 return;
@@ -860,7 +860,7 @@ namespace Raumkernel
 
         std::uint32_t MediaRenderer_RaumfeldVirtual::getRoomVolume(std::string _roomUDN, bool _sync)
         {
-            std::uint32_t volume;
+            std::uint32_t volume = 0;
 
             if (!isRenderingControlProxyAvailable())
             {
