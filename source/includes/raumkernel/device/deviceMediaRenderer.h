@@ -25,9 +25,10 @@
 #ifndef RAUMKERNEL_DEVICEMEDIARENDERER_H
 #define RAUMKERNEL_DEVICEMEDIARENDERER_H
 
-#include <raumkernel/signals/signals.hpp>
+
 #include <OpenHome/Net/Cpp/OhNet.h>
 #include <OpenHome/Net/Cpp/CpProxy.h>
+#include <raumkernel/signals/signals.hpp>
 #include <raumkernel/device/device.h>
 #include <raumkernel/device/proxies/CpUpnpOrgAVTransport1.h>
 #include <raumkernel/device/proxies/CpUpnpOrgConnectionManager1.h>
@@ -43,7 +44,8 @@ namespace Raumkernel
         enum class MediaRenderer_TransportState { MRTS_STOPPED, MRTS_PLAYING, MRTS_TRANSITIONING };
         enum class MediaRenderer_Seek { MRSEEK_ABS_TIME, MRSEEK_REL_TIME, MRSEEK_TRACK_NR };
         
-        const  std::string MEDIARENDERER_NOT_IMPLEMENTED = "NOT_IMPLEMENTED";
+        const std::string MEDIARENDERER_NOT_IMPLEMENTED = "NOT_IMPLEMENTED";
+        const std::string MEDIARENDERER_MASTER_CHANNEL = "Master";
 
 
         struct AvTransportMediaInfo
@@ -263,19 +265,28 @@ namespace Raumkernel
                 EXPORT virtual AvTransportSettings getTransportSettings(bool _sync = true);
 
 
-                /*                                                
-
-                // basic media renderer functions
-                EXPORT virtual void setMute(bool _mute, bool _sync = true);
-                EXPORT virtual void setVolume(boost::uint8_t _volume, bool _sync = true);
-                
-
-                EXPORT virtual bool getMute();
-                EXPORT virtual boost::uint8_t getVolume();
-              
+                /**
+                * Not intended for external use
+                * Please use the 'virtual' media renderer!
                 */
+                EXPORT virtual void setMute(bool _mute, bool _sync = true);
+                /**
+                * Not intended for external use
+                * Please use the 'virtual' media renderer!
+                */
+                EXPORT virtual void setVolume(std::uint32_t _volume, bool _sync = true);
+                /**
+                * Not intended for external use
+                * Please use the 'virtual' media renderer!
+                */
+                EXPORT virtual bool getMute(bool _sync = true);
+                /**
+                * Not intended for external use
+                * Please use the 'virtual' media renderer!
+                */
+                EXPORT virtual std::uint32_t getVolume(bool _sync = true);
 
-                EXPORT bool isRenderingProxyAvailable();
+                EXPORT bool isRenderingControlProxyAvailable();
                 EXPORT bool isConnectionManagerProxyAvailable();
                 EXPORT bool isAvTransportProxyAvailable();
 
@@ -312,10 +323,13 @@ namespace Raumkernel
                 virtual AvTransportInfo getTransportInfoProxy(bool _sync = true);
                 virtual AvTransportSettings getTransportSettingsProxy(bool _sync = true);
                 virtual void setAvTransportUriProxy(std::string _avTransportUri, std::string _avTransportUriMetaData, bool _sync = true);
-  
 
-                //virtual void setMuteProxy(bool _sync = true);
-                //virtual void setVolumeProxy(bool _sync = true);
+
+                virtual void setMuteProxy(bool _mute, bool _sync = true);
+                virtual void setVolumeProxy(std::uint32_t _volume, bool _sync = true);
+                virtual bool getMuteProxy(bool _sync = true);
+                virtual std::uint32_t getVolumeProxy(bool _sync = true);
+              
 
                 virtual void onPlayExecuted(OpenHome::Net::IAsync& _aAsync);
                 virtual void onStopExecuted(OpenHome::Net::IAsync& _aAsync);
@@ -329,6 +343,15 @@ namespace Raumkernel
                 virtual void onSetAvTransportUriExecuted(OpenHome::Net::IAsync& _aAsync);
                 virtual void onGetTransportInfoExecuted(OpenHome::Net::IAsync& _aAsync);
                 virtual void onGetTransportSettingsExecuted(OpenHome::Net::IAsync& _aAsync);
+
+                virtual void onSetMuteExecuted(OpenHome::Net::IAsync& _aAsync);
+                virtual void onSetVolumeExecuted(OpenHome::Net::IAsync& _aAsync);
+                virtual void onGetMuteExecuted(OpenHome::Net::IAsync& _aAsync);
+                virtual void onGetVolumeExecuted(OpenHome::Net::IAsync& _aAsync);
+
+                virtual void onAvTransportProxyPropertyChanged();
+                virtual void onRenderingControlProxyPropertyChanged();                
+                virtual void oConnectionManagerProxyPropertyChanged();
            
                 void logRendererError(std::string _error, std::string _location);
 
@@ -336,6 +359,8 @@ namespace Raumkernel
                 sigs::signal<void(AvTransportPositionInfo)> sigGetPositionInfoExecuted;
                 sigs::signal<void(AvTransportInfo)> sigGetTransportInfoExecuted;
                 sigs::signal<void(AvTransportSettings)> sigGetTransportSettingsExecuted;
+                sigs::signal<void(bool)> sigGetMuteExecuted;
+                sigs::signal<void(std::int32_t)> sigGetVolumeExecuted;
         };
 
     }

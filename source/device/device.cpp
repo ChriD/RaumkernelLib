@@ -6,7 +6,7 @@ namespace Raumkernel
 {
     namespace Devices
     {
-        Device::Device() : RaumkernelBase()
+        Device::Device() : RaumkernelBaseMgr()
         {
             cpDevice = nullptr;
             UDN = "";

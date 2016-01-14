@@ -111,6 +111,7 @@
     <ClInclude Include="includes\raumkernel\manager\managerBase.h" />
     <ClInclude Include="includes\raumkernel\manager\managerEngineer.h" />
     <ClInclude Include="includes\raumkernel\manager\settingsManager.h" />
+    <ClInclude Include="includes\raumkernel\manager\subscriptionReceiverManager.h" />
     <ClInclude Include="includes\raumkernel\manager\upnpManager.h" />
     <ClInclude Include="includes\raumkernel\os\os.h" />
     <ClInclude Include="includes\raumkernel\raumkernel.h" />
@@ -155,6 +156,7 @@
     <ClCompile Include="manager\managerBase.cpp" />
     <ClCompile Include="manager\managerEngineer.cpp" />
     <ClCompile Include="manager\settingsManager.cpp" />
+    <ClCompile Include="manager\subscriptionReceiverManager.cpp" />
     <ClCompile Include="manager\upnpManager.cpp" />
     <ClCompile Include="raumkernel.cpp" />
     <ClCompile Include="raumkernelBase.cpp" />

@@ -42,6 +42,7 @@ namespace Raumkernel
         managerEngineer->getSettingsManager()->setManagerEngineer(managerEngineer);        
         managerEngineer->getUPNPManager()->setManagerEngineer(managerEngineer);
         managerEngineer->getDeviceManager()->setManagerEngineer(managerEngineer);        
+        managerEngineer->getSubscriptionReceiverManager()->setManagerEngineer(managerEngineer);
 
         logDebug("Manager-Engineer is prepared", CURRENT_POSITION);
 
@@ -60,10 +61,7 @@ namespace Raumkernel
         managerEngineer->getUPNPManager()->init();        
         managerEngineer->getUPNPManager()->discover();
 
-        // TODO: wake up other managers like UPNPDeviceManager
-
-      
-
+        // TODO: wake up other managers like HTTPRequestManager?  (Alive ping?)
 
         logInfo("Kernel initialized! Waiting for Raumfeld System to appear!", CURRENT_POSITION);
 

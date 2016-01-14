@@ -61,17 +61,18 @@ namespace Raumkernel
                 deviceCreator.setLogObject(getLogObject());
                 deviceCreator.setManagerEngineer(getManagerEngineer());                
                 device = deviceCreator.createDeviceFromDeviceXML(deviceXML);
-                // if we got a pointer to a device, than the device is usable for the kernel
+                // if we got a pointer to a device, than the device is useable for the kernel
                 if (device != nullptr)
                 {
                     device->setCpDevice(&_device);      
+                    device->setManagerEngineer(getManagerEngineer());
                    
                     if (std::dynamic_pointer_cast<Devices::MediaRenderer>(device))
                     {                        
                         if (mediaRendererMap.find(deviceUDN) != mediaRendererMap.end())
                             mediaRendererMap.erase(deviceUDN);
                         mediaRendererMap.insert(std::make_pair(deviceUDN, std::dynamic_pointer_cast<Devices::MediaRenderer>(device)));
-                        logDebug("Media Renderer '" + friendlyName + "' is now usable!", CURRENT_POSITION);                       
+                        logDebug("Media Renderer '" + friendlyName + "' is now useable!", CURRENT_POSITION);                       
                     }
                     // elseIf(...)
 

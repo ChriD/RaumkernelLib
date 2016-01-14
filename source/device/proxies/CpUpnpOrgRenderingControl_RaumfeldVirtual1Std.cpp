@@ -25,8 +25,8 @@ private:
 };
 
 SyncGetMuteUpnpOrgRenderingControl_RaumfeldVirtual1Cpp::SyncGetMuteUpnpOrgRenderingControl_RaumfeldVirtual1Cpp(CpProxyUpnpOrgRenderingControl_RaumfeldVirtual1Cpp& aProxy, bool& aCurrentMute)
-    : iService(aProxy)
-    , iCurrentMute(aCurrentMute)
+: iService(aProxy)
+, iCurrentMute(aCurrentMute)
 {
 }
 
@@ -47,7 +47,7 @@ private:
 };
 
 SyncSetMuteUpnpOrgRenderingControl_RaumfeldVirtual1Cpp::SyncSetMuteUpnpOrgRenderingControl_RaumfeldVirtual1Cpp(CpProxyUpnpOrgRenderingControl_RaumfeldVirtual1Cpp& aProxy)
-    : iService(aProxy)
+: iService(aProxy)
 {
 }
 
@@ -69,8 +69,8 @@ private:
 };
 
 SyncGetRoomVolumeUpnpOrgRenderingControl_RaumfeldVirtual1Cpp::SyncGetRoomVolumeUpnpOrgRenderingControl_RaumfeldVirtual1Cpp(CpProxyUpnpOrgRenderingControl_RaumfeldVirtual1Cpp& aProxy, uint32_t& aCurrentVolume)
-    : iService(aProxy)
-    , iCurrentVolume(aCurrentVolume)
+: iService(aProxy)
+, iCurrentVolume(aCurrentVolume)
 {
 }
 
@@ -91,7 +91,7 @@ private:
 };
 
 SyncSetRoomVolumeUpnpOrgRenderingControl_RaumfeldVirtual1Cpp::SyncSetRoomVolumeUpnpOrgRenderingControl_RaumfeldVirtual1Cpp(CpProxyUpnpOrgRenderingControl_RaumfeldVirtual1Cpp& aProxy)
-    : iService(aProxy)
+: iService(aProxy)
 {
 }
 
@@ -113,8 +113,8 @@ private:
 };
 
 SyncGetRoomMuteUpnpOrgRenderingControl_RaumfeldVirtual1Cpp::SyncGetRoomMuteUpnpOrgRenderingControl_RaumfeldVirtual1Cpp(CpProxyUpnpOrgRenderingControl_RaumfeldVirtual1Cpp& aProxy, bool& aCurrentMute)
-    : iService(aProxy)
-    , iCurrentMute(aCurrentMute)
+: iService(aProxy)
+, iCurrentMute(aCurrentMute)
 {
 }
 
@@ -135,7 +135,7 @@ private:
 };
 
 SyncSetRoomMuteUpnpOrgRenderingControl_RaumfeldVirtual1Cpp::SyncSetRoomMuteUpnpOrgRenderingControl_RaumfeldVirtual1Cpp(CpProxyUpnpOrgRenderingControl_RaumfeldVirtual1Cpp& aProxy)
-    : iService(aProxy)
+: iService(aProxy)
 {
 }
 
@@ -156,7 +156,7 @@ private:
 };
 
 SyncChangeVolumeUpnpOrgRenderingControl_RaumfeldVirtual1Cpp::SyncChangeVolumeUpnpOrgRenderingControl_RaumfeldVirtual1Cpp(CpProxyUpnpOrgRenderingControl_RaumfeldVirtual1Cpp& aProxy)
-    : iService(aProxy)
+: iService(aProxy)
 {
 }
 
@@ -178,8 +178,8 @@ private:
 };
 
 SyncGetVolumeUpnpOrgRenderingControl_RaumfeldVirtual1Cpp::SyncGetVolumeUpnpOrgRenderingControl_RaumfeldVirtual1Cpp(CpProxyUpnpOrgRenderingControl_RaumfeldVirtual1Cpp& aProxy, uint32_t& aCurrentVolume)
-    : iService(aProxy)
-    , iCurrentVolume(aCurrentVolume)
+: iService(aProxy)
+, iCurrentVolume(aCurrentVolume)
 {
 }
 
@@ -200,7 +200,7 @@ private:
 };
 
 SyncSetVolumeUpnpOrgRenderingControl_RaumfeldVirtual1Cpp::SyncSetVolumeUpnpOrgRenderingControl_RaumfeldVirtual1Cpp(CpProxyUpnpOrgRenderingControl_RaumfeldVirtual1Cpp& aProxy)
-    : iService(aProxy)
+: iService(aProxy)
 {
 }
 
@@ -211,7 +211,7 @@ void SyncSetVolumeUpnpOrgRenderingControl_RaumfeldVirtual1Cpp::CompleteRequest(I
 
 
 CpProxyUpnpOrgRenderingControl_RaumfeldVirtual1Cpp::CpProxyUpnpOrgRenderingControl_RaumfeldVirtual1Cpp(CpDeviceCpp& aDevice)
-    : CpProxy("schemas-upnp-org", "RenderingControl_RaumfeldVirtual", 1, aDevice.Device())
+: CpProxy("schemas-upnp-org", "RenderingControl", 1, aDevice.Device())
 {
     OpenHome::Net::Parameter* param;
     TChar** allowedValues;

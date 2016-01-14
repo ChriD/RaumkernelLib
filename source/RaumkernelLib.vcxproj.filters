@@ -183,6 +183,9 @@
     <ClInclude Include="includes\raumkernel\device\deviceMediaRenderer_RFVirtual.h">
       <Filter>includes\raumkernel\device</Filter>
     </ClInclude>
+    <ClInclude Include="includes\raumkernel\manager\subscriptionReceiverManager.h">
+      <Filter>includes\raumkernel\manager</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="logger\logger.cpp">
@@ -259,6 +262,9 @@
     </ClCompile>
     <ClCompile Include="device\deviceMediaRenderer_RFVirtual.cpp">
       <Filter>device</Filter>
+    </ClCompile>
+    <ClCompile Include="manager\subscriptionReceiverManager.cpp">
+      <Filter>manager</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

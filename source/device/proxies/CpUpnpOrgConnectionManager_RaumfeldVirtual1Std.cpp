@@ -26,9 +26,9 @@ private:
 };
 
 SyncGetProtocolInfoUpnpOrgConnectionManager_RaumfeldVirtual1Cpp::SyncGetProtocolInfoUpnpOrgConnectionManager_RaumfeldVirtual1Cpp(CpProxyUpnpOrgConnectionManager_RaumfeldVirtual1Cpp& aProxy, std::string& aSource, std::string& aSink)
-    : iService(aProxy)
-    , iSource(aSource)
-    , iSink(aSink)
+: iService(aProxy)
+, iSource(aSource)
+, iSink(aSink)
 {
 }
 
@@ -50,8 +50,8 @@ private:
 };
 
 SyncGetCurrentConnectionIDsUpnpOrgConnectionManager_RaumfeldVirtual1Cpp::SyncGetCurrentConnectionIDsUpnpOrgConnectionManager_RaumfeldVirtual1Cpp(CpProxyUpnpOrgConnectionManager_RaumfeldVirtual1Cpp& aProxy, std::string& aConnectionIDs)
-    : iService(aProxy)
-    , iConnectionIDs(aConnectionIDs)
+: iService(aProxy)
+, iConnectionIDs(aConnectionIDs)
 {
 }
 
@@ -79,14 +79,14 @@ private:
 };
 
 SyncGetCurrentConnectionInfoUpnpOrgConnectionManager_RaumfeldVirtual1Cpp::SyncGetCurrentConnectionInfoUpnpOrgConnectionManager_RaumfeldVirtual1Cpp(CpProxyUpnpOrgConnectionManager_RaumfeldVirtual1Cpp& aProxy, int32_t& aRcsID, int32_t& aAVTransportID, std::string& aProtocolInfo, std::string& aPeerConnectionManager, int32_t& aPeerConnectionID, std::string& aDirection, std::string& aStatus)
-    : iService(aProxy)
-    , iRcsID(aRcsID)
-    , iAVTransportID(aAVTransportID)
-    , iProtocolInfo(aProtocolInfo)
-    , iPeerConnectionManager(aPeerConnectionManager)
-    , iPeerConnectionID(aPeerConnectionID)
-    , iDirection(aDirection)
-    , iStatus(aStatus)
+: iService(aProxy)
+, iRcsID(aRcsID)
+, iAVTransportID(aAVTransportID)
+, iProtocolInfo(aProtocolInfo)
+, iPeerConnectionManager(aPeerConnectionManager)
+, iPeerConnectionID(aPeerConnectionID)
+, iDirection(aDirection)
+, iStatus(aStatus)
 {
 }
 
@@ -97,7 +97,7 @@ void SyncGetCurrentConnectionInfoUpnpOrgConnectionManager_RaumfeldVirtual1Cpp::C
 
 
 CpProxyUpnpOrgConnectionManager_RaumfeldVirtual1Cpp::CpProxyUpnpOrgConnectionManager_RaumfeldVirtual1Cpp(CpDeviceCpp& aDevice)
-    : CpProxy("schemas-upnp-org", "ConnectionManager_RaumfeldVirtual", 1, aDevice.Device())
+: CpProxy("schemas-upnp-org", "ConnectionManager", 1, aDevice.Device())
 {
     OpenHome::Net::Parameter* param;
     TChar** allowedValues;

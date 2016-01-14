@@ -25,7 +25,7 @@
 #ifndef RAUMKERNEL_DEVICE_H
 #define RAUMKERNEL_DEVICE_H
 
-#include <raumkernel/raumkernelBase.h>
+#include <raumkernel/raumkernelBaseMgr.h>
 
 #include <OpenHome/Net/Cpp/OhNet.h>
 #include <OpenHome/Net/Cpp/CpDevice.h>
@@ -34,7 +34,7 @@ namespace Raumkernel
 {
     namespace Devices
     {
-        class Device : public RaumkernelBase
+        class Device : public RaumkernelBaseMgr
         {
             public:
                 EXPORT Device();

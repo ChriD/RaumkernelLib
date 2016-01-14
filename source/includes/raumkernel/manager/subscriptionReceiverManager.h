@@ -22,39 +22,28 @@
 //
 
 #pragma once
-#ifndef RAUMKERNEL_MANAGERENGINEER_H
-#define RAUMKERNEL_MANAGERENGINEER_H
+#ifndef RAUMKERNEL_SUBSCRIPTIONRECEIVERMANAGER_H
+#define RAUMKERNEL_SUBSCRIPTIONRECEIVERMANAGER_H
 
-#include <raumkernel/raumkernelBase.h>
-#include <raumkernel/manager/settingsManager.h>
-#include <raumkernel/manager/upnpManager.h>
-#include <raumkernel/manager/deviceManager.h>
-#include <raumkernel/manager/subscriptionReceiverManager.h>
+#include <raumkernel/manager/managerBase.h>
 
 namespace Raumkernel
 {
     namespace Manager
     {
-        /*
-        This class holds pointers to all the available managers loaded in the kernel
+        /**
+        * The SubscriptionReceiver-Manager
+        *
+        * This class handles all the subscriptions returns which we will get from the UPNP-Devices
         */
-        class ManagerEngineer : public RaumkernelBase 
+        class SubscriptionReceiverManager : public ManagerBase
         {
             public:
-                EXPORT ManagerEngineer();
-                EXPORT virtual ~ManagerEngineer();
-                void createManagers();
+                SubscriptionReceiverManager();
+                virtual ~SubscriptionReceiverManager(); 
 
-                EXPORT std::shared_ptr<SettingsManager> getSettingsManager();
-                EXPORT std::shared_ptr<UPNPManager> getUPNPManager();
-                EXPORT std::shared_ptr<DeviceManager> getDeviceManager();
-                EXPORT std::shared_ptr<SubscriptionReceiverManager> getSubscriptionReceiverManager();
-
-            protected:
-                std::shared_ptr<SettingsManager> settingsManager;
-                std::shared_ptr<UPNPManager> upnpManager;
-                std::shared_ptr<DeviceManager> deviceManager;
-                std::shared_ptr<SubscriptionReceiverManager> subscriptionReceiverManager;
+                virtual void propertyChangedAvTransportProxy(std::string _deviceUDN, std::string _xml);                
+                virtual void propertyChangedRenderingControlProxy(std::string _deviceUDN, std::string _xml);
         };
     }
 }

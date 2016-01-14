@@ -1,5 +1,6 @@
 
 #include <raumkernel/device/deviceMediaRenderer.h>
+#include <raumkernel/manager/managerEngineer.h>
 
 
 namespace Raumkernel
@@ -66,23 +67,41 @@ namespace Raumkernel
 
         void MediaRenderer::createProxyAvTransport()
         {
-            avTransportProxy = std::shared_ptr<OpenHome::Net::CpProxy>(new OpenHome::Net::CpProxyUpnpOrgAVTransport1Cpp(*cpDevice));
+            avTransportProxy = std::shared_ptr<OpenHome::Net::CpProxyUpnpOrgAVTransport1Cpp>(new OpenHome::Net::CpProxyUpnpOrgAVTransport1Cpp(*cpDevice));
+            OpenHome::Functor functor = OpenHome::MakeFunctor(*this, &MediaRenderer::onAvTransportProxyPropertyChanged);
+            auto proxy = std::dynamic_pointer_cast<OpenHome::Net::CpProxyUpnpOrgAVTransport1Cpp>(getAvTransportProxy());
+            proxy->SetPropertyInitialEvent(functor);
+            proxy->SetPropertyChanged(functor);
+            proxy->SetPropertyLastChangeChanged(functor);
+            proxy->Subscribe();
+                
         }
 
 
         void MediaRenderer::createProxyConnectionManager()
         {
-            connectionManagerProxy = std::shared_ptr<OpenHome::Net::CpProxy>(new OpenHome::Net::CpProxyUpnpOrgConnectionManager1Cpp(*cpDevice));
+            connectionManagerProxy = std::shared_ptr<OpenHome::Net::CpProxyUpnpOrgConnectionManager1Cpp>(new OpenHome::Net::CpProxyUpnpOrgConnectionManager1Cpp(*cpDevice));
+            OpenHome::Functor functor = OpenHome::MakeFunctor(*this, &MediaRenderer::oConnectionManagerProxyPropertyChanged);
+            auto proxy = std::dynamic_pointer_cast<OpenHome::Net::CpProxyUpnpOrgConnectionManager1Cpp>(getConnectionManagerProxy());
+            proxy->SetPropertyInitialEvent(functor);
+            proxy->SetPropertyChanged(functor);            
+            proxy->Subscribe();
         }
 
 
         void MediaRenderer::createProxyRenderingControl()
         {
-            renderingControlProxy = std::shared_ptr<OpenHome::Net::CpProxy>(new OpenHome::Net::CpProxyUpnpOrgRenderingControl1Cpp(*cpDevice));
+            renderingControlProxy = std::shared_ptr<OpenHome::Net::CpProxyUpnpOrgRenderingControl1Cpp>(new OpenHome::Net::CpProxyUpnpOrgRenderingControl1Cpp(*cpDevice));
+            OpenHome::Functor functor = OpenHome::MakeFunctor(*this, &MediaRenderer::onRenderingControlProxyPropertyChanged);
+            auto proxy = std::dynamic_pointer_cast<OpenHome::Net::CpProxyUpnpOrgRenderingControl1Cpp>(getRenderingControlProxy());
+            proxy->SetPropertyInitialEvent(functor);
+            proxy->SetPropertyChanged(functor);
+            proxy->SetPropertyLastChangeChanged(functor);
+            proxy->Subscribe();
         }
 
 
-        bool MediaRenderer::isRenderingProxyAvailable()
+        bool MediaRenderer::isRenderingControlProxyAvailable()
         {
             if (!cpDevice)
                 return false;
@@ -439,7 +458,7 @@ namespace Raumkernel
             playMode = ConversionTool::playModeToString(_playMode);
 
             try
-            {
+            {             
                 setPlayModeProxy(playMode, _sync);
             }
             catch (Raumkernel::Exception::RaumkernelException &e)
@@ -506,7 +525,7 @@ namespace Raumkernel
 
 
             try
-            {
+            {      
                 mediaInfo = getMediaInfoProxy(_sync);
             }
             catch (Raumkernel::Exception::RaumkernelException &e)
@@ -676,9 +695,7 @@ namespace Raumkernel
 
 
         void MediaRenderer::setAvTransportUri(std::string _avTransportUri, std::string _avTransportUriMetaData, bool _sync)
-        {
-            std::string seekUnit, seekTarget;
-
+        {            
             if (!isAvTransportProxyAvailable())
             {
                 logWarning("Calling 'setAvTransportUri' on renderer '" + getDeviceDescription() + "' without AvTransportProxy!", CURRENT_FUNCTION);
@@ -888,6 +905,303 @@ namespace Raumkernel
             auto proxy = std::dynamic_pointer_cast<OpenHome::Net::CpProxyUpnpOrgAVTransport1Cpp>(getAvTransportProxy());
             proxy->EndGetTransportSettings(_aAsync, transportSettings.playMode, transportSettings.recQualityMode);
             sigGetTransportSettingsExecuted.fire(transportSettings);
+        }
+
+
+        void MediaRenderer::setMute(bool _mute, bool _sync)
+        {
+            if (!isRenderingControlProxyAvailable())
+            {
+                logWarning("Calling 'setMute' on renderer '" + getDeviceDescription() + "' without RenderingControlProxy!", CURRENT_FUNCTION);
+                return;
+            }
+
+            logDebug("Calling 'setMute' on renderer '" + getDeviceDescription() + "'", CURRENT_FUNCTION);
+           
+            try
+            {
+                setMuteProxy(_mute, _sync);
+            }
+            catch (Raumkernel::Exception::RaumkernelException &e)
+            {
+                if (e.type() == Raumkernel::Exception::ExceptionType::EXCEPTIONTYPE_APPCRASH)
+                    throw e;
+                logRendererError(e.what(), CURRENT_FUNCTION);
+            }
+            catch (std::exception &e)
+            {
+                logRendererError(e.what(), CURRENT_FUNCTION);
+            }
+            catch (std::string &e)
+            {
+                logRendererError(e, CURRENT_FUNCTION);
+            }
+            catch (OpenHome::Exception &e)
+            {
+                logRendererError(e.Message(), CURRENT_FUNCTION);
+            }
+            catch (...)
+            {
+                logRendererError("Unknown Exception", CURRENT_FUNCTION);
+            }
+
+        }
+
+
+        void MediaRenderer::setMuteProxy(bool _mute, bool _sync)
+        {
+            auto proxy = std::dynamic_pointer_cast<OpenHome::Net::CpProxyUpnpOrgRenderingControl1Cpp >(getRenderingControlProxy());
+
+            if (_sync)
+                proxy->SyncSetMute(instance, MEDIARENDERER_MASTER_CHANNEL, _mute);
+            else
+            {
+                OpenHome::Net::FunctorAsync functorAsync = OpenHome::Net::MakeFunctorAsync(*this, &MediaRenderer::onSetMuteExecuted);
+                proxy->BeginSetMute(instance, MEDIARENDERER_MASTER_CHANNEL, _mute, functorAsync);
+            }
+        }
+
+
+        void MediaRenderer::onSetMuteExecuted(OpenHome::Net::IAsync& _aAsync)
+        {
+            if (!isRenderingControlProxyAvailable())
+                return;
+
+            auto proxy = std::dynamic_pointer_cast<OpenHome::Net::CpProxyUpnpOrgRenderingControl1Cpp>(getRenderingControlProxy());
+            proxy->EndSetMute(_aAsync);
+        }
+
+
+        void MediaRenderer::setVolume(std::uint32_t _volume, bool _sync)
+        {
+            if (!isRenderingControlProxyAvailable())
+            {
+                logWarning("Calling 'setVolume' on renderer '" + getDeviceDescription() + "' without RenderingControlProxy!", CURRENT_FUNCTION);
+                return;
+            }
+
+            logDebug("Calling 'setVolume' on renderer '" + getDeviceDescription() + "'", CURRENT_FUNCTION);
+
+            try
+            {
+                setVolumeProxy(_volume, _sync);
+            }
+            catch (Raumkernel::Exception::RaumkernelException &e)
+            {
+                if (e.type() == Raumkernel::Exception::ExceptionType::EXCEPTIONTYPE_APPCRASH)
+                    throw e;
+                logRendererError(e.what(), CURRENT_FUNCTION);
+            }
+            catch (std::exception &e)
+            {
+                logRendererError(e.what(), CURRENT_FUNCTION);
+            }
+            catch (std::string &e)
+            {
+                logRendererError(e, CURRENT_FUNCTION);
+            }
+            catch (OpenHome::Exception &e)
+            {
+                logRendererError(e.Message(), CURRENT_FUNCTION);
+            }
+            catch (...)
+            {
+                logRendererError("Unknown Exception", CURRENT_FUNCTION);
+            }
+
+        }
+
+
+        void MediaRenderer::setVolumeProxy(std::uint32_t _volume, bool _sync)
+        {
+            auto proxy = std::dynamic_pointer_cast<OpenHome::Net::CpProxyUpnpOrgRenderingControl1Cpp >(getRenderingControlProxy());
+
+            if (_sync)
+                proxy->SyncSetVolume(instance, MEDIARENDERER_MASTER_CHANNEL, _volume);
+            else
+            {
+                OpenHome::Net::FunctorAsync functorAsync = OpenHome::Net::MakeFunctorAsync(*this, &MediaRenderer::onSetVolumeExecuted);
+                proxy->BeginSetVolume(instance, MEDIARENDERER_MASTER_CHANNEL, _volume, functorAsync);
+            }
+        }
+
+
+        void MediaRenderer::onSetVolumeExecuted(OpenHome::Net::IAsync& _aAsync)
+        {
+            if (!isRenderingControlProxyAvailable())
+                return;
+
+            auto proxy = std::dynamic_pointer_cast<OpenHome::Net::CpProxyUpnpOrgRenderingControl1Cpp>(getRenderingControlProxy());
+            proxy->EndSetVolume(_aAsync);
+        }
+
+
+        bool MediaRenderer::getMute(bool _sync)
+        {
+            bool mute;
+
+            if (!isRenderingControlProxyAvailable())
+            {
+                logWarning("Calling 'getMute' on renderer '" + getDeviceDescription() + "' without RenderingControlProxy!", CURRENT_FUNCTION);
+                return false;
+            }
+
+            logDebug("Calling 'getMute' on renderer '" + getDeviceDescription() + "'", CURRENT_FUNCTION);
+
+            try
+            {
+                mute = getMuteProxy(_sync);
+            }
+            catch (Raumkernel::Exception::RaumkernelException &e)
+            {
+                if (e.type() == Raumkernel::Exception::ExceptionType::EXCEPTIONTYPE_APPCRASH)
+                    throw e;
+                logRendererError(e.what(), CURRENT_FUNCTION);
+            }
+            catch (std::exception &e)
+            {
+                logRendererError(e.what(), CURRENT_FUNCTION);
+            }
+            catch (std::string &e)
+            {
+                logRendererError(e, CURRENT_FUNCTION);
+            }
+            catch (OpenHome::Exception &e)
+            {
+                logRendererError(e.Message(), CURRENT_FUNCTION);
+            }
+            catch (...)
+            {
+                logRendererError("Unknown Exception", CURRENT_FUNCTION);
+            }
+            return mute;
+
+        }
+
+
+        bool MediaRenderer::getMuteProxy(bool _sync)
+        {
+            auto proxy = std::dynamic_pointer_cast<OpenHome::Net::CpProxyUpnpOrgRenderingControl1Cpp >(getRenderingControlProxy());
+            bool mute = false;
+
+            if (_sync)
+                proxy->SyncGetMute(instance, MEDIARENDERER_MASTER_CHANNEL, mute);
+            else
+            {
+                OpenHome::Net::FunctorAsync functorAsync = OpenHome::Net::MakeFunctorAsync(*this, &MediaRenderer::onGetMuteExecuted);
+                proxy->BeginGetMute(instance, MEDIARENDERER_MASTER_CHANNEL, functorAsync);
+            }
+            return mute;
+        }
+
+
+        void MediaRenderer::onGetMuteExecuted(OpenHome::Net::IAsync& _aAsync)
+        {
+            bool mute;
+
+            if (!isRenderingControlProxyAvailable())
+                return;
+
+            auto proxy = std::dynamic_pointer_cast<OpenHome::Net::CpProxyUpnpOrgRenderingControl1Cpp>(getRenderingControlProxy());
+            proxy->EndGetMute(_aAsync, mute);
+            sigGetMuteExecuted.fire(mute);
+        }
+
+
+        std::uint32_t MediaRenderer::getVolume(bool _sync)
+        {
+            std::uint32_t volume;
+
+            if (!isRenderingControlProxyAvailable())
+            {
+                logWarning("Calling 'getVolume' on renderer '" + getDeviceDescription() + "' without RenderingControlProxy!", CURRENT_FUNCTION);
+                return 0;
+            }
+
+            logDebug("Calling 'getVolume' on renderer '" + getDeviceDescription() + "'", CURRENT_FUNCTION);
+
+            try
+            {
+                volume = getVolumeProxy(_sync);
+            }
+            catch (Raumkernel::Exception::RaumkernelException &e)
+            {
+                if (e.type() == Raumkernel::Exception::ExceptionType::EXCEPTIONTYPE_APPCRASH)
+                    throw e;
+                logRendererError(e.what(), CURRENT_FUNCTION);
+            }
+            catch (std::exception &e)
+            {
+                logRendererError(e.what(), CURRENT_FUNCTION);
+            }
+            catch (std::string &e)
+            {
+                logRendererError(e, CURRENT_FUNCTION);
+            }
+            catch (OpenHome::Exception &e)
+            {
+                logRendererError(e.Message(), CURRENT_FUNCTION);
+            }
+            catch (...)
+            {
+                logRendererError("Unknown Exception", CURRENT_FUNCTION);
+            }
+
+            return volume;
+        }
+
+
+        std::uint32_t MediaRenderer::getVolumeProxy(bool _sync)
+        {
+            auto proxy = std::dynamic_pointer_cast<OpenHome::Net::CpProxyUpnpOrgRenderingControl1Cpp >(getRenderingControlProxy());
+            std::uint32_t volume = 0;
+
+            if (_sync)
+                proxy->SyncGetVolume(instance, MEDIARENDERER_MASTER_CHANNEL, volume);
+            else
+            {
+                OpenHome::Net::FunctorAsync functorAsync = OpenHome::Net::MakeFunctorAsync(*this, &MediaRenderer::onGetVolumeExecuted);
+                proxy->BeginGetVolume(instance, MEDIARENDERER_MASTER_CHANNEL, functorAsync);
+            }
+            return volume;
+        }
+
+
+        void MediaRenderer::onGetVolumeExecuted(OpenHome::Net::IAsync& _aAsync)
+        {
+            std::uint32_t volume = 0;
+
+            if (!isRenderingControlProxyAvailable())
+                return;
+
+            auto proxy = std::dynamic_pointer_cast<OpenHome::Net::CpProxyUpnpOrgRenderingControl1Cpp>(getRenderingControlProxy());
+            proxy->EndGetVolume(_aAsync, volume);
+            sigGetVolumeExecuted.fire(volume);
+        }
+
+
+        void MediaRenderer::onAvTransportProxyPropertyChanged()
+        {
+            std::string propertyXML = "";
+            auto proxy = std::dynamic_pointer_cast<OpenHome::Net::CpProxyUpnpOrgAVTransport1Cpp>(getAvTransportProxy());
+            proxy->PropertyLastChange(propertyXML);
+            getManagerEngineer()->getSubscriptionReceiverManager()->propertyChangedAvTransportProxy(UDN, propertyXML);            
+        }
+
+
+        void MediaRenderer::onRenderingControlProxyPropertyChanged()
+        {
+            std::string propertyXML = "";
+            auto proxy = std::dynamic_pointer_cast<OpenHome::Net::CpProxyUpnpOrgRenderingControl1Cpp>(getRenderingControlProxy());
+            proxy->PropertyLastChange(propertyXML);
+            getManagerEngineer()->getSubscriptionReceiverManager()->propertyChangedRenderingControlProxy(UDN, propertyXML);
+        }
+
+
+        void MediaRenderer::oConnectionManagerProxyPropertyChanged()
+        {
+            auto proxy = std::dynamic_pointer_cast<OpenHome::Net::CpProxyUpnpOrgConnectionManager1Cpp>(getConnectionManagerProxy());
+            // not needed
         }
 
 

@@ -18,10 +18,23 @@ static void testLog(Raumkernel::Log::Log &_logObject)
     }
 }
 
+/*
+void doSomething(std::function<void()> func)
+{
+    func();
+}
+
+
+void myCallback(int a, int b)
+{
+}
+*/
 
 
 int main()
 {
+   // doSomething(std::bind(myCallback, 1, 2));
+
     /*
     std::chrono::steady_clock::time_point timePointStart, timePointEnd;
     std::chrono::milliseconds miliseconds;
@@ -48,7 +61,8 @@ int main()
     
     renderer->getMediaInfo();
     renderer->getPositionInfo();
-
+    renderer->getTransportInfo();
+    renderer->getTransportSettings();
 
     rlutil::getkey();
 

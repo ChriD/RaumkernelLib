@@ -44,19 +44,37 @@ namespace Raumkernel
                 MediaRenderer_RaumfeldVirtual();
                 virtual ~MediaRenderer_RaumfeldVirtual();
 
-                /*
-                BendAvTransportUri
-                LikeCurrentTrack
-                UnlickCurrentTrack
-                startsleeptimer
-
-                EXPORT virtual void setRoomMute(std::string _roomUDN, bool _mute, bool _sync = true);
-                EXPORT virtual void setRoomVolume(std::string _roomUDN, boost::uint8_t _volume, bool _sync = true);
-                EXPORT virtual void changeVolume(boost::int8_t _amount, bool _sync = true);
-                EXPORT virtual bool getRoomMute(std::string _roomUDN);                
-                EXPORT virtual boost::uint8_t  getRoomVolume(std::string _roomUDN);
-                
+                /**               
+                * use this to change the uri while playing instead of setAvTransportUri 
+                * (set will lead to stop the current track/link from playing)
                 */
+                EXPORT virtual void bendAvTransportUri(std::string _avTransportUri, std::string _avTransportUriMetaData, bool _sync = true);
+                /**
+                * function not used/tested in raumfeld firmware until now (20160114)
+                */
+                EXPORT virtual void startSleepTimer(std::int16_t _instanceId, std::uint16_t _secondsUntilSleep, std::int16_t _secondsForVolumeRamp, bool _sync = true);
+
+                /**
+                * use this to set the mute state of a room
+                */
+                EXPORT virtual void setRoomMute(std::string _roomUDN, bool _mute, bool _sync = true);
+                /**
+                * use this to get the mute state of a room
+                */
+                EXPORT virtual bool getRoomMute(std::string _roomUDN, bool _sync = true);
+                /**
+                * use this to set the volume value of a room
+                */
+                EXPORT virtual void setRoomVolume(std::string _roomUDN, std::uint32_t _volume, bool _sync = true);
+                /**
+                * use this to get the volume value of a room
+                */
+                EXPORT virtual std::uint32_t getRoomVolume(std::string _roomUDN, bool _sync = true);
+                /**
+                * use this to change the volume value
+                */
+                EXPORT virtual void changeVolume(std::uint32_t _volumeDifference, bool _sync = true);
+
                              
             protected:                
                 virtual void createProxyAvTransport() override;
@@ -76,6 +94,20 @@ namespace Raumkernel
                 virtual AvTransportSettings getTransportSettingsProxy(bool _sync = true) override;
                 virtual void setAvTransportUriProxy(std::string _avTransportUri, std::string _avTransportUriMetaData, bool _sync = true) override;
 
+                virtual void bendAvTransportUriProxy(std::string _avTransportUri, std::string _avTransportUriMetaData, bool _sync = true);
+                virtual void startSleepTimerProxy(std::int16_t _instanceId, std::uint16_t _secondsUntilSleep, std::int16_t _secondsForVolumeRamp, bool _sync = true);
+
+                virtual void setMuteProxy(bool _mute, bool _sync = true) override;
+                virtual void setVolumeProxy(std::uint32_t _volume, bool _sync = true) override;
+                virtual bool getMuteProxy(bool _sync = true) override;
+                virtual std::uint32_t getVolumeProxy(bool _sync = true) override;
+
+                virtual void setRoomMuteProxy(std::string _roomUDN, bool _mute, bool _sync = true);
+                virtual bool getRoomMuteProxy(std::string _roomUDN, bool _sync = true);
+                virtual void setRoomVolumeProxy(std::string _roomUDN, std::uint32_t, bool _sync = true);
+                virtual std::uint32_t getRoomVolumeProxy(std::string _roomUDN, bool _sync = true);
+                virtual void changeVolumeProxy(std::uint32_t _volumeDifference, bool _sync = true);
+
                 virtual void onPlayExecuted(OpenHome::Net::IAsync& _aAsync) override;
                 virtual void onStopExecuted(OpenHome::Net::IAsync& _aAsync) override;
                 virtual void onPauseExecuted(OpenHome::Net::IAsync& _aAsync) override;
@@ -88,6 +120,27 @@ namespace Raumkernel
                 virtual void onSetAvTransportUriExecuted(OpenHome::Net::IAsync& _aAsync) override;
                 virtual void onGetTransportInfoExecuted(OpenHome::Net::IAsync& _aAsync) override;
                 virtual void onGetTransportSettingsExecuted(OpenHome::Net::IAsync& _aAsync) override;
+
+                virtual void onBendAvTransportUriExecuted(OpenHome::Net::IAsync& _aAsync);
+                virtual void onStartSleepTimerExecuted(OpenHome::Net::IAsync& _aAsync);
+
+                virtual void onSetMuteExecuted(OpenHome::Net::IAsync& _aAsync) override;
+                virtual void onSetVolumeExecuted(OpenHome::Net::IAsync& _aAsync) override;
+                virtual void onGetMuteExecuted(OpenHome::Net::IAsync& _aAsync) override;
+                virtual void onGetVolumeExecuted(OpenHome::Net::IAsync& _aAsync) override;
+
+                virtual void onSetRoomMuteExecuted(OpenHome::Net::IAsync& _aAsync);
+                virtual void onGetRoomMuteExecuted(OpenHome::Net::IAsync& _aAsync);
+                virtual void onSetRoomVolumeExecuted(OpenHome::Net::IAsync& _aAsync);
+                virtual void onGetRoomVolumeExecuted(OpenHome::Net::IAsync& _aAsync);
+                virtual void onChangeVolumeExecuted(OpenHome::Net::IAsync& _aAsync);
+
+                virtual void onAvTransportProxyPropertyChanged();
+                virtual void onRenderingControlProxyPropertyChanged();
+                virtual void oConnectionManagerProxyPropertyChanged();
+
+                sigs::signal<void(bool)> sigGetRoomMuteExecuted;
+                sigs::signal<void(std::int32_t)> sigGetRoomVolumeExecuted;
 
         };
 
