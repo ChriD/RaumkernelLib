@@ -174,9 +174,6 @@
     <ClInclude Include="includes\raumkernel\device\proxies\CpUpnpOrgRenderingControl_RaumfeldVirtual1.h">
       <Filter>includes\raumkernel\device\proxies</Filter>
     </ClInclude>
-    <ClInclude Include="includes\raumkernel\device\proxies\CpUpnpOrgAVTransport_RaumfeldVirtual1.h">
-      <Filter>device\proxies</Filter>
-    </ClInclude>
     <ClInclude Include="includes\raumkernel\device\deviceMediaRenderer_RF.h">
       <Filter>includes\raumkernel\device</Filter>
     </ClInclude>
@@ -185,6 +182,18 @@
     </ClInclude>
     <ClInclude Include="includes\raumkernel\manager\subscriptionReceiverManager.h">
       <Filter>includes\raumkernel\manager</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\raumkernel\device\deviceMediaServer.h">
+      <Filter>includes\raumkernel\device</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\raumkernel\device\deviceMediaServer_RF.h">
+      <Filter>includes\raumkernel\device</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\raumkernel\device\proxies\CpUpnpOrgContentDirectory_Raumfeld1.h">
+      <Filter>includes\raumkernel\device\proxies</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\raumkernel\device\proxies\CpUpnpOrgAVTransport_RaumfeldVirtual1.h">
+      <Filter>includes\raumkernel\device\proxies</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -254,9 +263,6 @@
     <ClCompile Include="device\proxies\CpUpnpOrgRenderingControl_RaumfeldVirtual1Std.cpp">
       <Filter>device\proxies</Filter>
     </ClCompile>
-    <ClCompile Include="device\proxies\CpUpnpOrgAVTransport_RaumfeldVirtual1Std.cpp">
-      <Filter>includes\raumkernel\device\proxies</Filter>
-    </ClCompile>
     <ClCompile Include="device\deviceMediaRenderer_RF.cpp">
       <Filter>device</Filter>
     </ClCompile>
@@ -265,6 +271,18 @@
     </ClCompile>
     <ClCompile Include="manager\subscriptionReceiverManager.cpp">
       <Filter>manager</Filter>
+    </ClCompile>
+    <ClCompile Include="device\deviceMediaServer.cpp">
+      <Filter>device</Filter>
+    </ClCompile>
+    <ClCompile Include="device\deviceMediaServer_RF.cpp">
+      <Filter>device</Filter>
+    </ClCompile>
+    <ClCompile Include="device\proxies\CpUpnpOrgContentDirectory_Raumfeld1Std.cpp">
+      <Filter>device\proxies</Filter>
+    </ClCompile>
+    <ClCompile Include="device\proxies\CpUpnpOrgAVTransport_RaumfeldVirtual1Std.cpp">
+      <Filter>device\proxies</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

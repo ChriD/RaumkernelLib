@@ -22,29 +22,34 @@
 //
 
 #pragma once
-#ifndef RAUMKERNEL_DEVICEMEDIARENDERER_RF_H
-#define RAUMKERNEL_DEVICEMEDIARENDERER_RF_H
+#ifndef RAUMKERNEL_DEVICEMEDIARSERVER_RF_H
+#define RAUMKERNEL_DEVICEMEDIARSERVER_RF_H
 
-#include <OpenHome/Net/Cpp/OhNet.h>
-#include <OpenHome/Net/Cpp/CpProxy.h>
-#include <raumkernel/device/deviceMediaRenderer.h>
-
+#include <raumkernel/device/deviceMediaServer.h>
+#include <raumkernel/device/proxies/CpUpnpOrgContentDirectory_Raumfeld1.h>
+#include <raumkernel/device/proxies/CpUpnpOrgConnectionManager1.h>
 
 
 namespace Raumkernel
 {
     namespace Devices
-    {       
-        class MediaRenderer_Raumfeld : public MediaRenderer
+    {
+        class MediaServer_Raumfeld : public MediaServer
         {
             public:
-                MediaRenderer_Raumfeld();
-                virtual ~MediaRenderer_Raumfeld();               
+                MediaServer_Raumfeld();
+                virtual ~MediaServer_Raumfeld();
+
+            protected:
+                virtual void createProxyContentDirectory() override;
+                virtual void createProxyConnectionManager() override;
+              
+                virtual void onContentDirectoryProxyPropertyChanged() override;
+                virtual void onContentDirectoryProxyContainerUpdateIdsChanged() override;
+                virtual void oConnectionManagerProxyPropertyChanged() override;                
+
         };
 
     }
-
 }
-
-
 #endif

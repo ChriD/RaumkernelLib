@@ -25,8 +25,8 @@ private:
 };
 
 SyncGetSearchCapabilitiesUpnpOrgContentDirectory1Cpp::SyncGetSearchCapabilitiesUpnpOrgContentDirectory1Cpp(CpProxyUpnpOrgContentDirectory1Cpp& aProxy, std::string& aSearchCaps)
-    : iService(aProxy)
-    , iSearchCaps(aSearchCaps)
+: iService(aProxy)
+, iSearchCaps(aSearchCaps)
 {
 }
 
@@ -48,8 +48,8 @@ private:
 };
 
 SyncGetSortCapabilitiesUpnpOrgContentDirectory1Cpp::SyncGetSortCapabilitiesUpnpOrgContentDirectory1Cpp(CpProxyUpnpOrgContentDirectory1Cpp& aProxy, std::string& aSortCaps)
-    : iService(aProxy)
-    , iSortCaps(aSortCaps)
+: iService(aProxy)
+, iSortCaps(aSortCaps)
 {
 }
 
@@ -71,8 +71,8 @@ private:
 };
 
 SyncGetSystemUpdateIDUpnpOrgContentDirectory1Cpp::SyncGetSystemUpdateIDUpnpOrgContentDirectory1Cpp(CpProxyUpnpOrgContentDirectory1Cpp& aProxy, uint32_t& aId)
-    : iService(aProxy)
-    , iId(aId)
+: iService(aProxy)
+, iId(aId)
 {
 }
 
@@ -97,11 +97,11 @@ private:
 };
 
 SyncBrowseUpnpOrgContentDirectory1Cpp::SyncBrowseUpnpOrgContentDirectory1Cpp(CpProxyUpnpOrgContentDirectory1Cpp& aProxy, std::string& aResult, uint32_t& aNumberReturned, uint32_t& aTotalMatches, uint32_t& aUpdateID)
-    : iService(aProxy)
-    , iResult(aResult)
-    , iNumberReturned(aNumberReturned)
-    , iTotalMatches(aTotalMatches)
-    , iUpdateID(aUpdateID)
+: iService(aProxy)
+, iResult(aResult)
+, iNumberReturned(aNumberReturned)
+, iTotalMatches(aTotalMatches)
+, iUpdateID(aUpdateID)
 {
 }
 
@@ -126,11 +126,11 @@ private:
 };
 
 SyncSearchUpnpOrgContentDirectory1Cpp::SyncSearchUpnpOrgContentDirectory1Cpp(CpProxyUpnpOrgContentDirectory1Cpp& aProxy, std::string& aResult, uint32_t& aNumberReturned, uint32_t& aTotalMatches, uint32_t& aUpdateID)
-    : iService(aProxy)
-    , iResult(aResult)
-    , iNumberReturned(aNumberReturned)
-    , iTotalMatches(aTotalMatches)
-    , iUpdateID(aUpdateID)
+: iService(aProxy)
+, iResult(aResult)
+, iNumberReturned(aNumberReturned)
+, iTotalMatches(aTotalMatches)
+, iUpdateID(aUpdateID)
 {
 }
 
@@ -153,9 +153,9 @@ private:
 };
 
 SyncCreateObjectUpnpOrgContentDirectory1Cpp::SyncCreateObjectUpnpOrgContentDirectory1Cpp(CpProxyUpnpOrgContentDirectory1Cpp& aProxy, std::string& aObjectID, std::string& aResult)
-    : iService(aProxy)
-    , iObjectID(aObjectID)
-    , iResult(aResult)
+: iService(aProxy)
+, iObjectID(aObjectID)
+, iResult(aResult)
 {
 }
 
@@ -176,7 +176,7 @@ private:
 };
 
 SyncDestroyObjectUpnpOrgContentDirectory1Cpp::SyncDestroyObjectUpnpOrgContentDirectory1Cpp(CpProxyUpnpOrgContentDirectory1Cpp& aProxy)
-    : iService(aProxy)
+: iService(aProxy)
 {
 }
 
@@ -197,7 +197,7 @@ private:
 };
 
 SyncUpdateObjectUpnpOrgContentDirectory1Cpp::SyncUpdateObjectUpnpOrgContentDirectory1Cpp(CpProxyUpnpOrgContentDirectory1Cpp& aProxy)
-    : iService(aProxy)
+: iService(aProxy)
 {
 }
 
@@ -219,8 +219,8 @@ private:
 };
 
 SyncImportResourceUpnpOrgContentDirectory1Cpp::SyncImportResourceUpnpOrgContentDirectory1Cpp(CpProxyUpnpOrgContentDirectory1Cpp& aProxy, uint32_t& aTransferID)
-    : iService(aProxy)
-    , iTransferID(aTransferID)
+: iService(aProxy)
+, iTransferID(aTransferID)
 {
 }
 
@@ -242,8 +242,8 @@ private:
 };
 
 SyncExportResourceUpnpOrgContentDirectory1Cpp::SyncExportResourceUpnpOrgContentDirectory1Cpp(CpProxyUpnpOrgContentDirectory1Cpp& aProxy, uint32_t& aTransferID)
-    : iService(aProxy)
-    , iTransferID(aTransferID)
+: iService(aProxy)
+, iTransferID(aTransferID)
 {
 }
 
@@ -264,7 +264,7 @@ private:
 };
 
 SyncStopTransferResourceUpnpOrgContentDirectory1Cpp::SyncStopTransferResourceUpnpOrgContentDirectory1Cpp(CpProxyUpnpOrgContentDirectory1Cpp& aProxy)
-    : iService(aProxy)
+: iService(aProxy)
 {
 }
 
@@ -288,10 +288,10 @@ private:
 };
 
 SyncGetTransferProgressUpnpOrgContentDirectory1Cpp::SyncGetTransferProgressUpnpOrgContentDirectory1Cpp(CpProxyUpnpOrgContentDirectory1Cpp& aProxy, std::string& aTransferStatus, std::string& aTransferLength, std::string& aTransferTotal)
-    : iService(aProxy)
-    , iTransferStatus(aTransferStatus)
-    , iTransferLength(aTransferLength)
-    , iTransferTotal(aTransferTotal)
+: iService(aProxy)
+, iTransferStatus(aTransferStatus)
+, iTransferLength(aTransferLength)
+, iTransferTotal(aTransferTotal)
 {
 }
 
@@ -312,7 +312,7 @@ private:
 };
 
 SyncDeleteResourceUpnpOrgContentDirectory1Cpp::SyncDeleteResourceUpnpOrgContentDirectory1Cpp(CpProxyUpnpOrgContentDirectory1Cpp& aProxy)
-    : iService(aProxy)
+: iService(aProxy)
 {
 }
 
@@ -334,8 +334,8 @@ private:
 };
 
 SyncCreateReferenceUpnpOrgContentDirectory1Cpp::SyncCreateReferenceUpnpOrgContentDirectory1Cpp(CpProxyUpnpOrgContentDirectory1Cpp& aProxy, std::string& aNewID)
-    : iService(aProxy)
-    , iNewID(aNewID)
+: iService(aProxy)
+, iNewID(aNewID)
 {
 }
 
@@ -346,7 +346,7 @@ void SyncCreateReferenceUpnpOrgContentDirectory1Cpp::CompleteRequest(IAsync& aAs
 
 
 CpProxyUpnpOrgContentDirectory1Cpp::CpProxyUpnpOrgContentDirectory1Cpp(CpDeviceCpp& aDevice)
-    : CpProxy("schemas-upnp-org", "ContentDirectory", 1, aDevice.Device())
+: CpProxy("schemas-upnp-org", "ContentDirectory", 1, aDevice.Device())
 {
     OpenHome::Net::Parameter* param;
     TChar** allowedValues;

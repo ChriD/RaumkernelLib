@@ -79,7 +79,18 @@ namespace Raumkernel
                 * do not forget to lock / unock the internal list when using the media renderer object
                 */
                 EXPORT std::shared_ptr<Devices::MediaRenderer> getMediaRenderer(std::string _udn);
-
+                /**
+                * Returns a shared pointer to a media server device
+                * Returns nullptr if no devive was found!
+                * do not forget to lock / unock the internal list when using the media server object
+                */
+                EXPORT std::shared_ptr<Devices::MediaServer> getMediaServer(std::string _udn);
+                /**
+                * Returns a shared pointer to  theraumfeld media server device
+                * Returns nullptr if media server was not found!
+                * do not forget to lock / unock the internal list when using the media server object
+                */
+                EXPORT std::shared_ptr<Devices::MediaServer_Raumfeld> getRaumfeldMediaServer();
 
                 /**
                 * this signal will be fired if a media renderer was added to the internal list. 
@@ -93,11 +104,18 @@ namespace Raumkernel
                 * Be aware that calling methods on the renderer may fail!
                 */
                 sigs::signal<void(std::shared_ptr<Devices::MediaRenderer>)> sigMediaRendererRemoved;
-                //sigs::signal<void(std::shared_ptr<Devices::MediaServer>)> sigMediaServerAdded;
-                //sigs::signal<void(std::shared_ptr<Devices::MediaServer>)> sigMediaServerRemoved;
-                //sigs::signal<void(std::shared_ptr<Devices::ConfigDevice>)> sigConfigDeviceAdded;
-                //sigs::signal<void(std::shared_ptr<Devices::ConfigDevice>)> sigConfigDeviceRemoved;
-
+                /**
+                * this signal will be fired if a media server was added to the internal list.
+                * Be aware that this signal is not within the mutexlock scope of the list
+                * Therefore if you want to call any method on the server you should lock the deviceManager list
+                */
+                sigs::signal<void(std::shared_ptr<Devices::MediaServer>)> sigMediaServerAdded;
+                /**
+                * this signal will be fired if a media server was removed from the internal list.
+                * Be aware that this signal is not within the mutexlock scope of the list
+                * Be aware that calling methods on the server may fail!
+                */
+                sigs::signal<void(std::shared_ptr<Devices::MediaServer>)> sigMediaServerRemoved;              
                 /**
                 * this signal will be fired if a usable device (MediaServer, MediaRenderer, ...) was added to the internal list.
                 * Be aware that this signal is not within the mutexlock scope of the list
@@ -107,15 +125,22 @@ namespace Raumkernel
 
             protected:
               
-                // this list holds references to all the UPNP devices found by the UPNP control point, no matter if they ar usable by th kenrel or not
+                // this map holds references to all the UPNP devices found by the UPNP control point, no matter if they ar usable by th kenrel or not
                 std::unordered_map<std::string, OpenHome::Net::CpDeviceCpp*> upnpDeviceMap;
 
+                // this map holds all the media renderer devices found, no matter if they are virtual ones or not
                 std::unordered_map<std::string, std::shared_ptr<Devices::MediaRenderer>> mediaRendererMap;
-                //std::unordered_map<std::string, std::shared_ptr<Devices::MediaServer>> mediaServersMap;
-                //std::shared_ptr<Devices::ConfigDevice>
+
+                // this map holds all the media server devices found, no matter if they are raumfeld media servers or not
+                // but in fact only the raumfeld media server will be used
+                std::unordered_map<std::string, std::shared_ptr<Devices::MediaServer>> mediaServerMap;                
 
                 // a mutex that will secure our device lists
-                std::mutex		mutexDeviceLists;
+                std::mutex mutexDeviceLists;
+
+                // UDN of the raumfeld media server 
+                // (this will be the raumfeld media server of course)
+                std::string raumfeldMediaServerUDN;
 
                
 

@@ -74,10 +74,18 @@ namespace Raumkernel
                         mediaRendererMap.insert(std::make_pair(deviceUDN, std::dynamic_pointer_cast<Devices::MediaRenderer>(device)));
                         logDebug("Media Renderer '" + friendlyName + "' is now useable!", CURRENT_POSITION);                       
                     }
-                    // elseIf(...)
-
-                    // TODO: Add to renderer or media server list
-                    // ...
+                    else if (std::dynamic_pointer_cast<Devices::MediaServer>(device))
+                    {
+                        if (mediaServerMap.find(deviceUDN) != mediaServerMap.end())
+                            mediaServerMap.erase(deviceUDN);
+                        mediaServerMap.insert(std::make_pair(deviceUDN, std::dynamic_pointer_cast<Devices::MediaServer>(device)));
+                        logDebug("Media Server '" + friendlyName + "' is now useable!", CURRENT_POSITION);
+                        
+                        // if its the raumfeld media server we will store the udn so we can find him any time we want in our list
+                        if (std::dynamic_pointer_cast<Devices::MediaServer_Raumfeld>(device))
+                            raumfeldMediaServerUDN = Tools::CommonUtil::FormatUDN(deviceUDN);
+                    }
+                  
                 }
             }
             catch (Raumkernel::Exception::RaumkernelException &e)
@@ -105,9 +113,9 @@ namespace Raumkernel
 
             unlockDeviceList(); 
 
-            // list is unlocked. now fire signals
-            //sigMediaRendererAdded.fire(std::dynamic_pointer_cast<Devices::MediaRenderer>(device));    
+            // list is unlocked. now fire signals           
             sigMediaRendererAdded.fire_if(std::dynamic_pointer_cast<Devices::MediaRenderer>(device) != nullptr, std::dynamic_pointer_cast<Devices::MediaRenderer>(device));
+            sigMediaServerAdded.fire_if(std::dynamic_pointer_cast<Devices::MediaServer>(device) != nullptr, std::dynamic_pointer_cast<Devices::MediaServer>(device));
             sigDeviceListChanged.fire();
         }
 
@@ -149,7 +157,20 @@ namespace Raumkernel
                     logDebug("Media Renderer '" + friendlyName + "' removed", CURRENT_POSITION);
                 }
 
-                // ...
+                // remove from media servers map
+                if (mediaServerMap.find(deviceUDN) != mediaServerMap.end())
+                {
+                    device = (mediaServerMap.find(deviceUDN)->second);
+                    device->setCpDevice(nullptr);
+                    
+                    // well, we lost our raumfeld media server. That's too bad
+                    if (std::dynamic_pointer_cast<Devices::MediaServer_Raumfeld>(device))
+                        raumfeldMediaServerUDN = "";
+
+                    mediaServerMap.erase(deviceUDN);
+                    logDebug("Media Server '" + friendlyName + "' removed", CURRENT_POSITION);
+                }
+
             }
             catch (Raumkernel::Exception::RaumkernelException &e)
             {
@@ -179,6 +200,7 @@ namespace Raumkernel
             if (device != nullptr)
             {
                 sigMediaRendererAdded.fire_if(std::dynamic_pointer_cast<Devices::MediaRenderer>(device) != nullptr, std::dynamic_pointer_cast<Devices::MediaRenderer>(device));
+                sigMediaServerAdded.fire_if(std::dynamic_pointer_cast<Devices::MediaServer>(device) != nullptr, std::dynamic_pointer_cast<Devices::MediaServer>(device));
             }
             sigDeviceListChanged.fire();
         }
@@ -194,6 +216,32 @@ namespace Raumkernel
             auto device = (mediaRendererMap.find(_udn)->second);
             return device;
         }
+
+
+        std::shared_ptr<Devices::MediaServer> DeviceManager::getMediaServer(std::string _udn)
+        {
+            std::lock_guard<std::mutex> lock(mutexDeviceLists);
+
+            _udn = Tools::CommonUtil::FormatUDN(_udn);
+            if (mediaServerMap.find(_udn) == mediaServerMap.end())
+                return nullptr;
+            auto device = (mediaServerMap.find(_udn)->second);
+            return device;
+        }
+
+
+        std::shared_ptr<Devices::MediaServer_Raumfeld> DeviceManager::getRaumfeldMediaServer()
+        {
+            std::lock_guard<std::mutex> lock(mutexDeviceLists);
+
+            if (raumfeldMediaServerUDN.empty())
+                return nullptr;
+            if (mediaServerMap.find(raumfeldMediaServerUDN) == mediaServerMap.end())
+                return nullptr;
+            auto device = (mediaServerMap.find(raumfeldMediaServerUDN)->second);
+            return std::dynamic_pointer_cast<Devices::MediaServer_Raumfeld>(device);
+        }
+
 
     }
 }

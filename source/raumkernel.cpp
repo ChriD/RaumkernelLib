@@ -7,6 +7,8 @@ namespace Raumkernel
 
     Raumkernel::Raumkernel() : RaumkernelBaseMgr()
     {
+        // TODO: Subscribe to mediaServerAdded/Delete signals. That will show us the RF System is online if the RF Media Server is going online and we do have a valid "i am alive" ping
+        // Of course not here :)
     }
 
 

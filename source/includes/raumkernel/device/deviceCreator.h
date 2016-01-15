@@ -30,6 +30,8 @@
 #include <raumkernel/device/device.h>
 #include <raumkernel/device/deviceMediaRenderer.h>
 #include <raumkernel/device/deviceMediaRenderer_RFVirtual.h>
+#include <raumkernel/device/deviceMediaServer.h>
+#include <raumkernel/device/deviceMediaServer_RF.h>
 #include <raumkernel/xml/rapidxml.hpp>
 
 #include <OpenHome/Net/Cpp/OhNet.h>
@@ -48,13 +50,14 @@ namespace Raumkernel
                 virtual ~DeviceCreator();
                 /**
                 * Not intended for external use
-                * Please use the 'virtual' media renderer!
+                * Creates a device from a device xml gathered by upnp discovery
                 */
                 std::shared_ptr<Devices::Device>  createDeviceFromDeviceXML(std::string _deviceXML);
                 
             protected:
-                void setDeviceInformationFromDeviceXML(std::shared_ptr<Device> _device, rapidxml::xml_node<> *_deviceNode);
-                std::shared_ptr<Devices::MediaRenderer> createMediaRendererFromDeviceXML(std::string _deviceXML);
+                void setDeviceInformationFromDeviceXML(std::shared_ptr<Device> _device, rapidxml::xml_node<> *_deviceNode);                           
+                std::shared_ptr<Devices::MediaRenderer> createMediaRendererFromDeviceNode(rapidxml::xml_node<> *_deviceNode);
+                std::shared_ptr<Devices::MediaServer> createMediaServerFromDeviceNode(rapidxml::xml_node<> *_deviceNode);
         };
 
     }

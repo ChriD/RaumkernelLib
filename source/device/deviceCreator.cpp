@@ -48,7 +48,6 @@ namespace Raumkernel
             valueNode = deviceNode->first_node("serialNumber", 0, false);
             if (valueNode)
                 deviceSerialNumber = valueNode->value();
-
     
             _device->setLogObject(getLogObject());
             _device->setUDN(deviceUDN);
@@ -62,66 +61,13 @@ namespace Raumkernel
             _device->setManufacturerUrl(deviceManufacturerUrl);
         }
 
-
-        std::shared_ptr<Devices::MediaRenderer> DeviceCreator::createMediaRendererFromDeviceXML(std::string _deviceXML)
-        {
-            rapidxml::xml_document<> doc;
-            rapidxml::xml_node<> *deviceNode, *rootNode, *valueNode;
-            std::string deviceModelDescription, deviceManufacturer;            
-            std::shared_ptr<Devices::MediaRenderer> mediaRenderer;
-            bool isVirtualRenderer = false, isRaumfeldRenderer = false;
-
-            // to parse the string we have to put it ino char* (because c_str() returns const char*)
-            char* cstr = new char[_deviceXML.size() + 1];
-            strcpy(cstr, _deviceXML.c_str());
-            doc.parse<0>(cstr);
-
-            // find the root node which has to be the 'device' node	
-            rootNode = doc.first_node("root", 0, false);
-            if (!rootNode)
-            {
-                logError("Requested device XML from device does not contain root block!", CURRENT_POSITION);                
-                return nullptr;
-            }
-
-            // find the root node which has to be the 'device' node	
-            deviceNode = rootNode->first_node("device", 0, false);
-            if (!deviceNode)
-            {             
-                logError("Requested device XML from device does not contain device information!", CURRENT_POSITION);
-                return nullptr;
-            }
-
-            valueNode = deviceNode->first_node("manufacturer", 0, false);
-            if (valueNode)
-                deviceManufacturer = valueNode->value();
-            valueNode = deviceNode->first_node("modelDescription", 0, false);
-            if (valueNode)
-                deviceModelDescription = valueNode->value();
-                                                    
-            isVirtualRenderer = deviceModelDescription.find(getManagerEngineer()->getSettingsManager()->getValue(Manager::SETTINGS_RAUMKERNEL_RAUMFELDDESCRIPTIONVIRTUALMEDIAPLAYER)) != std::string::npos;
-            isRaumfeldRenderer = deviceManufacturer.find(getManagerEngineer()->getSettingsManager()->getValue(Manager::SETTINGS_RAUMKERNEL_RAUMFELDMANUFACTURER)) != std::string::npos;
-
-            if (isRaumfeldRenderer && isVirtualRenderer)
-                mediaRenderer = std::shared_ptr<MediaRenderer_RaumfeldVirtual>(new MediaRenderer_RaumfeldVirtual());
-            else
-                mediaRenderer = std::shared_ptr<MediaRenderer>(new MediaRenderer());           
-
-            setDeviceInformationFromDeviceXML(mediaRenderer, deviceNode);
-
-            // subscribe to media renderer state change! if media renderer comes to another state or data is updated, it will be called!
-            // TODO Own suscrive class? 
-            //mediaRenderer->SubscribeSignalMediaRendererStateChanged(typeSignalMediaRendererStateChanged::slot_type(boost::bind(&DeviceManager::OnMediaRendererStateChanged, this, _1)));
-
-            return mediaRenderer;
-        }
-
-
+        
         std::shared_ptr<Devices::Device> DeviceCreator::createDeviceFromDeviceXML(std::string _deviceXML)
         {
             rapidxml::xml_document<> doc;
             rapidxml::xml_node<> *deviceNode, *rootNode, *valueNode;           
             std::shared_ptr<Devices::MediaRenderer> mediaRenderer = nullptr;
+            std::shared_ptr<Devices::MediaServer > mediaServer = nullptr;
             std::shared_ptr<Devices::Device> createdDevice = nullptr;;
             std::string deviceType, deviceUDN;     
 
@@ -167,7 +113,7 @@ namespace Raumkernel
             if (deviceType.find(getManagerEngineer()->getSettingsManager()->getValue(Manager::SETTINGS_RAUMKERNEL_MEDIARENDERERIDENTIFICATION)) != std::string::npos)
             {
                 logDebug("Createing device (" + deviceUDN  + ")", CURRENT_POSITION);                
-                mediaRenderer = createMediaRendererFromDeviceXML(_deviceXML);
+                mediaRenderer = createMediaRendererFromDeviceNode(deviceNode);
                 if (mediaRenderer)
                 {
                     createdDevice = mediaRenderer;
@@ -182,28 +128,18 @@ namespace Raumkernel
             // in fact there can only be one raumfeld media server we can use
             else if (deviceType.find(getManagerEngineer()->getSettingsManager()->getValue(Manager::SETTINGS_RAUMKERNEL_MEDIASERVERIDENTIFICATION)) != std::string::npos)
             {
-                /*
-                mediaServer = this->CreateMediaServerObjectFromDeviceXML(_deviceXML);
+                
+                mediaServer = createMediaServerFromDeviceNode(deviceNode);
                 if (mediaServer)
-                {
-                    if (mediaServer->IsRaumfeldMediaServer())
-                    {
-                        createdDevice = mediaServer;
-                        logDebug("Media Server device created (" + deviceUDN + ")", CURRENT_POSITION);
-                    }
-                    else
-                    {
-                        // we can not do anything with a media server which is no raumfeld media server, so....
-                        // maybee in future we can us it in any way... But for now....
-                        delete mediaServer;
-                    }
-
+                {                   
+                    createdDevice = mediaServer;
+                    logDebug("Media Server device created (" + deviceUDN + ")", CURRENT_POSITION);                    
                 }
                 else
                 {
-                    this->Log(LogType::LOGERROR, "Object for device '" + deviceType + "' with UDN: '" + deviceUDN + "' can not be created", __FUNCTION__);
+                    logError("Object for device '" + deviceType + "' with UDN: '" + deviceUDN + "' could not be created", CURRENT_POSITION);
                 }
-                */
+                
             }
             else
             {
@@ -211,6 +147,58 @@ namespace Raumkernel
             }            
 
             return createdDevice;
+        }
+
+
+        std::shared_ptr<Devices::MediaRenderer> DeviceCreator::createMediaRendererFromDeviceNode(rapidxml::xml_node<> *_deviceNode)
+        {  
+            rapidxml::xml_node<> *valueNode;
+            std::string deviceModelDescription, deviceManufacturer;
+            std::shared_ptr<Devices::MediaRenderer> mediaRenderer;
+            bool isVirtualRenderer = false, isRaumfeldRenderer = false;            
+
+            valueNode = _deviceNode->first_node("manufacturer", 0, false);
+            if (valueNode)
+                deviceManufacturer = valueNode->value();
+            valueNode = _deviceNode->first_node("modelDescription", 0, false);
+            if (valueNode)
+                deviceModelDescription = valueNode->value();
+
+            isVirtualRenderer = deviceModelDescription.find(getManagerEngineer()->getSettingsManager()->getValue(Manager::SETTINGS_RAUMKERNEL_RAUMFELDDESCRIPTIONVIRTUALMEDIAPLAYER)) != std::string::npos;
+            isRaumfeldRenderer = deviceManufacturer.find(getManagerEngineer()->getSettingsManager()->getValue(Manager::SETTINGS_RAUMKERNEL_RAUMFELDMANUFACTURER)) != std::string::npos;
+
+            if (isRaumfeldRenderer && isVirtualRenderer)
+                mediaRenderer = std::shared_ptr<MediaRenderer_RaumfeldVirtual>(new MediaRenderer_RaumfeldVirtual());
+            else
+                mediaRenderer = std::shared_ptr<MediaRenderer>(new MediaRenderer());
+
+            setDeviceInformationFromDeviceXML(mediaRenderer, _deviceNode);
+
+            return mediaRenderer;
+        }
+
+
+        std::shared_ptr<Devices::MediaServer> DeviceCreator::createMediaServerFromDeviceNode(rapidxml::xml_node<> *_deviceNode)
+        {
+            rapidxml::xml_node<> *valueNode;
+            std::string deviceModelDescription, deviceManufacturer;
+            std::shared_ptr<Devices::MediaServer> mediaServer;
+            bool isRaumfeldMediaServer = false;           
+
+            valueNode = _deviceNode->first_node("manufacturer", 0, false);
+            if (valueNode)
+                deviceManufacturer = valueNode->value();          
+                        
+            isRaumfeldMediaServer = deviceManufacturer.find(getManagerEngineer()->getSettingsManager()->getValue(Manager::SETTINGS_RAUMKERNEL_RAUMFELDMANUFACTURER)) != std::string::npos;
+
+            if (isRaumfeldMediaServer)
+                mediaServer = std::shared_ptr<MediaServer_Raumfeld>(new MediaServer_Raumfeld());
+            else
+                mediaServer = std::shared_ptr<MediaServer>(new MediaServer());
+            
+            setDeviceInformationFromDeviceXML(mediaServer, _deviceNode);
+
+            return mediaServer;
         }
     }
 }
