@@ -9,11 +9,20 @@ namespace Raumkernel
         UPNPManager::UPNPManager() : ManagerBase()
         {    
             upupDeviceListAll = nullptr;
+            stopThreads = false;
+            refreshDeviceListThreadStarted = false;
         }
 
 
         UPNPManager::~UPNPManager()
         {
+            stopThreads = true;
+            if (refreshDeviceListThreadStarted && refreshDeviceListThreadObject.joinable())
+            {
+                logDebug("Waiting for DeviceRefeshList thread to finish (This may take some time...)", CURRENT_POSITION);
+                refreshDeviceListThreadObject.join();
+            }
+
             logDebug("Closing OpenHome UPNP Control Stack", CURRENT_POSITION);
             OpenHome::Net::UpnpLibrary::Close();
         }
@@ -111,9 +120,26 @@ namespace Raumkernel
         void UPNPManager::discover()
         {           
             // start discover for all UPNP devices on the network. We may also get devices we are not interested in but the screening will be done by the 'DeviceManager'
-            OpenHome::Net::FunctorCpDeviceCpp functorDeviceFound = OpenHome::Net::MakeFunctorCpDeviceCpp(*this, &UPNPManager::OnDeviceFound);
-            OpenHome::Net::FunctorCpDeviceCpp functorDeviceLost = OpenHome::Net::MakeFunctorCpDeviceCpp(*this, &UPNPManager::OnDeviceLost);       
-            upupDeviceListAll = new OpenHome::Net::CpDeviceListCppUpnpAll(functorDeviceFound, functorDeviceLost);            
+            OpenHome::Net::FunctorCpDeviceCpp functorDeviceFound = OpenHome::Net::MakeFunctorCpDeviceCpp(*this, &UPNPManager::onDeviceFound);
+            OpenHome::Net::FunctorCpDeviceCpp functorDeviceLost = OpenHome::Net::MakeFunctorCpDeviceCpp(*this, &UPNPManager::onDeviceLost);       
+            upupDeviceListAll = new OpenHome::Net::CpDeviceListCppUpnpAll(functorDeviceFound, functorDeviceLost);   
+
+            // start  
+            if (!refreshDeviceListThreadStarted)
+            {
+                std::uint32_t refreshTime = 5000;
+                std::string refreshTimeString   = getManagerEngineer()->getSettingsManager()->getValue(Raumkernel::Manager::SETTINGS_RAUMKERNEL_UPNPREFRESHTIME);
+                if (refreshTimeString.empty())
+                {
+                    logWarning("UPNP refresh time is not set. Will use Standard value of " + std::to_string(refreshTime) + "ms", CURRENT_POSITION);
+                }
+                else
+                {
+                    refreshTime = std::stoi(refreshTimeString);
+                }
+                refreshDeviceListThreadObject = std::thread(&UPNPManager::refreshDeviceListThread, this, std::ref(stopThreads), refreshTime);
+                refreshDeviceListThreadStarted = true;
+            }
         }
 
         
@@ -125,9 +151,8 @@ namespace Raumkernel
         }
 
 
-        // DeviceManager::DeviceFound
         // will be called if a UPNP Device is found in the network
-        void UPNPManager::OnDeviceFound(OpenHome::Net::CpDeviceCpp& _device)
+        void UPNPManager::onDeviceFound(OpenHome::Net::CpDeviceCpp& _device)
         {
             std::string deviceFriendlyName;
             _device.GetAttribute("Upnp.FriendlyName", deviceFriendlyName);
@@ -136,14 +161,49 @@ namespace Raumkernel
         }
 
 
-        // DeviceManager::DeviceLost
         // will be called if a UPNP Device disappears from the network
-        void UPNPManager::OnDeviceLost(OpenHome::Net::CpDeviceCpp& _device)
+        void UPNPManager::onDeviceLost(OpenHome::Net::CpDeviceCpp& _device)
         {
             std::string deviceFriendlyName;
             _device.GetAttribute("Upnp.FriendlyName", deviceFriendlyName);
             logDebug("UPNP Device lost: " + deviceFriendlyName + "(" + _device.Udn() + ")", CURRENT_POSITION);
             getManagerEngineer()->getDeviceManager()->removeDevice(_device);
+        }
+
+   
+            
+        void UPNPManager::refreshDeviceListThread(std::atomic_bool &_stopThread, std::uint32_t _refreshTimeMS)
+        {                                           
+            while (!_stopThread)
+            {
+                try
+                {                    
+                    std::this_thread::sleep_for(std::chrono::milliseconds(_refreshTimeMS));
+                    logDebug("Refreshing UPNP device list", CURRENT_POSITION);
+                    refresh();
+                }
+                catch (Raumkernel::Exception::RaumkernelException &e)
+                {
+                    if (e.type() == Raumkernel::Exception::ExceptionType::EXCEPTIONTYPE_APPCRASH)
+                        throw e;
+                }
+                catch (std::exception &e)
+                {
+                    logError(e.what(), CURRENT_POSITION);
+                }
+                catch (std::string &e)
+                {
+                    logError(e, CURRENT_POSITION);
+                }
+                catch (OpenHome::Exception &e)
+                {
+                    logError(e.Message(), CURRENT_POSITION);;
+                }
+                catch (...)
+                {
+                    logError("Unknown exception!", CURRENT_POSITION);                    
+                }
+            }
         }
 
     }

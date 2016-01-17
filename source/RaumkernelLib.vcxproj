@@ -58,7 +58,7 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>_SCL_SECURE_NO_WARNINGS;%(PreprocessorDefinitions);_WIN32_WINNT=0x0501;_CRT_SECURE_NO_WARNINGS;WIN32;_DEBUG</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_SCL_SECURE_NO_WARNINGS;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions);_WIN32_WINNT=0x0501;_CRT_SECURE_NO_WARNINGS;WIN32;_DEBUG</PreprocessorDefinitions>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <AdditionalIncludeDirectories>D:\Develop\Raumfeld\Raumkernel2\source\includes;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
@@ -71,7 +71,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
-      <PreprocessorDefinitions>_SCL_SECURE_NO_WARNINGS;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_SCL_SECURE_NO_WARNINGS;_CRT_SECURE_NO_WARNINGS;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
     </ClCompile>
     <Link>
@@ -107,15 +107,20 @@
     <ClInclude Include="includes\raumkernel\device\proxies\CpUpnpOrgRenderingControl2.h" />
     <ClInclude Include="includes\raumkernel\device\proxies\CpUpnpOrgRenderingControl_RaumfeldVirtual1.h" />
     <ClInclude Include="includes\raumkernel\exception\exception.h" />
+    <ClInclude Include="includes\raumkernel\httpclient\happyhttp.h" />
+    <ClInclude Include="includes\raumkernel\httpclient\httpClient.h" />
+    <ClInclude Include="includes\raumkernel\httpclient\mongoose.h" />
     <ClInclude Include="includes\raumkernel\logger\logger.h" />
     <ClInclude Include="includes\raumkernel\logger\loggerAdapter.h" />
     <ClInclude Include="includes\raumkernel\logger\loggerBase.h" />
     <ClInclude Include="includes\raumkernel\manager\deviceManager.h" />
     <ClInclude Include="includes\raumkernel\manager\managerBase.h" />
     <ClInclude Include="includes\raumkernel\manager\managerEngineer.h" />
+    <ClInclude Include="includes\raumkernel\manager\requestManager.h" />
     <ClInclude Include="includes\raumkernel\manager\settingsManager.h" />
     <ClInclude Include="includes\raumkernel\manager\subscriptionReceiverManager.h" />
     <ClInclude Include="includes\raumkernel\manager\upnpManager.h" />
+    <ClInclude Include="includes\raumkernel\manager\zoneManager.h" />
     <ClInclude Include="includes\raumkernel\os\os.h" />
     <ClInclude Include="includes\raumkernel\raumkernel.h" />
     <ClInclude Include="includes\raumkernel\raumkernelBase.h" />
@@ -156,14 +161,19 @@
     <ClCompile Include="device\proxies\CpUpnpOrgRenderingControl1Std.cpp" />
     <ClCompile Include="device\proxies\CpUpnpOrgRenderingControl2Std.cpp" />
     <ClCompile Include="device\proxies\CpUpnpOrgRenderingControl_RaumfeldVirtual1Std.cpp" />
+    <ClCompile Include="httpclient\happyhttp.cpp" />
+    <ClCompile Include="httpclient\httpClient.cpp" />
+    <ClCompile Include="httpclient\mongoose.c" />
     <ClCompile Include="logger\logger.cpp" />
     <ClCompile Include="logger\loggerAdapter.cpp" />
     <ClCompile Include="manager\deviceManager.cpp" />
     <ClCompile Include="manager\managerBase.cpp" />
     <ClCompile Include="manager\managerEngineer.cpp" />
+    <ClCompile Include="manager\requestManager.cpp" />
     <ClCompile Include="manager\settingsManager.cpp" />
     <ClCompile Include="manager\subscriptionReceiverManager.cpp" />
     <ClCompile Include="manager\upnpManager.cpp" />
+    <ClCompile Include="manager\zoneManager.cpp" />
     <ClCompile Include="raumkernel.cpp" />
     <ClCompile Include="raumkernelBase.cpp" />
     <ClCompile Include="raumkernelBaseMgr.cpp" />

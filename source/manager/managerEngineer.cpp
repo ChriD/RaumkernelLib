@@ -11,6 +11,7 @@ namespace Raumkernel
             upnpManager = nullptr;
             deviceManager = nullptr;
             subscriptionReceiverManager = nullptr;
+            requestManager = nullptr;
         }
 
 
@@ -40,6 +41,16 @@ namespace Raumkernel
             logDebug("Create SubscriptionReceiver-Manager...", CURRENT_FUNCTION);
             subscriptionReceiverManager = std::shared_ptr<Manager::SubscriptionReceiverManager>(new Manager::SubscriptionReceiverManager());
             subscriptionReceiverManager->setLogObject(getLogObject());
+
+            // create the Request-Manager which will handle the requests to the RF-Host
+            logDebug("Create Request-Manager...", CURRENT_FUNCTION);
+            requestManager = std::shared_ptr<Manager::RequestManager>(new Manager::RequestManager());
+            requestManager->setLogObject(getLogObject());
+
+            // create the Zone-Manager which will handle the requests to the RF-Host
+            logDebug("Create Zoone-Manager...", CURRENT_FUNCTION);
+            zoneManager = std::shared_ptr<Manager::ZoneManager>(new Manager::ZoneManager());
+            zoneManager->setLogObject(getLogObject());
         }
 
 
@@ -65,6 +76,19 @@ namespace Raumkernel
         {
             return subscriptionReceiverManager;
         }
+
+
+        std::shared_ptr<RequestManager> ManagerEngineer::getRequestManager()
+        {
+            return requestManager;
+        }
+
+
+        std::shared_ptr<ZoneManager> ManagerEngineer::getZoneManager()
+        {
+            return zoneManager;
+        }
+
 
     }
 }

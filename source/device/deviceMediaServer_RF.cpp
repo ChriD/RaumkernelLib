@@ -77,5 +77,25 @@ namespace Raumkernel
             */
         }
 
+
+        void MediaServer_Raumfeld::searchThreadProxy(std::string _containerId, std::string _searchCriteria, std::string _extraData)
+        {
+            std::string	result = "";
+            std::uint32_t numberReturned = 0, totalMatches = 0, updateId = 0;
+            auto proxy = std::dynamic_pointer_cast<OpenHome::Net::CpProxyUpnpOrgContentDirectory_Raumfeld1Cpp>(getContentDirectoryProxy());
+            proxy->SyncSearch(_containerId, _searchCriteria, "*", 0, 0, "", result, numberReturned, totalMatches, updateId);
+            searchThreadExecuted(result, numberReturned, totalMatches, updateId, _extraData);
+        }
+
+
+        void MediaServer_Raumfeld::browseThreadProxy(std::string _containerId, std::string _browseFlag, std::string _extraData)
+        {
+            std::string	result = "";
+            std::uint32_t numberReturned = 0, totalMatches = 0, updateId = 0;
+            auto proxy = std::dynamic_pointer_cast<OpenHome::Net::CpProxyUpnpOrgContentDirectory_Raumfeld1Cpp>(getContentDirectoryProxy());
+            proxy->SyncBrowse(_containerId, _browseFlag, "*", 0, 0, "", result, numberReturned, totalMatches, updateId);
+            browseThreadExecuted(result, numberReturned, totalMatches, updateId, _extraData);
+        }
+
     }
 }

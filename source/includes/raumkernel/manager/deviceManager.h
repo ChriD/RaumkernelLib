@@ -66,13 +66,13 @@ namespace Raumkernel
                 * device lists should always be locked when updateing the list or when performing an action on any of those devices
                 * do not forget to unlock those lists again
                 */
-                void lockDeviceList();
+                EXPORT void lockDeviceList();
                 /**             
                 * unlocks the internal device lists
                 * device lists should always be locked when updateing the list or when performing an action on any of those devices
                 * do not forget to unlock those lists again
                 */
-                void unlockDeviceList();
+                EXPORT void unlockDeviceList();
                 /**
                 * Returns a shared pointer to a media renderer device
                 * Returns nullptr if no devive was found!
@@ -91,6 +91,11 @@ namespace Raumkernel
                 * do not forget to lock / unock the internal list when using the media server object
                 */
                 EXPORT std::shared_ptr<Devices::MediaServer_Raumfeld> getRaumfeldMediaServer();
+                /**
+                * Returns a string with the ip to the raumfeld host
+                * will be empty if host was not found
+                */
+                EXPORT std::string getRaumfeldHostIP();
 
                 /**
                 * this signal will be fired if a media renderer was added to the internal list. 
@@ -139,8 +144,12 @@ namespace Raumkernel
                 std::mutex mutexDeviceLists;
 
                 // UDN of the raumfeld media server 
-                // (this will be the raumfeld media server of course)
+                // will be empty if no media server is offline
                 std::string raumfeldMediaServerUDN;
+
+                // IP of the raumfeld host
+                // will be empty if system is offline
+                std::string raumfeldHostIP;
 
                
 

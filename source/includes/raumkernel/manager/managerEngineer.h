@@ -30,6 +30,8 @@
 #include <raumkernel/manager/upnpManager.h>
 #include <raumkernel/manager/deviceManager.h>
 #include <raumkernel/manager/subscriptionReceiverManager.h>
+#include <raumkernel/manager/requestManager.h>
+#include <raumkernel/manager/zoneManager.h>
 
 namespace Raumkernel
 {
@@ -49,12 +51,16 @@ namespace Raumkernel
                 EXPORT std::shared_ptr<UPNPManager> getUPNPManager();
                 EXPORT std::shared_ptr<DeviceManager> getDeviceManager();
                 EXPORT std::shared_ptr<SubscriptionReceiverManager> getSubscriptionReceiverManager();
+                EXPORT std::shared_ptr<RequestManager> getRequestManager();
+                EXPORT std::shared_ptr<ZoneManager> getZoneManager();
 
             protected:
                 std::shared_ptr<SettingsManager> settingsManager;
                 std::shared_ptr<UPNPManager> upnpManager;
                 std::shared_ptr<DeviceManager> deviceManager;
                 std::shared_ptr<SubscriptionReceiverManager> subscriptionReceiverManager;
+                std::shared_ptr<RequestManager> requestManager;
+                std::shared_ptr<ZoneManager> zoneManager;
         };
     }
 }

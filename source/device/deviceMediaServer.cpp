@@ -137,6 +137,164 @@ namespace Raumkernel
             // not needed
         }        
 
+        
+        // due to the fact that the UPNP Stack doesnt support lamdas and we ot no idea which sink called the callbak we do make a thread with async action		
+        void MediaServer::search(std::string _containerId, std::string _searchCriteria, std::string _extraData, bool _sync)
+        {
+            std::thread thread;   
+            thread = std::thread(&MediaServer::searchThread, this, _containerId, _searchCriteria, _extraData);
+            if (_sync)
+                thread.join();
+        }
+
+    
+        void MediaServer::searchThread(std::string _containerId, std::string _searchCriteria, std::string _extraData)
+        {          
+            if (!isContentDirectoryProxyAvailable())
+                return;
+
+            try
+            {
+                logDebug("Search contentDirectory for " + _containerId + ": " + _searchCriteria + " on device " + UDN, CURRENT_FUNCTION);                
+                searchThreadProxy(_containerId, _searchCriteria, _extraData);
+            }
+            catch (Raumkernel::Exception::RaumkernelException &e)
+            {
+                if (e.type() == Raumkernel::Exception::ExceptionType::EXCEPTIONTYPE_APPCRASH)
+                    throw e;
+                logServerError(e.what(), CURRENT_FUNCTION);
+            }
+            catch (std::exception &e)
+            {
+                logServerError(e.what(), CURRENT_FUNCTION);
+            }
+            catch (std::string &e)
+            {
+                logServerError(e, CURRENT_FUNCTION);
+            }
+            catch (OpenHome::Exception &e)
+            {
+                logServerError(e.Message(), CURRENT_FUNCTION);
+            }
+            catch (...)
+            {
+                logServerError("Unknown Exception", CURRENT_FUNCTION);
+            }
+
+        }
+
+
+        void MediaServer::searchThreadProxy(std::string _containerId, std::string _searchCriteria, std::string _extraData)
+        {
+            std::string	result = "";
+            std::uint32_t numberReturned = 0, totalMatches = 0, updateId = 0;
+            auto proxy = std::dynamic_pointer_cast<OpenHome::Net::CpProxyUpnpOrgContentDirectory1Cpp>(getContentDirectoryProxy());        
+            proxy->SyncSearch(_containerId, _searchCriteria, "*", 0, 0, "", result, numberReturned, totalMatches, updateId);
+            searchThreadExecuted(result, numberReturned, totalMatches, updateId, _extraData);
+        }
+        
+
+        // due to the fact that the UPNP Stack doesnt support lamdas and we ot no idea which sink called the callbak we do make a thread with async action°		
+        void MediaServer::browse(std::string _containerId, MediaServer_BrowseFlag _browseFlag, std::string _extraData, bool _sync)
+        {
+            std::thread thread;
+            thread = std::thread(&MediaServer::browseThread, this, _containerId, _browseFlag, _extraData);
+            if (_sync)
+                thread.join();
+        }
+
+
+        void MediaServer::browseThread(std::string _containerId, MediaServer_BrowseFlag _browseFlag, std::string _extraData)
+        {
+            std::string	browseFlag = "BrowseDirectChildren";            
+
+            if (!isContentDirectoryProxyAvailable())
+                return;
+
+            try
+            {
+                if (_browseFlag == MediaServer_BrowseFlag::MSBF_BrowseMetadata)
+                    browseFlag = "BrowseMetadata";
+                logDebug("Browse contentDirectory for " + _containerId + ": " + browseFlag + " on device " + UDN, CURRENT_FUNCTION);       
+                browseThreadProxy(_containerId, browseFlag, _extraData);
+              
+            }
+            catch (Raumkernel::Exception::RaumkernelException &e)
+            {
+                if (e.type() == Raumkernel::Exception::ExceptionType::EXCEPTIONTYPE_APPCRASH)
+                    throw e;
+                logServerError(e.what(), CURRENT_FUNCTION);
+            }
+            catch (std::exception &e)
+            {
+                logServerError(e.what(), CURRENT_FUNCTION);
+            }
+            catch (std::string &e)
+            {
+                logServerError(e, CURRENT_FUNCTION);
+            }
+            catch (OpenHome::Exception &e)
+            {
+                logServerError(e.Message(), CURRENT_FUNCTION);
+            }
+            catch (...)
+            {
+                logServerError("Unknown Exception", CURRENT_FUNCTION);
+            }
+
+        }
+
+
+        void MediaServer::browseThreadProxy(std::string _containerId, std::string _browseFlag, std::string _extraData)
+        {
+            std::string	result = "";
+            std::uint32_t numberReturned = 0, totalMatches = 0, updateId = 0;
+            auto proxy = std::dynamic_pointer_cast<OpenHome::Net::CpProxyUpnpOrgContentDirectory1Cpp>(getContentDirectoryProxy());
+            proxy->SyncBrowse(_containerId, _browseFlag, "*", 0, 0, "", result, numberReturned, totalMatches, updateId);
+            browseThreadExecuted(result, numberReturned, totalMatches, updateId, _extraData);
+        }
+
+
+        void MediaServer::searchThreadExecuted(std::string _result, std::uint32_t _numberReturned, std::uint32_t _totalMatches, std::uint32_t _updateId, std::string _extraData)
+        {
+            sigSearchExecuted.fire(_result, _numberReturned, _totalMatches, _updateId, _extraData);
+        }
+
+
+        void MediaServer::browseThreadExecuted(std::string _result, std::uint32_t _numberReturned, std::uint32_t _totalMatches, std::uint32_t _updateId, std::string _extraData)
+        {
+            sigBrowseExecuted.fire(_result, _numberReturned, _totalMatches, _updateId, _extraData);
+        }
+
+
+        std::string MediaServer::createAVTransportUri_Container(std::string _containerId, std::int32_t _trackIndex)
+        {
+            std::string uri;
+            std::string containerIdUri = _containerId;
+
+            uri = Raumkernel::Tools::UriUtil::encodeUriPart(UDN) + "?sid=" + Raumkernel::Tools::UriUtil::encodeUriPart("urn:upnp-org:serviceId:ContentDirectory") + "&cid=" + Raumkernel::Tools::UriUtil::encodeUriPart(containerIdUri) + "&md=0";
+            if (_trackIndex >= 0)
+                uri += "&fii=" + Raumkernel::Tools::UriUtil::encodeUriPart(std::to_string(_trackIndex));
+            uri = "dlna-playcontainer://" + uri;
+            // a valid transport uri looks like this!
+            //dlna-playcontainer://uuid%3Aed3bd3db-17b1-4dbe-82df-5201c78e632c?sid=urn%3Aupnp-org%3AserviceId%3AContentDirectory&cid=0%2FPlaylists%2FMyPlaylists%2FTest&md=0	
+            return uri;
+        }
+
+
+        std::string MediaServer::createAVTransportUri_Single(std::string _singleId)
+        {
+            std::string uri;
+            std::string singleIdUri = _singleId;
+
+            uri = Raumkernel::Tools::UriUtil::encodeUriPart(UDN) + "?sid=" + Raumkernel::Tools::UriUtil::encodeUriPart("urn:upnp-org:serviceId:ContentDirectory") + "&iid=" + Raumkernel::Tools::UriUtil::encodeUriPart(_singleId);
+            uri = "dlna-playsingle://" + uri;
+            // a valid transport uri looks like this!
+            //dlna-playsingle://uuid%3Aed3bd3db-17b1-4dbe-82df-5201c78e632c?sid=urn%3Aupnp-org%3AserviceId%3AContentDirectory&iid=0%2FRadioTime%2FLocalRadio%2Fs-s68932
+            return uri;
+        }
+
+
 
     }
 }

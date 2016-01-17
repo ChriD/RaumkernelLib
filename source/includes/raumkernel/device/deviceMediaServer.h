@@ -26,9 +26,11 @@
 #define RAUMKERNEL_DEVICEMEDIARSERVER_H
 
 
+#include <thread>
 #include <OpenHome/Net/Cpp/OhNet.h>
 #include <OpenHome/Net/Cpp/CpProxy.h>
 #include <raumkernel/signals/signals.hpp>
+#include <raumkernel/tools/uriUtil.h>
 #include <raumkernel/device/device.h>
 #include <raumkernel/device/proxies/CpUpnpOrgContentDirectory1.h>
 #include <raumkernel/device/proxies/CpUpnpOrgConnectionManager1.h>
@@ -38,11 +40,37 @@ namespace Raumkernel
 {
     namespace Devices
     {
+        enum class MediaServer_BrowseFlag { MSBF_BrowseDirectChildren, MSBF_BrowseMetadata };
+
         class MediaServer : public Device
         {
             public:
                 MediaServer();
                 virtual ~MediaServer();
+                /**
+                * Searches the media server with the given values
+                * You have to subscribe to "searchExecuted" to get the result!
+                */
+                EXPORT void search(std::string _containerId, std::string _searchCriteria = "", std::string _extraData = "", bool _sync = false);
+                /**
+                * Browses the media server with the given values
+                * You have to subscribe to "browseExecuted" to get the result!
+                */
+                EXPORT void browse(std::string _containerId, MediaServer_BrowseFlag _browseFlag = MediaServer_BrowseFlag::MSBF_BrowseDirectChildren, std::string _extraData = "", bool _sync = false);                                 
+                /**
+                * creates a valid avTransportUri for a container id 
+                * this uri  can be used for bending or setting the uri on a renderer
+                */
+                EXPORT std::string createAVTransportUri_Container(std::string _containerId, std::int32_t _trackIndex = -1);
+                /**
+                * creates a valid avTransportUri for a container id
+                * this uri  can be used for bending or setting the uri on a renderer
+                */
+                EXPORT std::string createAVTransportUri_Single(std::string _singleId);
+
+
+                sigs::signal<void(const std::string, std::uint32_t, std::uint32_t, std::uint32_t, const std::string)> sigSearchExecuted;
+                sigs::signal<void(const std::string, std::uint32_t, std::uint32_t, std::uint32_t, const std::string)> sigBrowseExecuted;
 
             protected:
                 // proxies of the media server device                
@@ -63,9 +91,18 @@ namespace Raumkernel
 
                 void logServerError(std::string _error, std::string _location);
 
+                virtual void searchThread(std::string _containerId, std::string _searchCriteria = "", std::string _extraData = "");
+                virtual void browseThread(std::string _containerId, MediaServer_BrowseFlag _browseFlag = MediaServer_BrowseFlag::MSBF_BrowseDirectChildren, std::string _extraData = "");
+
+                virtual void searchThreadProxy(std::string _containerId, std::string _searchCriteria, std::string _extraData);
+                virtual void browseThreadProxy(std::string _containerId, std::string _browseFlag, std::string _extraData);
+
+                virtual void searchThreadExecuted(std::string _result, std::uint32_t _numberReturned, std::uint32_t _totalMatches, std::uint32_t _updateId, std::string _extraData);
+                virtual void browseThreadExecuted(std::string _result, std::uint32_t _numberReturned, std::uint32_t _totalMatches, std::uint32_t _updateId, std::string _extraData);
+
                 virtual void onContentDirectoryProxyPropertyChanged();
                 virtual void onContentDirectoryProxyContainerUpdateIdsChanged();
-                virtual void oConnectionManagerProxyPropertyChanged();                
+                virtual void oConnectionManagerProxyPropertyChanged();                           
 
         };
 

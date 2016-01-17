@@ -25,6 +25,7 @@
 #ifndef RAUMKERNEL_UPNPMANAGER_H
 #define RAUMKERNEL_UPNPMANAGER_H
 
+#include <thread>
 #include <raumkernel/manager/managerBase.h>
 
 #include <OpenHome/Net/Cpp/OhNet.h>
@@ -78,16 +79,25 @@ namespace Raumkernel
             protected:  
                 OpenHome::Net::CpDeviceListCppUpnpAll* upupDeviceListAll;
 
+                bool refreshDeviceListThreadStarted;
+                std::thread refreshDeviceListThreadObject;
+                std::atomic_bool stopThreads;                
+
                 /**
                 * Not intended for external use
                 * Will be called when the discover finds a valid existing UPNP device  or when it announces itself in the network
                 */
-                void OnDeviceFound(OpenHome::Net::CpDeviceCpp& _device);
+                void onDeviceFound(OpenHome::Net::CpDeviceCpp& _device);
                 /**
                 * Not intended for external use
                 * Will be called when a valid existing UPNP device says byebye
                 */
-                void OnDeviceLost(OpenHome::Net::CpDeviceCpp& _device);
+                void onDeviceLost(OpenHome::Net::CpDeviceCpp& _device);
+                /**
+                * Not intended for external use
+                * ist a thread which will do the refresh of the device list in a periodical manner
+                */
+                void refreshDeviceListThread(std::atomic_bool &_stopThread, std::uint32_t _refreshTimeMS);
 
         };
     }

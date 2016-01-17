@@ -35,6 +35,7 @@
 #include <iostream>
 #include <sstream>
 #include <time.h>
+#include <vector>
 
 namespace Raumkernel
 {
@@ -120,6 +121,25 @@ namespace Raumkernel
             
                     return timeInSeconds * 1000;
                  }
+
+
+                /**
+                * Used to explode a string into multiple string with the given sepaerator
+                */
+                static std::vector<std::string> explodeString(const std::string &inString, const std::string &separator)
+                {
+                    std::vector<std::string> returnVector;
+                    std::string::size_type start = 0;
+                    std::string::size_type end = 0;
+
+                    while ((end = inString.find(separator, start)) != std::string::npos)
+                    {
+                        returnVector.push_back(inString.substr(start, end - start));
+                        start = end + separator.size();
+                    }
+                    returnVector.push_back(inString.substr(start));
+                    return returnVector;
+                }
         };
             
     }

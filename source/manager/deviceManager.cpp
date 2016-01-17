@@ -83,7 +83,12 @@ namespace Raumkernel
                         
                         // if its the raumfeld media server we will store the udn so we can find him any time we want in our list
                         if (std::dynamic_pointer_cast<Devices::MediaServer_Raumfeld>(device))
-                            raumfeldMediaServerUDN = Tools::CommonUtil::FormatUDN(deviceUDN);
+                        {
+                            raumfeldMediaServerUDN = Tools::CommonUtil::FormatUDN(deviceUDN);                            
+                            _device.GetAttribute("Upnp.Location", location);                          
+                            std::int16_t firstPosIP = location.find_first_of(":") + 3;
+                            raumfeldHostIP = location.substr(firstPosIP, location.find_last_of(":") - firstPosIP);
+                        }
                     }
                   
                 }
@@ -165,7 +170,10 @@ namespace Raumkernel
                     
                     // well, we lost our raumfeld media server. That's too bad
                     if (std::dynamic_pointer_cast<Devices::MediaServer_Raumfeld>(device))
+                    {
                         raumfeldMediaServerUDN = "";
+                        raumfeldHostIP = "";
+                    }
 
                     mediaServerMap.erase(deviceUDN);
                     logDebug("Media Server '" + friendlyName + "' removed", CURRENT_POSITION);
@@ -240,6 +248,12 @@ namespace Raumkernel
                 return nullptr;
             auto device = (mediaServerMap.find(raumfeldMediaServerUDN)->second);
             return std::dynamic_pointer_cast<Devices::MediaServer_Raumfeld>(device);
+        }
+
+
+        std::string DeviceManager::getRaumfeldHostIP()
+        {
+            return raumfeldHostIP;
         }
 
 

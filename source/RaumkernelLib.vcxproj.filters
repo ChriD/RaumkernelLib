@@ -49,6 +49,12 @@
     <Filter Include="device\proxies">
       <UniqueIdentifier>{33df1c3f-7edc-4108-8d4b-3841cb08962a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="includes\raumkernel\httpclient">
+      <UniqueIdentifier>{e82f614f-c730-422d-8d4e-127d66a478f0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="httpclient">
+      <UniqueIdentifier>{9f4e71e1-dac0-4a39-8182-5d5840403877}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="includes\raumkernel\os\os.h">
@@ -195,6 +201,21 @@
     <ClInclude Include="includes\raumkernel\device\proxies\CpUpnpOrgAVTransport_RaumfeldVirtual1.h">
       <Filter>includes\raumkernel\device\proxies</Filter>
     </ClInclude>
+    <ClInclude Include="includes\raumkernel\manager\requestManager.h">
+      <Filter>includes\raumkernel\manager</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\raumkernel\manager\zoneManager.h">
+      <Filter>includes\raumkernel\manager</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\raumkernel\httpclient\happyhttp.h">
+      <Filter>includes\raumkernel\httpclient</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\raumkernel\httpclient\mongoose.h">
+      <Filter>includes\raumkernel\httpclient</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\raumkernel\httpclient\httpClient.h">
+      <Filter>includes\raumkernel\httpclient</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="logger\logger.cpp">
@@ -283,6 +304,21 @@
     </ClCompile>
     <ClCompile Include="device\proxies\CpUpnpOrgAVTransport_RaumfeldVirtual1Std.cpp">
       <Filter>device\proxies</Filter>
+    </ClCompile>
+    <ClCompile Include="manager\requestManager.cpp">
+      <Filter>manager</Filter>
+    </ClCompile>
+    <ClCompile Include="manager\zoneManager.cpp">
+      <Filter>manager</Filter>
+    </ClCompile>
+    <ClCompile Include="httpclient\happyhttp.cpp">
+      <Filter>httpclient</Filter>
+    </ClCompile>
+    <ClCompile Include="httpclient\mongoose.c">
+      <Filter>httpclient</Filter>
+    </ClCompile>
+    <ClCompile Include="httpclient\httpClient.cpp">
+      <Filter>httpclient</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

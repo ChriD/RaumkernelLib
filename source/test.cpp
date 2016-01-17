@@ -1,6 +1,7 @@
 
 #include <raumkernel/raumkernel.h>
 #include <raumkernel/manager/managerEngineer.h>
+#include <raumkernel/httpclient/httpClient.h>
 #include <raumkernel/device/deviceMediaRenderer_RFVirtual.h>
 #include <raumkernel/rlutil/rlutil.h>
 
@@ -56,8 +57,18 @@ int main()
 
     rlutil::getkey();
 
-    std::shared_ptr<Raumkernel::Devices::MediaServer_Raumfeld> mediaServer = raumkernel.getManagerEngineer()->getDeviceManager()->getRaumfeldMediaServer();
+    Raumkernel::HttpClient::HttpClient client;
 
+    client.test();
+
+    //raumkernel.getManagerEngineer()->getRequestManager()->request("http://10.0.0.5:47365/getZones", nullptr, nullptr, "zoneLongPolling");
+
+    rlutil::getkey();
+    
+    std::shared_ptr<Raumkernel::Devices::MediaServer_Raumfeld> mediaServer = raumkernel.getManagerEngineer()->getDeviceManager()->getRaumfeldMediaServer();
+    mediaServer->browse("0", Raumkernel::Devices::MediaServer_BrowseFlag::MSBF_BrowseDirectChildren, "root", true);
+
+    rlutil::getkey();
 
     std::shared_ptr<Raumkernel::Devices::MediaRenderer_RaumfeldVirtual> renderer = std::dynamic_pointer_cast<Raumkernel::Devices::MediaRenderer_RaumfeldVirtual>(raumkernel.getManagerEngineer()->getDeviceManager()->getMediaRenderer("uuid:b1b6b57e-5a8f-4286-b7b0-22568beb83f6"));
     renderer->play();

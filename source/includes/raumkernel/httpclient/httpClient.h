@@ -22,37 +22,34 @@
 //
 
 #pragma once
-#ifndef RAUMKERNEL_DEVICEMEDIARSERVER_RF_H
-#define RAUMKERNEL_DEVICEMEDIARSERVER_RF_H
+#ifndef RAUMKERNEL_HTTPCLIENT_H
+#define RAUMKERNEL_HTTPCLIENT_H
 
-#include <raumkernel/device/deviceMediaServer.h>
-#include <raumkernel/device/proxies/CpUpnpOrgContentDirectory_Raumfeld1.h>
-#include <raumkernel/device/proxies/CpUpnpOrgConnectionManager1.h>
+#include <raumkernel/raumkernelBase.h>
+#include <raumkernel/httpclient/mongoose.h>
 
 
 namespace Raumkernel
 {
-    namespace Devices
+    namespace HttpClient
     {
-        class MediaServer_Raumfeld : public MediaServer
+        class HttpClient : public RaumkernelBase
         {
             public:
-                MediaServer_Raumfeld();
-                virtual ~MediaServer_Raumfeld();
+                EXPORT HttpClient();
+                EXPORT virtual ~HttpClient();  
 
-            protected:
-                virtual void createProxyContentDirectory() override;
-                virtual void createProxyConnectionManager() override;
+                EXPORT void test();
+                EXPORT static void ev_handler(struct mg_connection *nc, int ev, void *ev_data);
 
-                void searchThreadProxy(std::string _containerId, std::string _searchCriteria, std::string _extraData) override;
-                void browseThreadProxy(std::string _containerId, std::string _browseFlag, std::string _extraData) override;
-              
-                virtual void onContentDirectoryProxyPropertyChanged() override;
-                virtual void onContentDirectoryProxyContainerUpdateIdsChanged() override;
-                virtual void oConnectionManagerProxyPropertyChanged() override;    
+                // current pending request map (uniqueId, exitFlag)
+
+                // lock mutex for request creation and callback method
+
+                std::int16_t s_exit_flag;
 
         };
-
     }
 }
+
 #endif

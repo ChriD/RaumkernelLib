@@ -45,6 +45,8 @@ namespace Raumkernel
         managerEngineer->getUPNPManager()->setManagerEngineer(managerEngineer);
         managerEngineer->getDeviceManager()->setManagerEngineer(managerEngineer);        
         managerEngineer->getSubscriptionReceiverManager()->setManagerEngineer(managerEngineer);
+        managerEngineer->getRequestManager()->setManagerEngineer(managerEngineer);
+        managerEngineer->getZoneManager()->setManagerEngineer(managerEngineer);
 
         logDebug("Manager-Engineer is prepared", CURRENT_POSITION);
 
@@ -63,7 +65,11 @@ namespace Raumkernel
         managerEngineer->getUPNPManager()->init();        
         managerEngineer->getUPNPManager()->discover();
 
+        // the zone manager has to request the actual zone configuration whcih can be done by long polling a special request
+        managerEngineer->getZoneManager()->init();        
+
         // TODO: wake up other managers like HTTPRequestManager?  (Alive ping?)
+        
 
         logInfo("Kernel initialized! Waiting for Raumfeld System to appear!", CURRENT_POSITION);
 
