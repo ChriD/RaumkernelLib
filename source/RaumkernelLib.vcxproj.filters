@@ -216,6 +216,12 @@
     <ClInclude Include="includes\raumkernel\httpclient\httpClient.h">
       <Filter>includes\raumkernel\httpclient</Filter>
     </ClInclude>
+    <ClInclude Include="includes\raumkernel\httpclient\httpRequest.h">
+      <Filter>includes\raumkernel\httpclient</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\raumkernel\httpclient\httpResponse.h">
+      <Filter>includes\raumkernel\httpclient</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="logger\logger.cpp">
@@ -318,6 +324,12 @@
       <Filter>httpclient</Filter>
     </ClCompile>
     <ClCompile Include="httpclient\httpClient.cpp">
+      <Filter>httpclient</Filter>
+    </ClCompile>
+    <ClCompile Include="httpclient\httpRequest.cpp">
+      <Filter>httpclient</Filter>
+    </ClCompile>
+    <ClCompile Include="httpclient\httpResponse.cpp">
       <Filter>httpclient</Filter>
     </ClCompile>
   </ItemGroup>

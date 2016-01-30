@@ -37,7 +37,7 @@ namespace Raumkernel
 
             try
             {
-                deviceUDN = Tools::CommonUtil::FormatUDN(_device.Udn());
+                deviceUDN = Tools::CommonUtil::formatUDN(_device.Udn());
 
                 _device.GetAttribute("Upnp.DeviceXml", deviceXML);
                 _device.GetAttribute("Upnp.Location", location);
@@ -84,7 +84,7 @@ namespace Raumkernel
                         // if its the raumfeld media server we will store the udn so we can find him any time we want in our list
                         if (std::dynamic_pointer_cast<Devices::MediaServer_Raumfeld>(device))
                         {
-                            raumfeldMediaServerUDN = Tools::CommonUtil::FormatUDN(deviceUDN);                            
+                            raumfeldMediaServerUDN = Tools::CommonUtil::formatUDN(deviceUDN);                            
                             _device.GetAttribute("Upnp.Location", location);                          
                             std::int16_t firstPosIP = location.find_first_of(":") + 3;
                             raumfeldHostIP = location.substr(firstPosIP, location.find_last_of(":") - firstPosIP);
@@ -134,7 +134,7 @@ namespace Raumkernel
 
             try
             {
-                deviceUDN = Tools::CommonUtil::FormatUDN(_device.Udn());           
+                deviceUDN = Tools::CommonUtil::formatUDN(_device.Udn());           
                 _device.GetAttribute("Upnp.FriendlyName", friendlyName);
 
                 logDebug("Removing device '" + friendlyName + "' from manager", CURRENT_POSITION);
@@ -218,7 +218,7 @@ namespace Raumkernel
         {
             std::lock_guard<std::mutex> lock(mutexDeviceLists);
 
-            _udn = Tools::CommonUtil::FormatUDN(_udn);
+            _udn = Tools::CommonUtil::formatUDN(_udn);
             if (mediaRendererMap.find(_udn) == mediaRendererMap.end())
                 return nullptr;
             auto device = (mediaRendererMap.find(_udn)->second);
@@ -230,7 +230,7 @@ namespace Raumkernel
         {
             std::lock_guard<std::mutex> lock(mutexDeviceLists);
 
-            _udn = Tools::CommonUtil::FormatUDN(_udn);
+            _udn = Tools::CommonUtil::formatUDN(_udn);
             if (mediaServerMap.find(_udn) == mediaServerMap.end())
                 return nullptr;
             auto device = (mediaServerMap.find(_udn)->second);

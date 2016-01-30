@@ -126,16 +126,20 @@ namespace Raumkernel
                 /**
                 * Used to explode a string into multiple string with the given sepaerator
                 */
-                static std::vector<std::string> explodeString(const std::string &inString, const std::string &separator)
+                static std::vector<std::string> explodeString(const std::string &inString, const std::string &separator, std::uint32_t _maxSplits = 0)
                 {
                     std::vector<std::string> returnVector;
                     std::string::size_type start = 0;
                     std::string::size_type end = 0;
+                    std::uint32_t splits = 0;
 
                     while ((end = inString.find(separator, start)) != std::string::npos)
                     {
                         returnVector.push_back(inString.substr(start, end - start));
                         start = end + separator.size();
+                        splits++;
+                        if (_maxSplits && _maxSplits >= splits)
+                            break;
                     }
                     returnVector.push_back(inString.substr(start));
                     return returnVector;

@@ -109,6 +109,8 @@
     <ClInclude Include="includes\raumkernel\exception\exception.h" />
     <ClInclude Include="includes\raumkernel\httpclient\happyhttp.h" />
     <ClInclude Include="includes\raumkernel\httpclient\httpClient.h" />
+    <ClInclude Include="includes\raumkernel\httpclient\httpRequest.h" />
+    <ClInclude Include="includes\raumkernel\httpclient\httpResponse.h" />
     <ClInclude Include="includes\raumkernel\httpclient\mongoose.h" />
     <ClInclude Include="includes\raumkernel\logger\logger.h" />
     <ClInclude Include="includes\raumkernel\logger\loggerAdapter.h" />
@@ -163,6 +165,8 @@
     <ClCompile Include="device\proxies\CpUpnpOrgRenderingControl_RaumfeldVirtual1Std.cpp" />
     <ClCompile Include="httpclient\happyhttp.cpp" />
     <ClCompile Include="httpclient\httpClient.cpp" />
+    <ClCompile Include="httpclient\httpRequest.cpp" />
+    <ClCompile Include="httpclient\httpResponse.cpp" />
     <ClCompile Include="httpclient\mongoose.c" />
     <ClCompile Include="logger\logger.cpp" />
     <ClCompile Include="logger\loggerAdapter.cpp" />

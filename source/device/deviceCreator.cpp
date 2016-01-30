@@ -26,7 +26,7 @@ namespace Raumkernel
 
             deviceType = deviceNode->first_node("deviceType", 0, false)->value();
             deviceUDN = deviceNode->first_node("UDN", 0, false)->value();
-            deviceUDN = Raumkernel::Tools::CommonUtil::FormatUDN(deviceUDN);
+            deviceUDN = Raumkernel::Tools::CommonUtil::formatUDN(deviceUDN);
             valueNode = deviceNode->first_node("friendlyName", 0, false);
             if (valueNode)
                 deviceFriendlyName = valueNode->value();

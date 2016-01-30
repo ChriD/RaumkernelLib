@@ -137,6 +137,7 @@ namespace Raumkernel
                 {
                     refreshTime = std::stoi(refreshTimeString);
                 }
+                logDebug("Starting UPNP-Stack auto referesh thread", CURRENT_POSITION);
                 refreshDeviceListThreadObject = std::thread(&UPNPManager::refreshDeviceListThread, this, std::ref(stopThreads), refreshTime);
                 refreshDeviceListThreadStarted = true;
             }
@@ -178,7 +179,7 @@ namespace Raumkernel
             {
                 try
                 {                    
-                    std::this_thread::sleep_for(std::chrono::milliseconds(_refreshTimeMS));
+                    std::this_thread::sleep_for(std::chrono::milliseconds(_refreshTimeMS));                    
                     logDebug("Refreshing UPNP device list", CURRENT_POSITION);
                     refresh();
                 }

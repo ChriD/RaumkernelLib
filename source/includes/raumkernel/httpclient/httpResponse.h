@@ -22,13 +22,13 @@
 //
 
 #pragma once
-#ifndef RAUMKERNEL_HTTPCLIENT_H
-#define RAUMKERNEL_HTTPCLIENT_H
+#ifndef RAUMKERNEL_HTTPRESPONSE_H
+#define RAUMKERNEL_HTTPRESPONSE_H
 
+#include <string>
+#include <cstdint>
 #include <unordered_map>
-#include <functional>
 #include <raumkernel/raumkernelBase.h>
-#include <raumkernel/httpclient/httpRequest.h>
 
 
 namespace Raumkernel
@@ -36,25 +36,19 @@ namespace Raumkernel
     namespace HttpClient
     {
 
-        class HttpClient : public RaumkernelBase
+        class HttpResponse : public RaumkernelBase
         {
             public:
-                EXPORT HttpClient();
-                EXPORT virtual ~HttpClient();  
+                EXPORT HttpResponse();          
+                EXPORT virtual ~HttpResponse();
 
-                EXPORT void request(std::string _requestUrl, std::shared_ptr<std::unordered_map<std::string, std::string>> _headerVars = nullptr, std::shared_ptr<std::unordered_map<std::string, std::string>> _postVars = nullptr, void *_userData = nullptr, std::function<void(HttpRequest*)> _callback = nullptr);
-                void requestFinished(HttpRequest *_request);
+                EXPORT void setErrorCode(std::uint16_t _errorCode);
+                EXPORT std::uint16_t getErrorCode();
+                void createHeaderFromResponseStr(std::string _headerString);
 
             protected:
-                /**
-                * This map holds all the request that are pending
-                */
-                std::unordered_map<std::string, std::shared_ptr<HttpRequest>> requestMap;
-                /**
-                * This mutex controls the access to the request map
-                */
-                std::mutex mutexRequestMap;
-
+                std::uint16_t errorCode;
+                std::unordered_map<std::string, std::string> headerVars;
         };
     }
 }

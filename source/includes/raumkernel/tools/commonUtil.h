@@ -27,6 +27,10 @@
 
 #include <stdio.h>
 #include <string>
+#include <cstdint>
+#include <random>
+#include <locale>
+#include <math.h>
 
 namespace Raumkernel
 {
@@ -39,13 +43,26 @@ namespace Raumkernel
                 /**
                 * use it to get the UDN into a format we want to have
                 */
-                EXPORT static std::string FormatUDN(std::string _udn)
+                EXPORT static std::string formatUDN(std::string _udn)
                 {
                     if (_udn.find("uuid:") != std::string::npos)
                         return _udn;
                     return "uuid:" + _udn;
                 }
 
+
+                /**
+                * Returns a random integer value
+                */
+                EXPORT static std::uint32_t randomUInt32()
+                {
+                    std::mt19937 rng;
+                    std::uint32_t seed = (std::uint32_t)time(0);
+                    rng.seed(seed);
+                    std::uniform_int_distribution<uint32_t> uint_dist(1000000, 9999999);
+                    return uint_dist(rng);
+                }
+   
         };
 
     }

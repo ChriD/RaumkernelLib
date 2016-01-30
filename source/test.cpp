@@ -5,6 +5,9 @@
 #include <raumkernel/device/deviceMediaRenderer_RFVirtual.h>
 #include <raumkernel/rlutil/rlutil.h>
 
+#include <random>
+#include <iostream>
+#include <functional>
 
 
 static void testLog(Raumkernel::Log::Log &_logObject)
@@ -30,6 +33,12 @@ void myCallback(int a, int b)
 {
 }
 */
+
+
+void myCallback(Raumkernel::HttpClient::HttpRequest *_request)
+{
+    
+}
 
 
 int main()
@@ -59,7 +68,8 @@ int main()
 
     Raumkernel::HttpClient::HttpClient client;
 
-    client.test();
+    //client.request("http://10.0.0.5:47365/getZones", nullptr, nullptr, "Test User Data", std::bind(&MyClass::Callback, this, _1));
+    client.request("http://10.0.0.5:47365/getZones", nullptr, nullptr, "Test User Data", std::bind(myCallback, std::placeholders::_1));
 
     //raumkernel.getManagerEngineer()->getRequestManager()->request("http://10.0.0.5:47365/getZones", nullptr, nullptr, "zoneLongPolling");
 

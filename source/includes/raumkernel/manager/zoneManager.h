@@ -1,7 +1,7 @@
 //
 // The MIT License (MIT)
 //
-// Copyright (c) 2015 by ChriD
+// Copyright (c) 2016 by ChriD
 //
 // Permission is hereby granted, free of charge,  to any person obtaining a copy of
 // this software and  associated documentation  files  (the "Software"), to deal in
@@ -22,41 +22,40 @@
 //
 
 #pragma once
-#ifndef RAUMKERNEL_HTTPCLIENT_H
-#define RAUMKERNEL_HTTPCLIENT_H
+#ifndef RAUMKERNEL_ZONEMANAGER_H
+#define RAUMKERNEL_ZONEMANAGER_H
 
-#include <unordered_map>
-#include <functional>
-#include <raumkernel/raumkernelBase.h>
-#include <raumkernel/httpclient/httpRequest.h>
-
+#include <raumkernel/manager/managerBase.h>
 
 namespace Raumkernel
 {
-    namespace HttpClient
+    namespace Manager
     {
-
-        class HttpClient : public RaumkernelBase
+        class ZoneManager : public ManagerBase
         {
             public:
-                EXPORT HttpClient();
-                EXPORT virtual ~HttpClient();  
+                EXPORT ZoneManager();
+                EXPORT virtual ~ZoneManager();
 
-                EXPORT void request(std::string _requestUrl, std::shared_ptr<std::unordered_map<std::string, std::string>> _headerVars = nullptr, std::shared_ptr<std::unordered_map<std::string, std::string>> _postVars = nullptr, void *_userData = nullptr, std::function<void(HttpRequest*)> _callback = nullptr);
-                void requestFinished(HttpRequest *_request);
-
-            protected:
                 /**
-                * This map holds all the request that are pending
+                * Init of the Zone Manager
+                * This will start the long polloing of the zone configuration!
                 */
-                std::unordered_map<std::string, std::shared_ptr<HttpRequest>> requestMap;
+                EXPORT void init();
                 /**
-                * This mutex controls the access to the request map
+                * Puts the room with the given roomUDN in the zone with the zoneUDN
+                * zoneUDN: The udn of the zone to connect the room to. If zone udn is empty, a new zone is created
+                * roomUDN: The udn of the room that has to be put into that zone.If empty, all available rooms(rooms that have active renderers) are put into the zone.
+                */              
+                EXPORT void connectRoomToZone(std::string _roomUDN, std::string _zoneUDN);
+                /**
+                * Drops a room from the zone it is in
+                * If the given room is not in a zone, nothing will happen
                 */
-                std::mutex mutexRequestMap;
-
+                EXPORT void dropRoom(std::string _roomUDN);
         };
     }
 }
+
 
 #endif
