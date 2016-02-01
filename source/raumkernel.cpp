@@ -7,8 +7,9 @@ namespace Raumkernel
 
     Raumkernel::Raumkernel() : RaumkernelBaseMgr()
     {
-        // TODO: Subscribe to mediaServerAdded/Delete signals. That will show us the RF System is online if the RF Media Server is going online and we do have a valid "i am alive" ping
+        // TODO: Subscribe to mediaServerAdded/Delete signals. That will show us the RF System is online if the RF Media Server is going online 
         // Of course not here :)
+        // TODO: When media server is added. init zone request manager and start requests.. if removed.. stop zone requests ...
     }
 
 
@@ -44,8 +45,7 @@ namespace Raumkernel
         managerEngineer->getSettingsManager()->setManagerEngineer(managerEngineer);        
         managerEngineer->getUPNPManager()->setManagerEngineer(managerEngineer);
         managerEngineer->getDeviceManager()->setManagerEngineer(managerEngineer);        
-        managerEngineer->getSubscriptionReceiverManager()->setManagerEngineer(managerEngineer);
-        managerEngineer->getRequestManager()->setManagerEngineer(managerEngineer);
+        managerEngineer->getSubscriptionReceiverManager()->setManagerEngineer(managerEngineer);        
         managerEngineer->getZoneManager()->setManagerEngineer(managerEngineer);
 
         logDebug("Manager-Engineer is prepared", CURRENT_POSITION);
@@ -67,8 +67,6 @@ namespace Raumkernel
 
         // the zone manager has to request the actual zone configuration whcih can be done by long polling a special request
         managerEngineer->getZoneManager()->init();        
-
-        // TODO: wake up other managers like HTTPRequestManager?  (Alive ping?)
         
 
         logInfo("Kernel initialized! Waiting for Raumfeld System to appear!", CURRENT_POSITION);

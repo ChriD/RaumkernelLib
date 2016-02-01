@@ -107,7 +107,6 @@
     <ClInclude Include="includes\raumkernel\device\proxies\CpUpnpOrgRenderingControl2.h" />
     <ClInclude Include="includes\raumkernel\device\proxies\CpUpnpOrgRenderingControl_RaumfeldVirtual1.h" />
     <ClInclude Include="includes\raumkernel\exception\exception.h" />
-    <ClInclude Include="includes\raumkernel\httpclient\happyhttp.h" />
     <ClInclude Include="includes\raumkernel\httpclient\httpClient.h" />
     <ClInclude Include="includes\raumkernel\httpclient\httpRequest.h" />
     <ClInclude Include="includes\raumkernel\httpclient\httpResponse.h" />
@@ -118,7 +117,6 @@
     <ClInclude Include="includes\raumkernel\manager\deviceManager.h" />
     <ClInclude Include="includes\raumkernel\manager\managerBase.h" />
     <ClInclude Include="includes\raumkernel\manager\managerEngineer.h" />
-    <ClInclude Include="includes\raumkernel\manager\requestManager.h" />
     <ClInclude Include="includes\raumkernel\manager\settingsManager.h" />
     <ClInclude Include="includes\raumkernel\manager\subscriptionReceiverManager.h" />
     <ClInclude Include="includes\raumkernel\manager\upnpManager.h" />
@@ -135,6 +133,7 @@
     <ClInclude Include="includes\raumkernel\signals\signals.hpp" />
     <ClInclude Include="includes\raumkernel\tools\commonUtil.h" />
     <ClInclude Include="includes\raumkernel\tools\dateUtil.h" />
+    <ClInclude Include="includes\raumkernel\tools\urlParser.h" />
     <ClInclude Include="includes\raumkernel\tools\stringUtil.h" />
     <ClInclude Include="includes\raumkernel\tools\uriUtil.h" />
     <ClInclude Include="includes\raumkernel\xml\rapidxml.hpp" />
@@ -163,7 +162,6 @@
     <ClCompile Include="device\proxies\CpUpnpOrgRenderingControl1Std.cpp" />
     <ClCompile Include="device\proxies\CpUpnpOrgRenderingControl2Std.cpp" />
     <ClCompile Include="device\proxies\CpUpnpOrgRenderingControl_RaumfeldVirtual1Std.cpp" />
-    <ClCompile Include="httpclient\happyhttp.cpp" />
     <ClCompile Include="httpclient\httpClient.cpp" />
     <ClCompile Include="httpclient\httpRequest.cpp" />
     <ClCompile Include="httpclient\httpResponse.cpp" />
@@ -173,7 +171,6 @@
     <ClCompile Include="manager\deviceManager.cpp" />
     <ClCompile Include="manager\managerBase.cpp" />
     <ClCompile Include="manager\managerEngineer.cpp" />
-    <ClCompile Include="manager\requestManager.cpp" />
     <ClCompile Include="manager\settingsManager.cpp" />
     <ClCompile Include="manager\subscriptionReceiverManager.cpp" />
     <ClCompile Include="manager\upnpManager.cpp" />
@@ -181,6 +178,7 @@
     <ClCompile Include="raumkernel.cpp" />
     <ClCompile Include="raumkernelBase.cpp" />
     <ClCompile Include="raumkernelBaseMgr.cpp" />
+    <ClCompile Include="tools\urlParser.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Xml Include="raumkernel.xml" />

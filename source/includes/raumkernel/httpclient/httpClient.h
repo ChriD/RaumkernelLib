@@ -27,6 +27,7 @@
 
 #include <unordered_map>
 #include <functional>
+#include <thread>
 #include <raumkernel/raumkernelBase.h>
 #include <raumkernel/httpclient/httpRequest.h>
 
@@ -43,7 +44,8 @@ namespace Raumkernel
                 EXPORT virtual ~HttpClient();  
 
                 EXPORT void request(std::string _requestUrl, std::shared_ptr<std::unordered_map<std::string, std::string>> _headerVars = nullptr, std::shared_ptr<std::unordered_map<std::string, std::string>> _postVars = nullptr, void *_userData = nullptr, std::function<void(HttpRequest*)> _callback = nullptr);
-                void requestFinished(HttpRequest *_request);
+                EXPORT void cleanupRequests();
+                EXPORT void killAllRequests();
 
             protected:
                 /**

@@ -10,16 +10,16 @@ namespace Raumkernel
         {
             httpResponse = nullptr;
             requestFinishedUserCallback = nullptr;
-            requestFinishedCallback = nullptr;
+            stopRequestThread = false;
         }
        
               
         HttpRequest::HttpRequest(const std::string _requestId, const std::string _requestUrl, std::shared_ptr<std::unordered_map<std::string, std::string>> _headerVars, std::shared_ptr<std::unordered_map<std::string, std::string>> _postVars, void *_userData, std::function<void(HttpRequest*)> _callback) : RaumkernelBase()
         {   
             httpResponse = nullptr;
-            requestUrl = _requestUrl;
+            setRequestUrl(_requestUrl);
             requestId = _requestId;
-            userData = _userData;   
+            userData = _userData; 
             requestFinishedUserCallback = _callback;
             
             mg_mgr_init(&mongoose_mgr, this);
@@ -27,7 +27,21 @@ namespace Raumkernel
 
 
         HttpRequest::~HttpRequest()
+        {          
+        }
+
+
+        void HttpRequest::abort()
         {
+            stopRequestThread = true;
+            if (threadRequestRun.joinable())
+                threadRequestRun.join();
+        }
+
+
+        bool HttpRequest::isRequestFinished()
+        {
+            return requestFinished;
         }
 
 
@@ -55,6 +69,12 @@ namespace Raumkernel
         }
 
 
+        void HttpRequest::setRequestUrl(std::string _requestUrl)
+        {
+            requestUrl = _requestUrl;
+        }
+
+
         void HttpRequest::setResponse(std::shared_ptr<HttpResponse> _httpResponse)
         {
             httpResponse = _httpResponse;
@@ -62,14 +82,7 @@ namespace Raumkernel
                 this->setGotResponse(true);
         }
 
-
-        void HttpRequest::setFinishedCallback(std::function<void(HttpRequest*)> _callback)
-        {
-            requestFinishedCallback = _callback;
-        }
-
-
-        void HttpRequest::doRequest(std::string _url)
+        void HttpRequest::doRequest(std::string _url, std::atomic_bool _stopThread)
         {
             gotResponse = false;
             mg_connect_http(&mongoose_mgr, &HttpRequest::mongoose_handler, _url.c_str(), NULL, NULL);
@@ -81,18 +94,34 @@ namespace Raumkernel
 
 
         void HttpRequest::run()
+        {          
+            threadRequestRun = std::thread(&HttpRequest::runThread, this, ref(stopRequestThread));
+            // sync call 
+            //threadRequestRun->join();
+        }
+
+        
+        void HttpRequest::runThread(std::atomic_bool _stopThread)
         {
-            bool isRedirected = false;
+            bool isRedirected;
 
             // start the request with the given url. there may be a redirection which will be handled here too
             do
             {
-                doRequest(requestUrl.c_str());
+                isRedirected = false;
+                doRequest(requestUrl.c_str(), ref(_stopThread));
                 if (gotResponse)
-                {
-                    // check if response is a redirection. if so we use the redirection url ans do the Reqzest again with the new url
-                    // the post and header var will stay the same from the original request
-                    // TODO: @@@
+                {                  
+                    // Handle HTTP Redirection
+                    // the post and header var will stay the same from the original request, onl the url will be changed and the request wil lbe sent again
+                    // HTTP / 1.1 307 Temporary Redirect
+                    if (getResponse()->getStatusCode() == 307)
+                    {
+                        std::string redirectionUrl = getResponse()->getHeaderVar("LOCATION");
+                        LUrlParser::clParseURL parsedUrl = LUrlParser::clParseURL::ParseURL(getRequestUrl());
+                        setRequestUrl(parsedUrl.m_Scheme + "://" + parsedUrl.m_Host + (parsedUrl.m_Port.empty() ? "" : ":") + parsedUrl.m_Port + redirectionUrl);
+                        isRedirected = true;
+                    }
                 }
 
             } 
@@ -103,10 +132,10 @@ namespace Raumkernel
             if (gotResponse && requestFinishedUserCallback)
                 requestFinishedUserCallback(this);            
 
-            mg_mgr_free(&mongoose_mgr); 
+            mg_mgr_free(&mongoose_mgr);  
 
-            // TODO: call method on client so he can throw away this request from the map
-            requestFinishedCallback(this);
+            // we set the request that it is finished. the cleanup will be done by the client
+            requestFinished = true;
         }
 
 
@@ -115,7 +144,7 @@ namespace Raumkernel
         {
             struct http_message *hm = (struct http_message *) ev_data;
             HttpRequest *httpRequest = (HttpRequest*)nc->mgr->user_data;
-            std::string responseHeader = "";
+            std::string response = "", responseHeader = "", responseData = "";
 
             if (httpRequest == nullptr)
                 return;
@@ -137,33 +166,25 @@ namespace Raumkernel
                 case MG_EV_HTTP_REPLY:
                     nc->flags |= MG_F_CLOSE_IMMEDIATELY;
 
-                    //if (s_show_headers) {
-                    //    fwrite(hm->message.p, 1, hm->message.len, stdout);
-                    // }
-                    // else {
-                    //fwrite(hm->body.p, 1, hm->body.len, stdout);
-                    //}
-                    //putchar('\n');
-
-                    /*                        
-                        HTTP/1.1 307 Temporary Redirect
-                        Date: Sun, 12 Dec 1999 21:57:19 GMT
-                        LOCATION: /201269c1-d844-4a25-93d9-c3bac23bfb91/getZones
-                        Content-Length: 0
-                    */
-                   
-
                     httpResponse = std::shared_ptr<HttpResponse>(new HttpResponse());
                     httpResponse->setErrorCode(0);
 
                    
                     if (nc->recv_mbuf.len)
                     {
-                        responseHeader = nc->recv_mbuf.buf;
+                        response = nc->recv_mbuf.buf;
                         responseHeader.resize(nc->recv_mbuf.len);
-                    }
 
-                    httpResponse->createHeaderFromResponseStr(responseHeader);
+                        // the header stops wher there are the first "\r\n\r\n" chars
+                        std::int32_t headerEnd = response.find("\r\n\r\n");
+                        responseHeader = response.substr(0, headerEnd ? headerEnd : nc->recv_mbuf.len);                        
+                        httpResponse->createHeaderFromResponseStr(responseHeader);
+
+                        // responseData is the rest                        
+                        responseData = response.substr(headerEnd + 4, nc->recv_mbuf.len - headerEnd + 4);
+                        httpResponse->setData(responseData);
+
+                    }                                       
                     httpRequest->setResponse(httpResponse);
                     break;
                 default:

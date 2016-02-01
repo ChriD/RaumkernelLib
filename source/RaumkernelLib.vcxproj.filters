@@ -55,6 +55,9 @@
     <Filter Include="httpclient">
       <UniqueIdentifier>{9f4e71e1-dac0-4a39-8182-5d5840403877}</UniqueIdentifier>
     </Filter>
+    <Filter Include="tools">
+      <UniqueIdentifier>{76b7a89c-92ba-413b-9d79-c2de41c1031d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="includes\raumkernel\os\os.h">
@@ -201,14 +204,8 @@
     <ClInclude Include="includes\raumkernel\device\proxies\CpUpnpOrgAVTransport_RaumfeldVirtual1.h">
       <Filter>includes\raumkernel\device\proxies</Filter>
     </ClInclude>
-    <ClInclude Include="includes\raumkernel\manager\requestManager.h">
-      <Filter>includes\raumkernel\manager</Filter>
-    </ClInclude>
     <ClInclude Include="includes\raumkernel\manager\zoneManager.h">
       <Filter>includes\raumkernel\manager</Filter>
-    </ClInclude>
-    <ClInclude Include="includes\raumkernel\httpclient\happyhttp.h">
-      <Filter>includes\raumkernel\httpclient</Filter>
     </ClInclude>
     <ClInclude Include="includes\raumkernel\httpclient\mongoose.h">
       <Filter>includes\raumkernel\httpclient</Filter>
@@ -221,6 +218,9 @@
     </ClInclude>
     <ClInclude Include="includes\raumkernel\httpclient\httpResponse.h">
       <Filter>includes\raumkernel\httpclient</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\raumkernel\tools\urlParser.h">
+      <Filter>includes\raumkernel\tools</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -311,14 +311,8 @@
     <ClCompile Include="device\proxies\CpUpnpOrgAVTransport_RaumfeldVirtual1Std.cpp">
       <Filter>device\proxies</Filter>
     </ClCompile>
-    <ClCompile Include="manager\requestManager.cpp">
-      <Filter>manager</Filter>
-    </ClCompile>
     <ClCompile Include="manager\zoneManager.cpp">
       <Filter>manager</Filter>
-    </ClCompile>
-    <ClCompile Include="httpclient\happyhttp.cpp">
-      <Filter>httpclient</Filter>
     </ClCompile>
     <ClCompile Include="httpclient\mongoose.c">
       <Filter>httpclient</Filter>
@@ -331,6 +325,9 @@
     </ClCompile>
     <ClCompile Include="httpclient\httpResponse.cpp">
       <Filter>httpclient</Filter>
+    </ClCompile>
+    <ClCompile Include="tools\urlParser.cpp">
+      <Filter>tools</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

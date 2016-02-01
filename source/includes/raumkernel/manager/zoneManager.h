@@ -26,6 +26,7 @@
 #define RAUMKERNEL_ZONEMANAGER_H
 
 #include <raumkernel/manager/managerBase.h>
+#include <raumkernel/httpclient/httpClient.h>
 
 namespace Raumkernel
 {
@@ -53,6 +54,30 @@ namespace Raumkernel
                 * If the given room is not in a zone, nothing will happen
                 */
                 EXPORT void dropRoom(std::string _roomUDN);
+                /**
+                * kills the zone configuration request
+                */
+                EXPORT void stopZoneRequests();
+                /**
+                * starts the zone configuration request
+                */
+                EXPORT void startZoneRequests();
+
+            protected:
+                /**
+                * The callback method which will be called when the 'getZones' request is finished
+                */
+                void zoneRequestFinished(HttpClient::HttpRequest *_request);
+                /**
+                * Does the request to gt the zone information given by the raumfeld system
+                * the '_updateId' parameter is usd for longPolling
+                */
+                void doGetZoneRequest(std::string _updateId = "");
+                /**
+                * The HTTPClient for requesting the zones in a 'long polling' style and for other zone actions
+                */
+                HttpClient::HttpClient httpClient;
+
         };
     }
 }

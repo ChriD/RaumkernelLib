@@ -13,26 +13,45 @@ namespace Raumkernel
 
         HttpClient::~HttpClient()
         {
+            killAllRequests();
         }
 
 
-        void HttpClient::requestFinished(HttpRequest *_request)
+        void HttpClient::killAllRequests()
         {
-            if (_request == nullptr)
-                return;
-
-            std::lock_guard<std::mutex> lock(mutexRequestMap);
-
-
-            if (requestMap.find(_request->getId()) != requestMap.end())
+            mutexRequestMap.lock();
+            for each (auto mapitem in requestMap)
             {
-                requestMap.erase(_request->getId());                
-                logDebug("Request '" + _request->getId()  + "(" + _request->getRequestUrl() + ") finished with code '" + std::to_string(_request->getResponse()->getErrorCode()) + "'", CURRENT_POSITION);
+                std::string requestId = mapitem.second->getId();
+                logDebug("Aborting Request: " + requestId + " / " + mapitem.second->getRequestUrl(), CURRENT_POSITION);
+                mapitem.second->abort();
+                logDebug("Request aborted: " + requestId, CURRENT_POSITION);
             }
-            else
+            mutexRequestMap.unlock();
+            cleanupRequests();
+        }
+
+
+        void HttpClient::cleanupRequests()
+        {
+            std::lock_guard<std::mutex> lock(mutexRequestMap);    
+            std::int32_t cleanUpCount = 0;
+
+            for (auto it = requestMap.cbegin(); it != requestMap.cend() /* not hoisted */; /* no increment */)
             {
-                logWarning("Could not find request with id '" + _request->getId() + "' in request list!", CURRENT_POSITION);
-            }
+                if (it->second->isRequestFinished())
+                {
+                    requestMap.erase(it->second->getId());
+                    cleanUpCount++;
+                }
+                else
+                {
+                    ++it;
+                }
+                
+            }            
+            
+            logDebug("Requests cleaned up! Count: " + std::to_string(cleanUpCount), CURRENT_POSITION);
         }
 
 
@@ -40,6 +59,8 @@ namespace Raumkernel
         {
             std::shared_ptr<Raumkernel::HttpClient::HttpRequest> httpRequest = std::shared_ptr<HttpRequest>(new HttpRequest(std::to_string(Tools::CommonUtil::randomUInt32()), _requestUrl, _headerVars, _postVars, _userData, _callback));
             
+            // try to clean up pending requests
+            cleanupRequests();
 
             mutexRequestMap.lock();
             try
@@ -52,11 +73,8 @@ namespace Raumkernel
             }
 
             mutexRequestMap.unlock();
-
-            httpRequest->setFinishedCallback(std::bind(&HttpClient::requestFinished, this, std::placeholders::_1));
-
-            // TODO: create thread
-            logDebug("Request '" + httpRequest->getId() + "(" + httpRequest->getRequestUrl() + ") started", CURRENT_POSITION);
+   
+            logDebug("Request '" + httpRequest->getId() + "(" + httpRequest->getRequestUrl() + ") started", CURRENT_POSITION);                       
             httpRequest->run();
         }
 

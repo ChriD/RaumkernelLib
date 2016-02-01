@@ -29,6 +29,7 @@
 #include <raumkernel/raumkernelBase.h>
 #include <raumkernel/httpclient/mongoose.h>
 #include <raumkernel/httpclient/httpResponse.h>
+#include <raumkernel/tools/urlParser.h>
 
 
 namespace Raumkernel
@@ -43,16 +44,19 @@ namespace Raumkernel
                 EXPORT HttpRequest();
                 EXPORT HttpRequest(const std::string _requestId, const std::string _requestUrl, std::shared_ptr<std::unordered_map<std::string, std::string>> _headerVars = nullptr, std::shared_ptr<std::unordered_map<std::string, std::string>> _postVars = nullptr, void *_userdata = nullptr, std::function<void(HttpRequest*)> _callback = nullptr);
                 EXPORT virtual ~HttpRequest();
-                EXPORT virtual void run();
+                EXPORT virtual void run();           
+                EXPORT virtual void abort();
                 EXPORT virtual std::string getId();
                 EXPORT virtual std::string getRequestUrl();
                 EXPORT virtual std::shared_ptr<HttpResponse> getResponse();
+                EXPORT virtual bool isRequestFinished();
                 void setGotResponse(bool _gotResponse);       
-                void setResponse(std::shared_ptr<HttpResponse> _httpResponse);
-                void setFinishedCallback(std::function<void(HttpRequest*)> _callback);
+                void setRequestUrl(std::string _requestUrl);
+                void setResponse(std::shared_ptr<HttpResponse> _httpResponse);          
 
             protected:
-                void doRequest(std::string _url);
+                void doRequest(std::string _url, std::atomic_bool _stopThread);
+                virtual void runThread(std::atomic_bool _stopThread);
 
                 /**
                 * shared pointer to the response object
@@ -62,7 +66,7 @@ namespace Raumkernel
                 /**
                 * url which we will request
                 */
-                std::string requestUrl;
+                std::string requestUrl;             
                 /**
                 *  unique request id 
                 */
@@ -74,26 +78,17 @@ namespace Raumkernel
                 /**
                 *  the request callback function specified in the constructor by the developer
                 */
-                std::function<void(HttpRequest*)> requestFinishedUserCallback;
-                /**
-                *  the request callback function for the client
-                */
-                std::function<void(HttpRequest*)> requestFinishedCallback;
+                std::function<void(HttpRequest*)> requestFinishedUserCallback;         
+
+                std::thread threadRequestRun;
+                std::atomic_bool stopRequestThread;
+                std::atomic_bool requestFinished;
 
                 // mongose stuff
                 struct mg_mgr mongoose_mgr;
                 bool gotResponse;
 
-                static void mongoose_handler(struct mg_connection *nc, int ev, void *ev_data);
-
-                /*
-            EXPORT static void ev_handler(struct mg_connection *nc, int ev, void *ev_data);         
-            std::int16_t s_exit_flag;
-
-           
-            std::string requestId;
-            void *userData;
-            */
+                static void mongoose_handler(struct mg_connection *nc, int ev, void *ev_data);             
 
         };        
     }
