@@ -38,13 +38,17 @@ namespace Raumkernel
 
         void ZoneManager::doGetZoneRequest(std::string _updateId)
         {
+            std::shared_ptr<std::unordered_map<std::string, std::string>> headerVars = nullptr;
             std::string hostIP = getManagerEngineer()->getDeviceManager()->getRaumfeldHostIP();
             std::string hostPort = getManagerEngineer()->getSettingsManager()->getValue(SETTINGS_RAUMKERNEL_HOSTREQUESTPORT);
             if (!hostIP.empty())
-            {
-                // TODO: @@@
-                //httpClient.request("http://10.0.0.5:47365/getZones", nullptr, nullptr, nullptr, std::bind(&ZoneManager::zoneRequestFinished, this, std::placeholders::_1));
-                httpClient.request("http://" + hostIP + ":" + hostPort + "/getZones", nullptr, nullptr, nullptr, std::bind(&ZoneManager::zoneRequestFinished, this, std::placeholders::_1));
+            {                           
+                if (!_updateId.empty())
+                {
+                    headerVars = std::shared_ptr<std::unordered_map<std::string, std::string>>(new std::unordered_map<std::string, std::string>);
+                    headerVars->insert(std::make_pair("updateid", _updateId));
+                }                   
+                httpClient.request("http://" + hostIP + ":" + hostPort + "/getZones", headerVars, nullptr, nullptr, std::bind(&ZoneManager::zoneRequestFinished, this, std::placeholders::_1));
             }
         }
 

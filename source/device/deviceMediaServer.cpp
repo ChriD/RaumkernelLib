@@ -21,6 +21,12 @@ namespace Raumkernel
         }
 
 
+        bool MediaServer::isRaumfeldMediaServer()
+        {
+            return false;
+        }
+
+
         void MediaServer::deleteProxies()
         {
             // due the proxies are shared pointers we can set them to nullptr instead of deleteing them first

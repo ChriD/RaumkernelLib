@@ -26,6 +26,7 @@
 #define RAUMKERNEL_RAUMKERNEL_H
 
 #include <raumkernel/raumkernelBaseMgr.h>
+#include <raumkernel/device/deviceMediaServer.h>
 
 
 namespace Raumkernel
@@ -36,6 +37,13 @@ namespace Raumkernel
             EXPORT Raumkernel();
             EXPORT virtual ~Raumkernel();
             EXPORT virtual void init(Log::LogType _defaultLogLevel = Log::LogType::LOGTYPE_ERROR, std::string _settingsFileName = "");
+
+        protected:
+            void onMediaServerAdded(std::shared_ptr<Devices::MediaServer> _mediaServer);
+            void onMediaServerRemoved(std::shared_ptr<Devices::MediaServer> _mediaServer);
+
+            sigs::connections   connections;
+
 
     };
 

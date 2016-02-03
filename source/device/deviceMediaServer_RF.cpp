@@ -17,6 +17,12 @@ namespace Raumkernel
         }
 
 
+        bool MediaServer_Raumfeld::isRaumfeldMediaServer()
+        {
+            return true;
+        }
+
+
         void MediaServer_Raumfeld::createProxyContentDirectory()
         {
             // INFO: If the subscription fails in the OhNet Stack you may have to check the generated proxies for wrong string parameter in the constructor. eg:

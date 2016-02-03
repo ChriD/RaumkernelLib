@@ -76,6 +76,14 @@ namespace Raumkernel
                 */
                 void *userData;
                 /**
+                * 
+                */
+                std::shared_ptr<std::unordered_map<std::string, std::string>> headerVars;
+                /**
+                *
+                */
+                std::shared_ptr<std::unordered_map<std::string, std::string>> postVars;
+                /**
                 *  the request callback function specified in the constructor by the developer
                 */
                 std::function<void(HttpRequest*)> requestFinishedUserCallback;         

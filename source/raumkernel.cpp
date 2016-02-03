@@ -61,16 +61,44 @@ namespace Raumkernel
         logObject->setLogLevel(Log::Log::logTypeStringToLogType(logLevelString));
         logDebug("Log level was set to: " + logLevelString, CURRENT_POSITION);
 
+        // lets do some subscriptions
+        connections.connect(managerEngineer->getDeviceManager()->sigMediaServerAdded, this, &Raumkernel::onMediaServerAdded);
+        connections.connect(managerEngineer->getDeviceManager()->sigMediaServerRemoved, this, &Raumkernel::onMediaServerRemoved);
+            
+
         // let's wake up the UPNP Stack and start discovering UPNP devices of all kinds
         managerEngineer->getUPNPManager()->init();        
         managerEngineer->getUPNPManager()->discover();
 
-        // the zone manager has to request the actual zone configuration whcih can be done by long polling a special request
+        // the zone manager has to request the actual zone configuration which can be done by long polling a special request        
         managerEngineer->getZoneManager()->init();        
         
 
         logInfo("Kernel initialized! Waiting for Raumfeld System to appear!", CURRENT_POSITION);
 
     }
+
+
+    void Raumkernel::onMediaServerAdded(std::shared_ptr<Devices::MediaServer> _mediaServer)
+    {
+        // if the raumfeld media server was added, we can be sure that we have a ip for the requests
+        // so we can start the zone configuration request    
+        if (_mediaServer->isRaumfeldMediaServer())
+        {
+            managerEngineer->getZoneManager()->startZoneRequests();
+        }
+    }
+
+
+    void Raumkernel::onMediaServerRemoved(std::shared_ptr<Devices::MediaServer> _mediaServer)
+    {
+        // if the raumfeld media server was removed, we have to stop the zone configuration request
+        if (_mediaServer->isRaumfeldMediaServer())
+        {
+            managerEngineer->getZoneManager()->stopZoneRequests();
+        }
+    
+    }
+
 
 }

@@ -21,6 +21,9 @@ namespace Raumkernel
             requestId = _requestId;
             userData = _userData; 
             requestFinishedUserCallback = _callback;
+
+            headerVars = _headerVars;
+            postVars = _postVars;
             
             mg_mgr_init(&mongoose_mgr, this);
         }
@@ -84,8 +87,35 @@ namespace Raumkernel
 
         void HttpRequest::doRequest(std::string _url, std::atomic_bool _stopThread)
         {
+            std::string headers = "";
+            std::string postVarsString = "";
+            
             gotResponse = false;
-            mg_connect_http(&mongoose_mgr, &HttpRequest::mongoose_handler, _url.c_str(), NULL, NULL);
+
+            // TODO: @@@
+        
+            if (headerVars != nullptr && !headerVars->empty())
+            {
+                for (auto iterator = headerVars->begin(); iterator != headerVars->end(); iterator++)             
+                {
+                    headers += iterator->first + ": " + iterator->second;
+                    headers += "\r\n";
+                }
+            }
+           
+            
+            if (postVars != nullptr && !postVars->empty())
+            {
+                for (auto iterator = postVars->begin(); iterator != postVars->end(); iterator++)
+                {
+                    // TODO: uriencode?!
+                    headers += iterator->first + "=" + iterator->second;
+                    headers += "&";
+                }
+            }
+            
+                        
+            mg_connect_http(&mongoose_mgr, &HttpRequest::mongoose_handler, _url.c_str(), headers.c_str(), postVarsString.c_str());
 
             while (!gotResponse) {
                 mg_mgr_poll(&mongoose_mgr, 1000);

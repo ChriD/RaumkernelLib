@@ -51,22 +51,26 @@ namespace Raumkernel
                 * Searches the media server with the given values
                 * You have to subscribe to "searchExecuted" to get the result!
                 */
-                EXPORT void search(std::string _containerId, std::string _searchCriteria = "", std::string _extraData = "", bool _sync = false);
+                EXPORT virtual void search(std::string _containerId, std::string _searchCriteria = "", std::string _extraData = "", bool _sync = false);
                 /**
                 * Browses the media server with the given values
                 * You have to subscribe to "browseExecuted" to get the result!
                 */
-                EXPORT void browse(std::string _containerId, MediaServer_BrowseFlag _browseFlag = MediaServer_BrowseFlag::MSBF_BrowseDirectChildren, std::string _extraData = "", bool _sync = false);                                 
+                EXPORT virtual void browse(std::string _containerId, MediaServer_BrowseFlag _browseFlag = MediaServer_BrowseFlag::MSBF_BrowseDirectChildren, std::string _extraData = "", bool _sync = false);
                 /**
                 * creates a valid avTransportUri for a container id 
                 * this uri  can be used for bending or setting the uri on a renderer
                 */
-                EXPORT std::string createAVTransportUri_Container(std::string _containerId, std::int32_t _trackIndex = -1);
+                EXPORT virtual std::string createAVTransportUri_Container(std::string _containerId, std::int32_t _trackIndex = -1);
                 /**
                 * creates a valid avTransportUri for a container id
                 * this uri  can be used for bending or setting the uri on a renderer
                 */
-                EXPORT std::string createAVTransportUri_Single(std::string _singleId);
+                EXPORT virtual std::string createAVTransportUri_Single(std::string _singleId);
+                /**
+                * Returne 'true' if the mesia server is the Raumfeld Media Server
+                */
+                EXPORT virtual bool isRaumfeldMediaServer();
 
 
                 sigs::signal<void(const std::string, std::uint32_t, std::uint32_t, std::uint32_t, const std::string)> sigSearchExecuted;

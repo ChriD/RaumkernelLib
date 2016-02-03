@@ -39,6 +39,7 @@ namespace Raumkernel
             public:
                 MediaServer_Raumfeld();
                 virtual ~MediaServer_Raumfeld();
+                EXPORT virtual bool isRaumfeldMediaServer() override;
 
             protected:
                 virtual void createProxyContentDirectory() override;
