@@ -10,6 +10,9 @@ namespace Raumkernel
     {
         ZoneManager::ZoneManager() : ManagerBase()
         {
+            //lastZoneRequestUpdateId = "";
+            //startZoneRequest = false;
+            //stopZoneRequestThread = false;
         }
 
 
@@ -20,21 +23,40 @@ namespace Raumkernel
 
         void ZoneManager::init()
         {  
-            startZoneRequests();
+            //startZoneRequests();
         }    
 
 
         void ZoneManager::stopZoneRequests()
         {
+            //startZoneRequest = false;
+            //stopZoneRequestThread = true;
             httpClient.killAllRequests();
         }
 
 
         void ZoneManager::startZoneRequests()
         {
+            //startZoneRequest = true;
+            //stopZoneRequestThread = false;
+            //threadZoneRequestStart = std::thread(&ZoneManager::runStartZoneRequestsThread, this);
             doGetZoneRequest();
         }
 
+        /*
+        void ZoneManager::runStartZoneRequestsThread()
+        {
+            while (!stopZoneRequestThread)
+            {
+                if (startZoneRequest)
+                {
+                    doGetZoneRequest(lastZoneRequestUpdateId);
+                    startZoneRequest = false;           
+                }
+                std::this_thread::sleep_for(std::chrono::milliseconds(100));
+            }
+        }
+        */
 
         void ZoneManager::doGetZoneRequest(std::string _updateId)
         {
@@ -59,8 +81,12 @@ namespace Raumkernel
             std::string updateId = response->getHeaderVar("updateId");          
 
             // TODO: parse XML String
+            //lastZoneRequestUpdateId = updateId;
 
+            // TODO: we can not call the long polling request again here directly because this would be some sort of endless reference on the request objects  
+            // so we save the update id and afterwards set some atomic bool to signal our zoneUpdate thread that he can do a request again
             doGetZoneRequest(updateId);
+            //startZoneRequest = true;
         }
 
         void ZoneManager::connectRoomToZone(std::string _roomUDN, std::string _zoneUDN)

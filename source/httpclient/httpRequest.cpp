@@ -11,6 +11,7 @@ namespace Raumkernel
             httpResponse = nullptr;
             requestFinishedUserCallback = nullptr;
             stopRequestThread = false;
+            requestFinished = false;
         }
        
               
@@ -22,6 +23,9 @@ namespace Raumkernel
             userData = _userData; 
             requestFinishedUserCallback = _callback;
 
+            stopRequestThread = false;
+            requestFinished = false;
+
             headerVars = _headerVars;
             postVars = _postVars;
             
@@ -31,6 +35,9 @@ namespace Raumkernel
 
         HttpRequest::~HttpRequest()
         {          
+            abort();        
+
+            mg_mgr_free(&mongoose_mgr);
         }
 
 
@@ -85,7 +92,7 @@ namespace Raumkernel
                 this->setGotResponse(true);
         }
 
-        void HttpRequest::doRequest(std::string _url, std::atomic_bool _stopThread)
+        void HttpRequest::doRequest(std::string _url)
         {
             std::string headers = "";
             std::string postVarsString = "";
@@ -117,21 +124,23 @@ namespace Raumkernel
                         
             mg_connect_http(&mongoose_mgr, &HttpRequest::mongoose_handler, _url.c_str(), headers.c_str(), postVarsString.c_str());
 
-            while (!gotResponse) {
+            while (!gotResponse && !stopRequestThread)
+            {
                 mg_mgr_poll(&mongoose_mgr, 1000);
+                std::this_thread::sleep_for(std::chrono::milliseconds(20));
             }
         }
 
 
         void HttpRequest::run()
         {          
-            threadRequestRun = std::thread(&HttpRequest::runThread, this, ref(stopRequestThread));
+            threadRequestRun = std::thread(&HttpRequest::runThread, this);
             // sync call 
             //threadRequestRun->join();
         }
 
         
-        void HttpRequest::runThread(std::atomic_bool _stopThread)
+        void HttpRequest::runThread()
         {
             bool isRedirected;
 
@@ -139,7 +148,7 @@ namespace Raumkernel
             do
             {
                 isRedirected = false;
-                doRequest(requestUrl.c_str(), ref(_stopThread));
+                doRequest(requestUrl.c_str());
                 if (gotResponse)
                 {                  
                     // Handle HTTP Redirection
@@ -155,14 +164,14 @@ namespace Raumkernel
                 }
 
             } 
-            while (isRedirected && gotResponse);
+            while (isRedirected && gotResponse);                                   
 
-                
             // call callback method if we got a response, but not if we killed the response
+            // TODO: well thats a problem here...
             if (gotResponse && requestFinishedUserCallback)
-                requestFinishedUserCallback(this);            
+                requestFinishedUserCallback(this);
 
-            mg_mgr_free(&mongoose_mgr);  
+            mg_mgr_free(&mongoose_mgr);             
 
             // we set the request that it is finished. the cleanup will be done by the client
             requestFinished = true;

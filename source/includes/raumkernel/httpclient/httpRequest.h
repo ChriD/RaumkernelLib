@@ -55,8 +55,8 @@ namespace Raumkernel
                 void setResponse(std::shared_ptr<HttpResponse> _httpResponse);          
 
             protected:
-                void doRequest(std::string _url, std::atomic_bool _stopThread);
-                virtual void runThread(std::atomic_bool _stopThread);
+                void doRequest(std::string _url);
+                virtual void runThread();
 
                 /**
                 * shared pointer to the response object

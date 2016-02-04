@@ -1,4 +1,3 @@
-
 #include <raumkernel/httpclient/httpClient.h>
 
 namespace Raumkernel
@@ -38,10 +37,11 @@ namespace Raumkernel
             std::int32_t cleanUpCount = 0;
 
             for (auto it = requestMap.cbegin(); it != requestMap.cend() /* not hoisted */; /* no increment */)
-            {
+            {               
                 if (it->second->isRequestFinished())
                 {
-                    requestMap.erase(it->second->getId());
+                    //requestMap.erase(it->second->getId());
+                    it = requestMap.erase(it);
                     cleanUpCount++;
                 }
                 else

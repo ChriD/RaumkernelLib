@@ -25,6 +25,10 @@
 #ifndef RAUMKERNEL_ZONEMANAGER_H
 #define RAUMKERNEL_ZONEMANAGER_H
 
+#include <atomic>
+#include <chrono>
+#include <thread>
+
 #include <raumkernel/manager/managerBase.h>
 #include <raumkernel/httpclient/httpClient.h>
 
@@ -69,7 +73,7 @@ namespace Raumkernel
                 */
                 void zoneRequestFinished(HttpClient::HttpRequest *_request);
                 /**
-                * Does the request to gt the zone information given by the raumfeld system
+                * Does the request to get the zone information given by the raumfeld system
                 * the '_updateId' parameter is usd for longPolling
                 */
                 void doGetZoneRequest(std::string _updateId = "");
@@ -77,6 +81,16 @@ namespace Raumkernel
                 * The HTTPClient for requesting the zones in a 'long polling' style and for other zone actions
                 */
                 HttpClient::HttpClient httpClient;
+
+                // TODO: @@@
+                //void runStartZoneRequestsThread();
+
+                /*
+                std::thread threadZoneRequestStart;
+                std::atomic_bool startZoneRequest;        
+                std::atomic_bool stopZoneRequestThread;
+                std::string lastZoneRequestUpdateId;
+                */
 
         };
     }
