@@ -12,7 +12,7 @@ namespace Raumkernel
         {
             //lastZoneRequestUpdateId = "";
             //startZoneRequest = false;
-            //stopZoneRequestThread = false;
+            //stopZoneRequestThread = false;            
         }
 
 
@@ -24,6 +24,7 @@ namespace Raumkernel
         void ZoneManager::init()
         {  
             //startZoneRequests();
+            httpClient.setLogObject(getLogObject());
         }    
 
 
@@ -31,7 +32,9 @@ namespace Raumkernel
         {
             //startZoneRequest = false;
             //stopZoneRequestThread = true;
-            httpClient.killAllRequests();
+            logDebug("Killing all requests of zone manager!", CURRENT_POSITION);
+//            httpClient.killAllRequests();
+            // TODO: Stop long polling request from request manager?!
         }
 
 
@@ -40,6 +43,7 @@ namespace Raumkernel
             //startZoneRequest = true;
             //stopZoneRequestThread = false;
             //threadZoneRequestStart = std::thread(&ZoneManager::runStartZoneRequestsThread, this);
+            logDebug("Staring all automatic requests of zone manager!", CURRENT_POSITION);
             doGetZoneRequest();
         }
 
@@ -60,25 +64,38 @@ namespace Raumkernel
 
         void ZoneManager::doGetZoneRequest(std::string _updateId)
         {
+            std::lock_guard<std::mutex> lock(mutexStartRequest);
+
             std::shared_ptr<std::unordered_map<std::string, std::string>> headerVars = nullptr;
             std::string hostIP = getManagerEngineer()->getDeviceManager()->getRaumfeldHostIP();
             std::string hostPort = getManagerEngineer()->getSettingsManager()->getValue(SETTINGS_RAUMKERNEL_HOSTREQUESTPORT);
             if (!hostIP.empty())
-            {                           
+            {
+                logDebug("Starting zone configuration request with updateId: " + _updateId, CURRENT_POSITION);
+
                 if (!_updateId.empty())
                 {
                     headerVars = std::shared_ptr<std::unordered_map<std::string, std::string>>(new std::unordered_map<std::string, std::string>);
                     headerVars->insert(std::make_pair("updateid", _updateId));
-                }                   
+                }
                 httpClient.request("http://" + hostIP + ":" + hostPort + "/getZones", headerVars, nullptr, nullptr, std::bind(&ZoneManager::zoneRequestFinished, this, std::placeholders::_1));
+                // TODO: @@@ test!!!
+               // httpClient.request("http://" + hostIP + ":" + hostPort + "/getZones", headerVars, nullptr, nullptr, std::bind(&ZoneManager::zoneRequestFinished, this, std::placeholders::_1));
             }
+            else
+            {
+                logError("Trying to start zone configuration request without host-IP", CURRENT_POSITION);
+            }
+        
         }
 
 
         void ZoneManager::zoneRequestFinished(HttpClient::HttpRequest *_request)
         {
             std::shared_ptr<HttpClient::HttpResponse> response = _request->getResponse();
-            std::string updateId = response->getHeaderVar("updateId");          
+            std::string updateId = response->getHeaderVar("updateId");     
+
+            logDebug("Zone configuration request finished", CURRENT_POSITION);
 
             // TODO: parse XML String
             //lastZoneRequestUpdateId = updateId;

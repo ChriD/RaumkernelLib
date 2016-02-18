@@ -10,7 +10,6 @@ namespace Raumkernel
         {
             httpResponse = nullptr;
             requestFinishedUserCallback = nullptr;
-            stopRequestThread = false;
             requestFinished = false;
         }
        
@@ -22,30 +21,17 @@ namespace Raumkernel
             requestId = _requestId;
             userData = _userData; 
             requestFinishedUserCallback = _callback;
-
-            stopRequestThread = false;
             requestFinished = false;
 
             headerVars = _headerVars;
-            postVars = _postVars;
-            
-            mg_mgr_init(&mongoose_mgr, this);
+            postVars = _postVars;      
+
+            createHeadersAndPostStringVars();
         }
 
 
         HttpRequest::~HttpRequest()
-        {          
-            abort();        
-
-            mg_mgr_free(&mongoose_mgr);
-        }
-
-
-        void HttpRequest::abort()
-        {
-            stopRequestThread = true;
-            if (threadRequestRun.joinable())
-                threadRequestRun.join();
+        {                
         }
 
 
@@ -73,6 +59,18 @@ namespace Raumkernel
         }
 
 
+        std::string HttpRequest::getPostVarsString()
+        {
+            return postVarsString;
+        }
+
+
+        std::string HttpRequest::getHeaderVarsString()
+        {
+            return headerVarsString;
+        }
+
+
         void HttpRequest::setGotResponse(bool _gotResponse)
         {
             gotResponse = _gotResponse;
@@ -85,6 +83,12 @@ namespace Raumkernel
         }
 
 
+        void HttpRequest::setConnection(mg_connection *_connection)
+        {
+            connection = _connection;
+        }
+
+
         void HttpRequest::setResponse(std::shared_ptr<HttpResponse> _httpResponse)
         {
             httpResponse = _httpResponse;
@@ -92,95 +96,97 @@ namespace Raumkernel
                 this->setGotResponse(true);
         }
 
-        void HttpRequest::doRequest(std::string _url)
-        {
-            std::string headers = "";
-            std::string postVarsString = "";
-            
-            gotResponse = false;
 
-            // TODO: @@@
-        
+        void HttpRequest::emitRequestFinishCallback()
+        {
+            requestFinishedUserCallback(this);
+        }
+       
+
+
+        void HttpRequest::createHeadersAndPostStringVars()
+        {         
             if (headerVars != nullptr && !headerVars->empty())
             {
-                for (auto iterator = headerVars->begin(); iterator != headerVars->end(); iterator++)             
+                for (auto iterator = headerVars->begin(); iterator != headerVars->end(); iterator++)
                 {
-                    headers += iterator->first + ": " + iterator->second;
-                    headers += "\r\n";
+                    headerVarsString += iterator->first + ": " + iterator->second;
+                    headerVarsString += "\r\n";
                 }
             }
-           
-            
+
+            // add request information (unique id) to header
+            headerVarsString += "RequestId: " + getId();
+            headerVarsString += "\r\n";
+
+
             if (postVars != nullptr && !postVars->empty())
             {
                 for (auto iterator = postVars->begin(); iterator != postVars->end(); iterator++)
                 {
                     // TODO: uriencode?!
-                    headers += iterator->first + "=" + iterator->second;
-                    headers += "&";
+                    postVarsString += iterator->first + "=" + iterator->second;
+                    postVarsString += "&";
                 }
             }
-            
-                        
-            mg_connect_http(&mongoose_mgr, &HttpRequest::mongoose_handler, _url.c_str(), headers.c_str(), postVarsString.c_str());
-
-            while (!gotResponse && !stopRequestThread)
-            {
-                mg_mgr_poll(&mongoose_mgr, 1000);
-                std::this_thread::sleep_for(std::chrono::milliseconds(20));
-            }
         }
 
 
-        void HttpRequest::run()
-        {          
-            threadRequestRun = std::thread(&HttpRequest::runThread, this);
-            // sync call 
-            //threadRequestRun->join();
-        }
 
+        /*
         
         void HttpRequest::runThread()
         {
             bool isRedirected;
 
+            logDebug("Request thread started (" + getRequestUrl() + ")", CURRENT_POSITION);
             // start the request with the given url. there may be a redirection which will be handled here too
             do
             {
                 isRedirected = false;
                 doRequest(requestUrl.c_str());
+                while (!gotResponse)
+                {
+                    std::this_thread::sleep_for(std::chrono::milliseconds(100));
+                }
                 if (gotResponse)
                 {                  
                     // Handle HTTP Redirection
                     // the post and header var will stay the same from the original request, onl the url will be changed and the request wil lbe sent again
                     // HTTP / 1.1 307 Temporary Redirect
                     if (getResponse()->getStatusCode() == 307)
-                    {
+                    {                        
                         std::string redirectionUrl = getResponse()->getHeaderVar("LOCATION");
                         LUrlParser::clParseURL parsedUrl = LUrlParser::clParseURL::ParseURL(getRequestUrl());
                         setRequestUrl(parsedUrl.m_Scheme + "://" + parsedUrl.m_Host + (parsedUrl.m_Port.empty() ? "" : ":") + parsedUrl.m_Port + redirectionUrl);
                         isRedirected = true;
+                        logDebug("Found request redirection to: " + redirectionUrl, CURRENT_POSITION);
                     }
                 }
 
             } 
-            while (isRedirected && gotResponse);                                   
+            while (isRedirected && gotResponse);    
 
             // call callback method if we got a response, but not if we killed the response
             // TODO: well thats a problem here...
             if (gotResponse && requestFinishedUserCallback)
                 requestFinishedUserCallback(this);
 
-            mg_mgr_free(&mongoose_mgr);             
+            //mg_mgr_free(&mongoose_mgr);             
+
+            logDebug("Request thread ended (" + getRequestUrl() + ")", CURRENT_POSITION);
 
             // we set the request that it is finished. the cleanup will be done by the client
             requestFinished = true;
         }
+        */
 
-
+        /*
 
         void HttpRequest::mongoose_handler(struct mg_connection *nc, int ev, void *ev_data) 
         {
+            // TODO: lock
+
             struct http_message *hm = (struct http_message *) ev_data;
             HttpRequest *httpRequest = (HttpRequest*)nc->mgr->user_data;
             std::string response = "", responseHeader = "", responseData = "";
@@ -191,7 +197,7 @@ namespace Raumkernel
             std::shared_ptr<HttpResponse> httpResponse;
 
             switch (ev) 
-            {
+            { 
                 case MG_EV_CONNECT:
                     if (*(int *)ev_data != 0) 
                     {
@@ -226,9 +232,13 @@ namespace Raumkernel
                     }                                       
                     httpRequest->setResponse(httpResponse);
                     break;
+                case MG_EV_POLL:
+                    break;
                 default:
+                    // Error???
                     break;
             }
         }
+        */
     }
 }

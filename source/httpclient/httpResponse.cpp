@@ -1,5 +1,6 @@
 
 #include <raumkernel/httpclient/httpResponse.h>
+#include <raumkernel/httpclient/httpClient.h>
 
 namespace Raumkernel
 {
@@ -48,32 +49,12 @@ namespace Raumkernel
 
         void HttpResponse::createHeaderFromResponseStr(std::string _headerString)
         {
-            auto headers = Tools::StringUtil::explodeString(_headerString, "\r\n");
-            bool statusLineProcessed = false;
+            headerVars = HttpClient::getHeaders(_headerString);
             
-            headerVars.clear();
-
-            for (auto headerLine : headers)
+            if (headerVars.size() > 0 && headerVars.count("status"))
             {
-                if (!headerLine.empty() && statusLineProcessed)
-                {
-                    auto headerPair = Tools::StringUtil::explodeString(headerLine, ":", 1);
-                    if (headerPair.size() > 1)
-                    {
-                        std::string key = headerPair[0];
-                        std::string value = headerPair[1];
-                        // we do tolower the key values so we do not have any problem getting the values when the 
-                        // getHeaderValue is not matching the case
-                        std::transform(key.begin(), key.end(), key.begin(), ::tolower);
-                        headerVars.insert(std::make_pair(key, value));
-                    }
-                }
-                statusLineProcessed = true;
-            }
-
-            if (headers.size() > 0)
-            {
-                auto statusInfo = Tools::StringUtil::explodeString(headers[0], " ", 2);
+                auto statusInfoHeader = headerVars.at("status");
+                auto statusInfo = Tools::StringUtil::explodeString(statusInfoHeader, " ", 2);
                 if (statusInfo.size() >= 3)
                 {
                     protocol = statusInfo[0];

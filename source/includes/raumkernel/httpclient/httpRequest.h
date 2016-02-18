@@ -44,19 +44,23 @@ namespace Raumkernel
                 EXPORT HttpRequest();
                 EXPORT HttpRequest(const std::string _requestId, const std::string _requestUrl, std::shared_ptr<std::unordered_map<std::string, std::string>> _headerVars = nullptr, std::shared_ptr<std::unordered_map<std::string, std::string>> _postVars = nullptr, void *_userdata = nullptr, std::function<void(HttpRequest*)> _callback = nullptr);
                 EXPORT virtual ~HttpRequest();
-                EXPORT virtual void run();           
-                EXPORT virtual void abort();
                 EXPORT virtual std::string getId();
                 EXPORT virtual std::string getRequestUrl();
                 EXPORT virtual std::shared_ptr<HttpResponse> getResponse();
                 EXPORT virtual bool isRequestFinished();
-                void setGotResponse(bool _gotResponse);       
-                void setRequestUrl(std::string _requestUrl);
-                void setResponse(std::shared_ptr<HttpResponse> _httpResponse);          
+                EXPORT void setGotResponse(bool _gotResponse);
+                EXPORT void setRequestUrl(std::string _requestUrl);
+                EXPORT void setResponse(std::shared_ptr<HttpResponse> _httpResponse);
+                EXPORT void setConnection(mg_connection *_connection);
+                EXPORT void emitRequestFinishCallback();
+
+                EXPORT virtual std::string getPostVarsString();
+                EXPORT virtual std::string getHeaderVarsString();
+
 
             protected:
-                void doRequest(std::string _url);
-                virtual void runThread();
+                virtual void createHeadersAndPostStringVars();
+                //virtual void runThread();
 
                 /**
                 * shared pointer to the response object
@@ -79,24 +83,29 @@ namespace Raumkernel
                 * 
                 */
                 std::shared_ptr<std::unordered_map<std::string, std::string>> headerVars;
+                std::string headerVarsString = "";                
                 /**
                 *
                 */
                 std::shared_ptr<std::unordered_map<std::string, std::string>> postVars;
+                std::string postVarsString = "";
                 /**
                 *  the request callback function specified in the constructor by the developer
                 */
                 std::function<void(HttpRequest*)> requestFinishedUserCallback;         
 
-                std::thread threadRequestRun;
-                std::atomic_bool stopRequestThread;
+                //std::thread threadRequestRun;
+                //std::atomic_bool stopRequestThread;
                 std::atomic_bool requestFinished;
 
                 // mongose stuff
-                struct mg_mgr mongoose_mgr;
+                mg_connection *connection;
+                //struct mg_mgr *mongoose_mgr; // <.. not thread safe so we have to put this onto the CLIENT and there can only be one CLIENT
+                // so we do net a request manager which instanciate on client and so on....
+
                 bool gotResponse;
 
-                static void mongoose_handler(struct mg_connection *nc, int ev, void *ev_data);             
+                //static void mongoose_handler(struct mg_connection *nc, int ev, void *ev_data);             
 
         };        
     }

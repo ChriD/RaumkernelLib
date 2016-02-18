@@ -44,10 +44,27 @@ namespace Raumkernel
                 EXPORT virtual ~HttpClient();  
 
                 EXPORT void request(std::string _requestUrl, std::shared_ptr<std::unordered_map<std::string, std::string>> _headerVars = nullptr, std::shared_ptr<std::unordered_map<std::string, std::string>> _postVars = nullptr, void *_userData = nullptr, std::function<void(HttpRequest*)> _callback = nullptr);
-                EXPORT void cleanupRequests();
-                EXPORT void killAllRequests();
+                //EXPORT void cleanupRequests();
+                //EXPORT void killAllRequests();
+                std::shared_ptr<HttpRequest> getRequest(std::string _requestId);
+   
+                static std::unordered_map<std::string, std::string> getHeaders(std::string _string);   
+
+
+                void lockRequestMap();
+                void unlockRequestMap();
 
             protected:
+
+                /**
+                * This thread is the mongoose poller
+                */
+                void requestPollingThread();
+                /**
+                * 
+                */
+                void startRequestPollingThread();               
+
                 /**
                 * This map holds all the request that are pending
                 */
@@ -55,7 +72,23 @@ namespace Raumkernel
                 /**
                 * This mutex controls the access to the request map
                 */
-                std::mutex mutexRequestMap;
+                std::mutex mutexRequestMap;            
+                /**
+                * Mongoose manager. Mongoose is not thread safe so there can only be one client with reuquesting
+                */
+                struct mg_mgr mongoose_mgr;
+                /**
+                * Mongoose manager. Mongoose is not thread safe so there can only be one client with reuquesting
+                */
+                std::thread threadRequestPolling;
+                /**
+                * Mongoose manager. Mongoose is not thread safe so there can only be one client with reuquesting
+                */
+                std::atomic_bool abortPollingThread;
+                /**
+                * Mongoose handler
+                */
+                static void mongoose_handler(struct mg_connection *nc, int ev, void *ev_data);
 
         };
     }

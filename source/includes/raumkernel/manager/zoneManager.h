@@ -81,6 +81,10 @@ namespace Raumkernel
                 * The HTTPClient for requesting the zones in a 'long polling' style and for other zone actions
                 */
                 HttpClient::HttpClient httpClient;
+                /**
+                *
+                */
+                std::mutex mutexStartRequest;
 
                 // TODO: @@@
                 //void runStartZoneRequestsThread();
