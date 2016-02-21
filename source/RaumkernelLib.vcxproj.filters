@@ -207,9 +207,6 @@
     <ClInclude Include="includes\raumkernel\manager\zoneManager.h">
       <Filter>includes\raumkernel\manager</Filter>
     </ClInclude>
-    <ClInclude Include="includes\raumkernel\httpclient\mongoose.h">
-      <Filter>includes\raumkernel\httpclient</Filter>
-    </ClInclude>
     <ClInclude Include="includes\raumkernel\httpclient\httpClient.h">
       <Filter>includes\raumkernel\httpclient</Filter>
     </ClInclude>
@@ -316,9 +313,6 @@
     </ClCompile>
     <ClCompile Include="manager\zoneManager.cpp">
       <Filter>manager</Filter>
-    </ClCompile>
-    <ClCompile Include="httpclient\mongoose.c">
-      <Filter>httpclient</Filter>
     </ClCompile>
     <ClCompile Include="httpclient\httpClient.cpp">
       <Filter>httpclient</Filter>

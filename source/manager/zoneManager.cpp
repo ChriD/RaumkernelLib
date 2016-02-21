@@ -22,9 +22,10 @@ namespace Raumkernel
         }
 
         void ZoneManager::init()
-        {  
-            //startZoneRequests();
+        {              
             httpClient.setLogObject(getLogObject());
+            httpClient.setManagerEngineer(getManagerEngineer());
+            httpClient.init();
         }    
 
 
@@ -79,8 +80,6 @@ namespace Raumkernel
                     headerVars->insert(std::make_pair("updateid", _updateId));
                 }
                 httpClient.request("http://" + hostIP + ":" + hostPort + "/getZones", headerVars, nullptr, nullptr, std::bind(&ZoneManager::zoneRequestFinished, this, std::placeholders::_1));
-                // TODO: @@@ test!!!
-               // httpClient.request("http://" + hostIP + ":" + hostPort + "/getZones", headerVars, nullptr, nullptr, std::bind(&ZoneManager::zoneRequestFinished, this, std::placeholders::_1));
             }
             else
             {

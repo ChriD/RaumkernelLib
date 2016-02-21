@@ -7,14 +7,7 @@ namespace Raumkernel
     {
 
         HttpRequest::HttpRequest() : RaumkernelBase()
-        {
-            httpResponse = nullptr;
-            requestFinishedUserCallback = nullptr;
-            finished = false;
-            stopRequestThread = false; 
-            redirection = false;
-            deleteable = false;
-            redirectionLocation = "";
+        {     
         }
        
               
@@ -35,6 +28,9 @@ namespace Raumkernel
 
             headerVars = _headerVars;
             postVars = _postVars;      
+            
+            sleepTimeRequestPump = 20;
+
 
             createHeadersAndPostStringVars();
         }
@@ -111,6 +107,12 @@ namespace Raumkernel
         std::string HttpRequest::getHeaderVarsString()
         {
             return headerVarsString;
+        }
+
+
+        void HttpRequest::setSleepTimeRequestPump(std::uint32_t _sleepTime)
+        {
+            sleepTimeRequestPump = _sleepTime;
         }
 
 
@@ -240,7 +242,10 @@ namespace Raumkernel
             conn.request("GET", pathAndQuery.c_str(), headerCharPtrArray);
 
             while (conn.outstanding() && !stopRequestThread)
+            {
                 conn.pump();
+                std::this_thread::sleep_for(std::chrono::milliseconds(sleepTimeRequestPump));
+            }
 
             // TODO: @@@
             //if (index > 0 )

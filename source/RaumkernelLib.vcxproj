@@ -111,7 +111,6 @@
     <ClInclude Include="includes\raumkernel\httpclient\httpClient.h" />
     <ClInclude Include="includes\raumkernel\httpclient\httpRequest.h" />
     <ClInclude Include="includes\raumkernel\httpclient\httpResponse.h" />
-    <ClInclude Include="includes\raumkernel\httpclient\mongoose.h" />
     <ClInclude Include="includes\raumkernel\logger\logger.h" />
     <ClInclude Include="includes\raumkernel\logger\loggerAdapter.h" />
     <ClInclude Include="includes\raumkernel\logger\loggerBase.h" />
@@ -167,7 +166,6 @@
     <ClCompile Include="httpclient\httpClient.cpp" />
     <ClCompile Include="httpclient\httpRequest.cpp" />
     <ClCompile Include="httpclient\httpResponse.cpp" />
-    <ClCompile Include="httpclient\mongoose.c" />
     <ClCompile Include="logger\logger.cpp" />
     <ClCompile Include="logger\loggerAdapter.cpp" />
     <ClCompile Include="manager\deviceManager.cpp" />

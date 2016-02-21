@@ -59,6 +59,8 @@ namespace Raumkernel
                 EXPORT void setDeleteable(bool _deletable = true);
                 EXPORT void emitRequestFinishCallback();
 
+                EXPORT void setSleepTimeRequestPump(std::uint32_t _sleepTime);                
+
                 EXPORT std::string getRedirectionLocation();
                 EXPORT std::string getRedirectionUrl();
 
@@ -122,6 +124,8 @@ namespace Raumkernel
                 std::string redirectionLocation;
 
                 bool gotResponse;
+
+                std::uint32_t sleepTimeRequestPump;
                
 
         };        

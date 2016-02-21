@@ -30,14 +30,14 @@ namespace Raumkernel
         }
 
 
-        std::string SettingsManager::getValue(std::string _settingsPath, std::uint16_t _index)
+        std::string SettingsManager::getValue(std::string _settingsPath, std::string _defaultValue, std::uint16_t _index)
         {
             // lock the map while we do read some settings
             std::lock_guard<std::mutex> lock(mutexSettingsMapAccess);
 
             if (settingsMap.find(_settingsPath) != settingsMap.end())
                 return settingsMap.at(_settingsPath);
-            return "";
+            return _defaultValue;
         }
 
        

@@ -47,6 +47,8 @@ namespace Raumkernel
         const std::string SETTINGS_RAUMKERNEL_RAUMFELDDESCRIPTIONVIRTUALMEDIAPLAYER = "/Raumkernel/Raumfeld/RaumfeldDescriptionVirtualMediaPlayer";
         const std::string SETTINGS_RAUMKERNEL_RAUMFELDMANUFACTURER = "/Raumkernel/Raumfeld/RaumfeldManufacturer";
         const std::string SETTINGS_RAUMKERNEL_UPNPREFRESHTIME = "/Raumkernel/UPNPRefreshTime";
+        const std::string SETTINGS_RAUMKERNEL_HTTPREQUESTPUMPSLEEP = "/Raumkernel/HTTPRequestPumpSleep";
+        const std::string SETTINGS_RAUMKERNEL_HTTPREQUESTHANDLERSLEEP = "/Raumkernel/HTTPRequestHandlerSleep";
 
 
         class SettingsManager : public ManagerBase
@@ -56,7 +58,7 @@ namespace Raumkernel
                 EXPORT virtual ~SettingsManager();
                 EXPORT void loadSettings();   
                 EXPORT void setFileName(std::string _settingsFileName);
-                EXPORT std::string getValue(std::string _settingsPath, std::uint16_t _index = 0);
+                EXPORT std::string getValue(std::string _settingsPath, std::string _defaultValue="", std::uint16_t _index = 0);
                 
 
             protected:
