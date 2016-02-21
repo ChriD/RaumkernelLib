@@ -27,6 +27,7 @@
 
 #include <string>
 #include <cstdint>
+#include <map>
 #include <unordered_map>
 #include <raumkernel/raumkernelBase.h>
 
@@ -47,9 +48,9 @@ namespace Raumkernel
                 EXPORT std::uint16_t getStatusCode();
                 EXPORT std::string getProtocolInfo();
                 EXPORT std::string getStatusText();
-                EXPORT std::string getData();                
+                EXPORT std::string getData();                         
                 EXPORT std::string getHeaderVar(const std::string _varId);
-                void createHeaderFromResponseStr(std::string _headerString);
+                EXPORT void setHeaders(std::map<std::string, std::string> _headers);                
                 void setData(std::string _data);
 
             protected:
@@ -104,7 +105,7 @@ namespace Raumkernel
                 std::string data;
 
                 std::string protocol;
-                std::unordered_map<std::string, std::string> headerVars;
+                std::map<std::string, std::string> headerVars;
         };
     }
 }

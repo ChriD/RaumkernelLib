@@ -47,23 +47,9 @@ namespace Raumkernel
         }
 
 
-        void HttpResponse::createHeaderFromResponseStr(std::string _headerString)
+        void HttpResponse::setHeaders(std::map<std::string, std::string> _headers)
         {
-            headerVars = HttpClient::getHeaders(_headerString);
-            
-            if (headerVars.size() > 0 && headerVars.count("status"))
-            {
-                auto statusInfoHeader = headerVars.at("status");
-                auto statusInfo = Tools::StringUtil::explodeString(statusInfoHeader, " ", 2);
-                if (statusInfo.size() >= 3)
-                {
-                    protocol = statusInfo[0];
-                    statusCode = std::stoi(statusInfo[1]);
-                    statusText = statusInfo[2];
-                }
-            }
-
-
+            headerVars = _headers;
         }
 
 

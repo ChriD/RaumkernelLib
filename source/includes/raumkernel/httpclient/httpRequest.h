@@ -25,9 +25,11 @@
 #ifndef RAUMKERNEL_HTTPREQUEST_H
 #define RAUMKERNEL_HTTPREQUEST_H
 
+#include <functional>
 #include <unordered_map>
 #include <raumkernel/raumkernelBase.h>
-#include <raumkernel/httpclient/mongoose.h>
+//#include <raumkernel/httpclient/mongoose.h>
+#include <raumkernel/httpclient/happyhttp.h>
 #include <raumkernel/httpclient/httpResponse.h>
 #include <raumkernel/tools/urlParser.h>
 
@@ -47,12 +49,21 @@ namespace Raumkernel
                 EXPORT virtual std::string getId();
                 EXPORT virtual std::string getRequestUrl();
                 EXPORT virtual std::shared_ptr<HttpResponse> getResponse();
-                EXPORT virtual bool isRequestFinished();
+                EXPORT virtual bool isFinished();
+                EXPORT virtual bool isRedirection();
+                EXPORT virtual bool isDeleteable();
                 EXPORT void setGotResponse(bool _gotResponse);
                 EXPORT void setRequestUrl(std::string _requestUrl);
                 EXPORT void setResponse(std::shared_ptr<HttpResponse> _httpResponse);
-                EXPORT void setConnection(mg_connection *_connection);
+                EXPORT void setFinished(bool _finished = true);
+                EXPORT void setDeleteable(bool _deletable = true);
                 EXPORT void emitRequestFinishCallback();
+
+                EXPORT std::string getRedirectionLocation();
+                EXPORT std::string getRedirectionUrl();
+
+                EXPORT void doRequest();
+                EXPORT void abort();
 
                 EXPORT virtual std::string getPostVarsString();
                 EXPORT virtual std::string getHeaderVarsString();
@@ -60,7 +71,15 @@ namespace Raumkernel
 
             protected:
                 virtual void createHeadersAndPostStringVars();
-                //virtual void runThread();
+                virtual void runRequestPumpThread();
+
+                void onBegin(const happyhttp::Response* _r);
+                void onData(const happyhttp::Response* _r, const unsigned char* _data, int _n);
+                void onComplete(const happyhttp::Response* _r);
+              
+                static void onBeginCallback(const happyhttp::Response* _r, void* _userdata);
+                static void onDataCallback(const happyhttp::Response* _r, void* _userdata, const unsigned char* _data, int _n);
+                static void onCompleteCallback(const happyhttp::Response* _r, void* _userdata);
 
                 /**
                 * shared pointer to the response object
@@ -94,18 +113,16 @@ namespace Raumkernel
                 */
                 std::function<void(HttpRequest*)> requestFinishedUserCallback;         
 
-                //std::thread threadRequestRun;
-                //std::atomic_bool stopRequestThread;
-                std::atomic_bool requestFinished;
+                std::thread threadRequestRun;
+                std::atomic_bool stopRequestThread;
 
-                // mongose stuff
-                mg_connection *connection;
-                //struct mg_mgr *mongoose_mgr; // <.. not thread safe so we have to put this onto the CLIENT and there can only be one CLIENT
-                // so we do net a request manager which instanciate on client and so on....
+                std::atomic_bool finished;
+                std::atomic_bool deleteable;
+                std::atomic_bool redirection;
+                std::string redirectionLocation;
 
                 bool gotResponse;
-
-                //static void mongoose_handler(struct mg_connection *nc, int ev, void *ev_data);             
+               
 
         };        
     }

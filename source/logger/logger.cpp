@@ -23,7 +23,7 @@ namespace Raumkernel
         // never fall down to 0 and we keep the vector elements alive as long as the class is existent!)
         void Log::registerAdapter(std::shared_ptr<LogAdapter> _logAdapter)
         {
-            std::lock_guard<std::mutex> lock(mutexLog);
+            std::unique_lock<std::mutex> lock(mutexLog);
             logAdapterList.push_back(_logAdapter);         
         }
 
@@ -60,7 +60,7 @@ namespace Raumkernel
 
         void Log::setLogLevel(LogType _logTypeLevel)
         {
-            std::lock_guard<std::mutex> lock(mutexLog);
+            std::unique_lock<std::mutex> lock(mutexLog);
             logTypeLevel = _logTypeLevel;          
         }
 

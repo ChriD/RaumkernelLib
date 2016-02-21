@@ -1,4 +1,4 @@
-#include "mongoose.h"
+#include <raumkernel/httpclient/mongoose.h>
 #ifdef NS_MODULE_LINES
 #line 1 "./src/internal.h"
 /**/

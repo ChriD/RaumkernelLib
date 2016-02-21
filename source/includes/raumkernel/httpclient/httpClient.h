@@ -44,7 +44,7 @@ namespace Raumkernel
                 EXPORT virtual ~HttpClient();  
 
                 EXPORT void request(std::string _requestUrl, std::shared_ptr<std::unordered_map<std::string, std::string>> _headerVars = nullptr, std::shared_ptr<std::unordered_map<std::string, std::string>> _postVars = nullptr, void *_userData = nullptr, std::function<void(HttpRequest*)> _callback = nullptr);
-                //EXPORT void cleanupRequests();
+                EXPORT void cleanupRequests();
                 //EXPORT void killAllRequests();
                 std::shared_ptr<HttpRequest> getRequest(std::string _requestId);
    
@@ -54,7 +54,11 @@ namespace Raumkernel
                 void lockRequestMap();
                 void unlockRequestMap();
 
-            protected:
+                //mg_mgr *getMongooseMgr();
+
+        protected:
+
+                std::string getNextRequestId();
 
                 /**
                 * This thread is the mongoose poller
@@ -76,7 +80,7 @@ namespace Raumkernel
                 /**
                 * Mongoose manager. Mongoose is not thread safe so there can only be one client with reuquesting
                 */
-                struct mg_mgr mongoose_mgr;
+                //struct mg_mgr mongoose_mgr;
                 /**
                 * Mongoose manager. Mongoose is not thread safe so there can only be one client with reuquesting
                 */

@@ -10,7 +10,11 @@ namespace Raumkernel
         {
             httpResponse = nullptr;
             requestFinishedUserCallback = nullptr;
-            requestFinished = false;
+            finished = false;
+            stopRequestThread = false; 
+            redirection = false;
+            deleteable = false;
+            redirectionLocation = "";
         }
        
               
@@ -21,7 +25,13 @@ namespace Raumkernel
             requestId = _requestId;
             userData = _userData; 
             requestFinishedUserCallback = _callback;
-            requestFinished = false;
+            finished = false;
+            deleteable = false;
+            
+            redirection = false;
+            redirectionLocation = "";
+
+            stopRequestThread = false;
 
             headerVars = _headerVars;
             postVars = _postVars;      
@@ -31,13 +41,46 @@ namespace Raumkernel
 
 
         HttpRequest::~HttpRequest()
-        {                
+        {       
+            abort();
         }
 
 
-        bool HttpRequest::isRequestFinished()
+        void HttpRequest::abort()
         {
-            return requestFinished;
+            stopRequestThread = true;
+            if (threadRequestRun.joinable())
+                threadRequestRun.join();
+            deleteable = true;
+        }
+
+
+        bool HttpRequest::isRedirection()
+        {
+            return redirection;
+        }
+       
+        bool HttpRequest::isFinished()
+        {
+            return finished;
+        }
+
+
+        bool HttpRequest::isDeleteable()
+        {
+            return deleteable;
+        }
+
+
+        void HttpRequest::setFinished(bool _finished)
+        {
+            finished = _finished;
+        }
+
+
+        void HttpRequest::setDeleteable(bool _deletable)
+        {
+            deleteable = _deletable;
         }
 
 
@@ -83,9 +126,16 @@ namespace Raumkernel
         }
 
 
-        void HttpRequest::setConnection(mg_connection *_connection)
+        std::string HttpRequest::getRedirectionLocation()
         {
-            connection = _connection;
+            return redirectionLocation;
+        }
+
+
+        std::string HttpRequest::getRedirectionUrl()
+        {
+            LUrlParser::clParseURL parsedUrl = LUrlParser::clParseURL::ParseURL(getRequestUrl());
+            return parsedUrl.m_Scheme + "://" + parsedUrl.m_Host + (parsedUrl.m_Port.empty() ? "" : ":") + parsedUrl.m_Port + getRedirectionLocation();
         }
 
 
@@ -132,113 +182,127 @@ namespace Raumkernel
         }
 
 
-
-        /*
-        
-        void HttpRequest::runThread()
+        void HttpRequest::doRequest()
         {
-            bool isRedirected;
+            stopRequestThread = false;
+            redirection = false;
+            finished = false;
+            deleteable = false;
+            redirectionLocation = "";
 
-            logDebug("Request thread started (" + getRequestUrl() + ")", CURRENT_POSITION);
-            // start the request with the given url. there may be a redirection which will be handled here too
-            do
-            {
-                isRedirected = false;
-                doRequest(requestUrl.c_str());
-                while (!gotResponse)
-                {
-                    std::this_thread::sleep_for(std::chrono::milliseconds(100));
-                }
-                if (gotResponse)
-                {                  
-                    // Handle HTTP Redirection
-                    // the post and header var will stay the same from the original request, onl the url will be changed and the request wil lbe sent again
-                    // HTTP / 1.1 307 Temporary Redirect
-                    if (getResponse()->getStatusCode() == 307)
-                    {                        
-                        std::string redirectionUrl = getResponse()->getHeaderVar("LOCATION");
-                        LUrlParser::clParseURL parsedUrl = LUrlParser::clParseURL::ParseURL(getRequestUrl());
-                        setRequestUrl(parsedUrl.m_Scheme + "://" + parsedUrl.m_Host + (parsedUrl.m_Port.empty() ? "" : ":") + parsedUrl.m_Port + redirectionUrl);
-                        isRedirected = true;
-                        logDebug("Found request redirection to: " + redirectionUrl, CURRENT_POSITION);
-                    }
-                }
-
-            } 
-            while (isRedirected && gotResponse);    
-
-            // call callback method if we got a response, but not if we killed the response
-            // TODO: well thats a problem here...
-            if (gotResponse && requestFinishedUserCallback)
-                requestFinishedUserCallback(this);
-
-            //mg_mgr_free(&mongoose_mgr);             
-
-            logDebug("Request thread ended (" + getRequestUrl() + ")", CURRENT_POSITION);
-
-            // we set the request that it is finished. the cleanup will be done by the client
-            requestFinished = true;
+            // add posting urls            
+            threadRequestRun = std::thread(&HttpRequest::runRequestPumpThread, this);
         }
-        */
 
-        /*
 
-        void HttpRequest::mongoose_handler(struct mg_connection *nc, int ev, void *ev_data) 
+                
+        void HttpRequest::runRequestPumpThread()
         {
-            // TODO: lock
+            // http://10.0.0.1:47365/0092409d-13a7-4471-9a1c-52e2f992fa5e/getZones?updateid=1869126996
 
-            struct http_message *hm = (struct http_message *) ev_data;
-            HttpRequest *httpRequest = (HttpRequest*)nc->mgr->user_data;
-            std::string response = "", responseHeader = "", responseData = "";
+            LUrlParser::clParseURL parsedUrl = LUrlParser::clParseURL::ParseURL(getRequestUrl());      
+            happyhttp::Connection conn(parsedUrl.m_Host.c_str(), std::stoi(parsedUrl.m_Port));
+            conn.setcallbacks(&HttpRequest::onBeginCallback, &HttpRequest::onDataCallback, &HttpRequest::onCompleteCallback, this);
+            
+           // std::string query = (!parsedUrl.m_Query.empty() ? "?" + parsedUrl.m_Query : "");
+            std::string query;
 
-            if (httpRequest == nullptr)
-                return;
+            // Post vars
+            if (postVars)
+            {
+                for (auto it = postVars->begin(); it != postVars->end(); ++it)
+                {
+                    // TODO: encode?!
+                    query += query.empty() ? "?" : "&";
+                    query += it->first + "=" + it->second;
+                }
+            }
 
-            std::shared_ptr<HttpResponse> httpResponse;
 
-            switch (ev) 
-            { 
-                case MG_EV_CONNECT:
-                    if (*(int *)ev_data != 0) 
-                    {
-                        fprintf(stderr, "connect() failed: %s\n", strerror(*(int *)ev_data));
-                        // there was a problem to connect to the response url
-                        httpResponse = std::shared_ptr<HttpResponse>(new HttpResponse());
-                        httpResponse->setErrorCode(1);
-                        httpRequest->setResponse(httpResponse);
-                    }
-                    break;
-                case MG_EV_HTTP_REPLY:
-                    nc->flags |= MG_F_CLOSE_IMMEDIATELY;
+            const char** headerCharPtrArray = (const char**)0;
+            std::uint16_t index = 0;
 
-                    httpResponse = std::shared_ptr<HttpResponse>(new HttpResponse());
-                    httpResponse->setErrorCode(0);
+            if (headerVars)
+            {             
+                headerCharPtrArray = new const char*[headerVars->size() + 1];                
+                for (auto it = headerVars->begin(); it != headerVars->end(); ++it)
+                {
+                    headerCharPtrArray[index] = it->first.c_str();
+                    index++;
+                    headerCharPtrArray[index] = it->second.c_str();
+                    index++;                  
+                }    
+                headerCharPtrArray[index] = 0;
+            }               
 
-                   
-                    if (nc->recv_mbuf.len)
-                    {
-                        response = nc->recv_mbuf.buf;
-                        responseHeader.resize(nc->recv_mbuf.len);
 
-                        // the header stops wher there are the first "\r\n\r\n" chars
-                        std::int32_t headerEnd = response.find("\r\n\r\n");
-                        responseHeader = response.substr(0, headerEnd ? headerEnd : nc->recv_mbuf.len);                        
-                        httpResponse->createHeaderFromResponseStr(responseHeader);
+            std::string pathAndQuery = "/" + parsedUrl.m_Path + query;
+            conn.request("GET", pathAndQuery.c_str(), headerCharPtrArray);
 
-                        // responseData is the rest                        
-                        responseData = response.substr(headerEnd + 4, nc->recv_mbuf.len - headerEnd + 4);
-                        httpResponse->setData(responseData);
+            while (conn.outstanding() && !stopRequestThread)
+                conn.pump();
 
-                    }                                       
-                    httpRequest->setResponse(httpResponse);
-                    break;
-                case MG_EV_POLL:
-                    break;
-                default:
-                    // Error???
-                    break;
+            // TODO: @@@
+            //if (index > 0 )
+            //    delete[] headerCharPtrArray;
+
+        }
+
+
+        void HttpRequest::onBegin(const happyhttp::Response* _r)
+        {     
+            // check if response is a redirection. if so mark the request as redirection and set the "finished" marker so that the 
+            // httClient will create a new request for the redirection and will not signal the request creator that the request is finished
+            // the httpClient will also close the connectioon the this request when it's a redirection
+            // HTTP / 1.1 307 Temporary Redirect
+            if (_r->getstatus() == 307)
+            {
+                redirectionLocation = _r->getheader("LOCATION");                
+                redirection = true;
+                //requestFinished = true;
             }
         }
-        */
+
+
+        void HttpRequest::onData(const happyhttp::Response* _r, const unsigned char* _data, int _n)
+        {          
+            httpResponse = std::shared_ptr<HttpResponse>(new HttpResponse());
+            std::string responseData = std::string(reinterpret_cast<const char*>(_data));            
+            responseData.resize(_n);
+
+            // 200 = HTTP-OK      
+            httpResponse->setErrorCode((_r->getstatus() == 200) ? 0 : _r->getstatus());         
+            
+            httpResponse->setHeaders(_r->getHeaders());
+            httpResponse->setData(responseData);
+            setResponse(httpResponse);           
+        }
+        
+        void HttpRequest::onComplete(const happyhttp::Response* _r)
+        {
+            finished = true;
+        }
+
+
+
+        void HttpRequest::onBeginCallback(const happyhttp::Response* _r, void* _userdata)
+        {        
+            HttpRequest* httpRequest = (HttpRequest*)_userdata;
+            httpRequest->onBegin(_r);
+        }
+
+
+        void HttpRequest::onDataCallback(const happyhttp::Response* _r, void* _userdata, const unsigned char* _data, int _n)
+        {
+            HttpRequest* httpRequest = (HttpRequest*)_userdata;
+            httpRequest->onData(_r, _data, _n);
+        }
+        
+        void HttpRequest::onCompleteCallback(const happyhttp::Response* _r, void* _userdata)
+        {
+            HttpRequest* httpRequest = (HttpRequest*)_userdata;
+            httpRequest->onComplete(_r);
+        }
+        
     }
 }

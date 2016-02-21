@@ -53,6 +53,7 @@ namespace Raumkernel
 
                 /**
                 * Returns a random integer value
+                * not really the best.... so this number wont be unique if this is called fast
                 */
                 EXPORT static std::uint32_t randomUInt32()
                 {

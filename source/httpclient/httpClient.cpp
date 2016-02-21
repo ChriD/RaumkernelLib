@@ -7,7 +7,7 @@ namespace Raumkernel
         HttpClient::HttpClient() : RaumkernelBase()
         {
             abortPollingThread = false;
-            mg_mgr_init(&mongoose_mgr, this);
+            //mg_mgr_init(&mongoose_mgr, this);
             startRequestPollingThread();
         }
 
@@ -17,7 +17,7 @@ namespace Raumkernel
             abortPollingThread = true;
             if (threadRequestPolling.joinable())
                 threadRequestPolling.join();
-            mg_mgr_free(&mongoose_mgr);
+            //mg_mgr_free(&mongoose_mgr);
         }
 
 
@@ -45,16 +45,18 @@ namespace Raumkernel
             cleanupRequests();
         }
 
+        */
 
         void HttpClient::cleanupRequests()
         {
-            std::lock_guard<std::mutex> lock(mutexRequestMap);    
+            std::unique_lock<std::mutex> lock(mutexRequestMap);    
             std::int32_t cleanUpCount = 0;
 
-            for (auto it = requestMap.cbegin(); it != requestMap.cend())
+            for (auto it = requestMap.cbegin(); it != requestMap.cend();)
             {               
-                if (it->second->isRequestFinished())
+                if (it->second->isDeleteable())
                 {
+                    logDebug("Delete request '" + it->second->getId() + "' from pending list", CURRENT_POSITION);
                     it = requestMap.erase(it);
                     cleanUpCount++;
                 }
@@ -65,28 +67,39 @@ namespace Raumkernel
                 
             }            
             
-            logDebug("Requests cleaned up! Count: " + std::to_string(cleanUpCount), CURRENT_POSITION);
+            if (cleanUpCount)
+                logDebug("Requests cleaned up! Count: " + std::to_string(cleanUpCount), CURRENT_POSITION);
         }
-        */
+
+
+        std::string HttpClient::getNextRequestId()
+        {
+            std::uint32_t newId = Tools::CommonUtil::randomUInt32();
+            while (requestMap.count(std::to_string(newId)))
+            {
+                newId += 1;
+            }
+            return std::to_string(newId);
+        }
+        
         
 
 
         void HttpClient::request(std::string _requestUrl, std::shared_ptr<std::unordered_map<std::string, std::string>> _headerVars, std::shared_ptr<std::unordered_map<std::string, std::string>> _postVars, void *_userData, std::function<void(HttpRequest*)> _callback)
         {                                 
-            // try to clean up pending requests
-            //cleanupRequests();
-
-            std::lock_guard<std::mutex> lock(mutexRequestMap);
+            // be sure threads dont interfere each others
+            std::unique_lock<std::mutex> lock(mutexRequestMap);
 
             // create a new request object which will be stored in a map. Those requet object holds the headers and post vars and some other
             // useful data as the callback function when the request is finished
-            std::shared_ptr<Raumkernel::HttpClient::HttpRequest> httpRequest = std::shared_ptr<HttpRequest>(new HttpRequest(std::to_string(Tools::CommonUtil::randomUInt32()), _requestUrl, _headerVars, _postVars, _userData, _callback));                     
+            std::shared_ptr<Raumkernel::HttpClient::HttpRequest> httpRequest = std::shared_ptr<HttpRequest>(new HttpRequest(getNextRequestId(), _requestUrl, _headerVars, _postVars, _userData, _callback));
             httpRequest->setLogObject(getLogObject());
             requestMap.insert(std::make_pair(httpRequest->getId(), httpRequest));
           
             // start the request
-            mg_connection *connection = mg_connect_http(&mongoose_mgr, &HttpClient::mongoose_handler, httpRequest->getRequestUrl().c_str(), httpRequest->getHeaderVarsString().c_str(), httpRequest->getPostVarsString().c_str());   
-            httpRequest->setConnection(connection);
+            //mg_connection *connection = mg_connect_http(&mongoose_mgr, &HttpClient::mongoose_handler, httpRequest->getRequestUrl().c_str(), httpRequest->getHeaderVarsString().c_str(), httpRequest->getPostVarsString().c_str());   
+            //httpRequest->setConnection(connection);
+            httpRequest->doRequest();
             
             logDebug("Request '" + httpRequest->getId() + "' (" + httpRequest->getRequestUrl() + ") started", CURRENT_POSITION);                                   
         }
@@ -121,25 +134,26 @@ namespace Raumkernel
         void HttpClient::requestPollingThread()
         {
             while (!abortPollingThread)
-            {
-                // do the mongoose stuff and  let the client handle the returns of our request
-                // this poll will call the static "mongoose_handler" method
-                mg_mgr_poll(&mongoose_mgr, 1000);
-
-                // of course we have to lock the request map again because we may delete some itmes and we do
-                // a read of the HttpRequest object
-                lockRequestMap();
-
-                // next step is to check if a request is finished. if so we emit the callback assigned to the request
-                // and then after this is finished we do delete the now finished request from the list
+            {             
+                // next step is to check if a request is finished. if so we emit the callback assigned to the request             
                 try
                 {
                     for (auto it = requestMap.cbegin(); it != requestMap.cend();)
                     {
-                        if (it->second->isRequestFinished())
+                        if (it->second->isFinished())
                         {
-                            it->second->emitRequestFinishCallback();
-                            it = requestMap.erase(it);
+                            it->second->emitRequestFinishCallback();   
+                            it->second->setDeleteable(true);
+                            ++it;
+                        }
+                        else if (it->second->isRedirection())
+                        {
+                            logDebug("Redirection to url '" + it->second->getRedirectionUrl() + "' found! Do redirect request " + it->second->getId(), CURRENT_POSITION);
+                            it->second->abort();  
+                            it->second->setDeleteable(false);
+                            it->second->setRequestUrl(it->second->getRedirectionUrl());                            
+                            it->second->doRequest();
+                            ++it;
                         }
                         else
                         {
@@ -167,13 +181,14 @@ namespace Raumkernel
                     logError("Unknown Exception", CURRENT_FUNCTION);
                 }
 
-                // unlocming has to be done after deleting and checking the reuqest map for finished requests
-                unlockRequestMap();
 
-                //  TODO: @@@ Sleep
+                // clean finished requests
+                cleanupRequests();
 
+                //  TODO: @@@ Sleep                
 
             }
+            
         }
 
 
@@ -204,6 +219,9 @@ namespace Raumkernel
                                 // we do tolower the key values so we do not have any problem getting the values when the 
                                 // getHeaderValue is not matching the case
                                 std::transform(key.begin(), key.end(), key.begin(), ::tolower);
+                                // remove trailing and beginning empty spaces
+                                value = Tools::StringUtil::trim(value);
+                                key = Tools::StringUtil::trim(key);
                                 headerVars.insert(std::make_pair(key, value));
                             }
                         }
@@ -222,6 +240,7 @@ namespace Raumkernel
 
         void HttpClient::mongoose_handler(struct mg_connection *nc, int ev, void *ev_data)
         {        
+            /*
              struct http_message *hm = (struct http_message *) ev_data;
              HttpClient *httpClient = (HttpClient*)nc->mgr->user_data;
              std::shared_ptr<HttpResponse> httpResponse;             
@@ -233,7 +252,7 @@ namespace Raumkernel
              // find correct request object for the given connection. 
              // for this we do have a request id in the header vars in the connection send buffer
              send = nc->send_mbuf.buf;
-             send.resize(nc->send_mbuf.len);
+             send.resize(nc->send_mbuf.size);
              auto requestHeaders = getHeaders(send); 
              if (!requestHeaders.count("requestid"))
                  return;
@@ -252,47 +271,63 @@ namespace Raumkernel
 
                      switch (ev)
                      {
-                     case MG_EV_CONNECT:
-                         if (*(int *)ev_data != 0)
-                         {
-                             // there was a problem to connect to the response url
+                         case MG_EV_CONNECT:
+                             if (*(int *)ev_data != 0)
+                             {
+                                 // there was a problem to connect to the response url
+                                 httpResponse = std::shared_ptr<HttpResponse>(new HttpResponse());
+                                 httpResponse->setErrorCode(1);
+                                 httpRequest->setResponse(httpResponse);
+                             }
+                             break;
+                         case MG_EV_HTTP_REPLY:
+                             nc->flags |= MG_F_CLOSE_IMMEDIATELY;
+
                              httpResponse = std::shared_ptr<HttpResponse>(new HttpResponse());
-                             httpResponse->setErrorCode(1);
+                             httpResponse->setErrorCode(0);
+
+
+                             if (nc->recv_mbuf.len)
+                             {
+                                 response = nc->recv_mbuf.buf;                                                                                                                         
+                                 httpResponse->createHeaderFromResponseStr(response);
+
+                                 // the header stops where there are the first "\r\n\r\n" chars. The responseData is the rest              
+                                 std::int32_t headerEnd = response.find("\r\n\r\n");
+                                 responseData = response.substr(headerEnd + 4, nc->recv_mbuf.len - headerEnd + 4);
+                                 httpResponse->setData(responseData);                            
+                             }
                              httpRequest->setResponse(httpResponse);
-                         }
-                         break;
-                     case MG_EV_HTTP_REPLY:
-                         nc->flags |= MG_F_CLOSE_IMMEDIATELY;
 
-                         httpResponse = std::shared_ptr<HttpResponse>(new HttpResponse());
-                         httpResponse->setErrorCode(0);
+                             // TODO: handle redirection
 
+                             // Handle HTTP Redirection
+                             // the post and header var will stay the same from the original request, onl the url will be changed and the request wil lbe sent again
+                             // HTTP / 1.1 307 Temporary Redirect
+                             if (httpResponse->getStatusCode() == 307)
+                             {
+                                 std::string redirectionUrl = httpResponse->getHeaderVar("LOCATION");
+                                 LUrlParser::clParseURL parsedUrl = LUrlParser::clParseURL::ParseURL(httpRequest->getRequestUrl());
+                                 httpRequest->setRequestUrl(parsedUrl.m_Scheme + "://" + parsedUrl.m_Host + (parsedUrl.m_Port.empty() ? "" : ":") + parsedUrl.m_Port + redirectionUrl);                             
+                                 //isRedirected = true; // TODO: @@@
+                                 httpClient->logDebug("Found request redirection to: " + redirectionUrl, CURRENT_POSITION);
+                             
+                                 // DO REQUEST REDIRECTION
+                                 // start the redirection
+                                 mg_connection *connection = mg_connect_http(httpClient->getMongooseMgr(), &HttpClient::mongoose_handler, httpRequest->getRequestUrl().c_str(), httpRequest->getHeaderVarsString().c_str(), httpRequest->getPostVarsString().c_str());
+                                 httpRequest->setConnection(connection);
+                             }
+                             else
+                             {
+                                 httpRequest->setRequestFinished(true);
+                             }
 
-                         if (nc->recv_mbuf.len)
-                         {
-                             response = nc->recv_mbuf.buf;
-                             responseHeader.resize(nc->recv_mbuf.len);
-
-                             // the header stops wher there are the first "\r\n\r\n" chars
-                             std::int32_t headerEnd = response.find("\r\n\r\n");
-                             responseHeader = response.substr(0, headerEnd ? headerEnd : nc->recv_mbuf.len);
-                             httpResponse->createHeaderFromResponseStr(responseHeader);
-
-                             // responseData is the rest                        
-                             responseData = response.substr(headerEnd + 4, nc->recv_mbuf.len - headerEnd + 4);
-                             httpResponse->setData(responseData);
-
-                         }
-                         httpRequest->setResponse(httpResponse);
-
-                         // TODO: handle redirection
-
-                         break;
-                     case MG_EV_POLL:
-                         break;
-                     default:
-                         // Error???
-                         break;
+                             break;
+                         case MG_EV_POLL:
+                             break;
+                         default:
+                             // Error???
+                             break;
                      }
 
                  }
@@ -319,6 +354,7 @@ namespace Raumkernel
 
              // lock the request map on the client 
              httpClient->unlockRequestMap();
+             */
                         
         }
 

@@ -222,6 +222,9 @@
     <ClInclude Include="includes\raumkernel\tools\urlParser.h">
       <Filter>includes\raumkernel\tools</Filter>
     </ClInclude>
+    <ClInclude Include="includes\raumkernel\httpclient\happyhttp.h">
+      <Filter>includes\raumkernel\httpclient</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="logger\logger.cpp">
@@ -328,6 +331,9 @@
     </ClCompile>
     <ClCompile Include="tools\urlParser.cpp">
       <Filter>tools</Filter>
+    </ClCompile>
+    <ClCompile Include="httpclient\happyhttp.cpp">
+      <Filter>httpclient</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

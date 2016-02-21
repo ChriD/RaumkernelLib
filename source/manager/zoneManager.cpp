@@ -64,7 +64,7 @@ namespace Raumkernel
 
         void ZoneManager::doGetZoneRequest(std::string _updateId)
         {
-            std::lock_guard<std::mutex> lock(mutexStartRequest);
+            std::unique_lock<std::mutex> lock(mutexStartRequest);
 
             std::shared_ptr<std::unordered_map<std::string, std::string>> headerVars = nullptr;
             std::string hostIP = getManagerEngineer()->getDeviceManager()->getRaumfeldHostIP();
