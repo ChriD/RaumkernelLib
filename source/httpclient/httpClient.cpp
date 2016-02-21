@@ -103,6 +103,8 @@ namespace Raumkernel
             httpRequest->setSleepTimeRequestPump(sleepTimeRequestPump);
 
             // provide the requestId as header variable
+            if (!_headerVars)
+                _headerVars = std::shared_ptr<std::unordered_map<std::string, std::string>>(new std::unordered_map<std::string, std::string>());
             _headerVars->insert(std::make_pair("RequestID", httpRequest->getId()));
 
             // insert the request to the "pending requests" map and start it

@@ -28,7 +28,6 @@
 #include <functional>
 #include <unordered_map>
 #include <raumkernel/raumkernelBase.h>
-//#include <raumkernel/httpclient/mongoose.h>
 #include <raumkernel/httpclient/happyhttp.h>
 #include <raumkernel/httpclient/httpResponse.h>
 #include <raumkernel/tools/urlParser.h>
@@ -85,7 +84,7 @@ namespace Raumkernel
 
                 /**
                 * shared pointer to the response object
-                * will only be filled when response is ready, otherweis its a nullptr
+                * will only be filled when response is ready, otherwise its a nullptr
                 */
                 std::shared_ptr<HttpResponse> httpResponse;
                 /**
