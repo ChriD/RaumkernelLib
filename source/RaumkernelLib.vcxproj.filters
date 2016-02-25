@@ -333,4 +333,7 @@
   <ItemGroup>
     <Xml Include="raumkernel.xml" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="..\README.md" />
+  </ItemGroup>
 </Project>

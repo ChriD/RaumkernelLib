@@ -65,7 +65,6 @@ namespace Raumkernel
         connections.connect(managerEngineer->getDeviceManager()->sigMediaServerAdded, this, &Raumkernel::onMediaServerAdded);
         connections.connect(managerEngineer->getDeviceManager()->sigMediaServerRemoved, this, &Raumkernel::onMediaServerRemoved);
             
-
         // let's wake up the UPNP Stack and start discovering UPNP devices of all kinds
         managerEngineer->getUPNPManager()->init();        
         managerEngineer->getUPNPManager()->discover();

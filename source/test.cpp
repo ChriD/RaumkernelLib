@@ -41,6 +41,8 @@ void myCallback(Raumkernel::HttpClient::HttpRequest *_request)
 }
 
 
+/// https://httpbin.org/
+
 int main()
 {
    // doSomething(std::bind(myCallback, 1, 2));
@@ -63,17 +65,18 @@ int main()
     Raumkernel::Raumkernel  raumkernel;
 
     raumkernel.init(Raumkernel::Log::LogType::LOGTYPE_DEBUG);
+    //raumkernel.getManagerEngineer()->getZoneManager()->sigZoneConfigurationChanged
 
     rlutil::getkey();
 
-    Raumkernel::HttpClient::HttpClient client;
+    //Raumkernel::HttpClient::HttpClient client;
 
     //client.request("http://10.0.0.5:47365/getZones", nullptr, nullptr, "Test User Data", std::bind(&MyClass::Callback, this, _1));
-    client.request("http://10.0.0.5:47365/getZones", nullptr, nullptr, "Test User Data", std::bind(myCallback, std::placeholders::_1));
+    //client.request("http://10.0.0.5:47365/getZones", nullptr, nullptr, "Test User Data", std::bind(myCallback, std::placeholders::_1));
 
     //raumkernel.getManagerEngineer()->getRequestManager()->request("http://10.0.0.5:47365/getZones", nullptr, nullptr, "zoneLongPolling");
 
-    rlutil::getkey();
+    //rlutil::getkey();
     
     std::shared_ptr<Raumkernel::Devices::MediaServer_Raumfeld> mediaServer = raumkernel.getManagerEngineer()->getDeviceManager()->getRaumfeldMediaServer();
     mediaServer->browse("0", Raumkernel::Devices::MediaServer_BrowseFlag::MSBF_BrowseDirectChildren, "root", true);

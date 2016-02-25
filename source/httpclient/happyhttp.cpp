@@ -263,7 +263,7 @@ void Connection::connect()
 	address.sin_port = htons( m_Port );
 	address.sin_addr.s_addr = addr->s_addr;
 
-	m_Sock = socket( AF_INET, SOCK_STREAM, 0 );
+    m_Sock = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
 	if( m_Sock < 0 )
 		BailOnSocketError( "socket()" );
 
@@ -439,10 +439,12 @@ void Connection::pump()
 	if( !datawaiting( m_Sock ) )
 		return;				// recv will block
 
-	unsigned char buf[ 2048 ];
-	int a = recv( m_Sock, (char*)buf, sizeof(buf), 0 );
+	unsigned char buf[ 2048 ];   
+    
+    int a = recv(m_Sock, (char*)buf, sizeof(buf), 0);
 	if( a<0 )
 		BailOnSocketError( "recv()" );
+    
 
 	if( a== 0 )
 	{
@@ -464,7 +466,8 @@ void Connection::pump()
 		{
 
 			Response* r = m_Outstanding.front();
-			int u = r->pump( &buf[used], a-used );
+			int u = r->pump((unsigned char*)&buf[used], a-used );
+            //int u = r->pump((unsigned char*)input.c_str(), input.length());
 
 			// delete response once completed
 			if( r->completed() )
