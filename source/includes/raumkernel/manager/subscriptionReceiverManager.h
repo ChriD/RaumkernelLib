@@ -26,6 +26,9 @@
 #define RAUMKERNEL_SUBSCRIPTIONRECEIVERMANAGER_H
 
 #include <raumkernel/manager/managerBase.h>
+#include <raumkernel/xml/rapidxml.hpp>
+#include <raumkernel/tools/numUtil.h>
+
 
 namespace Raumkernel
 {
@@ -44,6 +47,14 @@ namespace Raumkernel
 
                 virtual void propertyChangedAvTransportProxy(std::string _deviceUDN, std::string _xml);                
                 virtual void propertyChangedRenderingControlProxy(std::string _deviceUDN, std::string _xml);
+
+            protected:
+                rapidxml::xml_node<>* getInstanceNodeFromXML(std::string _xml);
+                std::string getNodeVal(rapidxml::xml_node<>* _parentNode, std::string _nodeName, std::string _oldVal, bool &_valChanged, std::string _attributeName = "val");                
+            /**
+            * A mutex for locking renderer property changes
+            */
+            std::mutex mutexRendererPropertyChange;
         };
     }
 }

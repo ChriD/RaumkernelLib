@@ -47,6 +47,7 @@ namespace Raumkernel
         managerEngineer->getDeviceManager()->setManagerEngineer(managerEngineer);        
         managerEngineer->getSubscriptionReceiverManager()->setManagerEngineer(managerEngineer);        
         managerEngineer->getZoneManager()->setManagerEngineer(managerEngineer);
+        managerEngineer->getMediaListManager()->setManagerEngineer(managerEngineer);
 
         logDebug("Manager-Engineer is prepared", CURRENT_POSITION);
 
@@ -85,6 +86,7 @@ namespace Raumkernel
         if (_mediaServer->isRaumfeldMediaServer())
         {
             managerEngineer->getZoneManager()->startZoneRequests();
+            managerEngineer->getMediaListManager()->setMediaServer(std::dynamic_pointer_cast<Devices::MediaServer_Raumfeld>(_mediaServer));
         }
     }
 
@@ -94,7 +96,8 @@ namespace Raumkernel
         // if the raumfeld media server was removed, we have to stop the zone configuration request
         if (_mediaServer->isRaumfeldMediaServer())
         {
-            managerEngineer->getZoneManager()->stopZoneRequests();
+            managerEngineer->getZoneManager()->stopZoneRequests(); 
+            managerEngineer->getMediaListManager()->setMediaServer(nullptr);
         }
     
     }

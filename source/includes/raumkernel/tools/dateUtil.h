@@ -33,6 +33,7 @@
 #include <chrono>
 
 #include <raumkernel/tools/stringUtil.h>
+#include <raumkernel/tools/numUtil.h>
 
 namespace Raumkernel
 {
@@ -76,7 +77,53 @@ namespace Raumkernel
                     cur.second      = localTimeNow->tm_sec;
                     cur.millisecond = fractionalSeconds;
                     return cur;
-                }                                
+                } 
+
+
+                static std::string timeMSToTimeString(std::uint32_t _timeMS)
+                {
+                    if (!_timeMS)
+                        return "00:00:00";
+
+                    std::uint32_t hours = (_timeMS / (1000 * 60 * 60));
+                    std::uint32_t mins = (_timeMS / (1000 * 60)) % 60;
+                    std::uint32_t seconds = (_timeMS / 1000) % 60;
+                    std::uint32_t ms = (_timeMS % 1000);
+
+                    if (ms != 0)
+                        return Tools::StringUtil::padL(std::to_string(hours), 2, '0') + ":" + Tools::StringUtil::padL(std::to_string(mins), 2, '0') + ":" + Tools::StringUtil::padL(std::to_string(seconds), 2, '0') + ":" + Tools::StringUtil::padL(std::to_string(ms), 3, '0');
+                    return Tools::StringUtil::padL(std::to_string(hours), 2, '0') + ":" + Tools::StringUtil::padL(std::to_string(mins), 2, '0') + ":" + Tools::StringUtil::padL(std::to_string(seconds), 2, '0');
+                }
+
+
+                static std::uint32_t timeStringToTimeMS(std::string _timeString)
+                {
+                    std::uint32_t timeInMs = 0;
+                    std::uint8_t levelIndex = 1;
+
+                    if (_timeString.empty())
+                        return 0;
+
+                    auto timeParts = Tools::StringUtil::explodeString(_timeString, ":");
+                    
+                    if (timeParts.size() > 4)
+                        return 0;
+
+                    // begin from the last position which, if it is 3 chars a MS, otherwise a second
+                    for (std::vector<std::string>::reverse_iterator i = timeParts.rbegin(); i != timeParts.rend(); ++i) 
+                    {
+                        if (i->length() >= 3)
+                            timeInMs += Tools::NumUtil::toUInt32(i->data());
+                        else
+                        {
+                            levelIndex++;                            
+                            timeInMs += std::uint32_t(Tools::NumUtil::toUInt32(i->data()) * std::pow(10, levelIndex));
+                        }
+
+                    }
+
+                    return timeInMs;
+                }
                 
         };
 

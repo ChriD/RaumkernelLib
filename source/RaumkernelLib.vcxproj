@@ -117,6 +117,7 @@
     <ClInclude Include="includes\raumkernel\manager\deviceManager.h" />
     <ClInclude Include="includes\raumkernel\manager\managerBase.h" />
     <ClInclude Include="includes\raumkernel\manager\managerEngineer.h" />
+    <ClInclude Include="includes\raumkernel\manager\mediaListManager.h" />
     <ClInclude Include="includes\raumkernel\manager\settingsManager.h" />
     <ClInclude Include="includes\raumkernel\manager\subscriptionReceiverManager.h" />
     <ClInclude Include="includes\raumkernel\manager\upnpManager.h" />
@@ -133,8 +134,9 @@
     <ClInclude Include="includes\raumkernel\signals\signals.hpp" />
     <ClInclude Include="includes\raumkernel\tools\commonUtil.h" />
     <ClInclude Include="includes\raumkernel\tools\dateUtil.h" />
-    <ClInclude Include="includes\raumkernel\tools\urlParser.h" />
     <ClInclude Include="includes\raumkernel\tools\stringUtil.h" />
+    <ClInclude Include="includes\raumkernel\tools\urlParser.h" />
+    <ClInclude Include="includes\raumkernel\tools\numUtil.h" />
     <ClInclude Include="includes\raumkernel\tools\uriUtil.h" />
     <ClInclude Include="includes\raumkernel\xml\rapidxml.hpp" />
     <ClInclude Include="includes\raumkernel\xml\rapidxml_iterators.hpp" />
@@ -171,6 +173,7 @@
     <ClCompile Include="manager\deviceManager.cpp" />
     <ClCompile Include="manager\managerBase.cpp" />
     <ClCompile Include="manager\managerEngineer.cpp" />
+    <ClCompile Include="manager\mediaListManager.cpp" />
     <ClCompile Include="manager\settingsManager.cpp" />
     <ClCompile Include="manager\subscriptionReceiverManager.cpp" />
     <ClCompile Include="manager\upnpManager.cpp" />

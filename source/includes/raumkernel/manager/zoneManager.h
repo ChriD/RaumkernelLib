@@ -156,7 +156,7 @@ namespace Raumkernel
                 /**
                 * parses the zone xml string and fill the 'zoneInformationMap' and 'roomInformationMap'
                 */
-                void parseZoneConfiguration(std::string _zonesXML);
+                void parseZoneConfiguration(std::string _zonesXML, std::string _updateId);
                 /**
                 * clears the zoneInformation map
                 */
@@ -199,6 +199,10 @@ namespace Raumkernel
                 * stores the last zone configuration retrieved by the request
                 */
                 std::string lastZoneConfigurationXML;
+                /**
+                * stores the last upadteId for long polling issues
+                */
+                std::string lastUpdateId;
 
         };
     }

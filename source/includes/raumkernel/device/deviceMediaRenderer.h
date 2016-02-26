@@ -96,20 +96,32 @@ namespace Raumkernel
 
         struct MediaRendererState
         {
+            // TODO
+            MediaRenderer_PlayMode playMode; 
+            // TODO
             MediaRenderer_MuteState muteState;
+            // TODO
             MediaRenderer_TransportState transportState;
-            std::uint8_t volume;
-            std::uint32_t currentTrack;
-            std::uint32_t numberOfTracks;
+
             std::string aVTransportURI;
             std::string aVTransportURIMetaData;
+
             std::string currentTrackURI;
             std::string currentTrackMetaData;
-            std::string containerId;
-            std::string currentTrackDuration;
-            std::uint32_t currentTrackDurationMS;
+
             std::string contentType;
+
+            std::uint32_t currentTrack;    
+            std::uint32_t currentTrackDuration; 
+            std::uint32_t numberOfTracks;
             std::uint32_t bitrate;
+
+            // TODO: @@@
+            std::string containerId;
+            /* 
+            std::uint8_t volume; 
+            std::string containerId;              
+            */
         };
 
 
@@ -247,7 +259,7 @@ namespace Raumkernel
                 * Not intended for external use
                 * Please use the 'virtual' media renderer!
                 */
-                EXPORT virtual AvTransportPositionInfo getPositionInfo(bool _sync = true);
+                EXPORT virtual AvTransportPositionInfo getPositionInfo(bool _sync = true);               
                 /**
                 * Not intended for external use
                 * Please use the 'virtual' media renderer!
@@ -286,6 +298,20 @@ namespace Raumkernel
                 */
                 EXPORT virtual std::uint32_t getVolume(bool _sync = true);
 
+                /**
+                * returns the current state struct for the media renderer
+                * This struct will be updated when calling methods like "getTransportInfo" or "getVolume", aso... 
+                * and when a subsription will change any data of the struct
+                */
+                EXPORT virtual MediaRendererState state();
+                /**
+                * sets the state structure from outside
+                */
+                EXPORT virtual void setState(MediaRendererState _rendererState);
+
+                EXPORT virtual void lockRendererState();
+                EXPORT virtual void unlockRendererState();
+
                 EXPORT bool isRenderingControlProxyAvailable();
                 EXPORT bool isConnectionManagerProxyAvailable();
                 EXPORT bool isAvTransportProxyAvailable();
@@ -301,6 +327,9 @@ namespace Raumkernel
                 std::shared_ptr<OpenHome::Net::CpProxy>	connectionManagerProxy;
 
                 std::uint32_t instance = 0;
+                
+                MediaRendererState rendererState;
+                std::mutex mutexRendererStateChange;
 
                 virtual void deleteProxies() override;
                 virtual void createProxies() override;

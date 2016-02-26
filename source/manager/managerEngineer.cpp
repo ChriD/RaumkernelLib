@@ -42,9 +42,14 @@ namespace Raumkernel
             subscriptionReceiverManager->setLogObject(getLogObject());
          
             // create the Zone-Manager which will handle the requests to the RF-Host
-            logDebug("Create Zoone-Manager...", CURRENT_FUNCTION);
+            logDebug("Create Zone-Manager...", CURRENT_FUNCTION);
             zoneManager = std::shared_ptr<Manager::ZoneManager>(new Manager::ZoneManager());
-            zoneManager->setLogObject(getLogObject());            
+            zoneManager->setLogObject(getLogObject());    
+
+            // create the MediaList-Manager which will handle the media lists of the zones and other ones...
+            logDebug("Create MediaList-Manager...", CURRENT_FUNCTION);
+            mediaListManager = std::shared_ptr<Manager::MediaListManager>(new Manager::MediaListManager());
+            mediaListManager->setLogObject(getLogObject());
         }
 
 
@@ -75,6 +80,12 @@ namespace Raumkernel
         std::shared_ptr<ZoneManager> ManagerEngineer::getZoneManager()
         {
             return zoneManager;
+        }
+
+
+        std::shared_ptr<MediaListManager> ManagerEngineer::getMediaListManager()
+        {
+            return mediaListManager;
         }
 
 

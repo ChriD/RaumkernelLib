@@ -35,7 +35,7 @@ namespace Raumkernel
 
         void ZoneManager::startZoneRequests()
         {           
-            logDebug("Staring all automatic requests of zone manager!", CURRENT_POSITION);
+            logDebug("Starting all automatic requests of zone manager!", CURRENT_POSITION);
             doGetZoneRequest();
         }
 
@@ -84,7 +84,7 @@ namespace Raumkernel
             if (!_request->getResponse()->getErrorCode())
             {
                 logDebug("Zone configuration request finished", CURRENT_POSITION);
-                parseZoneConfiguration(_request->getResponse()->getData());
+                parseZoneConfiguration(_request->getResponse()->getData(), updateId);        
             }
             else
             {
@@ -303,12 +303,15 @@ namespace Raumkernel
         }
 
 
-        void ZoneManager::parseZoneConfiguration(std::string _zonesXML)
+        void ZoneManager::parseZoneConfiguration(std::string _zonesXML, std::string _updateId)
         {
             rapidxml::xml_document<> doc;
             rapidxml::xml_node<> *zoneConfig, *zones, *unassignedRoomsNode;
 
-            // this is a little workaround to be sore we do only parse and signal if really something has changed
+            // INFO: this is a little workaround to be sure we do only parse and signal if really something in the configuration has changed
+            // i have recognized that changes to the zones will sometimes lead to 2 long polling returns and i don't know why.
+            // it may be a problem in the current Raumfeld Firmware or the Kernel may have a bug with the updateId.
+            // i have to investigate this 
             if (!lastZoneConfigurationXML.empty() && lastZoneConfigurationXML == _zonesXML)
             {
                 logDebug("Zones XML retrieved but no changes found!", CURRENT_POSITION);
@@ -352,15 +355,8 @@ namespace Raumkernel
                 addRoomInformationFromXmlNode(unassignedRoomsNode);
             }
 
-            // each update of the zones we generate and store a random number
-            // this is needed for JSON webserver for long polling action on zone information
-            /*
-            boost::uint32_t curUpdateId = Utils::GetRandomNumber();
-            if (lastUpdateId == curUpdateId)
-                lastUpdateId++;
-            else
-                lastUpdateId = curUpdateId;
-                */
+            // store the current update id
+            lastUpdateId = _updateId;
             
             // now the zone configuration has changed, we do fire a signal and we stay in locked scope
             // so acces to the maps while signal is beeing processes id locked and the use of the map in the signal is ok

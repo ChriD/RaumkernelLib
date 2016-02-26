@@ -525,7 +525,7 @@ namespace Raumkernel
 
             try
             {      
-                mediaInfo = getMediaInfoProxy(_sync);
+                mediaInfo = getMediaInfoProxy(_sync);                                
             }
             catch (Raumkernel::Exception::RaumkernelException &e)
             {
@@ -1174,7 +1174,7 @@ namespace Raumkernel
                 return;
 
             auto proxy = std::dynamic_pointer_cast<OpenHome::Net::CpProxyUpnpOrgRenderingControl1Cpp>(getRenderingControlProxy());
-            proxy->EndGetVolume(_aAsync, volume);
+            proxy->EndGetVolume(_aAsync, volume);         
             sigGetVolumeExecuted.fire(volume);
         }
 
@@ -1203,6 +1203,31 @@ namespace Raumkernel
             // not needed
         }
 
+
+        MediaRendererState MediaRenderer::state()
+        {
+            std::unique_lock<std::mutex> lock(mutexRendererStateChange);
+            return rendererState;
+        }
+
+
+        void MediaRenderer::setState(MediaRendererState _rendererState)
+        {    
+            std::unique_lock<std::mutex> lock(mutexRendererStateChange);            
+            rendererState = _rendererState;
+        }
+
+
+        void MediaRenderer::lockRendererState()
+        {
+            mutexRendererStateChange.lock();
+        }
+
+
+        void MediaRenderer::unlockRendererState()
+        {
+            mutexRendererStateChange.unlock();
+        }
 
     }
 }

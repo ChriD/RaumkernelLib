@@ -31,6 +31,7 @@
 #include <raumkernel/manager/deviceManager.h>
 #include <raumkernel/manager/subscriptionReceiverManager.h>
 #include <raumkernel/manager/zoneManager.h>
+#include <raumkernel/manager/mediaListManager.h>
 
 namespace Raumkernel
 {
@@ -51,6 +52,7 @@ namespace Raumkernel
                 EXPORT std::shared_ptr<DeviceManager> getDeviceManager();
                 EXPORT std::shared_ptr<SubscriptionReceiverManager> getSubscriptionReceiverManager();
                 EXPORT std::shared_ptr<ZoneManager> getZoneManager();
+                EXPORT std::shared_ptr<MediaListManager> getMediaListManager();
 
             protected:
                 std::shared_ptr<SettingsManager> settingsManager;
@@ -58,6 +60,7 @@ namespace Raumkernel
                 std::shared_ptr<DeviceManager> deviceManager;
                 std::shared_ptr<SubscriptionReceiverManager> subscriptionReceiverManager;
                 std::shared_ptr<ZoneManager> zoneManager;
+                std::shared_ptr<MediaListManager> mediaListManager;
         };
     }
 }
