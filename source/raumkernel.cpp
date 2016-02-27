@@ -44,8 +44,7 @@ namespace Raumkernel
         // managerEngineer, which has links to the managers again. But this should be no problem, in this case)
         managerEngineer->getSettingsManager()->setManagerEngineer(managerEngineer);        
         managerEngineer->getUPNPManager()->setManagerEngineer(managerEngineer);
-        managerEngineer->getDeviceManager()->setManagerEngineer(managerEngineer);        
-        managerEngineer->getSubscriptionReceiverManager()->setManagerEngineer(managerEngineer);        
+        managerEngineer->getDeviceManager()->setManagerEngineer(managerEngineer);                  
         managerEngineer->getZoneManager()->setManagerEngineer(managerEngineer);
         managerEngineer->getMediaListManager()->setManagerEngineer(managerEngineer);
 

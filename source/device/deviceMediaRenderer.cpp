@@ -1184,7 +1184,16 @@ namespace Raumkernel
             std::string propertyXML = "";
             auto proxy = std::dynamic_pointer_cast<OpenHome::Net::CpProxyUpnpOrgAVTransport1Cpp>(getAvTransportProxy());
             proxy->PropertyLastChange(propertyXML);
-            getManagerEngineer()->getSubscriptionReceiverManager()->propertyChangedAvTransportProxy(UDN, propertyXML);            
+
+            // lock the device list to be sure the "this" object will not be deleted while parsing event subscriptions
+            getManagerEngineer()->getDeviceManager()->lockDeviceList();
+
+            // parse the event subscription xml, the object will fill the appropriate structure for the given renderer object
+            EventParser::DeviceEventParserMediaRenderer eventParser;
+            eventParser.setDevice(this);
+            eventParser.propertyChangedAvTransportProxy(propertyXML);
+
+            getManagerEngineer()->getDeviceManager()->unlockDeviceList();
         }
 
 
@@ -1193,7 +1202,16 @@ namespace Raumkernel
             std::string propertyXML = "";
             auto proxy = std::dynamic_pointer_cast<OpenHome::Net::CpProxyUpnpOrgRenderingControl1Cpp>(getRenderingControlProxy());
             proxy->PropertyLastChange(propertyXML);
-            getManagerEngineer()->getSubscriptionReceiverManager()->propertyChangedRenderingControlProxy(UDN, propertyXML);
+
+            // lock the device list to be sure the "this" object will not be deleted while parsing event subscriptions
+            getManagerEngineer()->getDeviceManager()->lockDeviceList();
+
+            // parse the event subscription xml, the object will fill the appropriate structure for the given renderer object
+            EventParser::DeviceEventParserMediaRenderer eventParser;
+            eventParser.setDevice(this);
+            eventParser.propertyChangedRenderingControlProxy(propertyXML);
+
+            getManagerEngineer()->getDeviceManager()->unlockDeviceList();
         }
 
 

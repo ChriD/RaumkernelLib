@@ -33,6 +33,7 @@
 #include <raumkernel/device/proxies/CpUpnpOrgAVTransport1.h>
 #include <raumkernel/device/proxies/CpUpnpOrgConnectionManager1.h>
 #include <raumkernel/device/proxies/CpUpnpOrgRenderingControl1.h>
+#include <raumkernel/device/eventParser/deviceEventParserMediaRenderer.h>
 
 
 namespace Raumkernel

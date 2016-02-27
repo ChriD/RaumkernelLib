@@ -9,8 +9,9 @@ namespace Raumkernel
         {
             settingsManager = nullptr;
             upnpManager = nullptr;
-            deviceManager = nullptr;
-            subscriptionReceiverManager = nullptr;            
+            deviceManager = nullptr;    
+            zoneManager = nullptr;
+            mediaListManager = nullptr;
         }
 
 
@@ -34,12 +35,7 @@ namespace Raumkernel
             // create the Device-Manager which will hold all UPNP devices found in the networt 
             logDebug("Create Device-Manager...", CURRENT_FUNCTION);
             deviceManager = std::shared_ptr<Manager::DeviceManager>(new Manager::DeviceManager());
-            deviceManager->setLogObject(getLogObject());
-
-            // create the SubscriptionReceiver-Manager which will handle the subcsription returns from the upnp devices
-            logDebug("Create SubscriptionReceiver-Manager...", CURRENT_FUNCTION);
-            subscriptionReceiverManager = std::shared_ptr<Manager::SubscriptionReceiverManager>(new Manager::SubscriptionReceiverManager());
-            subscriptionReceiverManager->setLogObject(getLogObject());
+            deviceManager->setLogObject(getLogObject());      
          
             // create the Zone-Manager which will handle the requests to the RF-Host
             logDebug("Create Zone-Manager...", CURRENT_FUNCTION);
@@ -68,12 +64,6 @@ namespace Raumkernel
         std::shared_ptr<DeviceManager> ManagerEngineer::getDeviceManager()
         {
             return deviceManager;
-        }
-
-
-        std::shared_ptr<SubscriptionReceiverManager> ManagerEngineer::getSubscriptionReceiverManager()
-        {
-            return subscriptionReceiverManager;
         }
 
 

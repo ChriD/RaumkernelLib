@@ -58,6 +58,12 @@
     <Filter Include="tools">
       <UniqueIdentifier>{76b7a89c-92ba-413b-9d79-c2de41c1031d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="includes\raumkernel\device\eventParser">
+      <UniqueIdentifier>{921c8d29-47f5-453c-8c44-1e4ebd34978b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="device\eventParser">
+      <UniqueIdentifier>{a39e8a4c-8787-49a5-8726-92083f8b7b6e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="includes\raumkernel\os\os.h">
@@ -186,9 +192,6 @@
     <ClInclude Include="includes\raumkernel\device\deviceMediaRenderer_RFVirtual.h">
       <Filter>includes\raumkernel\device</Filter>
     </ClInclude>
-    <ClInclude Include="includes\raumkernel\manager\subscriptionReceiverManager.h">
-      <Filter>includes\raumkernel\manager</Filter>
-    </ClInclude>
     <ClInclude Include="includes\raumkernel\device\deviceMediaServer.h">
       <Filter>includes\raumkernel\device</Filter>
     </ClInclude>
@@ -227,6 +230,15 @@
     </ClInclude>
     <ClInclude Include="includes\raumkernel\tools\numUtil.h">
       <Filter>includes\raumkernel\tools</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\raumkernel\device\eventParser\deviceEventParser.h">
+      <Filter>includes\raumkernel\device\eventParser</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\raumkernel\device\eventParser\deviceEventParserMediaRenderer.h">
+      <Filter>includes\raumkernel\device\eventParser</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\raumkernel\device\eventParser\deviceEventParserMediaServer.h">
+      <Filter>includes\raumkernel\device\eventParser</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -302,9 +314,6 @@
     <ClCompile Include="device\deviceMediaRenderer_RFVirtual.cpp">
       <Filter>device</Filter>
     </ClCompile>
-    <ClCompile Include="manager\subscriptionReceiverManager.cpp">
-      <Filter>manager</Filter>
-    </ClCompile>
     <ClCompile Include="device\deviceMediaServer.cpp">
       <Filter>device</Filter>
     </ClCompile>
@@ -337,6 +346,15 @@
     </ClCompile>
     <ClCompile Include="manager\mediaListManager.cpp">
       <Filter>manager</Filter>
+    </ClCompile>
+    <ClCompile Include="device\eventParser\deviceEventParser.cpp">
+      <Filter>device\eventParser</Filter>
+    </ClCompile>
+    <ClCompile Include="device\eventParser\deviceEventParserMediaRenderer.cpp">
+      <Filter>device\eventParser</Filter>
+    </ClCompile>
+    <ClCompile Include="device\eventParser\deviceEventParserMediaServer.cpp">
+      <Filter>device\eventParser</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

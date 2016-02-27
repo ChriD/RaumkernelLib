@@ -22,40 +22,33 @@
 //
 
 #pragma once
-#ifndef RAUMKERNEL_SUBSCRIPTIONRECEIVERMANAGER_H
-#define RAUMKERNEL_SUBSCRIPTIONRECEIVERMANAGER_H
+#ifndef RAUMKERNEL_DEVICEEVENTPARSER_MEDIARENDERER_H
+#define RAUMKERNEL_DEVICEEVENTPARSER_MEDIARENDERER_H
 
-#include <raumkernel/manager/managerBase.h>
-#include <raumkernel/xml/rapidxml.hpp>
-#include <raumkernel/tools/numUtil.h>
-
+#include <raumkernel/device/deviceMediaRenderer.h>
+#include <raumkernel/device/eventParser/deviceEventParser.h>
 
 namespace Raumkernel
 {
-    namespace Manager
+    namespace Devices
     {
-        /**
-        * The SubscriptionReceiver-Manager
-        *
-        * This class handles all the subscriptions returns which we will get from the UPNP-Devices
-        */
-        class SubscriptionReceiverManager : public ManagerBase
+        namespace EventParser
         {
-            public:
-                SubscriptionReceiverManager();
-                virtual ~SubscriptionReceiverManager(); 
-
-                virtual void propertyChangedAvTransportProxy(std::string _deviceUDN, std::string _xml);                
-                virtual void propertyChangedRenderingControlProxy(std::string _deviceUDN, std::string _xml);
-
-            protected:
-                rapidxml::xml_node<>* getInstanceNodeFromXML(std::string _xml);
-                std::string getNodeVal(rapidxml::xml_node<>* _parentNode, std::string _nodeName, std::string _oldVal, bool &_valChanged, std::string _attributeName = "val");                
             /**
-            * A mutex for locking renderer property changes
+            * The DeviceEventParserMediaRenderer
+            *
+            * This class handles all the subscriptions return xmls which we will get from a UPNP-MediaRenderer-Device
             */
-            std::mutex mutexRendererPropertyChange;
-        };
+            class DeviceEventParserMediaRenderer : public DeviceEventParser
+            {
+            public:
+                DeviceEventParserMediaRenderer();
+                virtual ~DeviceEventParserMediaRenderer();
+
+                virtual void propertyChangedAvTransportProxy(std::string _xml);
+                virtual void propertyChangedRenderingControlProxy(std::string _xml);                           
+            };
+        }
     }
 }
 

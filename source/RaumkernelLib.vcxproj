@@ -93,6 +93,9 @@
     <ClInclude Include="includes\raumkernel\device\deviceMediaRenderer.h" />
     <ClInclude Include="includes\raumkernel\device\deviceMediaServer.h" />
     <ClInclude Include="includes\raumkernel\device\deviceMediaServer_RF.h" />
+    <ClInclude Include="includes\raumkernel\device\eventParser\deviceEventParser.h" />
+    <ClInclude Include="includes\raumkernel\device\eventParser\deviceEventParserMediaRenderer.h" />
+    <ClInclude Include="includes\raumkernel\device\eventParser\deviceEventParserMediaServer.h" />
     <ClInclude Include="includes\raumkernel\device\proxies\CpUpnpOrgAVTransport1.h" />
     <ClInclude Include="includes\raumkernel\device\proxies\CpUpnpOrgAVTransport2.h" />
     <ClInclude Include="includes\raumkernel\device\proxies\CpUpnpOrgAVTransport_RaumfeldVirtual1.h" />
@@ -119,7 +122,6 @@
     <ClInclude Include="includes\raumkernel\manager\managerEngineer.h" />
     <ClInclude Include="includes\raumkernel\manager\mediaListManager.h" />
     <ClInclude Include="includes\raumkernel\manager\settingsManager.h" />
-    <ClInclude Include="includes\raumkernel\manager\subscriptionReceiverManager.h" />
     <ClInclude Include="includes\raumkernel\manager\upnpManager.h" />
     <ClInclude Include="includes\raumkernel\manager\zoneManager.h" />
     <ClInclude Include="includes\raumkernel\os\os.h" />
@@ -151,6 +153,9 @@
     <ClCompile Include="device\deviceMediaRenderer_RFVirtual.cpp" />
     <ClCompile Include="device\deviceMediaServer.cpp" />
     <ClCompile Include="device\deviceMediaServer_RF.cpp" />
+    <ClCompile Include="device\eventParser\deviceEventParser.cpp" />
+    <ClCompile Include="device\eventParser\deviceEventParserMediaRenderer.cpp" />
+    <ClCompile Include="device\eventParser\deviceEventParserMediaServer.cpp" />
     <ClCompile Include="device\proxies\CpUpnpOrgAVTransport1Std.cpp" />
     <ClCompile Include="device\proxies\CpUpnpOrgAVTransport2Std.cpp" />
     <ClCompile Include="device\proxies\CpUpnpOrgAVTransport_RaumfeldVirtual1Std.cpp" />
@@ -175,7 +180,6 @@
     <ClCompile Include="manager\managerEngineer.cpp" />
     <ClCompile Include="manager\mediaListManager.cpp" />
     <ClCompile Include="manager\settingsManager.cpp" />
-    <ClCompile Include="manager\subscriptionReceiverManager.cpp" />
     <ClCompile Include="manager\upnpManager.cpp" />
     <ClCompile Include="manager\zoneManager.cpp" />
     <ClCompile Include="raumkernel.cpp" />
