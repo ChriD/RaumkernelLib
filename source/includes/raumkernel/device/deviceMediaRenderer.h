@@ -98,9 +98,7 @@ namespace Raumkernel
 
         struct MediaRendererRoomState
         {
-            //
             bool mute = true;
-            //
             std::uint8_t volume = 0;            
             std::string roomUDN = "";            
             MediaRenderer_TransportState transportState = MediaRenderer_TransportState::MRTS_STOPPED;
@@ -110,8 +108,7 @@ namespace Raumkernel
         struct MediaRendererState
         {
             // TODO
-            MediaRenderer_PlayMode playMode = MediaRenderer_PlayMode::MRPLAYMODE_NORMAL;
-            // TODO
+            MediaRenderer_PlayMode playMode = MediaRenderer_PlayMode::MRPLAYMODE_NORMAL; 
             MediaRenderer_MuteState muteState = MediaRenderer_MuteState::MRPMUTE_ALL;
             MediaRenderer_TransportState transportState = MediaRenderer_TransportState::MRTS_STOPPED;
 
@@ -131,18 +128,32 @@ namespace Raumkernel
             std::uint32_t bitrate = 0;
 
             // TODO: @@@
-            std::string containerId = "";
-            /* 
-            std::uint8_t volume; 
-            std::string containerId;              
-            */
+            std::string containerId = "";     
 
-            // TODO: @@@
-            // this map holds room state struct for rooms which are added to virtual media renderer		
+            // There are some combined values that we store. From this values the room state will be created
             std::string roomTransportStatesCombined = "";
             std::string roomMuteStatesCombined = "";
-            std::string roomVolumeStatesCombined = "";
+            std::string roomVolumeStatesCombined = "";            
+            // this map holds room state struct for rooms which are added to virtual media renderer		
             std::unordered_map<std::string, MediaRendererRoomState>	roomStates;
+
+            // this method is for removing room states which are not referred anymore in the rendere subscription XML
+            // it will be called whenever a subscription has state values for rooms (only the case on Virtual renderers)
+            void removeNonReferredRoomStates(std::vector<std::string> _referredRoomUDNs)
+            {                
+                for (auto it = roomStates.cbegin(); it != roomStates.cend();)
+                {       
+                    if (std::find(_referredRoomUDNs.begin(), _referredRoomUDNs.end(), it->first) == _referredRoomUDNs.end())
+                    {                       
+                        it = roomStates.erase(it);                        
+                    }
+                    else
+                    {
+                        ++it;
+                    }
+                }
+            }
+
         };
        
 
