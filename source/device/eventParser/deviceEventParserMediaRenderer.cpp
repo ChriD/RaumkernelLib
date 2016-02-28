@@ -20,7 +20,8 @@ namespace Raumkernel
             void DeviceEventParserMediaRenderer::propertyChangedAvTransportProxy(std::string _xml)
             {            
                 Devices::MediaRenderer *mediaRenderer = (Devices::MediaRenderer*)device;
-                bool anyStateChanged = false, avTransportUriValueChanged = false, currentTrackMetadataChanged = false;
+                bool anyStateChanged = false, avTransportUriValueChanged = false, currentTrackMetadataChanged = false, transportStateChanged = false;
+                bool roomStateChanged = false;
  
                 logDebug("A property on AvTransport proxy has changed (Device: " + mediaRenderer->getUDN() + ")", CURRENT_POSITION);
            
@@ -41,33 +42,53 @@ namespace Raumkernel
                     rendererState.aVTransportURIMetaData = getNodeVal(instanceNode, "AVTransportURIMetaData", rendererState.aVTransportURIMetaData, anyStateChanged);
                     rendererState.currentTrackURI = getNodeVal(instanceNode, "CurrentTrackURI", rendererState.currentTrackURI, anyStateChanged);
                     rendererState.currentTrackMetaData = getNodeVal(instanceNode, "CurrentTrackMetaData", rendererState.currentTrackMetaData, currentTrackMetadataChanged);
-
                     rendererState.contentType = getNodeVal(instanceNode, "ContentType", rendererState.contentType, anyStateChanged);
                     rendererState.currentTrack = Tools::NumUtil::toUInt32(getNodeVal(instanceNode, "CurrentTrack", std::to_string(rendererState.currentTrack), anyStateChanged));
                     rendererState.numberOfTracks = Tools::NumUtil::toUInt32(getNodeVal(instanceNode, "NumberOfTracks", std::to_string(rendererState.numberOfTracks), anyStateChanged));
                     rendererState.currentTrackDuration = Tools::DateUtil::timeStringToTimeMS(getNodeVal(instanceNode, "CurrentTrackDuration", Tools::DateUtil::timeMSToTimeString(rendererState.currentTrackDuration), anyStateChanged));
-                    rendererState.bitrate = Tools::NumUtil::toUInt32(getNodeVal(instanceNode, "Bitrate", std::to_string(rendererState.bitrate), anyStateChanged));
+                    rendererState.bitrate = Tools::NumUtil::toUInt32(getNodeVal(instanceNode, "Bitrate", std::to_string(rendererState.bitrate), anyStateChanged));                                        
+                    rendererState.transportState = Devices::ConversionTool::stringToTransportState(getNodeVal(instanceNode, "TransportState", Devices::ConversionTool::transportStateToString(rendererState.transportState), transportStateChanged));
+                    rendererState.roomTransportStatesCombined = getNodeVal(instanceNode, "RoomStates", rendererState.roomTransportStatesCombined, roomStateChanged);
 
-                    // TODO: 
-                    // TransportState
-                    // RoomStates 
+                    // get the information if any of the states has changed
+                    anyStateChanged = anyStateChanged || avTransportUriValueChanged || currentTrackMetadataChanged || transportStateChanged || roomStateChanged;
 
-                    // TODO: @@@
+                    // when the room state changes we have to update the room states map. The combined value consists of the roomUDNs and the transport states 
+                    if (roomStateChanged && !rendererState.roomTransportStatesCombined.empty())
+                    {
+                        auto roomStateInfo = Tools::StringUtil::explodeString(rendererState.roomTransportStatesCombined, ",");
+                        // run through each info block which lokks something like "RoomUDN=TranspoerState"
+                        for (auto &roomStateString : roomStateInfo)
+                        {
+                            auto rommStateInfoParts = Tools::StringUtil::explodeString(roomStateString, "=");
+                            if (rommStateInfoParts.size() >= 2)
+                            {
+                                std::string roomUDN = Tools::CommonUtil::formatUDN(rommStateInfoParts[0]);
+                                MediaRenderer_TransportState roomTransportState = Devices::ConversionTool::stringToTransportState(rommStateInfoParts[1]);
+                                
+                                // we have to update the transport state on the room state map.
+                                // if the state for the room does not exists we create it first 
+                                if (rendererState.roomStates.find(roomUDN) == rendererState.roomStates.end())
+                                {                                                                                    
+                                    MediaRendererRoomState newEmptyRoomState;
+                                    rendererState.roomStates.insert(std::make_pair(roomUDN, newEmptyRoomState));
+                                }                                
+                                rendererState.roomStates[roomUDN].roomUDN = roomUDN;
+                                rendererState.roomStates[roomUDN].transportState = roomTransportState;
+                            }
+                        }
 
-                    anyStateChanged = anyStateChanged || avTransportUriValueChanged || currentTrackMetadataChanged;
+                    }               
 
-
-                    // TODO: create the current media item from the "CurrentTrackMetaData" value (this is necessary for non list playlists)
+                    // TODO: create the current media item from the "CurrentTrackMetaData" value (this is necessary for non list/query playlists)
                     if (currentTrackMetadataChanged)
                     {
                     }
 
-                    // TODO: handle AVTranportUri (set contaniner id to state & get media list for zone when changed and i zone renderer)
+                    // TODO: handle AVTranportUri (set contaniner id to state & get media list for zone when changed on a zone renderer)
                     if (avTransportUriValueChanged)
                     {
                     }
-
-                    // TODO: handle room states
 
                 }
                 catch (Raumkernel::Exception::RaumkernelException &e)
@@ -97,312 +118,96 @@ namespace Raumkernel
                 mediaRenderer->setState(rendererState);
 
                 // TODO: emit some signal.... maybe from the device manager? 
-                // orf from the media renderer which will signal the device manager which will signal again?
-
-
-
-                // TODO::
-                // * lock this method
-                // * create the information objects from the xml
-                // * lock the device lists from the device manager
-                // * update the information objects on the devivce itself
-                // * unlock the device lists from the device manager
-                // * unlock this method
-
-
+                // or from the media renderer which will signal the device manager which will signal again?
             }
 
-
-            /*
-
-            std::string propertyXML = "", attributeString = "", curentTrackMetadata = "", contentType = "", aVTransportURIMetaData = "", aVTransportURI = "", currentTrackURI = "", currentTrackDuration = "", propChangeInfo = "";
-            std::string uriQuery;
-            boost::uint32_t currentTrackDurationMS = 0, currentTrack = 0, numberOfTracks = 0, bitrate = 0;
-            MediaRendererTransportState transportState;
-            xml_document<> doc;
-            xml_node<> *eventNode, *instanceNode, *valueNode;
-            xml_attribute<> *attribute;
-            bool someStateChanged = false;
-            bool avTransportUriChanged = false;
-
-
-            char* cstr = new char[propertyXML.size() + 1];
-            strcpy(cstr, propertyXML.c_str());
-            doc.parse<0>(cstr);
-
-            eventNode = doc.first_node("Event", 0, false);
-            if (!eventNode)
-            {
-            this->Log(LogType::LOGERROR, "RenderingService on '" + this->GetIdentificationString() + "': 'Event' node in propertyXML not found!", __FUNCTION__);
-            return;
-            }
-
-            instanceNode = eventNode->first_node("InstanceId", 0, false);
-            if (!instanceNode)
-            {
-            this->Log(LogType::LOGERROR, "RenderingService on '" + this->GetIdentificationString() + "': 'InstanceId' node in propertyXML not found!", __FUNCTION__);
-            return;
-            }
-
-            try
-            {
-
-            boost::mutex::scoped_lock scoped_lock(mutexRendererState);
-
-            valueNode = instanceNode->first_node("CurrentTrackMetaData", 0, false);
-            if (valueNode)
-            {
-            attribute = valueNode->first_attribute("val");
-            curentTrackMetadata = attribute->value();
-            if (mediaRendererState.currentTrackMetaData != curentTrackMetadata)
-            {
-            mediaRendererState.currentTrackMetaData = curentTrackMetadata;
-            someStateChanged = true;
-            AddPropChangeInfo("CurrentTrackMetaData", propChangeInfo);
-
-            // parse into mediaItem track class
-            currentMediaItem = managerList.contentManager->CreateMediaItemFromCurrentTrackMetadata(curentTrackMetadata);
-            }
-            }
-
-            valueNode = instanceNode->first_node("ContentType", 0, false);
-            if (valueNode)
-            {
-            attribute = valueNode->first_attribute("val");
-            contentType = attribute->value();
-            if (mediaRendererState.contentType != contentType)
-            {
-            mediaRendererState.contentType = contentType;
-            someStateChanged = true;
-            AddPropChangeInfo("ContentType", propChangeInfo);
-            }
-            }
-
-            valueNode = instanceNode->first_node("AVTransportURI", 0, false);
-            if (valueNode)
-            {
-            attribute = valueNode->first_attribute("val");
-            aVTransportURI = attribute->value();
-            if (mediaRendererState.aVTransportURI != aVTransportURI)
-            {
-            mediaRendererState.aVTransportURI = aVTransportURI;
-
-            // in some cases it may be that the avTransportUri es empty
-
-            if (!aVTransportURI.empty())
-            {
-            // we have to handle the query values of the AVTransportUri.
-            // In case we wan't to play eg. Track 5 of a list, we have to use the cid(containerId) of the container the renderer has set currently
-            // so this is the place where the actual cid is set to the 'mediaRendererState' structure
-            boost::network::uri::uri instance(aVTransportURI);
-            uriQuery = instance.query();
-
-            // parse the query string for all id and value pairs it may have
-            boost::unordered_map<std::string, std::string> queryValues = Utils::ParseQueryString(uriQuery);
-
-            // now handle the cid(containerId) information. if its there, then get it and store it
-            boost::unordered_map<std::string, std::string>::iterator it = queryValues.find("cid");
-            if (it != queryValues.end())
-            {
-            std::string containerIdEncoded = it->second;
-            // we want to store the unescaped value due the cid will be escaped again on bending AVTransport Uri
-            // UPDATE: no need to Unescape the values! This is already done by 'ParseQueryString'
-            //mediaRendererState.containerId = Utils::Unescape(containerIdEncoded);
-            mediaRendererState.containerId = containerIdEncoded;
-            }
-            else
-            mediaRendererState.containerId = "";
-
-            // TODO: handle fid && fii
-
-            someStateChanged = true;
-            avTransportUriChanged = true;
-            AddPropChangeInfo("AVTransportURI", propChangeInfo);
-
-            }
-            }
-            }
-
-            valueNode = instanceNode->first_node("AVTransportURIMetaData", 0, false);
-            if (valueNode)
-            {
-            attribute = valueNode->first_attribute("val");
-            aVTransportURIMetaData = attribute->value();
-            if (mediaRendererState.aVTransportURIMetaData != aVTransportURIMetaData)
-            {
-            mediaRendererState.aVTransportURIMetaData = aVTransportURIMetaData;
-            someStateChanged = true;
-            AddPropChangeInfo("AVTransportURIMetaData", propChangeInfo);
-            }
-            }
-
-            valueNode = instanceNode->first_node("CurrentTrackURI", 0, false);
-            if (valueNode)
-            {
-            attribute = valueNode->first_attribute("val");
-            currentTrackURI = attribute->value();
-            if (mediaRendererState.currentTrackURI != currentTrackURI)
-            {
-            mediaRendererState.currentTrackURI = currentTrackURI;
-            someStateChanged = true;
-            AddPropChangeInfo("CurrentTrackURI", propChangeInfo);
-            }
-            }
-
-            valueNode = instanceNode->first_node("CurrentTrackDuration", 0, false);
-            if (valueNode)
-            {
-            attribute = valueNode->first_attribute("val");
-            currentTrackDuration = attribute->value();
-            currentTrackDurationMS = Utils::TimeStringToTimeMS(currentTrackDuration);
-            if (mediaRendererState.currentTrackDuration != currentTrackDuration)
-            {
-            mediaRendererState.currentTrackDuration = currentTrackDuration;
-            mediaRendererState.currentTrackDurationMS = currentTrackDurationMS;
-            someStateChanged = true;
-            AddPropChangeInfo("CurrentTrackDuration", propChangeInfo);
-            }
-            }
-
-            valueNode = instanceNode->first_node("CurrentTrack", 0, false);
-            if (valueNode)
-            {
-            attribute = valueNode->first_attribute("val");
-            attributeString = attribute->value();
-            currentTrack = this->toInt(attributeString);
-            if (mediaRendererState.currentTrack != currentTrack)
-            {
-            mediaRendererState.currentTrack = currentTrack;
-            someStateChanged = true;
-            AddPropChangeInfo("CurrentTrack", propChangeInfo);
-            }
-            }
-
-            valueNode = instanceNode->first_node("NumberOfTracks", 0, false);
-            if (valueNode)
-            {
-            attribute = valueNode->first_attribute("val");
-            attributeString = attribute->value();
-            numberOfTracks = this->toInt(attributeString);
-            if (mediaRendererState.numberOfTracks != numberOfTracks)
-            {
-            mediaRendererState.numberOfTracks = numberOfTracks;
-            someStateChanged = true;
-            AddPropChangeInfo("NumberOfTracks", propChangeInfo);
-            }
-
-            }
-
-            valueNode = instanceNode->first_node("Bitrate", 0, false);
-            if (valueNode)
-            {
-            attribute = valueNode->first_attribute("val");
-            attributeString = attribute->value();
-            bitrate = this->toInt(attributeString);
-            if (mediaRendererState.bitrate != bitrate)
-            {
-            mediaRendererState.bitrate = bitrate;
-            someStateChanged = true;
-            AddPropChangeInfo("Bitrate", propChangeInfo);
-            }
-            }
-
-            valueNode = instanceNode->first_node("TransportState", 0, false);
-            if (valueNode)
-            {
-            attribute = valueNode->first_attribute("val");
-            attributeString = attribute->value();
-            transportState = StringToMediaRendererTransportState(attributeString);
-            if (mediaRendererState.transportState != transportState)
-            {
-            mediaRendererState.transportState = transportState;
-            someStateChanged = true;
-            AddPropChangeInfo("TransportState", propChangeInfo);
-            }
-            }
-
-            valueNode = instanceNode->first_node("RoomStates", 0, false);
-            if (valueNode)
-            {
-            std::vector<std::string> roomVolumeStringVector;
-            std::vector<std::string> roomStringVector;
-            std::string roomUDN;
-            MediaRendererTransportState	roomTransportState;
-            MediaRendererRoomState roomState;
-
-            attribute = valueNode->first_attribute("val");
-            attributeString = attribute->value();
-
-            if (!attributeString.empty())
-            {
-
-            roomVolumeStringVector = Utils::ExplodeString(attributeString, ",");
-
-            for (auto &roomString : roomVolumeStringVector)
-            {
-            roomStringVector = Utils::ExplodeString(roomString, "=");
-            if (roomStringVector.size() > 1)
-            {
-            roomUDN = Utils::FormatUDN(roomStringVector[0]);
-            roomTransportState = StringToMediaRendererTransportState(roomStringVector[1]);
-
-            if (roomStateMap.find(roomUDN) != roomStateMap.end())
-            {
-            roomState = roomStateMap.at(roomUDN);
-            roomStateMap.erase(roomUDN);
-            }
-
-            roomState.roomUDN = roomUDN;
-            if (roomState.transportState != roomTransportState)
-            {
-            roomState.transportState = roomTransportState;
-            someStateChanged = true;
-            AddPropChangeInfo("RoomStates", propChangeInfo);
-            }
-
-            roomStateMap.insert(std::make_pair(roomUDN, roomState));
-            }
-            }
-            }
-
-            }
-            }
-            catch (OpenHome::Exception &ex)
-            {
-            this->UPNPException(ex, __FUNCTION__);
-            }
-            catch (std::exception &ex)
-            {
-            this->Log(LogType::LOGERROR, ex.what(), __FUNCTION__);
-            }
-            catch (...)
-            {
-            this->Log(LogType::LOGERROR, "Unknown Error", __FUNCTION__);
-            }
-
-            // if soemthing has changed we do signal the subscribers
-            if (someStateChanged)
-            {
-            // each update of the zones we generate and store a random number
-            // this is needed for JSON webserver for long polling action on zone information
-            boost::uint32_t curUpdateId = Utils::GetRandomNumber();
-            if (managerList.deviceManager->GetLastUpdateIdRendererState() == curUpdateId)
-            curUpdateId++;
-            managerList.deviceManager->SetLastUpdateIdRendererState(curUpdateId);
-
-            // start loading the playlist for the renderer. Virtual Renderer UDN = virtual Zone UDN
-            if (avTransportUriChanged)
-            managerList.contentManager->StartGetMediaItemListByZoneUDN(this->GetUDN(), false);
-
-            this->Log(LogType::LOGDEBUG, "Properties Changed: " + propChangeInfo + " (" + this->GetIdentificationString() + ")", __FUNCTION__);
-            signalMediaRendererStateChanged(this->UDN);
-            }*/
 
             void DeviceEventParserMediaRenderer::propertyChangedRenderingControlProxy(std::string _xml)
             {         
                 Devices::MediaRenderer *mediaRenderer = (Devices::MediaRenderer*)device;
+                bool anyStateChanged = false, volumeStateChanged = false, muteStateChanged;
 
                 logDebug("A property on RenderingControl proxy has changed (Device: " + mediaRenderer->getUDN() + ")", CURRENT_POSITION);
+
+                // get a copy of the media renderer state structure. we will change the data and set it back again by copy
+                Devices::MediaRendererState rendererState = mediaRenderer->state();
+
+                try
+                {
+                    // try to get the "instance" node in the subscription xml. The child nodes of this node are our data we want to have
+                    rapidxml::xml_node<> *instanceNode = getInstanceNodeFromXML(_xml);
+                    if (!instanceNode)
+                    {
+                        logError("Error parsing XML subscription from device: " + mediaRenderer->getUDN(), CURRENT_POSITION);
+                        return;
+                    }
+                    
+                    rendererState.volume = Tools::NumUtil::toUInt32(getNodeVal(instanceNode, "Volume", std::to_string(rendererState.volume), anyStateChanged));
+                    rendererState.mute = Tools::CommonUtil::toBool(getNodeVal(instanceNode, "Mute", std::to_string(rendererState.mute), anyStateChanged));
+                    rendererState.roomMuteStatesCombined = getNodeVal(instanceNode, "RoomStates", rendererState.roomMuteStatesCombined, muteStateChanged);
+                    rendererState.roomVolumeStatesCombined = getNodeVal(instanceNode, "VolumeStates", rendererState.roomVolumeStatesCombined, volumeStateChanged);
+
+
+                    // volumes state node value looks like this "uuid:e1104a23-2493-498c-8c44-49ba8d1810d8=44,uuid:6e395fd9-f326-41c6-b8b3-eed1897923e6=0"
+
+                    // TODO: @@@
+                    /*
+                    // when the room state changes we have to update the room states map. The combined value consists of the roomUDNs and the transport states 
+                    if (roomStateChanged && !rendererState.roomTransportStatesCombined.empty())
+                    {
+                        auto roomStateInfo = Tools::StringUtil::explodeString(rendererState.roomTransportStatesCombined, ",");
+                        // run through each info block which lokks something like "RoomUDN=TranspoerState"
+                        for (auto &roomStateString : roomStateInfo)
+                        {
+                            auto rommStateInfoParts = Tools::StringUtil::explodeString(roomStateString, "=");
+                            if (rommStateInfoParts.size() >= 2)
+                            {
+                                std::string roomUDN = Tools::CommonUtil::formatUDN(rommStateInfoParts[0]);
+                                MediaRenderer_TransportState roomTransportState = Devices::ConversionTool::stringToTransportState(rommStateInfoParts[1]);
+
+                                // we have to update the transport state on the room state map.
+                                // if the state for the room does not exists we create it first 
+                                if (rendererState.roomStates.find(roomUDN) == rendererState.roomStates.end())
+                                {
+                                    MediaRendererRoomState newEmptyRoomState;
+                                    rendererState.roomStates.insert(std::make_pair(roomUDN, newEmptyRoomState));
+                                }
+                                rendererState.roomStates[roomUDN].roomUDN = roomUDN;
+                                rendererState.roomStates[roomUDN].transportState = roomTransportState;
+                            }
+                        }
+                        */
+
+                    anyStateChanged = anyStateChanged || muteStateChanged || volumeStateChanged;
+
+
+
+                }
+                catch (Raumkernel::Exception::RaumkernelException &e)
+                {
+                    if (e.type() == Raumkernel::Exception::ExceptionType::EXCEPTIONTYPE_APPCRASH)
+                        throw e;
+                    logError(e.what(), CURRENT_FUNCTION);
+                }
+                catch (std::exception &e)
+                {
+                    logError(e.what(), CURRENT_FUNCTION);
+                }
+                catch (std::string &e)
+                {
+                    logError(e, CURRENT_FUNCTION);
+                }
+                catch (OpenHome::Exception &e)
+                {
+                    logError(e.Message(), CURRENT_FUNCTION);
+                }
+                catch (...)
+                {
+                    logError("Unknown Exception", CURRENT_FUNCTION);
+                }
+
+                // update the new state of the renderer
+                mediaRenderer->setState(rendererState);
 
 
                 // TODO: 

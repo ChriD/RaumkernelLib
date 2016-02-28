@@ -26,6 +26,7 @@
 #define RAUMKERNEL_DEVICEMEDIARENDERER_H
 
 
+#include <unordered_map>
 #include <OpenHome/Net/Cpp/OhNet.h>
 #include <OpenHome/Net/Cpp/CpProxy.h>
 #include <raumkernel/signals/signals.hpp>
@@ -51,79 +52,99 @@ namespace Raumkernel
 
         struct AvTransportMediaInfo
         {
-            std::uint32_t nrTracks;
-            std::string mediaDuration;
-            std::uint32_t mediaDurationMS;
-            std::string currentUri;
-            std::string currentUriMetaData;
-            std::string nextUri;
-            std::string nextUriMetaData;
-            std::string playMedium;
-            std::string recordMedium;
-            std::string writeStatus;
+            std::uint32_t nrTracks = 0;
+            std::string mediaDuration = "00:00:00";
+            std::uint32_t mediaDurationMS = 0;
+            std::string currentUri = "";
+            std::string currentUriMetaData = "";
+            std::string nextUri = "";
+            std::string nextUriMetaData = "";
+            std::string playMedium = "";
+            std::string recordMedium = "";
+            std::string writeStatus = "";
         };
 
 
         struct AvTransportPositionInfo
         {
-            std::uint32_t track;
-            std::string trackDuration;
-            std::uint32_t trackDurationMS;
-            std::string trackMetaData;
-            std::string trackUri;
-            std::string relTime;
-            std::uint32_t relTimeMS;
-            std::string absTime;
-            std::uint32_t absTimeMS;
-            std::int32_t relCount;
-            std::int32_t absCount;
+            std::uint32_t track = 0;
+            std::string trackDuration = "00:00:00";
+            std::uint32_t trackDurationMS = 0;
+            std::string trackMetaData = "";
+            std::string trackUri = "";
+            std::string relTime = "";
+            std::uint32_t relTimeMS = 0;
+            std::string absTime = "";
+            std::uint32_t absTimeMS = 0;
+            std::int32_t relCount = 0;
+            std::int32_t absCount = 0;
         };
 
 
         struct AvTransportInfo
         {        
-            std::string currentTransportState;            
-            std::string currentTransportStatus;
-            std::string currentSpeed;
+            std::string currentTransportState = "";            
+            std::string currentTransportStatus = "";
+            std::string currentSpeed = "";
         };
 
 
         struct AvTransportSettings
         {
-            std::string playMode;
-            std::string recQualityMode; 
+            std::string playMode = "";
+            std::string recQualityMode = ""; 
+        };
+
+
+        struct MediaRendererRoomState
+        {
+            //
+            bool mute = true;
+            //
+            std::uint8_t volume = 0;            
+            std::string roomUDN = "";            
+            MediaRenderer_TransportState transportState = MediaRenderer_TransportState::MRTS_STOPPED;
         };
 
 
         struct MediaRendererState
         {
             // TODO
-            MediaRenderer_PlayMode playMode; 
+            MediaRenderer_PlayMode playMode = MediaRenderer_PlayMode::MRPLAYMODE_NORMAL;
             // TODO
-            MediaRenderer_MuteState muteState;
-            // TODO
-            MediaRenderer_TransportState transportState;
+            MediaRenderer_MuteState muteState = MediaRenderer_MuteState::MRPMUTE_ALL;
+            MediaRenderer_TransportState transportState = MediaRenderer_TransportState::MRTS_STOPPED;
 
-            std::string aVTransportURI;
-            std::string aVTransportURIMetaData;
+            std::uint8_t volume = 0;
+            bool mute = true;
 
-            std::string currentTrackURI;
-            std::string currentTrackMetaData;
+            std::string aVTransportURI = "";
+            std::string aVTransportURIMetaData = "";
+            std::string currentTrackURI = "";
+            std::string currentTrackMetaData = "";
 
-            std::string contentType;
+            std::string contentType = "";
 
-            std::uint32_t currentTrack;    
-            std::uint32_t currentTrackDuration; 
-            std::uint32_t numberOfTracks;
-            std::uint32_t bitrate;
+            std::uint32_t currentTrack = 0;    
+            std::uint32_t currentTrackDuration = 0; 
+            std::uint32_t numberOfTracks = 0;
+            std::uint32_t bitrate = 0;
 
             // TODO: @@@
-            std::string containerId;
+            std::string containerId = "";
             /* 
             std::uint8_t volume; 
             std::string containerId;              
             */
+
+            // TODO: @@@
+            // this map holds room state struct for rooms which are added to virtual media renderer		
+            std::string roomTransportStatesCombined = "";
+            std::string roomMuteStatesCombined = "";
+            std::string roomVolumeStatesCombined = "";
+            std::unordered_map<std::string, MediaRendererRoomState>	roomStates;
         };
+       
 
 
         class ConversionTool

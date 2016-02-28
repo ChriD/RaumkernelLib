@@ -63,6 +63,22 @@ namespace Raumkernel
                     std::uniform_int_distribution<uint32_t> uint_dist(1000000, 9999999);
                     return uint_dist(rng);
                 }
+
+
+                /**
+                * Converts a string into a bool
+                */
+                static bool toBool(std::string _s)
+                {
+                    try
+                    {
+                        return _s == "0" || _s.empty() ? false : true;
+                    }
+                    catch (...)
+                    {
+                    }
+                    return false;
+                }
    
         };
 
