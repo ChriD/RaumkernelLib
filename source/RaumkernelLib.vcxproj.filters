@@ -297,6 +297,9 @@
     <ClInclude Include="includes\raumkernel\media\item\mediaItem_RhapsodyRadio.h">
       <Filter>includes\raumkernel\media\item</Filter>
     </ClInclude>
+    <ClInclude Include="includes\raumkernel\media\mediaItemCreator.h">
+      <Filter>includes\raumkernel\media</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="logger\logger.cpp">
@@ -454,6 +457,9 @@
     </ClCompile>
     <ClCompile Include="media\item\mediaItem_Track.cpp">
       <Filter>media\item</Filter>
+    </ClCompile>
+    <ClCompile Include="media\mediaItemCreator.cpp">
+      <Filter>media</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

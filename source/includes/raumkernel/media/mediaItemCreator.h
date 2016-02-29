@@ -22,50 +22,31 @@
 //
 
 #pragma once
-#ifndef RAUMKERNEL_DEVICEEVENTPARSER_H
-#define RAUMKERNEL_DEVICEEVENTPARSER_H
+#ifndef RAUMKERNEL_MEDIAITEMCREATOR_H
+#define RAUMKERNEL_MEDIAITEMCREATOR_H
 
 #include <raumkernel/raumkernelBase.h>
-#include <raumkernel/device/device.h>
-#include <raumkernel/xml/rapidxml.hpp>
-#include <raumkernel/tools/numUtil.h>
-#include <raumkernel/tools/uriUtil.h>
-#include <raumkernel/tools/urlParser.h>
 #include <raumkernel/media/item/mediaItems.h>
-#include <raumkernel/media/mediaItemCreator.h>
-
+#include <raumkernel/xml/rapidxml.hpp>
 
 namespace Raumkernel
 {
-    namespace Devices
+    namespace Media
     {
-        namespace EventParser
+        class MediaItemCreator : public RaumkernelBase
         {
-            /**
-            * The DeviceEventParser
-            *
-            * This class handles all the subscriptions return xmls which we will get from a UPNP-Device
-            */
-            class DeviceEventParser : public RaumkernelBase
-            {
-                public:
-                    DeviceEventParser();
-                    virtual ~DeviceEventParser();
-                    virtual void setDevice(Devices::Device *_device);
+            public:
+                MediaItemCreator();
+                virtual ~MediaItemCreator();
 
-                protected:
-                    virtual rapidxml::xml_node<>* getInstanceNodeFromXML(std::string _xml);
-                    virtual std::string getNodeVal(rapidxml::xml_node<>* _parentNode, std::string _nodeName, std::string _oldVal, bool &_valChanged, std::string _attributeName = "val");
+                std::shared_ptr<Item::MediaItem> createMediaItemFromTrackMetadata(std::string _trackMetadata);
 
-                /**
-                *  A link to a UPNP-Device
-                */
-                Devices::Device *device;
-         
-            };
-        }
+            protected:
+                std::shared_ptr<Item::MediaItem> createMediaItemFromXMLNode(rapidxml::xml_node<> *_xmlNode);
+
+            private:
+        };
     }
 }
-
 
 #endif

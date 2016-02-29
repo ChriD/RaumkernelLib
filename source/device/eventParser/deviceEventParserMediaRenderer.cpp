@@ -89,24 +89,35 @@ namespace Raumkernel
 
                     }                                 
 
-                    // if the avTRansport uri has changed we have to checl if the new uri is a container or only a link
+                    // if the AvTransport uri has changed we have to checl if the new uri is a container or only a link
                     // if its a container the "rendererState.containerId" will be filled, otherwise it will be empty
                     if (avTransportUriValueChanged)
                     {
                         LUrlParser::clParseURL  uri;
                         uri.ParseURL(rendererState.aVTransportURI);                        
-                        auto queryKeyValues = Tools::UriUtil::parseQueryString(uri.m_Query);                        
+                        auto queryKeyValues = Tools::UriUtil::parseQueryString(uri.m_Query); 
+
                         // if there is a "cid" key the current loaded items are from a container 
                         // the container value is escaped but the "parseQueryString" Method has done the unescaping for us
                         auto it = queryKeyValues.find("cid");
                         rendererState.containerId = (it != queryKeyValues.end()) ? it->second : "";        
                     }
 
-                    // TODO: create the current media item from the "CurrentTrackMetaData" value (this is necessary for non list/query playlists)
+                    // TODO: create the current media item from the "CurrentTrackMetaData" value (this is necessary for non list/query playlists)                    
                     if (currentTrackMetadataChanged)
                     {
-                        // TODO: @@@
-                        // rendererState.currentMediaItem = managerList.contentManager->CreateMediaItemFromCurrentTrackMetadata(curentTrackMetadata); ???
+                        // TODO: @@@              
+                        if (!rendererState.currentTrackMetaData.empty())
+                        {
+                            Media::MediaItemCreator mediaItemCreator;
+                            mediaItemCreator.setLogObject(getLogObject());
+                            rendererState.currentMediaItem = mediaItemCreator.createMediaItemFromTrackMetadata(rendererState.currentTrackMetaData);
+                        }
+                        else
+                        {
+                            rendererState.currentMediaItem = nullptr;
+                        }
+                        
                     }
 
 
