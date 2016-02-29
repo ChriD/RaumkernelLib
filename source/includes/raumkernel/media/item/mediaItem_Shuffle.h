@@ -22,49 +22,33 @@
 //
 
 #pragma once
-#ifndef RAUMKERNEL_DEVICEEVENTPARSER_H
-#define RAUMKERNEL_DEVICEEVENTPARSER_H
+#ifndef RAUMKERNEL_MEDIAITEM_SHUFFLE_H
+#define RAUMKERNEL_MEDIAITEM_SHUFFLE_H
 
-#include <raumkernel/raumkernelBase.h>
-#include <raumkernel/device/device.h>
-#include <raumkernel/xml/rapidxml.hpp>
-#include <raumkernel/tools/numUtil.h>
-#include <raumkernel/tools/uriUtil.h>
-#include <raumkernel/tools/urlParser.h>
-#include <raumkernel/media/item/mediaItems.h>
+#include <raumkernel/media/item/mediaItem.h>
 
 
 namespace Raumkernel
 {
-    namespace Devices
+    namespace Media
     {
-        namespace EventParser
+        namespace Item
         {
-            /**
-            * The DeviceEventParser
-            *
-            * This class handles all the subscriptions return xmls which we will get from a UPNP-Device
-            */
-            class DeviceEventParser : public RaumkernelBase
+
+            class MediaItem_Shuffle : public MediaItem
             {
                 public:
-                    DeviceEventParser();
-                    virtual ~DeviceEventParser();
-                    virtual void setDevice(Devices::Device *_device);
-
+                    MediaItem_Shuffle();
+                    virtual ~MediaItem_Shuffle();
                 protected:
-                    virtual rapidxml::xml_node<>* getInstanceNodeFromXML(std::string _xml);
-                    virtual std::string getNodeVal(rapidxml::xml_node<>* _parentNode, std::string _nodeName, std::string _oldVal, bool &_valChanged, std::string _attributeName = "val");
 
-                /**
-                *  A link to a UPNP-Device
-                */
-                Devices::Device *device;
-         
+                private:
             };
+
         }
+
     }
+
 }
 
-
-#endif
+#endif 

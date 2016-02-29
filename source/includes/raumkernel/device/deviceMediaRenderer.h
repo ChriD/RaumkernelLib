@@ -35,6 +35,7 @@
 #include <raumkernel/device/proxies/CpUpnpOrgConnectionManager1.h>
 #include <raumkernel/device/proxies/CpUpnpOrgRenderingControl1.h>
 #include <raumkernel/device/eventParser/deviceEventParserMediaRenderer.h>
+#include <raumkernel/media/item/mediaItems.h>
 
 
 namespace Raumkernel
@@ -107,14 +108,10 @@ namespace Raumkernel
 
         struct MediaRendererState
         {
-            // TODO
             MediaRenderer_PlayMode playMode = MediaRenderer_PlayMode::MRPLAYMODE_NORMAL; 
             MediaRenderer_MuteState muteState = MediaRenderer_MuteState::MRPMUTE_ALL;
             MediaRenderer_TransportState transportState = MediaRenderer_TransportState::MRTS_STOPPED;
-
-            std::uint8_t volume = 0;
-            bool mute = true;
-
+           
             std::string aVTransportURI = "";
             std::string aVTransportURIMetaData = "";
             std::string currentTrackURI = "";
@@ -126,8 +123,9 @@ namespace Raumkernel
             std::uint32_t currentTrackDuration = 0; 
             std::uint32_t numberOfTracks = 0;
             std::uint32_t bitrate = 0;
-
-            // TODO: @@@
+            std::uint8_t volume = 0;
+            bool mute = true;
+   
             std::string containerId = "";     
 
             // There are some combined values that we store. From this values the room state will be created
@@ -136,6 +134,9 @@ namespace Raumkernel
             std::string roomVolumeStatesCombined = "";            
             // this map holds room state struct for rooms which are added to virtual media renderer		
             std::unordered_map<std::string, MediaRendererRoomState>	roomStates;
+            
+            // a pointer to a media item which may be a track or a radio or maybe a container list
+            std::shared_ptr<Media::Item::MediaItem> currentMediaItem = nullptr;
 
             // this method is for removing room states which are not referred anymore in the rendere subscription XML
             // it will be called whenever a subscription has state values for rooms (only the case on Virtual renderers)

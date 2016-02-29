@@ -64,6 +64,18 @@
     <Filter Include="device\eventParser">
       <UniqueIdentifier>{a39e8a4c-8787-49a5-8726-92083f8b7b6e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="includes\raumkernel\media">
+      <UniqueIdentifier>{7717ff39-4d26-4068-99e0-c80ced1448af}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="media">
+      <UniqueIdentifier>{676dce19-5a7e-46ab-a9b8-83bb1c614c88}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="media\item">
+      <UniqueIdentifier>{6b0764a2-0f7c-4f69-b199-5ac53a35ee29}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="includes\raumkernel\media\item">
+      <UniqueIdentifier>{c3b45b7f-6fe8-477b-b5e4-c6141fb7ddac}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="includes\raumkernel\os\os.h">
@@ -240,6 +252,51 @@
     <ClInclude Include="includes\raumkernel\device\eventParser\deviceEventParserMediaServer.h">
       <Filter>includes\raumkernel\device\eventParser</Filter>
     </ClInclude>
+    <ClInclude Include="includes\raumkernel\media\item\mediaItem.h">
+      <Filter>includes\raumkernel\media\item</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\raumkernel\media\item\mediaItem_Album.h">
+      <Filter>includes\raumkernel\media\item</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\raumkernel\media\item\mediaItem_Artist.h">
+      <Filter>includes\raumkernel\media\item</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\raumkernel\media\item\mediaItem_Composer.h">
+      <Filter>includes\raumkernel\media\item</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\raumkernel\media\item\mediaItem_Container.h">
+      <Filter>includes\raumkernel\media\item</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\raumkernel\media\item\mediaItem_Genre.h">
+      <Filter>includes\raumkernel\media\item</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\raumkernel\media\item\mediaItem_LineIn.h">
+      <Filter>includes\raumkernel\media\item</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\raumkernel\media\item\mediaItem_Playlist.h">
+      <Filter>includes\raumkernel\media\item</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\raumkernel\media\item\mediaItem_Radio.h">
+      <Filter>includes\raumkernel\media\item</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\raumkernel\media\item\mediaItem_Shuffle.h">
+      <Filter>includes\raumkernel\media\item</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\raumkernel\media\item\mediaItem_StorageFolder.h">
+      <Filter>includes\raumkernel\media\item</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\raumkernel\media\item\mediaItem_Track.h">
+      <Filter>includes\raumkernel\media\item</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\raumkernel\media\item\mediaItem_TrackContainer.h">
+      <Filter>includes\raumkernel\media\item</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\raumkernel\media\item\mediaItems.h">
+      <Filter>includes\raumkernel\media\item</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\raumkernel\media\item\mediaItem_RhapsodyRadio.h">
+      <Filter>includes\raumkernel\media\item</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="logger\logger.cpp">
@@ -355,6 +412,48 @@
     </ClCompile>
     <ClCompile Include="device\eventParser\deviceEventParserMediaServer.cpp">
       <Filter>device\eventParser</Filter>
+    </ClCompile>
+    <ClCompile Include="media\item\mediaItem.cpp">
+      <Filter>media\item</Filter>
+    </ClCompile>
+    <ClCompile Include="media\item\mediaItem_TrackContainer.cpp">
+      <Filter>media\item</Filter>
+    </ClCompile>
+    <ClCompile Include="media\item\mediaItem_Album.cpp">
+      <Filter>media\item</Filter>
+    </ClCompile>
+    <ClCompile Include="media\item\mediaItem_Artist.cpp">
+      <Filter>media\item</Filter>
+    </ClCompile>
+    <ClCompile Include="media\item\mediaItem_Composer.cpp">
+      <Filter>media\item</Filter>
+    </ClCompile>
+    <ClCompile Include="media\item\mediaItem_Container.cpp">
+      <Filter>media\item</Filter>
+    </ClCompile>
+    <ClCompile Include="media\item\mediaItem_Genre.cpp">
+      <Filter>media\item</Filter>
+    </ClCompile>
+    <ClCompile Include="media\item\mediaItem_LineIn.cpp">
+      <Filter>media\item</Filter>
+    </ClCompile>
+    <ClCompile Include="media\item\mediaItem_Playlist.cpp">
+      <Filter>media\item</Filter>
+    </ClCompile>
+    <ClCompile Include="media\item\mediaItem_Radio.cpp">
+      <Filter>media\item</Filter>
+    </ClCompile>
+    <ClCompile Include="media\item\mediaItem_RhapsodyRadio.cpp">
+      <Filter>media\item</Filter>
+    </ClCompile>
+    <ClCompile Include="media\item\mediaItem_Shuffle.cpp">
+      <Filter>media\item</Filter>
+    </ClCompile>
+    <ClCompile Include="media\item\mediaItem_StorageFolder.cpp">
+      <Filter>media\item</Filter>
+    </ClCompile>
+    <ClCompile Include="media\item\mediaItem_Track.cpp">
+      <Filter>media\item</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

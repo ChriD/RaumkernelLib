@@ -110,7 +110,7 @@ namespace Raumkernel
                 /**
                 * Returns a key/value map for the given query string
                 */
-                static std::unordered_map<std::string, std::string> parseQueryString(std::string _queryString, bool _unescape, bool _tolowerKeyValues)
+                static std::unordered_map<std::string, std::string> parseQueryString(std::string _queryString, bool _unescape = true, bool _tolowerKeyValues = true)
                 {
                     std::unordered_map<std::string, std::string> queryValuesMap;
                     std::vector<std::string> idValueParts;

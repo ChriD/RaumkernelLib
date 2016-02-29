@@ -22,49 +22,34 @@
 //
 
 #pragma once
-#ifndef RAUMKERNEL_DEVICEEVENTPARSER_H
-#define RAUMKERNEL_DEVICEEVENTPARSER_H
+#ifndef RAUMKERNEL_MEDIAITEM_TRACK_H
+#define RAUMKERNEL_MEDIAITEM_TRACK_H
 
-#include <raumkernel/raumkernelBase.h>
-#include <raumkernel/device/device.h>
-#include <raumkernel/xml/rapidxml.hpp>
-#include <raumkernel/tools/numUtil.h>
-#include <raumkernel/tools/uriUtil.h>
-#include <raumkernel/tools/urlParser.h>
-#include <raumkernel/media/item/mediaItems.h>
+#include <raumkernel/media/item/mediaItem_Album.h>
 
 
 namespace Raumkernel
 {
-    namespace Devices
+    namespace Media
     {
-        namespace EventParser
+        namespace Item
         {
-            /**
-            * The DeviceEventParser
-            *
-            * This class handles all the subscriptions return xmls which we will get from a UPNP-Device
-            */
-            class DeviceEventParser : public RaumkernelBase
+            class MediaItem_Track : public MediaItem_Album
             {
                 public:
-                    DeviceEventParser();
-                    virtual ~DeviceEventParser();
-                    virtual void setDevice(Devices::Device *_device);
+                    MediaItem_Track();
+                    virtual ~MediaItem_Track();
+
+                    std::string title;
+                    std::string duration;
 
                 protected:
-                    virtual rapidxml::xml_node<>* getInstanceNodeFromXML(std::string _xml);
-                    virtual std::string getNodeVal(rapidxml::xml_node<>* _parentNode, std::string _nodeName, std::string _oldVal, bool &_valChanged, std::string _attributeName = "val");
 
-                /**
-                *  A link to a UPNP-Device
-                */
-                Devices::Device *device;
-         
+                private:
             };
         }
     }
+
 }
 
-
-#endif
+#endif 

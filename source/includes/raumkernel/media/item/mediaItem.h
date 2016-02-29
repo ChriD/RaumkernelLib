@@ -22,49 +22,60 @@
 //
 
 #pragma once
-#ifndef RAUMKERNEL_DEVICEEVENTPARSER_H
-#define RAUMKERNEL_DEVICEEVENTPARSER_H
+#ifndef RAUMKERNEL_MEDIAITEM_H
+#define RAUMKERNEL_MEDIAITEM_H
 
 #include <raumkernel/raumkernelBase.h>
-#include <raumkernel/device/device.h>
-#include <raumkernel/xml/rapidxml.hpp>
-#include <raumkernel/tools/numUtil.h>
-#include <raumkernel/tools/uriUtil.h>
-#include <raumkernel/tools/urlParser.h>
-#include <raumkernel/media/item/mediaItems.h>
 
 
 namespace Raumkernel
 {
-    namespace Devices
+    namespace Media
     {
-        namespace EventParser
+        enum class MediaItemType {
+            MIT_TRACKCONTAINER = 0,
+            MIT_ALBUM = 1,
+            MIT_ARTIST = 2,
+            MIT_GENRE = 3,
+            MIT_COMPOSER = 4,
+            MIT_CONTAINER = 5,
+            MIT_RADIO = 6,
+            MIT_PLAYLIST = 7,
+            MIT_SHUFFLE = 8,
+            MIT_RHAPSODYRADIO = 9,
+            MIT_STORAGEFOLDER = 10,
+            MIT_LINEIN = 11,
+            MIT_TRACK = 12
+        };
+
+
+        namespace Item
         {
-            /**
-            * The DeviceEventParser
-            *
-            * This class handles all the subscriptions return xmls which we will get from a UPNP-Device
-            */
-            class DeviceEventParser : public RaumkernelBase
+
+            class MediaItem : public RaumkernelBase
             {
                 public:
-                    DeviceEventParser();
-                    virtual ~DeviceEventParser();
-                    virtual void setDevice(Devices::Device *_device);
+                    MediaItem();
+                    virtual ~MediaItem();
+
+                    MediaItemType type;
+
+                    std::string id;
+                    std::string parentId;
+                    std::string upnpClass;
+                    std::string raumfeldName;
+                    std::string raumfeldSection;
+                    std::string res;
 
                 protected:
-                    virtual rapidxml::xml_node<>* getInstanceNodeFromXML(std::string _xml);
-                    virtual std::string getNodeVal(rapidxml::xml_node<>* _parentNode, std::string _nodeName, std::string _oldVal, bool &_valChanged, std::string _attributeName = "val");
 
-                /**
-                *  A link to a UPNP-Device
-                */
-                Devices::Device *device;
-         
+                private:
             };
+
         }
+
     }
+
 }
 
-
-#endif
+#endif 
