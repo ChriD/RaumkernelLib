@@ -48,8 +48,12 @@ namespace Raumkernel
             std::string zoneUDN;
             std::string name;
             std::string color;
-            // there may be more than one renderer attached to the room, so we use a vector for storing the rendererUDN's
-            std::vector<std::string> rendererUDN;
+            // there may be more than one renderer attached to the room, so we use a list for storing the rendererUDN's
+            std::list<std::string> rendererUDN;
+            // a room should be normaly online, but there may be the case that we do a "hard shut off" of the renderers
+            // attached to a room and so the room may be mentioned in the zone (also in the zone request from the RF System)
+            // but it is not  online
+            bool isOnline;
         };
 
 
@@ -61,7 +65,7 @@ namespace Raumkernel
             std::string UDN;
             std::string name;
             // a zone may consist of several rooms which room udns will be stored here
-            std::vector<std::string> roomsUDN;
+            std::list<std::string> roomsUDN;
         };
 
 
@@ -116,6 +120,18 @@ namespace Raumkernel
                 * Returns the information if a room is currently online
                 */
                 EXPORT bool isRoomOnline(std::string _roomUDN);
+                /**
+                * set the 'online' var on the room information           
+                */
+                EXPORT void setRoomOnline(std::string _roomUDN, bool _isOnline = true);
+                /**
+                * set the 'online' var on the room information which contains the given rendererUDN
+                */
+                EXPORT void setRoomOnlineForRenderer(std::string _rendererUDN, bool _isOnline = true);
+                /**
+                * returns a roomUDN for a rendereUDN if the renderer is in a room
+                */
+                EXPORT std::string getRoomUDNFromRendererUDN(std::string _rendererUDN);
 
                 /**
                 * this signal will be fired if the zone configuration changes

@@ -228,6 +228,7 @@ namespace Raumkernel
             while (roomNode)
             {
                 RoomInformation		roomInfo;
+                bool                rendererOnline = false;
 
                 attribute = roomNode->first_attribute("udn", 0, false);
                 if (attribute) roomUDN = attribute->value();
@@ -251,8 +252,14 @@ namespace Raumkernel
 
                     roomInfo.rendererUDN.push_back(rendererUDN);
 
+                    // at lest one renderer should be online to give the room the state 'online'
+                    rendererOnline = getManagerEngineer()->getDeviceManager()->getMediaRenderer(rendererUDN) == nullptr ? rendererOnline || false : true;
+
                     rendererNode = rendererNode->next_sibling("renderer", 0, false);
                 }
+
+                // set room state to "online/offline" if at least one of the renderes of the room is found in device list
+                roomInfo.isOnline = rendererOnline;
 
                 if (_zoneInformation)
                 {
@@ -416,8 +423,37 @@ namespace Raumkernel
         {
             std::unique_lock<std::mutex> lock(mutexMapAccess);
             if (roomInformationMap.find(_roomUDN) != roomInformationMap.end())
-                return true;
+                return roomInformationMap.find(_roomUDN)->second.isOnline;
             return false;
+        }
+
+
+        std::string ZoneManager::getRoomUDNFromRendererUDN(std::string _rendererUDN)
+        {
+            for (auto &roomInfo : roomInformationMap)
+            {                
+                auto it = std::find(roomInfo.second.rendererUDN.begin(), roomInfo.second.rendererUDN.end(), _rendererUDN);
+                if (it != roomInfo.second.rendererUDN.end())
+                    return roomInfo.second.UDN;
+            }
+            return "";
+        }
+
+
+        void ZoneManager::setRoomOnline(std::string _roomUDN, bool _isOnline)
+        {                               
+            if (roomInformationMap.find(_roomUDN) != roomInformationMap.end())
+                roomInformationMap[_roomUDN].isOnline = _isOnline;
+        }
+
+
+        void ZoneManager::setRoomOnlineForRenderer(std::string _rendererUDN, bool _isOnline)
+        {
+            std::unique_lock<std::mutex> lock(mutexMapAccess);
+
+            std::string roomUDN = getRoomUDNFromRendererUDN(_rendererUDN);
+            if(!roomUDN.empty())
+                setRoomOnline(roomUDN, _isOnline);
         }
 
     }

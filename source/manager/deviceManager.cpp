@@ -1,5 +1,7 @@
 
 #include <raumkernel/manager/deviceManager.h>
+#include <raumkernel/manager/zoneManager.h>
+#include <raumkernel/manager/managerEngineer.h>
 
 
 namespace Raumkernel
@@ -72,7 +74,10 @@ namespace Raumkernel
                         if (mediaRendererMap.find(deviceUDN) != mediaRendererMap.end())
                             mediaRendererMap.erase(deviceUDN);
                         mediaRendererMap.insert(std::make_pair(deviceUDN, std::dynamic_pointer_cast<Devices::MediaRenderer>(device)));
-                        logDebug("Media Renderer '" + friendlyName + "' is now useable!", CURRENT_POSITION);                       
+                        logDebug("Media Renderer '" + friendlyName + "' is now useable!", CURRENT_POSITION);     
+
+                        // set room state to "online" if renderer which is added is found in zone management 
+                        getManagerEngineer()->getZoneManager()->setRoomOnlineForRenderer(deviceUDN, true);
                     }
                     else if (std::dynamic_pointer_cast<Devices::MediaServer>(device))
                     {
@@ -160,6 +165,10 @@ namespace Raumkernel
                     device->setCpDevice(nullptr);
                     mediaRendererMap.erase(deviceUDN); 
                     logDebug("Media Renderer '" + friendlyName + "' removed", CURRENT_POSITION);
+
+                    // set room state to "offline" if renderer which is removed is found in zone management 
+                    // INFO: Okay there may be more than one renderers attached to a room, but for now we do not consider this here!
+                    getManagerEngineer()->getZoneManager()->setRoomOnlineForRenderer(deviceUDN, false);
                 }
 
                 // remove from media servers map
@@ -177,7 +186,7 @@ namespace Raumkernel
 
                     mediaServerMap.erase(deviceUDN);
                     logDebug("Media Server '" + friendlyName + "' removed", CURRENT_POSITION);
-                }
+                }                
 
             }
             catch (Raumkernel::Exception::RaumkernelException &e)

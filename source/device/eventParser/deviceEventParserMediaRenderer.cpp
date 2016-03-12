@@ -187,6 +187,11 @@ namespace Raumkernel
                 // get a copy of the media renderer state structure. we will change the data and set it back again by copy
                 Devices::MediaRendererState rendererState = mediaRenderer->state();
 
+                // save xml on state so we can always update the parsing.
+                // This seems not to be necessary but due the RF-Kernel adds disabled renderers to subscription states it could be
+                // that we do have to update the rendereState when the device list changes (if renderer is not already available in the renderer list and his state has changed to online)
+                rendererState.renderingControlSubscXmlData = _xml;
+
                 try
                 {
                     // try to get the "instance" node in the subscription xml. The child nodes of this node are our data we want to have
@@ -202,9 +207,7 @@ namespace Raumkernel
                     rendererState.roomMuteStatesCombined = getNodeVal(instanceNode, "RoomMutes", rendererState.roomMuteStatesCombined, muteStateChanged);
                     rendererState.roomVolumeStatesCombined = getNodeVal(instanceNode, "RoomVolumes", rendererState.roomVolumeStatesCombined, volumeStateChanged);
 
-                    anyStateChanged = anyStateChanged || muteStateChanged || volumeStateChanged;
-
-                    // TODO: @@@                                                        
+                    anyStateChanged = anyStateChanged || muteStateChanged || volumeStateChanged;                                                  
 
                     // when the room volume state changes we have to update the room states map. The combined value consists of the roomUDNs and the volume value
                     if (volumeStateChanged && !rendererState.roomVolumeStatesCombined.empty())
@@ -251,8 +254,7 @@ namespace Raumkernel
                             {
                                 std::string roomUDN = Tools::CommonUtil::formatUDN(roomStateInfoParts[0]);
                                 bool mute = Tools::CommonUtil::toBool(roomStateInfoParts[1]);
-
-                                // TODO: @@@ Only do room states if room is  listed in the zone xml (don't include switched off devices)
+                               
                                 foundUDNs.emplace_back(roomUDN);
                                 
                                 // we have to update the mute state on the room state map.
@@ -274,8 +276,7 @@ namespace Raumkernel
 
                    
 
-                    // now calculate and update the overall mute state on the zone itself.
-                    // the zone may be muted fully or only partially
+                    // now calculate and update the overall mute state on the zone itself. The zone may be muted fully or only partially
                     MediaRenderer_MuteState overallMuteState;
                     bool minOneRoomMuted = false, allRoomsMuted = true;                    
 

@@ -131,6 +131,7 @@ namespace Raumkernel
 
             // 
             std::string avTransportProxySubscXmlData;
+            std::string renderingControlSubscXmlData;
 
             // There are some combined values that we store. From this values the room state will be created
             std::string roomTransportStatesCombined = "";
