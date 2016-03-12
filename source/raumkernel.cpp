@@ -8,14 +8,18 @@ namespace Raumkernel
     Raumkernel::Raumkernel() : RaumkernelBaseMgr()
     {
         // TODO: Subscribe to mediaServerAdded/Delete signals. That will show us the RF System is online if the RF Media Server is going online 
-        // Of course not here :)
-        // TODO: When media server is added. init zone request manager and start requests.. if removed.. stop zone requests ...
+        // Of course not here :)        
+
+        // set the current version info of the library
+        versionInfo.appName     = "Raumkernel Library";
+        versionInfo.appVersion  = "0.6.1";
+        versionInfo.isBeta      = false;
     }
 
 
     Raumkernel::~Raumkernel()
     {
-    }
+    } 
 
 
     void Raumkernel::init(Log::LogType _defaultLogLevel, std::string _settingsFileName)
@@ -99,6 +103,12 @@ namespace Raumkernel
             managerEngineer->getMediaListManager()->setMediaServer(nullptr);
         }
     
+    }
+
+
+    Tools::VersionInfo Raumkernel::getVersionInfo()
+    {
+        return versionInfo;
     }
 
 

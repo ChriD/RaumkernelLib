@@ -156,6 +156,7 @@
     <ClInclude Include="includes\raumkernel\tools\urlParser.h" />
     <ClInclude Include="includes\raumkernel\tools\numUtil.h" />
     <ClInclude Include="includes\raumkernel\tools\uriUtil.h" />
+    <ClInclude Include="includes\raumkernel\tools\versionInfo.h" />
     <ClInclude Include="includes\raumkernel\xml\rapidxml.hpp" />
     <ClInclude Include="includes\raumkernel\xml\rapidxml_iterators.hpp" />
     <ClInclude Include="includes\raumkernel\xml\rapidxml_print.hpp" />

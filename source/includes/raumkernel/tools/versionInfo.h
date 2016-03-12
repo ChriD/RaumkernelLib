@@ -22,36 +22,24 @@
 //
 
 #pragma once
-#ifndef RAUMKERNEL_RAUMKERNEL_H
-#define RAUMKERNEL_RAUMKERNEL_H
+#ifndef RAUMKERNEL_VERSIONINFO_H
+#define RAUMKERNEL_VERSIONINFO_H
 
-#include <raumkernel/raumkernelBaseMgr.h>
-#include <raumkernel/device/deviceMediaServer.h>
-#include <raumkernel/tools/versionInfo.h>
 
+#include <string>
 
 namespace Raumkernel
 {
-
-    class Raumkernel : public RaumkernelBaseMgr
+    namespace Tools
     {
-        public:
-            EXPORT Raumkernel();
-            EXPORT virtual ~Raumkernel();
-            EXPORT virtual void init(Log::LogType _defaultLogLevel = Log::LogType::LOGTYPE_ERROR, std::string _settingsFileName = "");
-            EXPORT virtual Tools::VersionInfo getVersionInfo();
+        struct VersionInfo
+        {
+            std::string appName = "";
+            std::string appVersion = "";
+            bool isBeta = false;
+        };       
 
-        protected:
-            void onMediaServerAdded(std::shared_ptr<Devices::MediaServer> _mediaServer);
-            void onMediaServerRemoved(std::shared_ptr<Devices::MediaServer> _mediaServer);
-
-            // TODO: signal system reaady / offline ....
-
-            sigs::connections connections;
-
-            Tools::VersionInfo versionInfo;
-    };
-
+    }
 }
 
 

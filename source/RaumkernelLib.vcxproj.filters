@@ -300,6 +300,9 @@
     <ClInclude Include="includes\raumkernel\media\mediaItemCreator.h">
       <Filter>includes\raumkernel\media</Filter>
     </ClInclude>
+    <ClInclude Include="includes\raumkernel\tools\versionInfo.h">
+      <Filter>includes\raumkernel\tools</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="logger\logger.cpp">
