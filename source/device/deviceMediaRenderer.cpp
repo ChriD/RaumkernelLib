@@ -1190,6 +1190,8 @@ namespace Raumkernel
 
             // parse the event subscription xml, the object will fill the appropriate structure for the given renderer object
             EventParser::DeviceEventParserMediaRenderer eventParser;
+            eventParser.setLogObject(getLogObject());
+            eventParser.setManagerEngineer(getManagerEngineer());
             eventParser.setDevice(this);
             eventParser.propertyChangedAvTransportProxy(propertyXML);
 
@@ -1208,6 +1210,8 @@ namespace Raumkernel
 
             // parse the event subscription xml, the object will fill the appropriate structure for the given renderer object
             EventParser::DeviceEventParserMediaRenderer eventParser;
+            eventParser.setLogObject(getLogObject());
+            eventParser.setManagerEngineer(getManagerEngineer());
             eventParser.setDevice(this);
             eventParser.propertyChangedRenderingControlProxy(propertyXML);
 

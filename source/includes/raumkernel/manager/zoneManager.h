@@ -112,6 +112,10 @@ namespace Raumkernel
                 * starts the zone configuration request
                 */
                 EXPORT void startZoneRequests();
+                /**
+                * Returns the information if a room is currently online
+                */
+                EXPORT bool isRoomOnline(std::string _roomUDN);
 
                 /**
                 * this signal will be fired if the zone configuration changes

@@ -322,45 +322,72 @@ namespace Raumkernel
 
             lastZoneConfigurationXML = _zonesXML;
 
-            std::unique_lock<std::mutex> lock(mutexMapAccess);
+            std::unique_lock<std::mutex> lock(mutexMapAccess);    
 
-            // remove lists because we do create them here again with the new values (may be more or less items)
-            this->clearZoneInformationMap();
-            this->clearRoomInformationMap();      
-
-            // to parse the string we have to put it ino char* (because c_str() returns const char*)
-            char* cstr = new char[_zonesXML.size() + 1];
-            strcpy(cstr, _zonesXML.c_str());
-            doc.parse<0>(cstr);
-
-            // find the root node which has to be the 'device' node	
-            zoneConfig = doc.first_node("zoneConfig", 0, false);
-            if (!zoneConfig)
+            try
             {
-                logError("Requested zome XML  does not contain 'zoneConfig' block!", __FUNCTION__);
-                return;
-            }
 
-            // do zones and rooms in zones
-            zones = zoneConfig->first_node("zones", 0, false);
-            if (zones)
+                // to parse the string we have to put it ino char* (because c_str() returns const char*)
+                char* cstr = new char[_zonesXML.size() + 1];
+                strcpy(cstr, _zonesXML.c_str());
+                doc.parse<0>(cstr);
+
+                // remove lists because we do create them here again with the new values (may be more or less items)
+                this->clearZoneInformationMap();
+                this->clearRoomInformationMap();
+
+                // find the root node which has to be the 'device' node	
+                zoneConfig = doc.first_node("zoneConfig", 0, false);
+                if (!zoneConfig)
+                {
+                    logError("Requested zome XML  does not contain 'zoneConfig' block!", __FUNCTION__);
+                    return;
+                }
+
+                // do zones and rooms in zones
+                zones = zoneConfig->first_node("zones", 0, false);
+                if (zones)
+                {
+                    addZoneInformationFromXmlNode(zones);
+                }
+
+                // do unassigned rooms
+                unassignedRoomsNode = zoneConfig->first_node("unassignedRooms", 0, false);
+                if (unassignedRoomsNode)
+                {
+                    addRoomInformationFromXmlNode(unassignedRoomsNode);
+                }
+
+                // store the current update id
+                lastUpdateId = _updateId;
+
+                // now the zone configuration has changed, we do fire a signal and we stay in locked scope
+                // so acces to the maps while signal is beeing processes id locked and the use of the map in the signal is ok
+                sigZoneConfigurationChanged.fire();
+
+            }
+            catch (Raumkernel::Exception::RaumkernelException &e)
             {
-                addZoneInformationFromXmlNode(zones);
+                if (e.type() == Raumkernel::Exception::ExceptionType::EXCEPTIONTYPE_APPCRASH)
+                    throw e;
+                logError(e.what(), CURRENT_FUNCTION);
             }
-
-            // do unassigned rooms
-            unassignedRoomsNode = zoneConfig->first_node("unassignedRooms", 0, false);
-            if (unassignedRoomsNode)
+            catch (std::exception &e)
             {
-                addRoomInformationFromXmlNode(unassignedRoomsNode);
+                logError(e.what(), CURRENT_FUNCTION);
             }
-
-            // store the current update id
-            lastUpdateId = _updateId;
-            
-            // now the zone configuration has changed, we do fire a signal and we stay in locked scope
-            // so acces to the maps while signal is beeing processes id locked and the use of the map in the signal is ok
-            sigZoneConfigurationChanged.fire();
+            catch (std::string &e)
+            {
+                logError(e, CURRENT_FUNCTION);
+            }
+            catch (OpenHome::Exception &e)
+            {
+                logError(e.Message(), CURRENT_FUNCTION);
+            }
+            catch (...)
+            {
+                logError("Unknown Exception", CURRENT_FUNCTION);
+            }
         }
 
 
@@ -382,6 +409,15 @@ namespace Raumkernel
 
             clearZoneInformationMap();
             clearRoomInformationMap();        
+        }
+
+
+        bool ZoneManager::isRoomOnline(std::string _roomUDN)
+        {
+            std::unique_lock<std::mutex> lock(mutexMapAccess);
+            if (roomInformationMap.find(_roomUDN) != roomInformationMap.end())
+                return true;
+            return false;
         }
 
     }

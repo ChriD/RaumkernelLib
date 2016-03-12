@@ -7,7 +7,7 @@ namespace Raumkernel
     {
         namespace EventParser
         {
-            DeviceEventParser::DeviceEventParser() : RaumkernelBase()
+            DeviceEventParser::DeviceEventParser() : RaumkernelBaseMgr()
             {
             }
 

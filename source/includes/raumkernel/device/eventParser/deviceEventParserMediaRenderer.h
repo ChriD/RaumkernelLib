@@ -46,7 +46,11 @@ namespace Raumkernel
                 virtual ~DeviceEventParserMediaRenderer();
 
                 virtual void propertyChangedAvTransportProxy(std::string _xml);
-                virtual void propertyChangedRenderingControlProxy(std::string _xml);                           
+                virtual void propertyChangedRenderingControlProxy(std::string _xml);   
+                /**
+                * Returns the information if a room is currently online
+                */
+                virtual bool isRoomOnline(std::string _roomUDN);
             };
         }
     }

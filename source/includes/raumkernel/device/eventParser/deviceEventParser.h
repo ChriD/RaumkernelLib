@@ -46,7 +46,7 @@ namespace Raumkernel
             *
             * This class handles all the subscriptions return xmls which we will get from a UPNP-Device
             */
-            class DeviceEventParser : public RaumkernelBase
+            class DeviceEventParser : public RaumkernelBaseMgr
             {
                 public:
                     DeviceEventParser();

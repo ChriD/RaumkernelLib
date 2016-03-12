@@ -99,6 +99,7 @@ namespace Raumkernel
 
         struct MediaRendererRoomState
         {
+            bool online = true;
             bool mute = true;
             std::uint8_t volume = 0;            
             std::string roomUDN = "";            
@@ -126,7 +127,10 @@ namespace Raumkernel
             std::uint8_t volume = 0;
             bool mute = true;
    
-            std::string containerId = "";     
+            std::string containerId = ""; 
+
+            // 
+            std::string avTransportProxySubscXmlData;
 
             // There are some combined values that we store. From this values the room state will be created
             std::string roomTransportStatesCombined = "";

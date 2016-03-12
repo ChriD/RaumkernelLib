@@ -255,7 +255,10 @@ namespace Raumkernel
 
 
         void HttpRequest::onBegin(const happyhttp::Response* _r)
-        {     
+        {                 
+            httpResponse = std::shared_ptr<HttpResponse>(new HttpResponse());
+            httpResponse->setData("");
+
             // check if response is a redirection. if so mark the request as redirection and set the "finished" marker so that the 
             // httClient will create a new request for the redirection and will not signal the request creator that the request is finished
             // the httpClient will also close the connectioon the this request when it's a redirection
@@ -271,15 +274,16 @@ namespace Raumkernel
 
         void HttpRequest::onData(const happyhttp::Response* _r, const unsigned char* _data, int _n)
         {          
-            httpResponse = std::shared_ptr<HttpResponse>(new HttpResponse());
+            
             std::string responseData = std::string(reinterpret_cast<const char*>(_data));            
             responseData.resize(_n);
 
             // 200 = HTTP-OK      
-            httpResponse->setErrorCode((_r->getstatus() == 200) ? 0 : _r->getstatus());         
-            
+            httpResponse->setErrorCode((_r->getstatus() == 200) ? 0 : _r->getstatus());                     
             httpResponse->setHeaders(_r->getHeaders());
-            httpResponse->setData(responseData);
+            
+            // we get chunked data so we have to add the chunks together!            
+            httpResponse->setData(httpResponse->getData() + responseData);
             setResponse(httpResponse);           
         }
         

@@ -1,5 +1,6 @@
 
 #include <raumkernel/device/eventParser/deviceEventParserMediaRenderer.h>
+#include <raumkernel/manager/managerEngineer.h>
 
 namespace Raumkernel
 {
@@ -17,6 +18,12 @@ namespace Raumkernel
             }
 
 
+            bool DeviceEventParserMediaRenderer::isRoomOnline(std::string _roomUDN)
+            {
+                return getManagerEngineer()->getZoneManager()->isRoomOnline(_roomUDN);
+            }
+
+
             void DeviceEventParserMediaRenderer::propertyChangedAvTransportProxy(std::string _xml)
             {            
                 Devices::MediaRenderer *mediaRenderer = (Devices::MediaRenderer*)device;
@@ -27,6 +34,11 @@ namespace Raumkernel
            
                 // get a copy of the media renderer state structure. we will change the data and set it back again by copy
                 Devices::MediaRendererState rendererState = mediaRenderer->state();
+
+                // save xml on state so we can always update the parsing.
+                // This seems not to be necessary but due the RF-Kernel adds disabled renderers to subscription states it could be
+                // that we do have to update the rendereState when the device list changes (if renderer is not already available in the renderer list and his state has changed to online)
+                rendererState.avTransportProxySubscXmlData = _xml;
 
                 try
                 {
@@ -65,22 +77,23 @@ namespace Raumkernel
                             auto roomStateInfoParts = Tools::StringUtil::explodeString(roomStateString, "=");
                             if (roomStateInfoParts.size() >= 2)
                             {
-                                std::string roomUDN = Tools::CommonUtil::formatUDN(roomStateInfoParts[0]);
-                                MediaRenderer_TransportState roomTransportState = Devices::ConversionTool::stringToTransportState(roomStateInfoParts[1]);
+                                std::string roomUDN = Tools::CommonUtil::formatUDN(roomStateInfoParts[0]);                            
+                                MediaRenderer_TransportState roomTransportState = Devices::ConversionTool::stringToTransportState(roomStateInfoParts[1]);   
 
-                                // TODO: @@@ Only do room states if room is  listed in the zone xml (don't include switched off devices)                                
                                 foundUDNs.emplace_back(roomUDN);
 
                                 // we have to update the transport state on the room state map.
                                 // if the state for the room does not exists we create it first 
                                 if (rendererState.roomStates.find(roomUDN) == rendererState.roomStates.end())
-                                {                                                                                    
+                                {
                                     MediaRendererRoomState newEmptyRoomState;
                                     rendererState.roomStates.insert(std::make_pair(roomUDN, newEmptyRoomState));
-                                }                                
+                                }
                                 rendererState.roomStates[roomUDN].roomUDN = roomUDN;
-                                rendererState.roomStates[roomUDN].transportState = roomTransportState;                                                              
-                            }
+                                rendererState.roomStates[roomUDN].transportState = roomTransportState;
+                                // a room state may be delivered by the subscription even if the room is offline                               
+                                rendererState.roomStates[roomUDN].online = isRoomOnline(roomUDN);
+                            }                            
                            
                         }  
 
@@ -203,10 +216,9 @@ namespace Raumkernel
                             auto roomStateInfoParts = Tools::StringUtil::explodeString(roomStateString, "=");
                             if (roomStateInfoParts.size() >= 2)
                             {
-                                std::string roomUDN = Tools::CommonUtil::formatUDN(roomStateInfoParts[0]);
-                                std::uint8_t volume = (std::uint8_t)Tools::NumUtil::toUInt32(roomStateInfoParts[1]);
+                                std::string roomUDN = Tools::CommonUtil::formatUDN(roomStateInfoParts[0]);                                                             
+                                std::uint8_t volume = (std::uint8_t)Tools::NumUtil::toUInt32(roomStateInfoParts[1]);   
 
-                                // TODO: @@@ Only do room states if room is listed in the zone xml (don't include switched off devices)
                                 foundUDNs.emplace_back(roomUDN);
 
                                 // we have to update the volume on the room state map.
@@ -218,6 +230,8 @@ namespace Raumkernel
                                 }
                                 rendererState.roomStates[roomUDN].roomUDN = roomUDN;
                                 rendererState.roomStates[roomUDN].volume = volume;
+                                // a room state may be delivered by the subscription even if the room is offline                               
+                                rendererState.roomStates[roomUDN].online = isRoomOnline(roomUDN);                                
                             }
                         }  
 
@@ -249,7 +263,8 @@ namespace Raumkernel
                                     rendererState.roomStates.insert(std::make_pair(roomUDN, newEmptyRoomState));
                                 }
                                 rendererState.roomStates[roomUDN].roomUDN = roomUDN;
-                                rendererState.roomStates[roomUDN].mute = mute;                              
+                                rendererState.roomStates[roomUDN].mute = mute;   
+                                rendererState.roomStates[roomUDN].online = isRoomOnline(roomUDN);
                             }
                         }
 
@@ -266,8 +281,12 @@ namespace Raumkernel
 
                     for (auto &roomState : rendererState.roomStates)
                     { 
-                        minOneRoomMuted = minOneRoomMuted || roomState.second.mute;
-                        allRoomsMuted = allRoomsMuted && roomState.second.mute;
+                        // only check online room states for the overall mute status
+                        if (roomState.second.online)
+                        {
+                            minOneRoomMuted = minOneRoomMuted || roomState.second.mute;
+                            allRoomsMuted = allRoomsMuted && roomState.second.mute;
+                        }
                     }                   
                 
                     if (rendererState.mute || (allRoomsMuted && minOneRoomMuted))

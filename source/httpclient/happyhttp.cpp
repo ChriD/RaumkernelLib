@@ -589,7 +589,7 @@ int Response::pump( const unsigned char* data, int datasize )
 			{
 				char c = (char)*data++;
 				--count;
-				if( c == '\n' )
+                if (c == '\n')
 				{
 					// now got a whole line!
 					switch( m_State )
