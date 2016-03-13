@@ -29,6 +29,7 @@
 #include <chrono>
 #include <thread>
 #include <unordered_map>
+#include <list>
 
 #include <raumkernel/manager/managerBase.h>
 #include <raumkernel/httpclient/httpClient.h>
