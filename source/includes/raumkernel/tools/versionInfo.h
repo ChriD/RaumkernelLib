@@ -28,6 +28,8 @@
 
 #include <string>
 
+#include <raumkernel/os/os.h>
+
 namespace Raumkernel
 {
     namespace Tools
