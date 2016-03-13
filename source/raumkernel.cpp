@@ -76,9 +76,7 @@ namespace Raumkernel
         // the zone manager has to request the actual zone configuration which can be done by long polling a special request        
         managerEngineer->getZoneManager()->init();        
         
-
         logInfo("Kernel initialized! Waiting for Raumfeld System to appear!", CURRENT_POSITION);
-
     }
 
 
