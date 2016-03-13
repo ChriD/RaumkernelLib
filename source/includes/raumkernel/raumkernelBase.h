@@ -26,6 +26,7 @@
 #define RAUMKERNEL_RAUMKERNELBASE_H
 
 #include <memory>
+#include <stdio.h>
 
 #include <raumkernel/os/os.h>
 #include <raumkernel/tools/commonUtil.h>
