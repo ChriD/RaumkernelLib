@@ -26,7 +26,6 @@
 #define RAUMKERNEL_RAUMKERNELBASEMGR_H
 
 #include <raumkernel/raumkernelBase.h>
-//#include <raumkernel/manager/managerEngineer.h>
 
 
 namespace Raumkernel
@@ -43,9 +42,9 @@ namespace Raumkernel
     class RaumkernelBaseMgr : public RaumkernelBase
     {
         public:
-            RaumkernelBaseMgr();
-            virtual ~RaumkernelBaseMgr();
-            void setManagerEngineer(std::shared_ptr<Manager::ManagerEngineer> _managerEngineer);
+            EXPORT RaumkernelBaseMgr();
+            EXPORT virtual ~RaumkernelBaseMgr();
+            EXPORT void setManagerEngineer(std::shared_ptr<Manager::ManagerEngineer> _managerEngineer);
             EXPORT std::shared_ptr<Manager::ManagerEngineer> getManagerEngineer();
 
         protected:

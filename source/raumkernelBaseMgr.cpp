@@ -1,9 +1,6 @@
 
 #include <raumkernel/raumkernelBaseMgr.h>
 
-
-
-
 namespace Raumkernel
 {
     RaumkernelBaseMgr::RaumkernelBaseMgr() : RaumkernelBase()

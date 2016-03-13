@@ -36,7 +36,7 @@ namespace Raumkernel
             logObject->setLogLevel(_defaultLogLevel);
         }
 
-        logDebug("Preparing Manager-Engineer...", CURRENT_POSITION);
+        logDebug("Preparing Kernel-Manager-Engineer...", CURRENT_POSITION);
 
         // create the manager engineer which will hold references to all managers. this engineer will be present in each manager and each class
         // which is inherited from 'RaumfeldBaseMgr', but has to be set explicit
@@ -52,7 +52,7 @@ namespace Raumkernel
         managerEngineer->getZoneManager()->setManagerEngineer(managerEngineer);
         managerEngineer->getMediaListManager()->setManagerEngineer(managerEngineer);
 
-        logDebug("Manager-Engineer is prepared", CURRENT_POSITION);
+        logDebug("Raumkernel Manager-Engineer is prepared", CURRENT_POSITION);
 
         // all managers are now created and we can work with them. so first lets get the settings manager in action and let it read our kernel 
         // and application settings.      
