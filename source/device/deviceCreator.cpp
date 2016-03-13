@@ -75,7 +75,7 @@ namespace Raumkernel
 
             // to parse the string we have to put it ino char* (because c_str() returns const char*)
             char* cstr = new char[_deviceXML.size() + 1];
-            strcpy(cstr, _deviceXML.c_str());
+            std::strcpy(cstr, _deviceXML.c_str());
             doc.parse<0>(cstr);
 
             // find the root node which has to be the 'device' node	

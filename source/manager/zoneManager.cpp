@@ -336,7 +336,7 @@ namespace Raumkernel
 
                 // to parse the string we have to put it ino char* (because c_str() returns const char*)
                 char* cstr = new char[_zonesXML.size() + 1];
-                strcpy(cstr, _zonesXML.c_str());
+                std::strcpy(cstr, _zonesXML.c_str());
                 doc.parse<0>(cstr);
 
                 // remove lists because we do create them here again with the new values (may be more or less items)

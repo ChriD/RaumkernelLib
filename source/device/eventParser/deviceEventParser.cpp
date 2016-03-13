@@ -29,7 +29,7 @@ namespace Raumkernel
                 rapidxml::xml_node<> *eventNode, *instanceNode;
 
                 char* cstr = new char[_xml.size() + 1];
-                strcpy(cstr, _xml.c_str());
+                std::strcpy(cstr, _xml.c_str());
                 doc.parse<0>(cstr);
 
                 eventNode = doc.first_node("Event", 0, false);
