@@ -283,7 +283,6 @@ namespace Raumkernel
                 * Please use the 'virtual' media renderer!
                 */
                 EXPORT virtual void seek(MediaRenderer_Seek _seekType, std::uint32_t _seekToMsOrTrack, bool _sync = true);
-                /*
                 /**
                 * Not intended for external use
                 * Please use the 'virtual' media renderer!

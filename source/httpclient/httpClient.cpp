@@ -32,7 +32,7 @@ namespace Raumkernel
             mutexRequestMap.lock();
             try
             {
-                for each (auto mapitem in requestMap)
+                for (auto mapitem : requestMap)
                 {
                     std::string requestId = mapitem.second->getId();
                     logDebug("Aborting Request: " + requestId + " / " + mapitem.second->getRequestUrl(), CURRENT_POSITION);
