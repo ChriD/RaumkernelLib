@@ -45,6 +45,21 @@ namespace Raumkernel
         {
             public:            
 
+
+                static std::string tolower(std::string _string)
+                {
+                    std::transform(_string.begin(), _string.end(), _string.begin(), ::tolower);
+                    return _string;
+                }
+
+
+                static std::string toupper(std::string _string)
+                {
+                    std::transform(_string.begin(), _string.end(), _string.begin(), ::toupper);
+                    return _string;
+                }
+
+
                 static std::string ltrim(std::string  _s)
                 {
                     _s.erase(_s.begin(), std::find_if(_s.begin(), _s.end(), std::not1(std::ptr_fun<int, int>(::isspace))));

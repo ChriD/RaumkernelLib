@@ -15,6 +15,7 @@ namespace Raumkernel
 
         MediaListManager::~MediaListManager()
         {
+            logDebug("Destroying MediaList-Manager", CURRENT_POSITION);
         }
 
 

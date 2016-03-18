@@ -16,6 +16,7 @@ namespace Raumkernel
         ZoneManager::~ZoneManager()
         {
             stopZoneRequests();
+            logDebug("Destroying Zone-Manager", CURRENT_POSITION);
         }
 
         void ZoneManager::init()
@@ -454,6 +455,76 @@ namespace Raumkernel
             std::string roomUDN = getRoomUDNFromRendererUDN(_rendererUDN);
             if(!roomUDN.empty())
                 setRoomOnline(roomUDN, _isOnline);
+        }
+
+
+        std::string ZoneManager::getZoneUDNForRoomUDN(std::string _roomUDN)
+        {
+            std::unique_lock<std::mutex> lock(mutexMapAccess);
+            for (auto it : roomInformationMap)
+            {
+                if (it.second.UDN == _roomUDN)
+                {
+                    return it.second.zoneUDN;
+                }
+            }
+            return "";
+        }
+     
+
+        std::string ZoneManager::getRoomUDNForRoomName(std::string _roomName)
+        {
+            std::unique_lock<std::mutex> lock(mutexMapAccess);
+            for (auto it : roomInformationMap)
+            {                
+                if (Tools::StringUtil::tolower(it.second.name) == Tools::StringUtil::tolower(_roomName))
+                {
+                    return it.second.UDN;
+                }
+            }
+            return "";
+        }
+
+
+        std::string ZoneManager::getRendererUDNForZoneUDN(std::string _zoneUDN)
+        {
+            // the zone UDN is the same UDN as the renderer UDN
+            return _zoneUDN;
+        }
+
+
+        bool ZoneManager::existsRoomUDN(std::string _roomUDN)
+        {            
+            std::unique_lock<std::mutex> lock(mutexMapAccess);
+            if (roomInformationMap.find(_roomUDN) != roomInformationMap.end())
+                return true;
+            return false;
+        }
+
+        
+        bool ZoneManager::isRoomInZone(std::string _roomUDN, std::string _zoneUDN)
+        {
+            std::unique_lock<std::mutex> lock(mutexMapAccess);
+            auto it = roomInformationMap.find(_roomUDN);
+            if(it == roomInformationMap.end())
+                return false;
+            if (it->second.zoneUDN == _zoneUDN)
+                return true;
+            return false;
+        }
+
+
+        std::unordered_map<std::string, Manager::ZoneInformation> ZoneManager::getZoneInformationMap()
+        {
+            std::unique_lock<std::mutex> lock(mutexMapAccess);
+            return zoneInformationMap;
+        }
+
+  
+        std::unordered_map<std::string, Manager::RoomInformation> ZoneManager::getRoomInformationMap()
+        {
+            std::unique_lock<std::mutex> lock(mutexMapAccess);
+            return roomInformationMap;
         }
 
     }

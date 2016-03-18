@@ -15,7 +15,8 @@ namespace Raumkernel
 
 
         DeviceManager::~DeviceManager()
-        {          
+        {       
+            logDebug("Destroying Device-Manager", CURRENT_POSITION);
         }
 
 

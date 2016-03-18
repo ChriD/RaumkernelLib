@@ -13,6 +13,7 @@ namespace Raumkernel
 
         SettingsManager::~SettingsManager()
         {
+            logDebug("Destroying Settings-Manager", CURRENT_POSITION);
         }
 
 

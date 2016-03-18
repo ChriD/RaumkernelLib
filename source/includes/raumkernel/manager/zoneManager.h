@@ -133,6 +133,38 @@ namespace Raumkernel
                 * returns a roomUDN for a rendereUDN if the renderer is in a room
                 */
                 EXPORT std::string getRoomUDNFromRendererUDN(std::string _rendererUDN);
+                /**
+                * returns the zoneUDN where the Renderer is in.
+                * If the zone UDN is empty the renderer is not in a zone or it doesnt exists (use "existsRoomUDN" to check if its exists)
+                */
+                EXPORT std::string getZoneUDNForRoomUDN(std::string _roomUDN);
+                /**
+                * returns the roomUDN for a room name.
+                * returns an empty string if roomName is not found in roomInformationMap
+                */
+                EXPORT std::string getRoomUDNForRoomName(std::string _roomName);
+                /**
+                * returns the virtual renderreUDN for the zone
+                * returns an empyt string if the zoneUDN is not found
+                */
+                EXPORT std::string getRendererUDNForZoneUDN(std::string _zoneUDN);
+                /**
+                * returns true if the room with the given UDN is found in the map
+                */
+                EXPORT bool existsRoomUDN(std::string _roomUDN);
+                /**
+                * returns true if the room is in the givem zone
+                */
+                EXPORT bool isRoomInZone(std::string _roomUDN, std::string _zoneUDN);
+                /**
+                * returns a copy of the zone information map
+                */
+                EXPORT std::unordered_map<std::string, Manager::ZoneInformation> getZoneInformationMap();
+                /**
+                * returns a copy of the room information map
+                */
+                EXPORT std::unordered_map<std::string, Manager::RoomInformation> getRoomInformationMap();
+           
 
                 /**
                 * this signal will be fired if the zone configuration changes

@@ -25,6 +25,8 @@ namespace Raumkernel
 
             logDebug("Closing OpenHome UPNP Control Stack", CURRENT_POSITION);
             OpenHome::Net::UpnpLibrary::Close();
+
+            logDebug("Destroying UPNP-Manager", CURRENT_POSITION);
         }
 
 

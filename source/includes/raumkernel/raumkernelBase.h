@@ -51,11 +51,11 @@ namespace Raumkernel
         std::shared_ptr<Log::Log> logObject;
 
         // 
-        EXPORT void logDebug(std::string _log, std::string _location);
-        EXPORT void logWarning(std::string _log, std::string _location);
-        EXPORT void logInfo(std::string _log, std::string _location);
-        EXPORT void logError(std::string _log, std::string _location);
-        EXPORT void logCritical(std::string _log, std::string _location);
+        EXPORT virtual void logDebug(std::string _log, std::string _location);
+        EXPORT virtual void logWarning(std::string _log, std::string _location);
+        EXPORT virtual void logInfo(std::string _log, std::string _location);
+        EXPORT virtual void logError(std::string _log, std::string _location);
+        EXPORT virtual void logCritical(std::string _log, std::string _location);
 
     };
 

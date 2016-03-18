@@ -106,8 +106,7 @@ namespace Raumkernel
                     // if its a container the "rendererState.containerId" will be filled, otherwise it will be empty
                     if (avTransportUriValueChanged)
                     {
-                        LUrlParser::clParseURL  uri;
-                        uri.ParseURL(rendererState.aVTransportURI);                        
+                        auto uri = LUrlParser::clParseURL::ParseURL(rendererState.aVTransportURI);                               
                         auto queryKeyValues = Tools::UriUtil::parseQueryString(uri.m_Query); 
 
                         // if there is a "cid" key the current loaded items are from a container 

@@ -33,6 +33,7 @@
 #include <unordered_map>
 #include <algorithm>
 #include <raumkernel/tools/stringUtil.h>
+#include <raumkernel/tools/urlParser.h>
 
 namespace Raumkernel
 {
@@ -61,6 +62,16 @@ namespace Raumkernel
                 static std::string encodeValue(const std::string _value)
                 {
                     return encodeUri(_value, false, "/");
+                }
+
+
+                /**
+                * returns the query from the uri
+                */
+                static std::string getQueryFromUrl(const std::string _url)
+                {
+                    auto url = LUrlParser::clParseURL::ParseURL(_url);                   
+                    return url.m_Query;                    
                 }
 
 

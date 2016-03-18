@@ -17,6 +17,7 @@ namespace Raumkernel
 
         ManagerEngineer::~ManagerEngineer()
         {
+            logDebug("Destroying ManagerEngineer", CURRENT_POSITION);
         }
 
 
