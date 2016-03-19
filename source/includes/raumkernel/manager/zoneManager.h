@@ -153,6 +153,10 @@ namespace Raumkernel
                 */
                 EXPORT bool existsRoomUDN(std::string _roomUDN);
                 /**
+                * returns true if the zone with the given UDN is found in the map
+                */
+                EXPORT bool existsZoneUDN(std::string _roomUDN);
+                /**
                 * returns true if the room is in the givem zone
                 */
                 EXPORT bool isRoomInZone(std::string _roomUDN, std::string _zoneUDN);

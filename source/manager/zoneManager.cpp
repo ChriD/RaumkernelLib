@@ -501,6 +501,15 @@ namespace Raumkernel
             return false;
         }
 
+
+        bool ZoneManager::existsZoneUDN(std::string _zoneUDN)
+        {
+            std::unique_lock<std::mutex> lock(mutexMapAccess);
+            if (zoneInformationMap.find(_zoneUDN) != zoneInformationMap.end())
+                return true;
+            return false;
+        }
+
         
         bool ZoneManager::isRoomInZone(std::string _roomUDN, std::string _zoneUDN)
         {
