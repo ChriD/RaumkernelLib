@@ -57,14 +57,14 @@ namespace Raumkernel
                 EXPORT SettingsManager();
                 EXPORT virtual ~SettingsManager();
                 EXPORT void loadSettings();   
-                EXPORT void setFileName(std::string _settingsFileName);
-                EXPORT std::string getValue(std::string _settingsPath, std::string _defaultValue="", std::uint16_t _index = 0);
+                EXPORT void setFileName(const std::string &_settingsFileName);
+                EXPORT std::string getValue(const std::string &_settingsPath, const std::string &_defaultValue = "", const std::uint16_t &_index = 0);
                 
 
             protected:
-                void loadSettingsFromFile(std::string _fileName);
-                void walkNode(const rapidxml::xml_node<>* _node, std::string _path = "", int _indent = 0);                
-                void validateSetting(std::string _settingPath);
+                void loadSettingsFromFile(const std::string &_fileName);
+                void walkNode(const rapidxml::xml_node<>* _node, const std::string &_path = "", const int &_indent = 0);
+                void validateSetting(const std::string &_settingPath);
                 void validateSettings();
 
                 // a mutex that will secure our settings map 

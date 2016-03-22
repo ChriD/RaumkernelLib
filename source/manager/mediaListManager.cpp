@@ -38,7 +38,7 @@ namespace Raumkernel
         }
 
             	
-        void MediaListManager::getMediaItemListsByContainerUpdateIds(std::string _containerUpdateIds)
+        void MediaListManager::getMediaItemListsByContainerUpdateIds(const std::string &_containerUpdateIds)
         {
             // a container updateID will look something like this:
             // "0/Zones/uuid%3Ad225b9e5-6787-4421-b776-e31b142591ef,42571234"
@@ -94,7 +94,7 @@ namespace Raumkernel
         }
 
         
-        void MediaListManager::getMediaItemListByZoneUDN(std::string _zoneUDN)
+        void MediaListManager::getMediaItemListByZoneUDN(const std::string &_zoneUDN)
         {
             std::string zoneUDN = Tools::CommonUtil::formatUDN(_zoneUDN);
             std::string containerId = "", listId = LISTID_ZONEIDENTIFIER + zoneUDN;
@@ -169,7 +169,7 @@ namespace Raumkernel
         }
 
 
-        void MediaListManager::getMediaItemListByContainerId(std::string _containerId, std::string _searchCriteria, std::string _listId)
+        void MediaListManager::getMediaItemListByContainerId(const std::string &_containerId, const std::string &_searchCriteria, const std::string &_listId)
         {
             // do nothing if we have no media server reference, but give a warning
             if (!mediaServer)
@@ -181,30 +181,31 @@ namespace Raumkernel
             logDebug("Get MediaList: " + _listId + "  for container: " + _containerId, CURRENT_POSITION);
            
             // if we have specified no list id we create some
-            if (_listId.empty())            
-                _listId = _containerId + (_searchCriteria.empty() == true ? "" : (":" + _searchCriteria));                 
+            std::string listId = _listId;
+            if (listId.empty())
+                listId = _containerId + (_searchCriteria.empty() == true ? "" : (":" + _searchCriteria));
 
             if (!_searchCriteria.empty())
             {
-                mediaServer->search(_containerId, _searchCriteria, "listId=" + _listId);
+                mediaServer->search(_containerId, _searchCriteria, "listId=" + listId);
             }
             else
             {
-                mediaServer->browse(_containerId, Devices::MediaServer_BrowseFlag::MSBF_BrowseDirectChildren, "listId=" + _listId);
+                mediaServer->browse(_containerId, Devices::MediaServer_BrowseFlag::MSBF_BrowseDirectChildren, "listId=" + listId);
             }
 
         }
 
 
 
-        void MediaListManager::onMediaServerBrowseExecuted(std::string _result, std::uint32_t _numberReturned, std::uint32_t _totalMatches, std::uint32_t _updateId, std::string _extraData)
+        void MediaListManager::onMediaServerBrowseExecuted(const std::string &_result, const std::uint32_t &_numberReturned, const std::uint32_t &_totalMatches, const std::uint32_t &_updateId, const std::string &_extraData)
         {
             // TODO: @@@
             //this->CreateListFromResultXML(_result, _extraData);
         }
 
 
-        void MediaListManager::onMediaServerSearchExecuted(std::string _result, std::uint32_t _numberReturned, std::uint32_t _totalMatches, std::uint32_t _updateId, std::string _extraData)
+        void MediaListManager::onMediaServerSearchExecuted(const std::string &_result, const std::uint32_t &_numberReturned, const std::uint32_t &_totalMatches, const std::uint32_t &_updateId, const std::string &_extraData)
         {
             // TODO: @@@
             //this->CreateListFromResultXML(_result, _extraData);

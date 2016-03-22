@@ -102,7 +102,7 @@ namespace Raumkernel
                 }
 
 
-                static std::uint32_t toTimeMs(std::string _timeString)
+                static std::uint32_t toTimeMs(const std::string &_timeString)
                 {
                     // eg.: 00:04:02
                     if (_timeString.empty())

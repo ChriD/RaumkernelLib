@@ -61,16 +61,16 @@ namespace Raumkernel
                 /**
                 * will retrieve the list for the given containerId
                 */
-                EXPORT void getMediaItemListByContainerId(std::string _containerId, std::string _searchCriteria = "", std::string _listId = "");                
+                EXPORT void getMediaItemListByContainerId(const std::string &_containerId, const std::string &_searchCriteria = "", const std::string &_listId = "");
                 /**
                 * will retrieve the list for the given zoneUDN
                 */
-                EXPORT void getMediaItemListByZoneUDN(std::string _zoneUDN);
+                EXPORT void getMediaItemListByZoneUDN(const std::string &_zoneUDN);
                 /**
                 * will retrieve the list for the given container updateIds
                 * a container updateId will look soemthing like thid: "0/Zones/uuid%3Ad225b9e5-6787-4421-b776-e31b142591ef,42571234"
                 */
-                EXPORT void getMediaItemListsByContainerUpdateIds(std::string _containerUpdateIds);
+                EXPORT void getMediaItemListsByContainerUpdateIds(const std::string &_containerUpdateIds);
 
                 /**
                 * this signal will be fired if any list has been updated
@@ -97,9 +97,8 @@ namespace Raumkernel
                 */
                 //std::unordered_map<std::string, std::vector<MediaItem>>;
 
-
-                void onMediaServerBrowseExecuted(std::string _result, std::uint32_t _numberReturned, std::uint32_t _totalMatches, std::uint32_t _updateId, std::string _extraData);
-                void onMediaServerSearchExecuted(std::string _result, std::uint32_t _numberReturned, std::uint32_t _totalMatches, std::uint32_t _updateId, std::string _extraData);
+                void onMediaServerBrowseExecuted(const std::string &_result, const std::uint32_t &_numberReturned, const std::uint32_t &_totalMatches, const std::uint32_t &_updateId, const std::string &_extraData);
+                void onMediaServerSearchExecuted(const std::string &_result, const std::uint32_t &_numberReturned, const std::uint32_t &_totalMatches, const std::uint32_t &_updateId, const std::string &_extraData);
 
         };
     }

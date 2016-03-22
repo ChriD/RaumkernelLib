@@ -17,7 +17,7 @@ namespace Raumkernel
         }
 
 
-        void SettingsManager::setFileName(std::string _settingsFileName)
+        void SettingsManager::setFileName(const std::string &_settingsFileName)
         {
             settingsFileName = _settingsFileName;
         }
@@ -31,7 +31,7 @@ namespace Raumkernel
         }
 
 
-        std::string SettingsManager::getValue(std::string _settingsPath, std::string _defaultValue, std::uint16_t _index)
+        std::string SettingsManager::getValue(const std::string &_settingsPath, const std::string &_defaultValue, const std::uint16_t &_index)
         {
             // lock the map while we do read some settings
             std::lock_guard<std::mutex> lock(mutexSettingsMapAccess);
@@ -42,7 +42,7 @@ namespace Raumkernel
         }
 
        
-        void SettingsManager::walkNode(const rapidxml::xml_node<>* _node, std::string _path, int _indent)
+        void SettingsManager::walkNode(const rapidxml::xml_node<>* _node, const std::string &_path, const int &_indent)
         {
             const auto ind = std::string(_indent * 4, ' ');       
             const rapidxml::node_type nodeType = _node->type();
@@ -79,7 +79,7 @@ namespace Raumkernel
         }
 
 
-        void SettingsManager::loadSettingsFromFile(std::string _fileName)
+        void SettingsManager::loadSettingsFromFile(const std::string &_fileName)
         {
             logDebug("Loading settings from file '" + _fileName + "'", CURRENT_POSITION);
 
@@ -150,7 +150,7 @@ namespace Raumkernel
         }
 
 
-        void SettingsManager::validateSetting(std::string _settingPath)
+        void SettingsManager::validateSetting(const std::string &_settingPath)
         {
             std::string settingsValue = getValue(_settingPath);            
             if (settingsValue.empty())
