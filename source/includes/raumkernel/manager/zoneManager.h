@@ -87,23 +87,23 @@ namespace Raumkernel
                 * zoneUDN: The udn of the zone to connect the room to. If zone udn is empty, a new zone is created
                 * roomUDN: The udn of the room that has to be put into that zone.If empty, all available rooms(rooms that have active renderers) are put into the zone.
                 */              
-                EXPORT void connectRoomToZone(std::string _roomUDN, std::string _zoneUDN);
+                EXPORT void connectRoomToZone(const std::string &_roomUDN, const std::string &_zoneUDN);
                 /**
                 * Puts the room with the given roomUDN's in the zone with the zoneUDN
                 * zoneUDN: The udn of the zone to connect the room to. If zone udn is empty, a new zone is created
                 * roomUDN: The udn of the room that has to be put into that zone.If empty, all available rooms(rooms that have active renderers) are put into the zone.
                 */
-                EXPORT void connectRoomsToZone(std::vector<std::string> _roomUDNs, std::string _zoneUDN);
+                EXPORT void connectRoomsToZone(std::vector<std::string> _roomUDNs, const std::string &_zoneUDN);
                 /**
                 * Drops a room from the zone it is in
                 * If the given room is not in a zone, nothing will happen
                 */
-                EXPORT void dropRoom(std::string _roomUDN);
+                EXPORT void dropRoom(const std::string &_roomUDN);
                 /**
                 * creates a zone from a roomUDN no matter if the room is in a zone
                 * if the room is in a zone it will be dropped from the zone
                 */
-                EXPORT void createZoneFromRoom(std::string _roomUDN);
+                EXPORT void createZoneFromRoom(const std::string &_roomUDN);
                 /**
                 * creates a zone from given roomIds no matter if the rooms are in a zone
                 * if a room is in a zone it will be dropped from the zone
@@ -120,46 +120,46 @@ namespace Raumkernel
                 /**
                 * Returns the information if a room is currently online
                 */
-                EXPORT bool isRoomOnline(std::string _roomUDN);
+                EXPORT bool isRoomOnline(const std::string &_roomUDN);
                 /**
                 * set the 'online' var on the room information           
                 */
-                EXPORT void setRoomOnline(std::string _roomUDN, bool _isOnline = true);
+                EXPORT void setRoomOnline(const std::string &_roomUDN, bool _isOnline = true);
                 /**
                 * set the 'online' var on the room information which contains the given rendererUDN
                 */
-                EXPORT void setRoomOnlineForRenderer(std::string _rendererUDN, bool _isOnline = true);
+                EXPORT void setRoomOnlineForRenderer(const std::string &_rendererUDN, bool _isOnline = true);
                 /**
                 * returns a roomUDN for a rendereUDN if the renderer is in a room
                 */
-                EXPORT std::string getRoomUDNFromRendererUDN(std::string _rendererUDN);
+                EXPORT std::string getRoomUDNFromRendererUDN(const std::string &_rendererUDN);
                 /**
                 * returns the zoneUDN where the Renderer is in.
                 * If the zone UDN is empty the renderer is not in a zone or it doesnt exists (use "existsRoomUDN" to check if its exists)
                 */
-                EXPORT std::string getZoneUDNForRoomUDN(std::string _roomUDN);
+                EXPORT std::string getZoneUDNForRoomUDN(const std::string &_roomUDN);
                 /**
                 * returns the roomUDN for a room name.
                 * returns an empty string if roomName is not found in roomInformationMap
                 */
-                EXPORT std::string getRoomUDNForRoomName(std::string _roomName);
+                EXPORT std::string getRoomUDNForRoomName(const std::string &_roomName);
                 /**
                 * returns the virtual renderreUDN for the zone
                 * returns an empyt string if the zoneUDN is not found
                 */
-                EXPORT std::string getRendererUDNForZoneUDN(std::string _zoneUDN);
+                EXPORT std::string getRendererUDNForZoneUDN(const std::string &_zoneUDN);
                 /**
                 * returns true if the room with the given UDN is found in the map
                 */
-                EXPORT bool existsRoomUDN(std::string _roomUDN);
+                EXPORT bool existsRoomUDN(const  std::string &_roomUDN);
                 /**
                 * returns true if the zone with the given UDN is found in the map
                 */
-                EXPORT bool existsZoneUDN(std::string _roomUDN);
+                EXPORT bool existsZoneUDN(const  std::string &_roomUDN);
                 /**
                 * returns true if the room is in the givem zone
                 */
-                EXPORT bool isRoomInZone(std::string _roomUDN, std::string _zoneUDN);
+                EXPORT bool isRoomInZone(const std::string &_roomUDN, const std::string &_zoneUDN);
                 /**
                 * returns a copy of the zone information map
                 */
@@ -197,7 +197,7 @@ namespace Raumkernel
                 * Does the request to get the zone information given by the raumfeld system
                 * the '_updateId' parameter is usd for longPolling
                 */
-                void doGetZoneRequest(std::string _updateId = "");
+                void doGetZoneRequest(const std::string &_updateId = "");
                 /**
                 * Returns the requestUrl for zone requests
                 */
@@ -213,7 +213,7 @@ namespace Raumkernel
                 /**
                 * parses the zone xml string and fill the 'zoneInformationMap' and 'roomInformationMap'
                 */
-                void parseZoneConfiguration(std::string _zonesXML, std::string _updateId);
+                void parseZoneConfiguration(const std::string &_zonesXML, const std::string &_updateId);
                 /**
                 * clears the zoneInformation map
                 */

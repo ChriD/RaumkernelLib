@@ -28,31 +28,31 @@ namespace Raumkernel
         }
 
 
-        void Log::debug(std::string _log, std::string _location)
+        void Log::debug(const std::string &_log, const std::string &_location)
         {
             addLog(LogType::LOGTYPE_DEBUG, _log, _location);
         }
 
 
-        void Log::warning(std::string _log, std::string _location)
+        void Log::warning(const std::string &_log, const std::string &_location)
         {
             addLog(LogType::LOGTYPE_WARNING, _log, _location);
         }
 
 
-        void Log::info(std::string _log, std::string _location)
+        void Log::info(const std::string &_log, const std::string &_location)
         {
             addLog(LogType::LOGTYPE_INFO, _log, _location);
         }
 
 
-        void Log::error(std::string _log, std::string _location)
+        void Log::error(const std::string &_log, const std::string &_location)
         {
             addLog(LogType::LOGTYPE_ERROR, _log, _location);
         }
 
 
-        void Log::critical(std::string _log, std::string _location)
+        void Log::critical(const std::string &_log, const std::string &_location)
         {
             addLog(LogType::LOGTYPE_CRITICALERROR, _log, _location);
         }
@@ -65,7 +65,7 @@ namespace Raumkernel
         }
 
 
-        void Log::addLog(LogType _logType, std::string _log, std::string _location)
+        void Log::addLog(LogType _logType, const  std::string &_log, const std::string &_location)
         {
             // check log level of log so we can decide if we should log or not
             if (_logType > logTypeLevel)

@@ -50,7 +50,7 @@ namespace Raumkernel
         }
         
 
-        void ZoneManager::doGetZoneRequest(std::string _updateId)
+        void ZoneManager::doGetZoneRequest(const std::string &_updateId)
         {
             std::unique_lock<std::mutex> lock(mutexStartRequest);
 
@@ -98,7 +98,7 @@ namespace Raumkernel
         }
 
 
-        void ZoneManager::connectRoomToZone(std::string _roomUDN, std::string _zoneUDN)
+        void ZoneManager::connectRoomToZone(const std::string &_roomUDN, const std::string &_zoneUDN)
         {
             std::unique_lock<std::mutex> lock(mutexStartRequest);
 
@@ -128,7 +128,7 @@ namespace Raumkernel
         }
 
 
-        void ZoneManager::connectRoomsToZone(std::vector<std::string> _roomUDNs, std::string _zoneUDN)
+        void ZoneManager::connectRoomsToZone(std::vector<std::string> _roomUDNs, const std::string &_zoneUDN)
         {
             std::unique_lock<std::mutex> lock(mutexStartRequest);
 
@@ -167,7 +167,7 @@ namespace Raumkernel
         }
 
 
-        void ZoneManager::dropRoom(std::string _roomUDN)
+        void ZoneManager::dropRoom(const std::string &_roomUDN)
         {
             std::unique_lock<std::mutex> lock(mutexStartRequest);
 
@@ -195,7 +195,7 @@ namespace Raumkernel
         }
 
 
-        void ZoneManager::createZoneFromRoom(std::string _roomUDN)
+        void ZoneManager::createZoneFromRoom(const std::string &_roomUDN)
         {
             logDebug("Create zone from room '" + _roomUDN  + "'", CURRENT_POSITION);
             // when we want to creat a new zone from a room we havce to provide a emoty zone value
@@ -311,7 +311,7 @@ namespace Raumkernel
         }
 
 
-        void ZoneManager::parseZoneConfiguration(std::string _zonesXML, std::string _updateId)
+        void ZoneManager::parseZoneConfiguration(const std::string &_zonesXML, const std::string &_updateId)
         {
             rapidxml::xml_document<> doc;
             rapidxml::xml_node<> *zoneConfig, *zones, *unassignedRoomsNode;
@@ -420,7 +420,7 @@ namespace Raumkernel
         }
 
 
-        bool ZoneManager::isRoomOnline(std::string _roomUDN)
+        bool ZoneManager::isRoomOnline(const std::string &_roomUDN)
         {
             std::unique_lock<std::mutex> lock(mutexMapAccess);
             if (roomInformationMap.find(_roomUDN) != roomInformationMap.end())
@@ -429,7 +429,7 @@ namespace Raumkernel
         }
 
 
-        std::string ZoneManager::getRoomUDNFromRendererUDN(std::string _rendererUDN)
+        std::string ZoneManager::getRoomUDNFromRendererUDN(const std::string &_rendererUDN)
         {
             for (auto &roomInfo : roomInformationMap)
             {                
@@ -441,14 +441,14 @@ namespace Raumkernel
         }
 
 
-        void ZoneManager::setRoomOnline(std::string _roomUDN, bool _isOnline)
+        void ZoneManager::setRoomOnline(const std::string &_roomUDN, bool _isOnline)
         {                               
             if (roomInformationMap.find(_roomUDN) != roomInformationMap.end())
                 roomInformationMap[_roomUDN].isOnline = _isOnline;
         }
 
 
-        void ZoneManager::setRoomOnlineForRenderer(std::string _rendererUDN, bool _isOnline)
+        void ZoneManager::setRoomOnlineForRenderer(const std::string &_rendererUDN, bool _isOnline)
         {
             std::unique_lock<std::mutex> lock(mutexMapAccess);
 
@@ -458,7 +458,7 @@ namespace Raumkernel
         }
 
 
-        std::string ZoneManager::getZoneUDNForRoomUDN(std::string _roomUDN)
+        std::string ZoneManager::getZoneUDNForRoomUDN(const  std::string &_roomUDN)
         {
             std::unique_lock<std::mutex> lock(mutexMapAccess);
             for (auto it : roomInformationMap)
@@ -472,7 +472,7 @@ namespace Raumkernel
         }
      
 
-        std::string ZoneManager::getRoomUDNForRoomName(std::string _roomName)
+        std::string ZoneManager::getRoomUDNForRoomName(const std::string &_roomName)
         {
             std::unique_lock<std::mutex> lock(mutexMapAccess);
             for (auto it : roomInformationMap)
@@ -486,14 +486,14 @@ namespace Raumkernel
         }
 
 
-        std::string ZoneManager::getRendererUDNForZoneUDN(std::string _zoneUDN)
+        std::string ZoneManager::getRendererUDNForZoneUDN(const std::string &_zoneUDN)
         {
             // the zone UDN is the same UDN as the renderer UDN
             return _zoneUDN;
         }
 
 
-        bool ZoneManager::existsRoomUDN(std::string _roomUDN)
+        bool ZoneManager::existsRoomUDN(const std::string &_roomUDN)
         {            
             std::unique_lock<std::mutex> lock(mutexMapAccess);
             if (roomInformationMap.find(_roomUDN) != roomInformationMap.end())
@@ -502,7 +502,7 @@ namespace Raumkernel
         }
 
 
-        bool ZoneManager::existsZoneUDN(std::string _zoneUDN)
+        bool ZoneManager::existsZoneUDN(const std::string &_zoneUDN)
         {
             std::unique_lock<std::mutex> lock(mutexMapAccess);
             if (zoneInformationMap.find(_zoneUDN) != zoneInformationMap.end())
@@ -511,7 +511,7 @@ namespace Raumkernel
         }
 
         
-        bool ZoneManager::isRoomInZone(std::string _roomUDN, std::string _zoneUDN)
+        bool ZoneManager::isRoomInZone(const std::string &_roomUDN, const std::string &_zoneUDN)
         {
             std::unique_lock<std::mutex> lock(mutexMapAccess);
             auto it = roomInformationMap.find(_roomUDN);

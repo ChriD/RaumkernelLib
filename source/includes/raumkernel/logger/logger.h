@@ -40,13 +40,13 @@ namespace Raumkernel
                 EXPORT Log();
                 EXPORT virtual ~Log();
                 EXPORT void registerAdapter(std::shared_ptr<LogAdapter> _logAdapter);
-                EXPORT void addLog(LogType _logType, std::string _log, std::string _location);
+                EXPORT void addLog(LogType _logType, const std::string &_log, const std::string &_location);
                 EXPORT void setLogLevel(LogType _logTypeLevel);
-                EXPORT void debug(std::string _log, std::string _location);
-                EXPORT void warning(std::string _log, std::string _location);
-                EXPORT void info(std::string _log, std::string _location);
-                EXPORT void error(std::string _log, std::string _location);
-                EXPORT void critical(std::string _log, std::string _location);
+                EXPORT void debug(const std::string &_log, const std::string &_location);
+                EXPORT void warning(const std::string &_log, const std::string &_location);
+                EXPORT void info(const std::string &_log, const std::string &_location);
+                EXPORT void error(const std::string &_log, const std::string &_location);
+                EXPORT void critical(const std::string &_log, const std::string &_location);
                 EXPORT static LogType logTypeStringToLogType(std::string _logTypeString);
 
                 sigs::signal<void(LogData)> sigLog;

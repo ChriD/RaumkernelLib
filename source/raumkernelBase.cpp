@@ -26,7 +26,7 @@ namespace Raumkernel
     }
 
 
-    void RaumkernelBase::logDebug(std::string _log, std::string _location)
+    void RaumkernelBase::logDebug(const std::string &_log, const std::string &_location)
     {
         if (logObject == nullptr)
             return;
@@ -34,7 +34,7 @@ namespace Raumkernel
     }
 
 
-    void RaumkernelBase::logWarning(std::string _log, std::string _location)
+    void RaumkernelBase::logWarning(const std::string &_log, const std::string &_location)
     {
         if (logObject == nullptr)
             return;
@@ -42,7 +42,7 @@ namespace Raumkernel
     }
 
 
-    void RaumkernelBase::logInfo(std::string _log, std::string _location)
+    void RaumkernelBase::logInfo(const std::string &_log, const std::string &_location)
     {
         if (logObject == nullptr)
             return;
@@ -50,7 +50,7 @@ namespace Raumkernel
     }
 
 
-    void RaumkernelBase::logError(std::string _log, std::string _location)
+    void RaumkernelBase::logError(const std::string &_log, const std::string &_location)
     {
         if (logObject == nullptr)
             return;
@@ -58,7 +58,7 @@ namespace Raumkernel
     }
 
 
-    void RaumkernelBase::logCritical(std::string _log, std::string _location)
+    void RaumkernelBase::logCritical(const std::string &_log, const std::string &_location)
     {
         if (logObject == nullptr)
             return;

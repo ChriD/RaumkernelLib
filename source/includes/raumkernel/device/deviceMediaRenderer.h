@@ -42,7 +42,7 @@ namespace Raumkernel
 {
     namespace Devices
     {
-        enum class MediaRenderer_PlayMode { MRPLAYMODE_NORMAL = 0, MRPLAYMODE_SHUFFLE = 1, MRPLAYMODE_REPEAT_ONE = 2, MRPLAYMODE_REPEAT_ALL = 3, MRPLAYMODE_RANDOM = 4, MRPLAYMODE_DIRECT_1 = 5, MRPLAYMODE_INTRO = 6 };
+        enum class MediaRenderer_PlayMode { MRPLAYMODE_NORMAL = 0, MRPLAYMODE_SHUFFLE = 1, MRPLAYMODE_REPEAT_ONE = 2, MRPLAYMODE_REPEAT_ALL = 3, MRPLAYMODE_RANDOM = 4, MRPLAYMODE_DIRECT_1 = 5, MRPLAYMODE_INTRO = 6, MRPLAYMODE_UNDEFINED = 99 };
         enum class MediaRenderer_MuteState { MRPMUTE_NONE, MRPMUTE_ALL, MRPMUTE_PARTIAL };
         enum class MediaRenderer_TransportState { MRTS_STOPPED, MRTS_PLAYING, MRTS_TRANSITIONING };
         enum class MediaRenderer_Seek { MRSEEK_ABS_TIME, MRSEEK_REL_TIME, MRSEEK_TRACK_NR };
@@ -192,6 +192,7 @@ namespace Raumkernel
 
                 static MediaRenderer_PlayMode stringToPlayMode(std::string _playModeString)
                 {
+                    _playModeString = Tools::StringUtil::tolower(_playModeString);
                     if (_playModeString == "NORMAL")
                         return MediaRenderer_PlayMode::MRPLAYMODE_NORMAL;
                     if (_playModeString == "SHUFFLE")
@@ -206,12 +207,13 @@ namespace Raumkernel
                         return MediaRenderer_PlayMode::MRPLAYMODE_DIRECT_1;
                     if (_playModeString == "INTRO")
                         return MediaRenderer_PlayMode::MRPLAYMODE_INTRO;
-                    return MediaRenderer_PlayMode::MRPLAYMODE_NORMAL;
+                    return MediaRenderer_PlayMode::MRPLAYMODE_UNDEFINED;
                 }
 
 
                 static MediaRenderer_TransportState stringToTransportState(std::string _transportState)
                 {
+                    _transportState = Tools::StringUtil::tolower(_transportState);
                     if (_transportState == "PLAYING")
                         return MediaRenderer_TransportState::MRTS_PLAYING;
                     if (_transportState == "STOPPED")
