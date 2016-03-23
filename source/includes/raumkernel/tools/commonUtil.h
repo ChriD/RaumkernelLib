@@ -79,6 +79,22 @@ namespace Raumkernel
                     }
                     return false;
                 }
+
+
+                /**
+                * Converts a string into a integer
+                */
+                static std::int32_t toInt32(std::string _s)
+                {
+                    try
+                    {
+                        return std::stoi(_s);
+                    }
+                    catch (...)
+                    {
+                    }
+                    return 0;
+                }
    
         };
 

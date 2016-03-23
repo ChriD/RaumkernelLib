@@ -828,6 +828,12 @@ namespace Raumkernel
 
             try
             {
+                if (_volume > 100)
+                {
+                    logWarning("Volume has reached it's upper boundaries and will be set to 100", CURRENT_FUNCTION);
+                    _volume = 100;
+                }       
+
                 setRoomVolumeProxy(_roomUDN, _volume, _sync);
             }
             catch (Raumkernel::Exception::RaumkernelException &e)
@@ -894,7 +900,7 @@ namespace Raumkernel
 
             try
             {
-                volume = getVolumeProxy(_sync);
+                volume = getRoomVolumeProxy(_roomUDN, _sync);
             }
             catch (Raumkernel::Exception::RaumkernelException &e)
             {
