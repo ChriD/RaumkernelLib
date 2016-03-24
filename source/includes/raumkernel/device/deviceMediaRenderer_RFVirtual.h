@@ -74,6 +74,22 @@ namespace Raumkernel
                 * use this to change the volume value
                 */
                 EXPORT virtual void changeVolume(std::uint32_t _volumeDifference, bool _sync = true);
+                /**
+                * use this to load the container into the zone renderer
+                */
+                EXPORT virtual void loadContainer(const std::string &_containerId, const std::uint32_t &_trackIndex = 0, bool _sync = true);
+                /**
+                * use this to load a playlist into the zone renderer
+                */
+                EXPORT virtual void loadPlaylist(const std::string &_playlistName, const std::uint32_t &_trackIndex = 0, bool _sync = true);
+                /**
+                * use this to load a single item into the zone renderer
+                */
+                EXPORT virtual void loadSingle(const std::string &_singleId, bool _sync = true);
+                /**
+                * use this to load a uri into the zone renderer
+                */
+                EXPORT virtual void loadUri(const std::string &_uri, bool _sync = true);               
 
                              
             protected:                
@@ -95,7 +111,7 @@ namespace Raumkernel
                 virtual void setAvTransportUriProxy(std::string _avTransportUri, std::string _avTransportUriMetaData, bool _sync = true) override;
 
                 virtual void bendAvTransportUriProxy(std::string _avTransportUri, std::string _avTransportUriMetaData, bool _sync = true);
-                virtual void startSleepTimerProxy(std::int16_t _instanceId, std::uint16_t _secondsUntilSleep, std::int16_t _secondsForVolumeRamp, bool _sync = true);
+                virtual void startSleepTimerProxy(std::int16_t _instanceId, std::uint16_t _secondsUntilSleep, std::int16_t _secondsForVolumeRamp, bool _sync = true);                
 
                 virtual void setMuteProxy(bool _mute, bool _sync = true) override;
                 virtual void setVolumeProxy(std::uint32_t _volume, bool _sync = true) override;

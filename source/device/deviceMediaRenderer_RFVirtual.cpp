@@ -1020,7 +1020,51 @@ namespace Raumkernel
             auto proxy = std::dynamic_pointer_cast<OpenHome::Net::CpProxyUpnpOrgRenderingControl_RaumfeldVirtual1Cpp>(getRenderingControlProxy());
             proxy->EndChangeVolume(_aAsync);
         }
+
+
+
+        void MediaRenderer_RaumfeldVirtual::loadPlaylist(const std::string &_playlistName, const std::uint32_t &_trackIndex, bool _sync)
+        {
+            logDebug("Calling 'loadPlaylist' on renderer '" + getDeviceDescription() + "'", CURRENT_FUNCTION);                 
+            loadContainer("0/Playlists/MyPlaylists/" + Tools::UriUtil::encodeValue(_playlistName), _trackIndex, _sync);
+        }
+                           
+
+        void MediaRenderer_RaumfeldVirtual::loadContainer(const std::string &_containerId, const std::uint32_t &_trackIndex, bool _sync)
+        {
+            logDebug("Calling 'loadContainer' on renderer '" + getDeviceDescription() + "'", CURRENT_FUNCTION);            
+            auto mediaServer = getManagerEngineer()->getDeviceManager()->getRaumfeldMediaServer();
+            auto uri = Tools::UriUtil::createAVTransportUriForContainer(mediaServer->getUDN(), _containerId, _trackIndex);
+            // stop the playback on the renderer
+            stop(true);
+            // TODO: We do have no uri metadata, don't know if this will be a problem i have to check!         
+            bendAvTransportUri(uri, "", _sync);
+        }
+       
+
+        void MediaRenderer_RaumfeldVirtual::loadSingle(const std::string &_singleId, bool _sync)
+        {
+            logDebug("Calling 'loadSingle' on renderer '" + getDeviceDescription() + "'", CURRENT_FUNCTION);              
+            auto mediaServer = getManagerEngineer()->getDeviceManager()->getRaumfeldMediaServer();
+            auto uri = Tools::UriUtil::createAVTransportUriForSingle(mediaServer->getUDN(), _singleId);
+            // stop the playback on the renderer
+            stop(true);
+            // TODO: We do have no uri metadata, don't know if this will be a problem i have to check!         
+            setAvTransportUri(uri, "", _sync);
+        }
+        
+        
+        void MediaRenderer_RaumfeldVirtual::loadUri(const std::string &_uri, bool _sync)
+        {
+            logDebug("Calling 'loadUri' on renderer '" + getDeviceDescription() + "'", CURRENT_FUNCTION);            
+            // stop the playback on the renderer
+            stop(true);
+            // TODO: We do have no uri metadata, don't know if this will be a problem i have to check!         
+            setAvTransportUri(_uri, "", _sync);
+        }
+
       
     }
+
 
 }

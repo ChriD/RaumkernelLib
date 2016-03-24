@@ -68,7 +68,7 @@ namespace Raumkernel
                 /**
                 * Converts a string into a bool
                 */
-                static bool toBool(std::string _s)
+                EXPORT static bool toBool(std::string _s)
                 {
                     try
                     {
@@ -84,7 +84,7 @@ namespace Raumkernel
                 /**
                 * Converts a string into a integer
                 */
-                static std::int32_t toInt32(std::string _s)
+                EXPORT static std::int32_t toInt32(std::string _s)
                 {
                     try
                     {
@@ -95,7 +95,7 @@ namespace Raumkernel
                     }
                     return 0;
                 }
-   
+               
         };
 
     }

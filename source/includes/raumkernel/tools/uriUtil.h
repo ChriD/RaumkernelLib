@@ -209,6 +209,39 @@ namespace Raumkernel
                     return(c < 'A' ? c - '0' : toupper(c) - 'A' + 10);
                 }
               
+
+
+                /**
+                * create a bendable or setable avTransportUri for a container
+                */
+                EXPORT static std::string createAVTransportUriForContainer(const std::string &_mediaServerUDN, const std::string &_containerId, const std::uint32_t &_trackIndex)
+                {
+                    auto uri = Tools::UriUtil::encodeUriPart(_mediaServerUDN) + "?sid=" + Tools::UriUtil::encodeUriPart("urn:upnp-org:serviceId:ContentDirectory") + "&cid=" + Tools::UriUtil::encodeUriPart(_containerId) + "&md=0";
+
+                    if (_trackIndex >= 0)
+                        uri += "&fii=" + Tools::UriUtil::encodeUriPart(std::to_string(_trackIndex));
+
+                    uri = "dlna-playcontainer://" + uri;
+
+                    // a valid transport uri looks like this!
+                    //dlna-playcontainer://uuid%3Aed3bd3db-17b1-4dbe-82df-5201c78e632c?sid=urn%3Aupnp-org%3AserviceId%3AContentDirectory&cid=0%2FPlaylists%2FMyPlaylists%2FTest&md=0	
+                    return uri;
+                }
+
+                /**
+                * create a bendable or setable avTransportUri for a single item
+                */
+                EXPORT static std::string createAVTransportUriForSingle(const std::string &_mediaServerUDN, const std::string &_singleId)
+                {
+                    auto uri = Tools::UriUtil::encodeUriPart(_mediaServerUDN) + "?sid=" + Tools::UriUtil::encodeUriPart("urn:upnp-org:serviceId:ContentDirectory") + "&iid=" + Tools::UriUtil::encodeUriPart(_singleId);
+
+                    uri = "dlna-playsingle://" + uri;
+
+                    // a valid transport uri looks like this!
+                    //dlna-playsingle://uuid%3Aed3bd3db-17b1-4dbe-82df-5201c78e632c?sid=urn%3Aupnp-org%3AserviceId%3AContentDirectory&iid=0%2FRadioTime%2FLocalRadio%2Fs-s68932
+                    return uri;
+                }
+
             
         };
 
