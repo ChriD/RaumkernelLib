@@ -90,7 +90,10 @@ namespace Raumkernel
                 * use this to load a uri into the zone renderer
                 */
                 EXPORT virtual void loadUri(const std::string &_uri, bool _sync = true);               
-
+                /**
+                * this method fades the volume to a specific value in a specific time
+                */
+                EXPORT virtual void fadeToVolume(const std::uint32_t _volume, std::uint32_t _duration, bool sync);
                              
             protected:                
                 virtual void createProxyAvTransport() override;

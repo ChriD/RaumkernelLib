@@ -6,14 +6,13 @@ namespace Raumkernel
 {
 
     Raumkernel::Raumkernel() : RaumkernelBaseMgr()
-    {
-        // TODO: Subscribe to mediaServerAdded/Delete signals. That will show us the RF System is online if the RF Media Server is going online 
-        // Of course not here :)        
-
+    {    
         // set the current version info of the library
         versionInfo.appName     = "Raumkernel Library";
-        versionInfo.appVersion  = "0.6.1";
+        versionInfo.appVersion  = "1.0.0";
         versionInfo.isBeta      = false;
+
+        isOnline = false;
     }
 
 
@@ -67,7 +66,8 @@ namespace Raumkernel
 
         // lets do some subscriptions
         connections.connect(managerEngineer->getDeviceManager()->sigMediaServerAdded, this, &Raumkernel::onMediaServerAdded);
-        connections.connect(managerEngineer->getDeviceManager()->sigMediaServerRemoved, this, &Raumkernel::onMediaServerRemoved);
+        connections.connect(managerEngineer->getDeviceManager()->sigMediaServerRemoved, this, &Raumkernel::onMediaServerRemoved);        
+        
             
         // let's wake up the UPNP Stack and start discovering UPNP devices of all kinds
         managerEngineer->getUPNPManager()->init();        
@@ -88,6 +88,8 @@ namespace Raumkernel
         {
             managerEngineer->getZoneManager()->startZoneRequests();
             managerEngineer->getMediaListManager()->setMediaServer(std::dynamic_pointer_cast<Devices::MediaServer_Raumfeld>(_mediaServer));
+            isOnline = true;
+            sigRaumfeldSystemOnline.fire();
         }
     }
 
@@ -99,8 +101,16 @@ namespace Raumkernel
         {
             managerEngineer->getZoneManager()->stopZoneRequests(); 
             managerEngineer->getMediaListManager()->setMediaServer(nullptr);
+            isOnline = false;
+            sigRaumfeldSystemOffline.fire();
         }
     
+    }
+
+
+    bool Raumkernel::isRaumfeldSystemOnline()
+    {
+        return isOnline;
     }
 
 

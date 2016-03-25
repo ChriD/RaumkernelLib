@@ -39,17 +39,34 @@ namespace Raumkernel
             EXPORT Raumkernel();
             EXPORT virtual ~Raumkernel();
             EXPORT virtual void init(Log::LogType _defaultLogLevel = Log::LogType::LOGTYPE_ERROR, std::string _settingsFileName = "");
+            /**
+            * returns the version info object/structure for the raumkernel
+            */
             EXPORT virtual Tools::VersionInfo getVersionInfo();
+            /**
+            * returns if the raumfeldSystem is online
+            */
+            virtual bool isRaumfeldSystemOnline();
+            /**
+            * this signal will be fired if a the raumkernel is ready (
+            * (in fact that means that the media server is online!)
+            */
+            sigs::signal<void()> sigRaumfeldSystemOnline;
+            /**
+            * this signal will be fired if a the raumkernel is ready (
+            * (in fact that will be if the media server goes offline!)
+            */
+            sigs::signal<void()> sigRaumfeldSystemOffline;
 
         protected:
             void onMediaServerAdded(std::shared_ptr<Devices::MediaServer> _mediaServer);
-            void onMediaServerRemoved(std::shared_ptr<Devices::MediaServer> _mediaServer);
+            void onMediaServerRemoved(std::shared_ptr<Devices::MediaServer> _mediaServer);                      
 
-            // TODO: signal system reaady / offline ....
-
-            sigs::connections connections;
+            bool isOnline;
 
             Tools::VersionInfo versionInfo;
+
+            sigs::connections connections;           
     };
 
 }

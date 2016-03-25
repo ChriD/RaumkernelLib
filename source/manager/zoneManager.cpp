@@ -356,6 +356,7 @@ namespace Raumkernel
                 zones = zoneConfig->first_node("zones", 0, false);
                 if (zones)
                 {
+                    logDebug("Found zone in XML -> Parse!", CURRENT_POSITION);
                     addZoneInformationFromXmlNode(zones);
                 }
 
@@ -363,6 +364,7 @@ namespace Raumkernel
                 unassignedRoomsNode = zoneConfig->first_node("unassignedRooms", 0, false);
                 if (unassignedRoomsNode)
                 {
+                    logDebug("Found unassignedRooms in XML -> Parse!", CURRENT_POSITION);
                     addRoomInformationFromXmlNode(unassignedRoomsNode);
                 }
 
@@ -396,6 +398,8 @@ namespace Raumkernel
             {
                 logError("Unknown Exception", CURRENT_FUNCTION);
             }
+
+            logDebug("Parsing zone configuration XML finished", CURRENT_POSITION);
         }
 
 
@@ -431,11 +435,14 @@ namespace Raumkernel
 
         std::string ZoneManager::getRoomUDNFromRendererUDN(const std::string &_rendererUDN)
         {
-            for (auto &roomInfo : roomInformationMap)
-            {                
-                auto it = std::find(roomInfo.second.rendererUDN.begin(), roomInfo.second.rendererUDN.end(), _rendererUDN);
-                if (it != roomInfo.second.rendererUDN.end())
-                    return roomInfo.second.UDN;
+            if (roomInformationMap.size() > 0)
+            {
+                for (auto &roomInfo : roomInformationMap)
+                {
+                    auto it = std::find(roomInfo.second.rendererUDN.begin(), roomInfo.second.rendererUDN.end(), _rendererUDN);
+                    if (it != roomInfo.second.rendererUDN.end())
+                        return roomInfo.second.UDN;
+                }
             }
             return "";
         }
@@ -461,11 +468,14 @@ namespace Raumkernel
         std::string ZoneManager::getZoneUDNForRoomUDN(const  std::string &_roomUDN)
         {
             std::unique_lock<std::mutex> lock(mutexMapAccess);
-            for (auto it : roomInformationMap)
+            if (roomInformationMap.size() > 0)
             {
-                if (it.second.UDN == _roomUDN)
+                for (auto it : roomInformationMap)
                 {
-                    return it.second.zoneUDN;
+                    if (it.second.UDN == _roomUDN)
+                    {
+                        return it.second.zoneUDN;
+                    }
                 }
             }
             return "";
@@ -475,11 +485,14 @@ namespace Raumkernel
         std::string ZoneManager::getRoomUDNForRoomName(const std::string &_roomName)
         {
             std::unique_lock<std::mutex> lock(mutexMapAccess);
-            for (auto it : roomInformationMap)
-            {                
-                if (Tools::StringUtil::tolower(it.second.name) == Tools::StringUtil::tolower(_roomName))
+            if (roomInformationMap.size() > 0)
+            {
+                for (auto it : roomInformationMap)
                 {
-                    return it.second.UDN;
+                    if (Tools::StringUtil::tolower(it.second.name) == Tools::StringUtil::tolower(_roomName))
+                    {
+                        return it.second.UDN;
+                    }
                 }
             }
             return "";

@@ -364,10 +364,10 @@ namespace Raumkernel
 
             switch (_seekType)
             {
-            case MediaRenderer_Seek::MRSEEK_ABS_TIME: seekUnit = "ABS_TIME"; break;
-            case MediaRenderer_Seek::MRSEEK_REL_TIME: seekUnit = "REL_TIME"; break;
-            case MediaRenderer_Seek::MRSEEK_TRACK_NR: seekUnit = "TRACK_NR"; break;
-            default: logError("Wrong seek type!", CURRENT_POSITION); return;
+                case MediaRenderer_Seek::MRSEEK_ABS_TIME: seekUnit = "ABS_TIME"; break;
+                case MediaRenderer_Seek::MRSEEK_REL_TIME: seekUnit = "REL_TIME"; break;
+                case MediaRenderer_Seek::MRSEEK_TRACK_NR: seekUnit = "TRACK_NR"; break;
+                default: logError("Wrong seek type!", CURRENT_POSITION); return;
             }
 
 

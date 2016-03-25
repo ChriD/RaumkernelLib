@@ -1059,8 +1059,22 @@ namespace Raumkernel
             logDebug("Calling 'loadUri' on renderer '" + getDeviceDescription() + "'", CURRENT_FUNCTION);            
             // stop the playback on the renderer
             stop(true);
+            
+            // TODO: the uri may be a *.pls file or any other file and not a direct link.
+            // In the future we may support those lists
+
+            // TODO: maybe load the metadata from the uri and provide it?!
+
             // TODO: We do have no uri metadata, don't know if this will be a problem i have to check!         
             setAvTransportUri(_uri, "", _sync);
+        }
+
+
+        void MediaRenderer_RaumfeldVirtual::fadeToVolume(const std::uint32_t _volume, std::uint32_t _duration, bool sync)
+        {
+            // TODO: check if the thread for fading is already running.
+            // if not create it and do volume fade
+            // if running destroy current thread and start a new one)
         }
 
       
