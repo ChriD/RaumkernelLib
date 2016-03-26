@@ -158,9 +158,17 @@ namespace Raumkernel
                 virtual void onRenderingControlProxyPropertyChanged();
                 virtual void oConnectionManagerProxyPropertyChanged();
 
-                sigs::signal<void(bool)> sigGetRoomMuteExecuted;
-                sigs::signal<void(std::int32_t)> sigGetRoomVolumeExecuted;
+                /**
+                * Not intended for external use
+                * ist a thread which will do fading to a specific volume in a specific time
+                */
+                void fadeToVolumeThread(const std::uint32_t &_volume, const std::uint32_t &_duration);
 
+                sigs::signal<void(bool)> sigGetRoomMuteExecuted;
+                sigs::signal<void(std::int32_t)> sigGetRoomVolumeExecuted;                
+
+                std::thread fadeToVolumeThreadObject;
+                std::atomic_bool stopFadeToVolumeThread;
         };
 
     }

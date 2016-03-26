@@ -9,12 +9,19 @@ namespace Raumkernel
     {
 
         MediaRenderer_RaumfeldVirtual::MediaRenderer_RaumfeldVirtual() : MediaRenderer_Raumfeld()
-        {          
+        {   
+            stopFadeToVolumeThread = false;
         }
 
         
         MediaRenderer_RaumfeldVirtual::~MediaRenderer_RaumfeldVirtual()
         {
+            stopFadeToVolumeThread = true;
+            if (fadeToVolumeThreadObject.joinable())
+            {                
+                logDebug("Waiting for fadeToVolume threads to finish (This may take some time...)", CURRENT_POSITION);
+                fadeToVolumeThreadObject.join();
+            }
         }
 
  
@@ -1072,9 +1079,77 @@ namespace Raumkernel
 
         void MediaRenderer_RaumfeldVirtual::fadeToVolume(const std::uint32_t _volume, std::uint32_t _duration, bool sync)
         {
-            // TODO: check if the thread for fading is already running.
-            // if not create it and do volume fade
-            // if running destroy current thread and start a new one)
+            logDebug("Calling 'fadeToVolume' on renderer '" + getDeviceDescription() + "'", CURRENT_FUNCTION);         
+
+            // check if the thread for fading is already running. If so we stop it an recreate a new one
+            if (fadeToVolumeThreadObject.joinable())
+            {
+                stopFadeToVolumeThread = true;                
+                fadeToVolumeThreadObject.join();
+            }
+            stopFadeToVolumeThread = false;
+
+            // now after we are sure there is no fading thread anymore we can start the new one which will do our work
+            logDebug("Starting fadeToVolume thread", CURRENT_POSITION);
+            fadeToVolumeThreadObject = std::thread(&MediaRenderer_RaumfeldVirtual::fadeToVolumeThread, this, _volume, _duration);
+        }
+
+
+        void MediaRenderer_RaumfeldVirtual::fadeToVolumeThread(const std::uint32_t &_volume, const std::uint32_t &_duration)
+        {
+            std::uint32_t waitTime = 25;
+            std::uint32_t currentGap = 0;            
+
+            std::uint32_t currentVolume = getVolume(true);
+            std::int32_t volumeDiff = _volume - currentVolume;
+
+            // if there is no volume difference we have to do nothing and we skip
+            if (volumeDiff == 0)
+                return;
+            
+            // calculate the time gap when we do have to update the volume
+            std::double_t volumeChangeGap = _duration / std::abs(volumeDiff);
+
+            while (!stopFadeToVolumeThread && _volume != currentVolume)
+            {
+                try
+                {
+                    std::this_thread::sleep_for(std::chrono::milliseconds(waitTime));  
+                    currentGap += waitTime;
+                    if (currentGap >= volumeChangeGap)
+                    {
+                        if (volumeDiff > 0)
+                            currentVolume++;
+                        else
+                            currentVolume--;
+
+                        setVolume(currentVolume, false);
+
+                        currentGap = 0;
+                    }
+                }
+                catch (Raumkernel::Exception::RaumkernelException &e)
+                {
+                    if (e.type() == Raumkernel::Exception::ExceptionType::EXCEPTIONTYPE_APPCRASH)
+                        throw e;
+                }
+                catch (std::exception &e)
+                {
+                    logError(e.what(), CURRENT_POSITION);
+                }
+                catch (std::string &e)
+                {
+                    logError(e, CURRENT_POSITION);
+                }
+                catch (OpenHome::Exception &e)
+                {
+                    logError(e.Message(), CURRENT_POSITION);;
+                }
+                catch (...)
+                {
+                    logError("Unknown exception!", CURRENT_POSITION);
+                }
+            }
         }
 
       
