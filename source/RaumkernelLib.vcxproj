@@ -157,10 +157,8 @@
     <ClInclude Include="includes\raumkernel\tools\numUtil.h" />
     <ClInclude Include="includes\raumkernel\tools\uriUtil.h" />
     <ClInclude Include="includes\raumkernel\tools\versionInfo.h" />
-    <ClInclude Include="includes\raumkernel\xml\rapidxml.hpp" />
-    <ClInclude Include="includes\raumkernel\xml\rapidxml_iterators.hpp" />
-    <ClInclude Include="includes\raumkernel\xml\rapidxml_print.hpp" />
-    <ClInclude Include="includes\raumkernel\xml\rapidxml_utils.hpp" />
+    <ClInclude Include="includes\raumkernel\xml\pugixml\pugiconfig.hpp" />
+    <ClInclude Include="includes\raumkernel\xml\pugixml\pugixml.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="device\device.cpp" />
@@ -218,6 +216,7 @@
     <ClCompile Include="raumkernelBase.cpp" />
     <ClCompile Include="raumkernelBaseMgr.cpp" />
     <ClCompile Include="tools\urlParser.cpp" />
+    <ClCompile Include="xml\pugixml\pugixml.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Xml Include="raumkernel.xml" />

@@ -27,7 +27,7 @@
 
 #include <map>
 #include <raumkernel/manager/managerBase.h>
-#include <raumkernel/xml/rapidxml.hpp>
+#include <raumkernel/xml/pugixml/pugixml.hpp>
 
 
 
@@ -63,7 +63,7 @@ namespace Raumkernel
 
             protected:
                 void loadSettingsFromFile(const std::string &_fileName);
-                void walkNode(const rapidxml::xml_node<>* _node, const std::string &_path = "", const int &_indent = 0);
+                void walkNode(pugi::xml_node _node, const std::string &_path = "", const int &_indent = 0);
                 void validateSetting(const std::string &_settingPath);
                 void validateSettings();
 

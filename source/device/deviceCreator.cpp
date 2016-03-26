@@ -17,37 +17,37 @@ namespace Raumkernel
         }
 
 
-        void DeviceCreator::setDeviceInformationFromDeviceXML(std::shared_ptr<Device> _device, rapidxml::xml_node<> *_deviceNode)
+        void DeviceCreator::setDeviceInformationFromDeviceXML(std::shared_ptr<Device> _device, pugi::xml_node _deviceNode)
         {
-            rapidxml::xml_document<> doc;
-            rapidxml::xml_node<> *deviceNode = _deviceNode, *valueNode;
+            pugi::xml_document doc;
+            pugi::xml_node deviceNode = _deviceNode, valueNode;
             std::string	deviceType, deviceUDN, deviceFriendlyName, deviceModelDescription, deviceModelName, deviceManufacturer, deviceManufacturerUrl;
             std::string	deviceModelNumber, deviceSerialNumber;
 
-            deviceType = deviceNode->first_node("deviceType", 0, false)->value();
-            deviceUDN = deviceNode->first_node("UDN", 0, false)->value();
+            deviceType = deviceNode.child("deviceType").value();
+            deviceUDN = deviceNode.child("UDN").value();
             deviceUDN = Raumkernel::Tools::CommonUtil::formatUDN(deviceUDN);
-            valueNode = deviceNode->first_node("friendlyName", 0, false);
+            valueNode = deviceNode.child("friendlyName");
             if (valueNode)
-                deviceFriendlyName = valueNode->value();
-            valueNode = deviceNode->first_node("modelDescription", 0, false);
+                deviceFriendlyName = valueNode.child_value();
+            valueNode = deviceNode.child("modelDescription");
             if (valueNode)
-                deviceModelDescription = valueNode->value();
-            valueNode = deviceNode->first_node("modelName", 0, false);
+                deviceModelDescription = valueNode.child_value();
+            valueNode = deviceNode.child("modelName");
             if (valueNode)
-                deviceModelName = valueNode->value();
-            valueNode = deviceNode->first_node("manufacturer", 0, false);
+                deviceModelName = valueNode.child_value();
+            valueNode = deviceNode.child("manufacturer");
             if (valueNode)
-                deviceManufacturer = valueNode->value();
-            valueNode = deviceNode->first_node("manufacturerURL", 0, false);
+                deviceManufacturer = valueNode.child_value();
+            valueNode = deviceNode.child("manufacturerURL");
             if (valueNode)
-                deviceManufacturerUrl = valueNode->value();
-            valueNode = deviceNode->first_node("modelNumber", 0, false);
+                deviceManufacturerUrl = valueNode.child_value();
+            valueNode = deviceNode.child("modelNumber");
             if (valueNode)
-                deviceModelNumber = valueNode->value();
-            valueNode = deviceNode->first_node("serialNumber", 0, false);
+                deviceModelNumber = valueNode.child_value();
+            valueNode = deviceNode.child("serialNumber");
             if (valueNode)
-                deviceSerialNumber = valueNode->value();
+                deviceSerialNumber = valueNode.child_value();
     
             _device->setLogObject(getLogObject());
             _device->setUDN(deviceUDN);
@@ -64,8 +64,8 @@ namespace Raumkernel
         
         std::shared_ptr<Devices::Device> DeviceCreator::createDeviceFromDeviceXML(std::string _deviceXML)
         {
-            rapidxml::xml_document<> doc;
-            rapidxml::xml_node<> *deviceNode, *rootNode, *valueNode;           
+            pugi::xml_document doc;
+            pugi::xml_node deviceNode, rootNode, valueNode;
             std::shared_ptr<Devices::MediaRenderer> mediaRenderer = nullptr;
             std::shared_ptr<Devices::MediaServer > mediaServer = nullptr;
             std::shared_ptr<Devices::Device> createdDevice = nullptr;;
@@ -74,12 +74,10 @@ namespace Raumkernel
             logDebug("Try to create device from device XML", CURRENT_POSITION);
 
             // to parse the string we have to put it ino char* (because c_str() returns const char*)
-            char* cstr = new char[_deviceXML.size() + 1];
-            std::strcpy(cstr, _deviceXML.c_str());
-            doc.parse<0>(cstr);
+            pugi::xml_parse_result result = doc.load_string(_deviceXML.c_str());
 
             // find the root node which has to be the 'device' node	
-            rootNode = doc.first_node("root", 0, false);
+            rootNode = doc.child("root");
             if (!rootNode)
             {
                 logError("Device XML from device does not contain root block!", CURRENT_POSITION);             
@@ -87,28 +85,28 @@ namespace Raumkernel
             }
 
             // find the root node which has to be the 'device' node	
-            deviceNode = rootNode->first_node("device", 0, false);
+            deviceNode = rootNode.child("device");
             if (!deviceNode)
             {
                 logError("Device XML from device does not contain device information!", CURRENT_POSITION);                
                 return nullptr;
             }
 
-            valueNode = deviceNode->first_node("udn", 0, false);
+            valueNode = deviceNode.child("UDN");
             if (!valueNode)
             {
                 logError("Device XML from device does not contain UDN information!", CURRENT_POSITION);                
                 return nullptr;
             }
-            deviceUDN = valueNode->value();
+            deviceUDN = valueNode.child_value();
 
-            valueNode = deviceNode->first_node("deviceType", 0, false);
+            valueNode = deviceNode.child("deviceType");
             if (!valueNode)
             {
                 logError("Device XML from device does not contain type information!", CURRENT_POSITION);                
                 return nullptr;
             }
-            deviceType = valueNode->value();
+            deviceType = valueNode.child_value();
 
             if (deviceType.find(getManagerEngineer()->getSettingsManager()->getValue(Manager::SETTINGS_RAUMKERNEL_MEDIARENDERERIDENTIFICATION)) != std::string::npos)
             {
@@ -150,19 +148,19 @@ namespace Raumkernel
         }
 
 
-        std::shared_ptr<Devices::MediaRenderer> DeviceCreator::createMediaRendererFromDeviceNode(rapidxml::xml_node<> *_deviceNode)
+        std::shared_ptr<Devices::MediaRenderer> DeviceCreator::createMediaRendererFromDeviceNode(pugi::xml_node _deviceNode)
         {  
-            rapidxml::xml_node<> *valueNode;
+            pugi::xml_node valueNode;
             std::string deviceModelDescription, deviceManufacturer;
             std::shared_ptr<Devices::MediaRenderer> mediaRenderer;
             bool isVirtualRenderer = false, isRaumfeldRenderer = false;            
 
-            valueNode = _deviceNode->first_node("manufacturer", 0, false);
+            valueNode = _deviceNode.child("manufacturer");
             if (valueNode)
-                deviceManufacturer = valueNode->value();
-            valueNode = _deviceNode->first_node("modelDescription", 0, false);
+                deviceManufacturer = valueNode.child_value();
+            valueNode = _deviceNode.child("modelDescription");
             if (valueNode)
-                deviceModelDescription = valueNode->value();
+                deviceModelDescription = valueNode.child_value();
 
             isVirtualRenderer = deviceModelDescription.find(getManagerEngineer()->getSettingsManager()->getValue(Manager::SETTINGS_RAUMKERNEL_RAUMFELDDESCRIPTIONVIRTUALMEDIAPLAYER)) != std::string::npos;
             isRaumfeldRenderer = deviceManufacturer.find(getManagerEngineer()->getSettingsManager()->getValue(Manager::SETTINGS_RAUMKERNEL_RAUMFELDMANUFACTURER)) != std::string::npos;
@@ -178,16 +176,16 @@ namespace Raumkernel
         }
 
 
-        std::shared_ptr<Devices::MediaServer> DeviceCreator::createMediaServerFromDeviceNode(rapidxml::xml_node<> *_deviceNode)
+        std::shared_ptr<Devices::MediaServer> DeviceCreator::createMediaServerFromDeviceNode(pugi::xml_node _deviceNode)
         {
-            rapidxml::xml_node<> *valueNode;
+            pugi::xml_node valueNode;
             std::string deviceModelDescription, deviceManufacturer;
             std::shared_ptr<Devices::MediaServer> mediaServer;
             bool isRaumfeldMediaServer = false;           
 
-            valueNode = _deviceNode->first_node("manufacturer", 0, false);
+            valueNode = _deviceNode.child("manufacturer");
             if (valueNode)
-                deviceManufacturer = valueNode->value();          
+                deviceManufacturer = valueNode.child_value();
                         
             isRaumfeldMediaServer = deviceManufacturer.find(getManagerEngineer()->getSettingsManager()->getValue(Manager::SETTINGS_RAUMKERNEL_RAUMFELDMANUFACTURER)) != std::string::npos;
 

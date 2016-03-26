@@ -16,20 +16,17 @@ namespace Raumkernel
 
         std::shared_ptr<Item::MediaItem> MediaItemCreator::createMediaItemFromTrackMetadata(std::string _trackMetadata)
         {
-            rapidxml::xml_document<> doc;
-            rapidxml::xml_node<> *itemNode, *rootNode;
+            pugi::xml_document doc;
+            pugi::xml_node itemNode, rootNode;
             std::shared_ptr<Item::MediaItem> mediaItem;
 
             try
             {
 
-                // to parse the string we have to put it into char* (because c_str() returns const char*)
-                char* cstr = new char[_trackMetadata.size() + 1];
-                std::strcpy(cstr, _trackMetadata.c_str());
-                doc.parse<0>(cstr);
+                pugi::xml_parse_result result = doc.load_string(_trackMetadata.c_str());
 
                 // find the root node which has to be the 'DIDL-Lite' node	
-                rootNode = doc.first_node("DIDL-Lite", 0, false);
+                rootNode = doc.child("DIDL-Lite");
                 if (!rootNode)
                 {
                     logError("TrackMetadata XML is not formated properly! (Missing 'DIDL-Lite' node)", CURRENT_POSITION);
@@ -37,7 +34,7 @@ namespace Raumkernel
                 }
 
                 // there should be only one item in the trackMetadata XML 
-                itemNode = rootNode->first_node("item", 0, false);
+                itemNode = rootNode.child("item");
                 if (!itemNode)
                 {
                     logError("TrackMetadata XML is not formated properly! (Missing 'Item' node)", CURRENT_POSITION);
@@ -71,26 +68,26 @@ namespace Raumkernel
         }
 
 
-        std::shared_ptr<Item::MediaItem> MediaItemCreator::createMediaItemFromXMLNode(rapidxml::xml_node<> *_xmlNode)
+        std::shared_ptr<Item::MediaItem> MediaItemCreator::createMediaItemFromXMLNode(pugi::xml_node _xmlNode)
         {
             // TODO: create object with correct class from "upnp:class"
             // TODO: create better xml parsing with default values like in subscription!
 
-            rapidxml::xml_node<> *itemNode = _xmlNode, *valueNode;
-            rapidxml::xml_attribute<> *attribute;
+            pugi::xml_node itemNode = _xmlNode, valueNode;
+            pugi::xml_attribute attribute;
             std::shared_ptr<Item::MediaItem> mediaItem = std::shared_ptr<Item::MediaItem>(new Item::MediaItem()); // TODO: @@@
 
-            attribute = itemNode->first_attribute("id", 0, false);
+            attribute = itemNode.attribute("id");
             if (attribute)
-                mediaItem->id = attribute->value();
+                mediaItem->id = attribute.value();
 
-            attribute = itemNode->first_attribute("parentId", 0, false);
+            attribute = itemNode.attribute("parentID");
             if (attribute)
-                mediaItem->parentId = attribute->value();
+                mediaItem->parentId = attribute.value();
 
-            valueNode = itemNode->first_node("raumfeld:name", 0, false);
+            valueNode = itemNode.child("raumfeld:name");
             if (valueNode)
-                mediaItem->raumfeldName = valueNode->value();
+                mediaItem->raumfeldName = valueNode.child_value();
 
             /*
             valueNode = itemNode->first_node("dc:title", 0, false);
@@ -98,18 +95,18 @@ namespace Raumkernel
                 mediaItem->title = valueNode->value();
                 */
 
-            valueNode = itemNode->first_node("upnp:class", 0, false);
+            valueNode = itemNode.child("upnp:class");
             if (valueNode)
-                mediaItem->upnpClass = valueNode->value();
+                mediaItem->upnpClass = valueNode.child_value();
 
-            valueNode = itemNode->first_node("raumfeld:section", 0, false);
+            valueNode = itemNode.child("raumfeld:section");
             if (valueNode)
-                mediaItem->raumfeldSection = valueNode->value();
+                mediaItem->raumfeldSection = valueNode.child_value();
 
-            valueNode = itemNode->first_node("res", 0, false);
+            valueNode = itemNode.child("res");
             if (valueNode)
             {
-                mediaItem->res = valueNode->value();
+                mediaItem->res = valueNode.child_value();
                 /*
                 attribute = valueNode->first_attribute("duration", 0, false);
                 if (attribute)

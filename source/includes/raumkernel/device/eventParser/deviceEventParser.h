@@ -27,7 +27,7 @@
 
 #include <raumkernel/raumkernelBase.h>
 #include <raumkernel/device/device.h>
-#include <raumkernel/xml/rapidxml.hpp>
+#include <raumkernel/xml/pugixml/pugixml.hpp>
 #include <raumkernel/tools/numUtil.h>
 #include <raumkernel/tools/uriUtil.h>
 #include <raumkernel/tools/urlParser.h>
@@ -53,9 +53,8 @@ namespace Raumkernel
                     virtual ~DeviceEventParser();
                     virtual void setDevice(Devices::Device *_device);
 
-                protected:
-                    virtual rapidxml::xml_node<>* getInstanceNodeFromXML(std::string _xml);
-                    virtual std::string getNodeVal(rapidxml::xml_node<>* _parentNode, std::string _nodeName, std::string _oldVal, bool &_valChanged, std::string _attributeName = "val");
+                protected:                    
+                    virtual std::string getNodeVal(pugi::xml_node _parentNode, std::string _nodeName, std::string _oldVal, bool &_valChanged, std::string _attributeName = "val");
 
                 /**
                 *  A link to a UPNP-Device

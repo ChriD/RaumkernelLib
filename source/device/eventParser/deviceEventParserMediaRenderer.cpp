@@ -42,13 +42,27 @@ namespace Raumkernel
 
                 try
                 {
-                    // try to get the "instance" node in the subscription xml. The child nodes of this node are our data we want to have
-                    rapidxml::xml_node<> *instanceNode = getInstanceNodeFromXML(_xml);
+
+                    pugi::xml_document doc;
+                    pugi::xml_node eventNode, instanceNode;
+
+                    pugi::xml_parse_result result = doc.load_string(_xml.c_str());
+
+                    eventNode = doc.child("Event");
+                    if (!eventNode)
+                    {
+                        logError("Subscription XML parsing error! Missing node 'Event'", CURRENT_POSITION);
+                        return;
+                        //throw Exception::RaumkernelException(Exception::ExceptionType::EXCEPTIONTYPE_RECOVERABLE, CURRENT_POSITION, "Subscription XML parsing error!Missing node 'Event'");
+                    }
+
+                    instanceNode = eventNode.child("InstanceID");
                     if (!instanceNode)
                     {
-                        logError("Error parsing XML subscription from device: " + mediaRenderer->getUDN(), CURRENT_POSITION);
+                        logError("Subscription XML parsing error! Missing node 'InstanceId'", CURRENT_POSITION);
                         return;
-                    }
+                        //throw Exception::RaumkernelException(Exception::ExceptionType::EXCEPTIONTYPE_RECOVERABLE, CURRENT_POSITION, "Subscription XML parsing error! Missing node 'InstanceID'");
+                    }                            
 
                     rendererState.aVTransportURI = getNodeVal(instanceNode, "AVTransportURI", rendererState.aVTransportURI, avTransportUriValueChanged);
                     rendererState.aVTransportURIMetaData = getNodeVal(instanceNode, "AVTransportURIMetaData", rendererState.aVTransportURIMetaData, anyStateChanged);
@@ -194,11 +208,23 @@ namespace Raumkernel
                 try
                 {
                     // try to get the "instance" node in the subscription xml. The child nodes of this node are our data we want to have
-                    rapidxml::xml_node<> *instanceNode = getInstanceNodeFromXML(_xml);
+                    pugi::xml_document doc;
+                    pugi::xml_node eventNode, instanceNode;
+
+                    pugi::xml_parse_result result = doc.load_string(_xml.c_str());
+
+                    eventNode = doc.child("Event");
+                    if (!eventNode)
+                    {
+                        logError("Subscription XML parsing error! Missing node 'Event'", CURRENT_POSITION);
+                        throw Exception::RaumkernelException(Exception::ExceptionType::EXCEPTIONTYPE_RECOVERABLE, CURRENT_POSITION, "Subscription XML parsing error!Missing node 'Event'");
+                    }
+
+                    instanceNode = eventNode.child("InstanceID");
                     if (!instanceNode)
                     {
-                        logError("Error parsing XML subscription from device: " + mediaRenderer->getUDN(), CURRENT_POSITION);
-                        return;
+                        logError("Subscription XML parsing error! Missing node 'InstanceId'", CURRENT_POSITION);
+                        throw Exception::RaumkernelException(Exception::ExceptionType::EXCEPTIONTYPE_RECOVERABLE, CURRENT_POSITION, "Subscription XML parsing error! Missing node 'InstanceID'");
                     }
                     
                     rendererState.volume = Tools::NumUtil::toUInt32(getNodeVal(instanceNode, "Volume", std::to_string(rendererState.volume), anyStateChanged));

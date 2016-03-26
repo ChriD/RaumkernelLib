@@ -37,6 +37,7 @@ namespace Raumkernel
             std::shared_ptr<Devices::Device> device = nullptr;
 
             lockDeviceList();
+            getManagerEngineer()->getZoneManager()->lockLists();
 
             try
             {
@@ -122,7 +123,9 @@ namespace Raumkernel
                 logError("Unknown exception!", CURRENT_POSITION);
             }
 
+            getManagerEngineer()->getZoneManager()->unlockLists();
             unlockDeviceList(); 
+
 
             // list is unlocked. now fire signals           
             sigMediaRendererAdded.fire_if(std::dynamic_pointer_cast<Devices::MediaRenderer>(device) != nullptr, std::dynamic_pointer_cast<Devices::MediaRenderer>(device));
@@ -137,6 +140,7 @@ namespace Raumkernel
             std::shared_ptr<Devices::Device> device = nullptr;
 
             lockDeviceList();
+            getManagerEngineer()->getZoneManager()->lockLists();
 
             try
             {
@@ -213,6 +217,7 @@ namespace Raumkernel
                 logError("Unknown exception!", CURRENT_POSITION);
             }
 
+            getManagerEngineer()->getZoneManager()->unlockLists();
             unlockDeviceList();
 
             if (device != nullptr)

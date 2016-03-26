@@ -23,6 +23,7 @@ SRCS += $(wildcard manager/*.cpp)
 SRCS += $(wildcard media/*.cpp)
 SRCS += $(wildcard media/item/*.cpp)
 SRCS += $(wildcard tools/*.cpp)
+SRCS += $(wildcard xml/pugixml/*.cpp)
 
 OBJS = $(SRCS:.cpp=.o)
 

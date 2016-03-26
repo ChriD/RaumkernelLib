@@ -219,44 +219,44 @@ namespace Raumkernel
         }
 
 
-        void ZoneManager::addRoomInformationFromXmlNode(rapidxml::xml_node<>* _parentNode, ZoneInformation *_zoneInformation)
+        void ZoneManager::addRoomInformationFromXmlNode(pugi::xml_node _parentNode, ZoneInformation *_zoneInformation)
         {
-            rapidxml::xml_node<> *roomNode, *rendererNode;
-            rapidxml::xml_attribute<> *attribute;
+            pugi::xml_node roomNode, rendererNode;
+            pugi::xml_attribute attribute;
             std::string roomColor = "", roomUDN = "", roomName = "", rendererUDN = "";
 
-            roomNode = _parentNode->first_node("room", 0, false);
+            roomNode = _parentNode.child("room");
             while (roomNode)
             {
                 RoomInformation		roomInfo;
                 bool                rendererOnline = false;
 
-                attribute = roomNode->first_attribute("udn", 0, false);
-                if (attribute) roomUDN = attribute->value();
+                attribute = roomNode.attribute("udn");
+                if (attribute) roomUDN = attribute.value();
 
-                attribute = roomNode->first_attribute("color", 0, false);
-                if (attribute) roomColor = attribute->value();
+                attribute = roomNode.attribute("color");
+                if (attribute) roomColor = attribute.value();
 
-                attribute = roomNode->first_attribute("name", 0, false);
-                if (attribute) roomName = attribute->value();
+                attribute = roomNode.attribute("name");
+                if (attribute) roomName = attribute.value();
 
                 roomInfo.UDN = roomUDN;
                 roomInfo.zoneUDN = "";
                 roomInfo.name = roomName;
                 roomInfo.color = roomColor;
 
-                rendererNode = roomNode->first_node("renderer", 0, false);
+                rendererNode = roomNode.child("renderer");
                 while (rendererNode)
                 {
-                    attribute = rendererNode->first_attribute("udn", 0, false);
-                    if (attribute) rendererUDN = attribute->value();
+                    attribute = rendererNode.attribute("udn");
+                    if (attribute) rendererUDN = attribute.value();
 
                     roomInfo.rendererUDN.push_back(rendererUDN);
 
                     // at lest one renderer should be online to give the room the state 'online'
                     rendererOnline = getManagerEngineer()->getDeviceManager()->getMediaRenderer(rendererUDN) == nullptr ? rendererOnline || false : true;
 
-                    rendererNode = rendererNode->next_sibling("renderer", 0, false);
+                    rendererNode = rendererNode.next_sibling("renderer");
                 }
 
                 // set room state to "online/offline" if at least one of the renderes of the room is found in device list
@@ -270,24 +270,24 @@ namespace Raumkernel
 
                 roomInformationMap.insert(std::make_pair(roomInfo.UDN, roomInfo));                
 
-                roomNode = roomNode->next_sibling("room", 0, false);
+                roomNode = roomNode.next_sibling("room");
             }
         }
 
-        void ZoneManager::addZoneInformationFromXmlNode(rapidxml::xml_node<>* _parentNode)
+        void ZoneManager::addZoneInformationFromXmlNode(pugi::xml_node _parentNode)
         {
-            rapidxml::xml_node<> *zoneNode;
-            rapidxml::xml_attribute<> *attribute;
+            pugi::xml_node zoneNode;
+            pugi::xml_attribute attribute;
             std::string zoneUDN, zoneName;
 
-            zoneNode = _parentNode->first_node("zone", 0, false);
+            zoneNode = _parentNode.child("zone");
             while (zoneNode)
             {
                 ZoneInformation		zoneInfo;
                 zoneName = "";
 
-                attribute = zoneNode->first_attribute("udn", 0, false);
-                if (attribute) zoneUDN = attribute->value();
+                attribute = zoneNode.attribute("udn");
+                if (attribute) zoneUDN = attribute.value();
 
                 zoneInfo.UDN = zoneUDN;
 
@@ -306,15 +306,15 @@ namespace Raumkernel
 
                 zoneInformationMap.insert(std::make_pair(zoneInfo.UDN, zoneInfo));
 
-                zoneNode = zoneNode->next_sibling("zone", 0, false);
+                zoneNode = zoneNode.next_sibling("zone");
             }
         }
 
 
         void ZoneManager::parseZoneConfiguration(const std::string &_zonesXML, const std::string &_updateId)
         {
-            rapidxml::xml_document<> doc;
-            rapidxml::xml_node<> *zoneConfig, *zones, *unassignedRoomsNode;
+            pugi::xml_document doc;
+            pugi::xml_node zoneConfig, zones, unassignedRoomsNode;
 
             // INFO: this is a little workaround to be sure we do only parse and signal if really something in the configuration has changed
             // i have recognized that changes to the zones will sometimes lead to 2 long polling returns and i don't know why.
@@ -329,23 +329,20 @@ namespace Raumkernel
             logDebug("Parsing zone configuration XML", CURRENT_POSITION);  
 
             lastZoneConfigurationXML = _zonesXML;
-
+            
             std::unique_lock<std::mutex> lock(mutexMapAccess);    
-
+            
             try
             {
 
-                // to parse the string we have to put it ino char* (because c_str() returns const char*)
-                char* cstr = new char[_zonesXML.size() + 1];
-                std::strcpy(cstr, _zonesXML.c_str());
-                doc.parse<0>(cstr);
+                pugi::xml_parse_result result = doc.load_string(_zonesXML.c_str());
 
                 // remove lists because we do create them here again with the new values (may be more or less items)
                 this->clearZoneInformationMap();
                 this->clearRoomInformationMap();
 
                 // find the root node which has to be the 'device' node	
-                zoneConfig = doc.first_node("zoneConfig", 0, false);
+                zoneConfig = doc.child("zoneConfig");
                 if (!zoneConfig)
                 {
                     logError("Requested zome XML  does not contain 'zoneConfig' block!", __FUNCTION__);
@@ -353,7 +350,7 @@ namespace Raumkernel
                 }
 
                 // do zones and rooms in zones
-                zones = zoneConfig->first_node("zones", 0, false);
+                zones = zoneConfig.child("zones");
                 if (zones)
                 {
                     logDebug("Found zone in XML -> Parse!", CURRENT_POSITION);
@@ -361,7 +358,7 @@ namespace Raumkernel
                 }
 
                 // do unassigned rooms
-                unassignedRoomsNode = zoneConfig->first_node("unassignedRooms", 0, false);
+                unassignedRoomsNode = zoneConfig.child("unassignedRooms");
                 if (unassignedRoomsNode)
                 {
                     logDebug("Found unassignedRooms in XML -> Parse!", CURRENT_POSITION);
@@ -457,7 +454,8 @@ namespace Raumkernel
 
         void ZoneManager::setRoomOnlineForRenderer(const std::string &_rendererUDN, bool _isOnline)
         {
-            std::unique_lock<std::mutex> lock(mutexMapAccess);
+            // lock has to be handled outside from caller!
+            //std::unique_lock<std::mutex> lock(mutexMapAccess);
 
             std::string roomUDN = getRoomUDNFromRendererUDN(_rendererUDN);
             if(!roomUDN.empty())
@@ -537,7 +535,7 @@ namespace Raumkernel
 
 
         std::unordered_map<std::string, Manager::ZoneInformation> ZoneManager::getZoneInformationMap()
-        {
+        {            
             std::unique_lock<std::mutex> lock(mutexMapAccess);
             return zoneInformationMap;
         }
@@ -547,6 +545,17 @@ namespace Raumkernel
         {
             std::unique_lock<std::mutex> lock(mutexMapAccess);
             return roomInformationMap;
+        }
+
+
+        void ZoneManager::lockLists()
+        {
+            mutexMapAccess.lock();
+        }
+
+        void ZoneManager::unlockLists()
+        {
+            mutexMapAccess.unlock();
         }
 
     }

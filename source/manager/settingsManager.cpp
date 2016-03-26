@@ -42,40 +42,24 @@ namespace Raumkernel
         }
 
        
-        void SettingsManager::walkNode(const rapidxml::xml_node<>* _node, const std::string &_path, const int &_indent)
+        void SettingsManager::walkNode(pugi::xml_node _node, const std::string &_path, const int &_indent)
         {
-            const auto ind = std::string(_indent * 4, ' ');       
-            const rapidxml::node_type nodeType = _node->type();
+            const auto ind = std::string(_indent * 4, ' ');                   
             std::string path = "";
 
             // we do not want to have the "Application" node be stored in the path!
-            if (_indent > 1)         
+            if (_indent >= 1)         
                 path = _path;
 
-            switch (nodeType) 
+            for (auto childNode : _node.children())
             {
-                case rapidxml::node_element:            
-                                                          
-                    for (const rapidxml::xml_attribute<>* a = _node->first_attribute(); a; a = a->next_attribute()) 
-                    {
-                        // INFO: we may enter here to store attribute values to nodes/paths
-                        // e.g a map with the path as key and a sunmap of attribute keys + values
-                    }            
-                    for (const rapidxml::xml_node<>* n = _node->first_node(); n; n = n->next_sibling())
-                    {                            
-                        walkNode(n, path + "/" + _node->name(), _indent + 1);
-                    }                                                     
-                    break;
-
-                case rapidxml::node_data:         
-                    // we got a node data where there might be a value, so we store the value in the map with the path given in the recursive method
-                    logDebug("Found setting: " + path + " = " + std::string(_node->value()), CURRENT_POSITION);
-                    settingsMap.insert(std::make_pair(path, _node->value()));
-                    break;
-
-                default:                 
-                    break;
-            }
+                if (childNode.value() && !std::string(childNode.value()).empty())
+                {
+                    logDebug("Found setting: " + path + " = " + std::string(childNode.value()), CURRENT_POSITION);
+                    settingsMap.insert(std::make_pair(path, childNode.value()));
+                }
+                walkNode(childNode, path + "/" + childNode.name(), _indent + 1);
+            }                   
         }
 
 
@@ -91,8 +75,8 @@ namespace Raumkernel
 
             try
             {
-                rapidxml::xml_document<> doc;
-                rapidxml::xml_node<> *applicationNode;
+                pugi::xml_document doc;       
+                pugi::xml_node applicationNode;                
 
                 // we do have to have a settings file. if no file name is given or we are not able to open the file we have to crash the kernel!
                 if (_fileName.empty())
@@ -108,12 +92,10 @@ namespace Raumkernel
                     throw Raumkernel::Exception::RaumkernelException(Raumkernel::Exception::ExceptionType::EXCEPTIONTYPE_APPCRASH, CURRENT_POSITION, "Unrecoverable error! ABORT!", 101);
                 }
 
-                std::vector<char> buffer((std::istreambuf_iterator<char>(settingsFileStream)), std::istreambuf_iterator<char>());
-                buffer.push_back('\0');          
-                doc.parse<0>(&buffer[0]);
+                pugi::xml_parse_result result = doc.load_file(_fileName.c_str());
 
                 // find the root node which has to be the 'Application' node	
-                applicationNode = doc.first_node("Application", 0, false);
+                applicationNode = doc.child("Application");
                 if (!applicationNode)
                 {
                     logCritical("'Application' node not found in settings file! System will not be able to start!", CURRENT_POSITION);

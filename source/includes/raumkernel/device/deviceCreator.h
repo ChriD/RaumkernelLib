@@ -32,7 +32,7 @@
 #include <raumkernel/device/deviceMediaRenderer_RFVirtual.h>
 #include <raumkernel/device/deviceMediaServer.h>
 #include <raumkernel/device/deviceMediaServer_RF.h>
-#include <raumkernel/xml/rapidxml.hpp>
+#include <raumkernel/xml/pugixml/pugixml.hpp>
 
 #include <OpenHome/Net/Cpp/OhNet.h>
 #include <OpenHome/Net/Cpp/CpDevice.h>
@@ -55,9 +55,9 @@ namespace Raumkernel
                 std::shared_ptr<Devices::Device>  createDeviceFromDeviceXML(std::string _deviceXML);
                 
             protected:
-                void setDeviceInformationFromDeviceXML(std::shared_ptr<Device> _device, rapidxml::xml_node<> *_deviceNode);                           
-                std::shared_ptr<Devices::MediaRenderer> createMediaRendererFromDeviceNode(rapidxml::xml_node<> *_deviceNode);
-                std::shared_ptr<Devices::MediaServer> createMediaServerFromDeviceNode(rapidxml::xml_node<> *_deviceNode);
+                void setDeviceInformationFromDeviceXML(std::shared_ptr<Device> _device, pugi::xml_node _deviceNode);                           
+                std::shared_ptr<Devices::MediaRenderer> createMediaRendererFromDeviceNode(pugi::xml_node _deviceNode);
+                std::shared_ptr<Devices::MediaServer> createMediaServerFromDeviceNode(pugi::xml_node _deviceNode);
         };
 
     }

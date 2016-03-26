@@ -27,7 +27,7 @@
 
 #include <raumkernel/raumkernelBase.h>
 #include <raumkernel/media/item/mediaItems.h>
-#include <raumkernel/xml/rapidxml.hpp>
+#include <raumkernel/xml/pugixml/pugixml.hpp>
 
 namespace Raumkernel
 {
@@ -42,7 +42,7 @@ namespace Raumkernel
                 std::shared_ptr<Item::MediaItem> createMediaItemFromTrackMetadata(std::string _trackMetadata);
 
             protected:
-                std::shared_ptr<Item::MediaItem> createMediaItemFromXMLNode(rapidxml::xml_node<> *_xmlNode);
+                std::shared_ptr<Item::MediaItem> createMediaItemFromXMLNode(pugi::xml_node _xmlNode);
 
             private:
         };

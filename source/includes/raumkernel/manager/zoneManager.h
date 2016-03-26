@@ -33,7 +33,7 @@
 
 #include <raumkernel/manager/managerBase.h>
 #include <raumkernel/httpclient/httpClient.h>
-#include <raumkernel/xml/rapidxml.hpp>
+#include <raumkernel/xml/pugixml/pugixml.hpp>
 
 namespace Raumkernel
 {
@@ -169,6 +169,8 @@ namespace Raumkernel
                 */
                 EXPORT std::unordered_map<std::string, Manager::RoomInformation> getRoomInformationMap();
            
+                EXPORT void lockLists();
+                EXPORT void unlockLists();
 
                 /**
                 * this signal will be fired if the zone configuration changes
@@ -205,11 +207,11 @@ namespace Raumkernel
                 /**
                 * parses the room xml none for the given zones and adds them to the room map
                 */
-                void addRoomInformationFromXmlNode(rapidxml::xml_node<>* _parentNode, ZoneInformation *_zoneInformation = nullptr);
+                void addRoomInformationFromXmlNode(pugi::xml_node _parentNode, ZoneInformation *_zoneInformation = nullptr);
                 /**
                 * parses the zone xml none for the given zones and adds them to the map
                 */
-                void addZoneInformationFromXmlNode(rapidxml::xml_node<>* _parentNode);
+                void addZoneInformationFromXmlNode(pugi::xml_node _parentNode);
                 /**
                 * parses the zone xml string and fill the 'zoneInformationMap' and 'roomInformationMap'
                 */

@@ -56,11 +56,10 @@ namespace Raumkernel
             std::unique_lock<std::mutex> lock(mutexRequestMap);    
             std::int32_t cleanUpCount = 0;
 
-            logDebug("Try to cleanup requests", CURRENT_POSITION);
+            //logDebug("Try to cleanup requests", CURRENT_POSITION);
 
             for (auto it = requestMap.cbegin(); it != requestMap.cend();)
-            {          
-                logDebug("loop", CURRENT_POSITION);
+            {                          
                 // check if a request is deletable (finished reports will stay until they are marked as deletable which
                 // will be done by the request handler thread)
                 if (it->second->isDeleteable())
