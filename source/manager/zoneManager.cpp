@@ -286,6 +286,8 @@ namespace Raumkernel
                 ZoneInformation		zoneInfo;
                 zoneName = "";
 
+                logDebug("Parsing zone node...", CURRENT_POSITION);
+
                 attribute = zoneNode.attribute("udn");
                 if (attribute) zoneUDN = attribute.value();
 
@@ -330,7 +332,8 @@ namespace Raumkernel
 
             lastZoneConfigurationXML = _zonesXML;
             
-            std::unique_lock<std::mutex> lock(mutexMapAccess);    
+            std::unique_lock<std::mutex> lock(mutexMapAccess);   
+            getManagerEngineer()->getDeviceManager()->lockDeviceList();
             
             try
             {
@@ -368,6 +371,8 @@ namespace Raumkernel
                 // store the current update id
                 lastUpdateId = _updateId;
 
+                logDebug("Signaling one configuration changed!", CURRENT_POSITION);
+
                 // now the zone configuration has changed, we do fire a signal and we stay in locked scope
                 // so acces to the maps while signal is beeing processes id locked and the use of the map in the signal is ok
                 sigZoneConfigurationChanged.fire();
@@ -397,6 +402,8 @@ namespace Raumkernel
             }
 
             logDebug("Parsing zone configuration XML finished", CURRENT_POSITION);
+
+            getManagerEngineer()->getDeviceManager()->unlockDeviceList();
         }
 
 

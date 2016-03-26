@@ -101,8 +101,11 @@ namespace Raumkernel
             //std::shared_ptr<Devices::MediaRenderer_RaumfeldVirtual> mediaRenderer;
             std::shared_ptr<Devices::MediaRenderer> mediaRenderer;
 
+            getManagerEngineer()->getDeviceManager()->lockDeviceList();
+
             try
             {
+
                 // we will only get the the lists of virtual media renderers due they combine all other renderers
                 // the zoneUDN is the same UDN as the virtual Media Renderer has
                 mediaRenderer = getManagerEngineer()->getDeviceManager()->getMediaRenderer(zoneUDN);
@@ -166,6 +169,8 @@ namespace Raumkernel
             {
                 logError("Unknown Exception", CURRENT_FUNCTION);
             }
+
+            getManagerEngineer()->getDeviceManager()->unlockDeviceList();
         }
 
 

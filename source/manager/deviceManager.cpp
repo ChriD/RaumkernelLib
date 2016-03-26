@@ -231,7 +231,8 @@ namespace Raumkernel
 
         std::shared_ptr<Devices::MediaRenderer> DeviceManager::getMediaRenderer(std::string _udn)
         {
-            std::lock_guard<std::mutex> lock(mutexDeviceLists);
+            // lock has to be done from caller
+            //std::lock_guard<std::mutex> lock(mutexDeviceLists);
 
             _udn = Tools::CommonUtil::formatUDN(_udn);
             if (mediaRendererMap.find(_udn) == mediaRendererMap.end())
@@ -243,7 +244,8 @@ namespace Raumkernel
 
         std::shared_ptr<Devices::MediaServer> DeviceManager::getMediaServer(std::string _udn)
         {
-            std::lock_guard<std::mutex> lock(mutexDeviceLists);
+            // lock has to be done from caller
+            //std::lock_guard<std::mutex> lock(mutexDeviceLists);
 
             _udn = Tools::CommonUtil::formatUDN(_udn);
             if (mediaServerMap.find(_udn) == mediaServerMap.end())
@@ -255,7 +257,8 @@ namespace Raumkernel
 
         std::shared_ptr<Devices::MediaServer_Raumfeld> DeviceManager::getRaumfeldMediaServer()
         {
-            std::lock_guard<std::mutex> lock(mutexDeviceLists);
+            // lock has to be done from caller
+            //std::lock_guard<std::mutex> lock(mutexDeviceLists);
 
             if (raumfeldMediaServerUDN.empty())
                 return nullptr;

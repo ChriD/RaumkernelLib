@@ -221,19 +221,38 @@ namespace Raumkernel
             }
 
 
-            const char** headerCharPtrArray = (const char**)0;
+            const char** headerCharPtrArray = (const char**)0;            
             std::uint16_t index = 0;
 
             if (headerVars)
             {             
                 headerCharPtrArray = new const char*[headerVars->size() + 1];                
+                /*
                 for (auto it = headerVars->begin(); it != headerVars->end(); ++it)
                 {
                     headerCharPtrArray[index] = it->first.c_str();
                     index++;
                     headerCharPtrArray[index] = it->second.c_str();
                     index++;                  
-                }    
+                }   */
+                for (auto it = headerVars->begin(); it != headerVars->end(); ++it)
+                {
+                    char *dummy;
+                    
+                    dummy = new char[it->first.length() + 1];
+                    strncpy(dummy, it->first.c_str(), it->first.length());
+                    dummy[it->first.length()] = 0;
+
+                    headerCharPtrArray[index] = dummy;
+                    index++;
+
+                    dummy = new char[it->second.length() + 1];
+                    strncpy(dummy, it->second.c_str(), it->second.length());
+                    dummy[it->second.length()] = 0;
+
+                    headerCharPtrArray[index] = dummy;
+                    index++;
+                }
                 headerCharPtrArray[index] = 0;
             }               
 
@@ -247,9 +266,29 @@ namespace Raumkernel
                 std::this_thread::sleep_for(std::chrono::milliseconds(sleepTimeRequestPump));
             }
 
-            // TODO: @@@
-            //if (index > 0 )
-            //    delete[] headerCharPtrArray;
+            // TODO: @@@ will make crash but without we have a memory leak :(
+            /*if (index > 0)
+            {
+                for (int i = 0; i < sizeof(headerCharPtrArray); i++)
+                {
+                    delete headerCharPtrArray[i];                    
+                }
+                delete headerCharPtrArray;
+            }
+            */
+
+            if (headerCharPtrArray)
+            {
+                //const char** h = headerCharPtrArray;
+                while (*headerCharPtrArray)
+                {
+                    const char* name = *headerCharPtrArray++;
+                    const char* value = *headerCharPtrArray++;
+                    delete [] name;
+                    delete [] value;
+                }
+                //delete headerCharPtrArray;
+            }
 
         }
 
