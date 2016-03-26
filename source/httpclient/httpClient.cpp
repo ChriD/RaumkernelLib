@@ -154,23 +154,25 @@ namespace Raumkernel
 
         void HttpClient::requestHandlerThread()
         {
+            std::vector<std::shared_ptr<Raumkernel::HttpClient::HttpRequest>> finishedRequests;
+            bool unlockedList = false;
+
             // perform an endless loop until the abortion of the thread is called
             // this might be if the client will be destroyed or on a user specific call
             while (!abortRequestHandlerThread)
             {                            
                 try
                 {
+                    unlockedList = false;
+                    mutexRequestMap.lock();
+
                     for (auto it = requestMap.cbegin(); it != requestMap.cend();)
                     {
                         // when the request is finished we have to emit the callback attached to the request
                         // after the callback method has finished we set the request ready for deletion
                         if (it->second->isFinished() && !it->second->isDeleteable() && !it->second->isRedirection())
-                        {                          
-                            it->second->emitRequestFinishCallback();   
-                            it->second->setDeleteable(true);
-                            // well, the emited callback may have addad another request to the map and therfore the 
-                            // iterator is not valid/correct anmore, we have to begin again from the first item to the last
-                            it = requestMap.cbegin();
+                        {            
+                            finishedRequests.emplace_back(it->second);                                         
                         }
                         // when the request is a redirection we abort the current request (it will never finish) and 
                         // update the url of the request to the new redirection url. Then we start the request again.
@@ -188,8 +190,20 @@ namespace Raumkernel
                         {
                             ++it;
                         }
-
                     }
+
+                    mutexRequestMap.unlock();
+                    unlockedList = true;
+
+                    // after unlocking the map we may emit the request finished signals
+                    // we have to do this after the unlock because they signal receiver may create another request
+                    for (auto request : finishedRequests)
+                    {
+                        request->emitRequestFinishCallback();
+                        request->setDeleteable(true);
+                    }
+                        
+
                 }
                 // the emited callback method may throw errors, so we have to catch all kind of exceptions
                 // to be sure the client does not
@@ -211,6 +225,10 @@ namespace Raumkernel
                 {
                     logError("Unknown Exception", CURRENT_FUNCTION);
                 }
+
+                // we may get here when a error throws and we might not have unlocked the map mutex yet
+                if (!unlockedList)
+                    mutexRequestMap.unlock();
 
                 // remove deletable requests from the "pending request" map
                 cleanupRequests();
