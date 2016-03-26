@@ -24,8 +24,8 @@ namespace Raumkernel
             std::string	deviceType, deviceUDN, deviceFriendlyName, deviceModelDescription, deviceModelName, deviceManufacturer, deviceManufacturerUrl;
             std::string	deviceModelNumber, deviceSerialNumber;
 
-            deviceType = deviceNode.child("deviceType").value();
-            deviceUDN = deviceNode.child("UDN").value();
+            deviceType = deviceNode.child("deviceType").child_value();
+            deviceUDN = deviceNode.child("UDN").child_value();
             deviceUDN = Raumkernel::Tools::CommonUtil::formatUDN(deviceUDN);
             valueNode = deviceNode.child("friendlyName");
             if (valueNode)

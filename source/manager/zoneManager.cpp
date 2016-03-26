@@ -472,7 +472,8 @@ namespace Raumkernel
 
         std::string ZoneManager::getZoneUDNForRoomUDN(const  std::string &_roomUDN)
         {
-            std::unique_lock<std::mutex> lock(mutexMapAccess);
+            // lock has to be handled outside from caller!
+            //std::unique_lock<std::mutex> lock(mutexMapAccess);
             if (roomInformationMap.size() > 0)
             {
                 for (auto it : roomInformationMap)
@@ -522,7 +523,8 @@ namespace Raumkernel
 
         bool ZoneManager::existsZoneUDN(const std::string &_zoneUDN)
         {
-            std::unique_lock<std::mutex> lock(mutexMapAccess);
+            // lock has to be handled from caller
+            //std::unique_lock<std::mutex> lock(mutexMapAccess);
             if (zoneInformationMap.find(_zoneUDN) != zoneInformationMap.end())
                 return true;
             return false;
@@ -531,7 +533,8 @@ namespace Raumkernel
         
         bool ZoneManager::isRoomInZone(const std::string &_roomUDN, const std::string &_zoneUDN)
         {
-            std::unique_lock<std::mutex> lock(mutexMapAccess);
+            // lock has to be handled from caller
+            // std::unique_lock<std::mutex> lock(mutexMapAccess);
             auto it = roomInformationMap.find(_roomUDN);
             if(it == roomInformationMap.end())
                 return false;
@@ -542,15 +545,17 @@ namespace Raumkernel
 
 
         std::unordered_map<std::string, Manager::ZoneInformation> ZoneManager::getZoneInformationMap()
-        {            
-            std::unique_lock<std::mutex> lock(mutexMapAccess);
+        {      
+            // lock has to be handled from caller
+            //std::unique_lock<std::mutex> lock(mutexMapAccess);
             return zoneInformationMap;
         }
 
   
         std::unordered_map<std::string, Manager::RoomInformation> ZoneManager::getRoomInformationMap()
         {
-            std::unique_lock<std::mutex> lock(mutexMapAccess);
+            // lock has to be handled from caller
+            //std::unique_lock<std::mutex> lock(mutexMapAccess);
             return roomInformationMap;
         }
 
