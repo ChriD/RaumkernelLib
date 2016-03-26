@@ -59,7 +59,8 @@ namespace Raumkernel
             logDebug("Try to cleanup requests", CURRENT_POSITION);
 
             for (auto it = requestMap.cbegin(); it != requestMap.cend();)
-            {               
+            {          
+                logDebug("loop", CURRENT_POSITION);
                 // check if a request is deletable (finished reports will stay until they are marked as deletable which
                 // will be done by the request handler thread)
                 if (it->second->isDeleteable())
