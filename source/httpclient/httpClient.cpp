@@ -202,7 +202,7 @@ namespace Raumkernel
                         request->emitRequestFinishCallback();
                         request->setDeleteable(true);
                     }
-                        
+                    finishedRequests.clear();                        
 
                 }
                 // the emited callback method may throw errors, so we have to catch all kind of exceptions
