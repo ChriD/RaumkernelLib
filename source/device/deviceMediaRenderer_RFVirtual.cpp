@@ -1077,7 +1077,7 @@ namespace Raumkernel
         }
 
 
-        void MediaRenderer_RaumfeldVirtual::fadeToVolume(const std::uint32_t _volume, std::uint32_t _duration, bool sync)
+        void MediaRenderer_RaumfeldVirtual::fadeToVolume(const std::uint32_t _volume, std::uint32_t _duration, bool _sync)
         {
             logDebug("Calling 'fadeToVolume' on renderer '" + getDeviceDescription() + "'", CURRENT_FUNCTION);         
 
@@ -1092,6 +1092,8 @@ namespace Raumkernel
             // now after we are sure there is no fading thread anymore we can start the new one which will do our work
             logDebug("Starting fadeToVolume thread", CURRENT_POSITION);
             fadeToVolumeThreadObject = std::thread(&MediaRenderer_RaumfeldVirtual::fadeToVolumeThread, this, _volume, _duration);
+            if (_sync)
+                fadeToVolumeThreadObject.join();
         }
 
 

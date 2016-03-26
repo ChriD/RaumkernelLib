@@ -225,7 +225,8 @@ namespace Raumkernel
             std::uint16_t index = 0;
 
             if (headerVars)
-            {             
+            {    
+                auto inta = headerVars->size();
                 headerCharPtrArray = new const char*[headerVars->size() + 1];                
                 /*
                 for (auto it = headerVars->begin(); it != headerVars->end(); ++it)
@@ -250,10 +251,10 @@ namespace Raumkernel
                     strncpy(dummy, it->second.c_str(), it->second.length());
                     dummy[it->second.length()] = 0;
 
-                    headerCharPtrArray[index] = dummy;
+                    headerCharPtrArray[index] = dummy; // ####
                     index++;
                 }
-                headerCharPtrArray[index] = 0;
+                headerCharPtrArray[index] = 0;  // ###
             }               
 
 
@@ -287,7 +288,8 @@ namespace Raumkernel
                     delete [] name;
                     delete [] value;
                 }
-                //delete headerCharPtrArray;
+                //delete [] headerCharPtrArray;
+                // TODO: @@@ headerCharPtrArray has to be deleted, but it crashes.
             }
 
         }
