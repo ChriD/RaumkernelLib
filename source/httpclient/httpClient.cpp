@@ -172,7 +172,7 @@ namespace Raumkernel
                         // after the callback method has finished we set the request ready for deletion
                         if (it->second->isFinished() && !it->second->isDeleteable() && !it->second->isRedirection())
                         {            
-                            finishedRequests.emplace_back(it->second);                                         
+                            finishedRequests.push_back(it->second);                                         
                         }
                         // when the request is a redirection we abort the current request (it will never finish) and 
                         // update the url of the request to the new redirection url. Then we start the request again.

@@ -80,7 +80,7 @@ namespace Raumkernel
                                 std::string roomUDN = Tools::CommonUtil::formatUDN(roomStateInfoParts[0]);                            
                                 MediaRenderer_TransportState roomTransportState = Devices::ConversionTool::stringToTransportState(roomStateInfoParts[1]);   
 
-                                foundUDNs.emplace_back(roomUDN);
+                                foundUDNs.push_back(roomUDN);
 
                                 // we have to update the transport state on the room state map.
                                 // if the state for the room does not exists we create it first 
@@ -221,7 +221,7 @@ namespace Raumkernel
                                 std::string roomUDN = Tools::CommonUtil::formatUDN(roomStateInfoParts[0]);                                                             
                                 std::uint8_t volume = (std::uint8_t)Tools::NumUtil::toUInt32(roomStateInfoParts[1]);   
 
-                                foundUDNs.emplace_back(roomUDN);
+                                foundUDNs.push_back(roomUDN);
 
                                 // we have to update the volume on the room state map.
                                 // if the state for the room does not exists we create it first 
@@ -254,7 +254,7 @@ namespace Raumkernel
                                 std::string roomUDN = Tools::CommonUtil::formatUDN(roomStateInfoParts[0]);
                                 bool mute = Tools::CommonUtil::toBool(roomStateInfoParts[1]);
                                
-                                foundUDNs.emplace_back(roomUDN);
+                                foundUDNs.push_back(roomUDN);
                                 
                                 // we have to update the mute state on the room state map.
                                 // if the state for the room does not exists we create it first 
