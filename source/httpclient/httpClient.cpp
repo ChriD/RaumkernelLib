@@ -185,7 +185,10 @@ namespace Raumkernel
                         else if (it->second->isRedirection())
                         {
                             logDebug("Redirection to url '" + it->second->getRedirectionUrl() + "' found! Do redirect request " + it->second->getId(), CURRENT_POSITION);
+                            logDebug("Aborting current request", CURRENT_POSITION);
+                            // abort request becaus it waits for the body of the request which will never come
                             it->second->abort();  
+                            logDebug("Aborting of request object thread done!", CURRENT_POSITION);
                             it->second->setDeleteable(false);
                             it->second->setRequestUrl(it->second->getRedirectionUrl());                            
                             it->second->doRequest();
