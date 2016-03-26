@@ -164,6 +164,7 @@ namespace Raumkernel
                 try
                 {
                     unlockedList = false;
+                    logDebug("lockList", CURRENT_POSITION); // @@@
                     mutexRequestMap.lock();
 
                     for (auto it = requestMap.cbegin(); it != requestMap.cend();)
@@ -172,6 +173,7 @@ namespace Raumkernel
                         // after the callback method has finished we set the request ready for deletion
                         if (it->second->isFinished() && !it->second->isDeleteable() && !it->second->isRedirection())
                         {            
+                            logDebug("push back", CURRENT_POSITION); // @@@
                             finishedRequests.push_back(it->second);                                         
                         }
                         // when the request is a redirection we abort the current request (it will never finish) and 
@@ -188,20 +190,24 @@ namespace Raumkernel
                         // if request is pending, then do nothing...
                         else
                         {
+                            logDebug("it ++", CURRENT_POSITION); // @@@
                             ++it;
                         }
                     }
 
+                    logDebug("unlockList", CURRENT_POSITION); // @@@
                     mutexRequestMap.unlock();
                     unlockedList = true;
 
                     // after unlocking the map we may emit the request finished signals
                     // we have to do this after the unlock because they signal receiver may create another request
+                    logDebug("emit finsihed", CURRENT_POSITION); // @@@
                     for (auto request : finishedRequests)
                     {
                         request->emitRequestFinishCallback();
                         request->setDeleteable(true);
                     }
+                    logDebug("clear finished", CURRENT_POSITION); // @@@
                     finishedRequests.clear();                        
 
                 }
