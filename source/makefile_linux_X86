@@ -11,7 +11,7 @@ LDFLAGS = -shared -pthread -static-libgcc -static-libstdc++
 LIBSDEF =  libs/linux_x86/libohNetCore.a libs/linux_x86/libohNetDevices.a libs/linux_x86/libohNetProxies.a
 
 RM = rm -f 
-TARGET_LIB = libs/linux_x86/raumkern.so
+TARGET_LIB = libs/linux_x86/raumkernel.so
 
 SRCS = $(wildcard *.cpp)
 SRCS += $(wildcard device/*.cpp)
