@@ -167,8 +167,7 @@ namespace Raumkernel
             {                            
                 try
                 {
-                    unlockedList = false;
-                    logDebug("lockList", CURRENT_POSITION); // @@@
+                    unlockedList = false;                    
                     mutexRequestMap.lock();
 
                     for (auto it = requestMap.cbegin(); it != requestMap.cend();)
@@ -193,13 +192,11 @@ namespace Raumkernel
                         }
                         // if request is pending, then do nothing...
                         else
-                        {
-                            logDebug("it ++", CURRENT_POSITION); // @@@
+                        {                            
                             ++it;
                         }
                     }
-
-                    logDebug("unlockList", CURRENT_POSITION); // @@@
+                    
                     mutexRequestMap.unlock();
                     unlockedList = true;
 
@@ -207,13 +204,16 @@ namespace Raumkernel
                     // we have to do this after the unlock because they signal receiver may create another request                   
                     for (auto request : finishedRequests)
                     {
-                        logDebug("try emit", CURRENT_POSITION); // @@@
+                        logDebug("Emitting signal for finished requests", CURRENT_POSITION); 
                         request->emitRequestFinishCallback();
-                        logDebug("try emit finihed", CURRENT_POSITION); // @@@
+                        logDebug("Emitting signal for finished requests finished", CURRENT_POSITION); 
                         request->setDeleteable(true);
+                    }            
+                    if (finishedRequests.size())
+                    {
+                        logDebug("Clearing finished requests list", CURRENT_POSITION);
+                        finishedRequests.clear();
                     }
-                    logDebug("clear finished", CURRENT_POSITION); // @@@
-                    finishedRequests.clear();                        
 
                 }
                 // the emited callback method may throw errors, so we have to catch all kind of exceptions
