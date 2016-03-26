@@ -185,6 +185,8 @@ namespace Raumkernel
                         return "DIRECT_1";
                     case MediaRenderer_PlayMode::MRPLAYMODE_INTRO:
                         return "INTRO";
+                    case MediaRenderer_PlayMode::MRPLAYMODE_UNDEFINED:
+                        return "NORMAL";
                     }
                     return "NORMAL";
                 }

@@ -214,7 +214,7 @@ namespace Raumkernel
                 /**
                 * create a bendable or setable avTransportUri for a container
                 */
-                EXPORT static std::string createAVTransportUriForContainer(const std::string &_mediaServerUDN, const std::string &_containerId, const std::uint32_t &_trackIndex)
+                EXPORT static std::string createAVTransportUriForContainer(const std::string &_mediaServerUDN, const std::string &_containerId, const std::int32_t &_trackIndex = -1)
                 {
                     auto uri = Tools::UriUtil::encodeUriPart(_mediaServerUDN) + "?sid=" + Tools::UriUtil::encodeUriPart("urn:upnp-org:serviceId:ContentDirectory") + "&cid=" + Tools::UriUtil::encodeUriPart(_containerId) + "&md=0";
 
