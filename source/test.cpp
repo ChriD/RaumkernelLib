@@ -69,6 +69,11 @@ int main()
 
     rlutil::getkey();
 
+     auto UDN = raumkernel.getManagerEngineer()->getZoneManager()->getRoomUDNForRoomName("Bad");
+     auto ZONEUDN = raumkernel.getManagerEngineer()->getZoneManager()->getZoneUDNForRoomUDN(UDN); 
+     auto exists = raumkernel.getManagerEngineer()->getZoneManager()->existsZoneUDN(ZONEUDN);
+     auto rendererUDN = raumkernel.getManagerEngineer()->getZoneManager()->getRendererUDNForZoneUDN(ZONEUDN);
+
     //Raumkernel::HttpClient::HttpClient client;
 
     //client.request("http://10.0.0.5:47365/getZones", nullptr, nullptr, "Test User Data", std::bind(&MyClass::Callback, this, _1));
@@ -83,6 +88,7 @@ int main()
 
     rlutil::getkey();
 
+    /*
     std::shared_ptr<Raumkernel::Devices::MediaRenderer_RaumfeldVirtual> renderer = std::dynamic_pointer_cast<Raumkernel::Devices::MediaRenderer_RaumfeldVirtual>(raumkernel.getManagerEngineer()->getDeviceManager()->getMediaRenderer("uuid:b1b6b57e-5a8f-4286-b7b0-22568beb83f6"));
     renderer->play();
     
@@ -90,30 +96,9 @@ int main()
     renderer->getPositionInfo();
     renderer->getTransportInfo();
     renderer->getTransportSettings();
+    */
+  
 
-    rlutil::getkey();
-
-    renderer->pause();
-
-    rlutil::getkey();
-
-    renderer->play();
-
-    rlutil::getkey();
-
-    renderer->next();
-
-    rlutil::getkey();
-
-    renderer->previous();
-
-    rlutil::getkey();
-
-    renderer->stop();
-
-
-    rlutil::getkey();
-    
     /*
     // test object and the performance of the logger by writing 1000 log entries to console 
     Raumkernel::Log::Log	logObjectConsole;
