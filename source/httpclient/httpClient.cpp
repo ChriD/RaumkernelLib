@@ -200,11 +200,12 @@ namespace Raumkernel
                     unlockedList = true;
 
                     // after unlocking the map we may emit the request finished signals
-                    // we have to do this after the unlock because they signal receiver may create another request
-                    logDebug("emit finsihed", CURRENT_POSITION); // @@@
+                    // we have to do this after the unlock because they signal receiver may create another request                   
                     for (auto request : finishedRequests)
                     {
+                        logDebug("try emit", CURRENT_POSITION); // @@@
                         request->emitRequestFinishCallback();
+                        logDebug("try emit finihed", CURRENT_POSITION); // @@@
                         request->setDeleteable(true);
                     }
                     logDebug("clear finished", CURRENT_POSITION); // @@@
