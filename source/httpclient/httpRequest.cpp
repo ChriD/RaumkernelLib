@@ -222,12 +222,12 @@ namespace Raumkernel
 
 
             const char** headerCharPtrArray = (const char**)0;            
-            std::uint16_t index = 0;
+            std::uint16_t index = 0;            
 
             if (headerVars)
             {    
-                auto inta = headerVars->size();
-                headerCharPtrArray = new const char*[headerVars->size() + 1];                
+                //auto inta = headerVars->size();
+                //headerCharPtrArray = new const char*[headerVars->size() + 1];                
                 /*
                 for (auto it = headerVars->begin(); it != headerVars->end(); ++it)
                 {
@@ -236,6 +236,7 @@ namespace Raumkernel
                     headerCharPtrArray[index] = it->second.c_str();
                     index++;                  
                 }   */
+                /*
                 for (auto it = headerVars->begin(); it != headerVars->end(); ++it)
                 {
                     char *dummy;
@@ -255,11 +256,15 @@ namespace Raumkernel
                     index++;
                 }
                 headerCharPtrArray[index] = 0;  // ###
+                */             
             }               
 
+            std::unordered_map<std::string, std::string> header;
+            if (headerVars != nullptr)
+                header = *headerVars;
 
             std::string pathAndQuery = "/" + parsedUrl.m_Path + query;
-            conn.request("GET", pathAndQuery.c_str(), headerCharPtrArray);
+            conn.request("GET", pathAndQuery.c_str(), header);
 
             while (conn.outstanding() && !stopRequestThread)
             {

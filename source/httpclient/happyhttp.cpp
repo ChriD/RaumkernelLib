@@ -301,7 +301,8 @@ Connection::~Connection()
 
 void Connection::request( const char* method,
 	const char* url,
-	const char* headers[],
+	//const char* headers[],
+    std::unordered_map<std::string, std::string> headers,
 	const unsigned char* body,
 	int bodysize )
 {
@@ -311,18 +312,10 @@ void Connection::request( const char* method,
 	// check headers for content-length
 	// TODO: check for "Host" and "Accept-Encoding" too
 	// and avoid adding them ourselves in putrequest()
-	if( headers )
+	if( headers.size() )
 	{
-		const char** h = headers;
-		while( *h )
-		{
-			const char* name = *h++;
-			const char* value = *h++;
-			assert( value != 0 );	// name with no value!
-
-			if( 0==_stricmp( name, "content-length" ) )
-				gotcontentlength = true;
-		}
+        if (headers.find("content-length") != headers.end())
+            gotcontentlength = true;
 	}
 
 	putrequest( method, url );
@@ -330,15 +323,12 @@ void Connection::request( const char* method,
 	if( body && !gotcontentlength )
 		putheader( "Content-Length", bodysize );
 
-	if( headers )
-	{
-		const char** h = headers;
-		while( *h )
-		{
-			const char* name = *h++;
-			const char* value = *h++;
-			putheader( name, value );
-		}
+    if (headers.size())
+    {
+        for (auto it : headers)
+        {
+            putheader(it.first.c_str(), it.second.c_str());            
+        }
 	}
 	endheaders();
 

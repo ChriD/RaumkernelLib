@@ -31,6 +31,7 @@
 
 #include <string>
 #include <map>
+#include <unordered_map>
 #include <vector>
 #include <deque>
 
@@ -187,7 +188,8 @@ public:
 	// url is only path part: eg  "/index.html"
 	// headers is array of name/value pairs, terminated by a null-ptr
 	// body & bodysize specify body data of request (eg values for a form)
-	void request( const char* method, const char* url, const char* headers[]=0,
+	//void request( const char* method, const char* url, const char* headers[]=0,
+    void request(const char* method, const char* url, std::unordered_map<std::string, std::string>,
 		const unsigned char* body=0, int bodysize=0 );
 
 	// ---------------------------
