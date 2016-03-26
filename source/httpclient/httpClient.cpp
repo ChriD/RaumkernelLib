@@ -56,6 +56,8 @@ namespace Raumkernel
             std::unique_lock<std::mutex> lock(mutexRequestMap);    
             std::int32_t cleanUpCount = 0;
 
+            logDebug("Try to cleanup requests", CURRENT_POSITION);
+
             for (auto it = requestMap.cbegin(); it != requestMap.cend();)
             {               
                 // check if a request is deletable (finished reports will stay until they are marked as deletable which
@@ -95,6 +97,8 @@ namespace Raumkernel
         {                                 
             // be sure threads don't interfere each others
             std::unique_lock<std::mutex> lock(mutexRequestMap);
+
+            logDebug("Try to create new request: " + _requestUrl, CURRENT_POSITION);
 
             // create a new request object which will be stored in a map. Those requet object holds the headers and post vars and some other
             // useful data as the callback function when the request is finished
@@ -170,8 +174,7 @@ namespace Raumkernel
                     for (auto it = requestMap.cbegin(); it != requestMap.cend();)
                     {
                         // when the request is finished we have to emit the callback attached to the request
-                        // after the callback method has finished we set the request ready for deletion
-                        logDebug(std::to_string(requestMap.size()), CURRENT_POSITION); // @@@
+                        // after the callback method has finished we set the request ready for deletion                        
                         if (it->second->isFinished() && !it->second->isDeleteable() && !it->second->isRedirection())
                         {                
                             finishedRequests.push_back(it->second);  
