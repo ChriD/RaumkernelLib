@@ -73,8 +73,8 @@ namespace Raumkernel
 
             logDebug("Try to create device from device XML", CURRENT_POSITION);
 
-            // to parse the string we have to put it ino char* (because c_str() returns const char*)
-            pugi::xml_parse_result result = doc.load_string(_deviceXML.c_str());
+           
+            pugi::xml_parse_result result = doc.load_string(_deviceXML.c_str());            
 
             // find the root node which has to be the 'device' node	
             rootNode = doc.child("root");

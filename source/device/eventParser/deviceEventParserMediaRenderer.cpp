@@ -193,7 +193,7 @@ namespace Raumkernel
                 */
 
                 Devices::MediaRenderer *mediaRenderer = (Devices::MediaRenderer*)device;
-                bool anyStateChanged = false, volumeStateChanged = false, muteStateChanged;
+                bool anyStateChanged = false, volumeStateChanged = false, muteStateChanged= false;
 
                 logDebug("A property on RenderingControl proxy has changed (Device: " + mediaRenderer->getUDN() + ")", CURRENT_POSITION);
 
