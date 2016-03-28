@@ -490,7 +490,8 @@ namespace Raumkernel
 
         std::string ZoneManager::getRoomUDNForRoomName(const std::string &_roomName)
         {
-            std::unique_lock<std::mutex> lock(mutexMapAccess);
+            // lock has to be handled outside from caller!
+            //std::unique_lock<std::mutex> lock(mutexMapAccess);
             if (roomInformationMap.size() > 0)
             {
                 for (auto it : roomInformationMap)
@@ -513,8 +514,9 @@ namespace Raumkernel
 
 
         bool ZoneManager::existsRoomUDN(const std::string &_roomUDN)
-        {            
-            std::unique_lock<std::mutex> lock(mutexMapAccess);
+        {     
+            // lock has to be handled outside from caller!
+            //std::unique_lock<std::mutex> lock(mutexMapAccess);
             if (roomInformationMap.find(_roomUDN) != roomInformationMap.end())
                 return true;
             return false;

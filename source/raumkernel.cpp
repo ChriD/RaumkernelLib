@@ -21,7 +21,7 @@ namespace Raumkernel
     } 
 
 
-    void Raumkernel::init(Log::LogType _defaultLogLevel, std::string _settingsFileName)
+    void Raumkernel::init(Log::LogType _defaultLogLevel, const std::string &_settingsFileName, const std::string &_logFilePath)
     {
         // create the log object (if not already provided) which will be used throughout the whole kernel and his modules 
         if (logObject == nullptr)
@@ -29,9 +29,16 @@ namespace Raumkernel
             // we do register some log adapters for the log object with standard values and set to log only ERRORS and CRITICALERRORS
             // the log level itself will be set after reading the settings file but we want to have logging while reading settings file
             // so we create the logObject with some standard values
-            logObject = std::shared_ptr<Log::Log>(new Log::Log());            
-            logObject->registerAdapter(std::shared_ptr<Log::LogAdapter>(new Log::LogAdapter_Console()));
-            logObject->registerAdapter(std::shared_ptr<Log::LogAdapter>(new Log::LogAdapter_File()));
+            logObject = std::shared_ptr<Log::Log>(new Log::Log());      
+
+            auto logAdapterConsole = std::shared_ptr<Log::LogAdapter_Console>(new Log::LogAdapter_Console());
+            logObject->registerAdapter(logAdapterConsole);
+
+            auto logAdapterFile = std::shared_ptr<Log::LogAdapter_File>(new Log::LogAdapter_File());
+            if (!_logFilePath.empty()) 
+                logAdapterFile->setLogFilePath(_logFilePath);
+            logObject->registerAdapter(logAdapterFile);
+
             logObject->setLogLevel(_defaultLogLevel);
         }
 
@@ -67,6 +74,7 @@ namespace Raumkernel
         // lets do some subscriptions
         connections.connect(managerEngineer->getDeviceManager()->sigMediaServerAdded, this, &Raumkernel::onMediaServerAdded);
         connections.connect(managerEngineer->getDeviceManager()->sigMediaServerRemoved, this, &Raumkernel::onMediaServerRemoved);        
+        connections.connect(logObject->sigLog, this, &Raumkernel::onLog);
         
             
         // let's wake up the UPNP Stack and start discovering UPNP devices of all kinds
@@ -111,6 +119,11 @@ namespace Raumkernel
     bool Raumkernel::isRaumfeldSystemOnline()
     {
         return isOnline;
+    }
+
+    void Raumkernel::onLog(Log::LogData _logData)
+    {
+        sigLog.fire(_logData);
     }
 
 

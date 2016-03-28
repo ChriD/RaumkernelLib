@@ -51,6 +51,7 @@ namespace Raumkernel
                 EXPORT LogAdapter_File();
                 EXPORT virtual ~LogAdapter_File();
                 virtual void log(LogData _logData) override;
+                virtual void setLogFilePath(const std::string &_path);
 
             protected:
                 std::string getCurrentDateTimeFileString();

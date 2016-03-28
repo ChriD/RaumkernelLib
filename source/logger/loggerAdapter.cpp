@@ -70,6 +70,12 @@ namespace Raumkernel
         }
 
 
+        void LogAdapter_File::setLogFilePath(const std::string &_path)
+        {
+            logFilePath = _path;
+        }
+
+
         void LogAdapter_File::log(LogData _logData)
         {            
             std::string logString = getFormattedCurrentDateTimeString(_logData.logDateTimeStamp) + " " + Raumkernel::Tools::StringUtil::padR(getLogTypeString(_logData.type) + ":", 10) + _logData.log + " [" + _logData.location + "]";
