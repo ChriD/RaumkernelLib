@@ -64,8 +64,8 @@ int main()
 
     Raumkernel::Raumkernel  raumkernel;
 
-    raumkernel.init(Raumkernel::Log::LogType::LOGTYPE_DEBUG);
-    //raumkernel.getManagerEngineer()->getZoneManager()->sigZoneConfigurationChanged
+    raumkernel.initLogObject();
+    raumkernel.init();
 
     rlutil::getkey();
 
