@@ -94,7 +94,7 @@ namespace Raumkernel
             {
                 // we throw an exception if we can not open the log file, but we throw it of type recoverable, that means the app won't crash in this situation
                 throw Raumkernel::Exception::RaumkernelException(Raumkernel::Exception::ExceptionType::EXCEPTIONTYPE_RECOVERABLE, CURRENT_POSITION, "File '" + logFilePath + logFileName + "' could not be created");
-            }
+            }         
         }
 
 

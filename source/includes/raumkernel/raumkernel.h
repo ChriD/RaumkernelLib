@@ -38,7 +38,16 @@ namespace Raumkernel
         public:
             EXPORT Raumkernel();
             EXPORT virtual ~Raumkernel();
-            EXPORT virtual void init(Log::LogType _defaultLogLevel = Log::LogType::LOGTYPE_ERROR, const std::string &_settingsFileName = "", const std::string &_logFilePath = "");
+            /**
+            * initializes the kernel object
+            * 'initLogObject' has to be called before if a logger is not set from external source
+            */
+            EXPORT virtual void init(const std::string &_settingsFileName = "");
+            /**
+            * initializes the log object
+            * has to be called before init!
+            */
+            EXPORT virtual void initLogObject(Log::LogType _defaultLogLevel = Log::LogType::LOGTYPE_ERROR, const std::string &_logFilePath = "logs/");
             /**
             * returns the version info object/structure for the raumkernel
             */
