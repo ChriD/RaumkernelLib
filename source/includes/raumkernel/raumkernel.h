@@ -47,7 +47,7 @@ namespace Raumkernel
             * initializes the log object
             * has to be called before init!
             */
-            EXPORT virtual void initLogObject(Log::LogType _defaultLogLevel = Log::LogType::LOGTYPE_ERROR, const std::string &_logFilePath = "logs/");
+            EXPORT virtual void initLogObject(Log::LogType _defaultLogLevel = Log::LogType::LOGTYPE_ERROR, const std::string &_logFilePath = "logs/", const std::vector<std::shared_ptr<Log::LogAdapter>> &_adapterList = std::vector<std::shared_ptr<Log::LogAdapter>>());
             /**
             * returns the version info object/structure for the raumkernel
             */

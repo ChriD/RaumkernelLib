@@ -5,8 +5,7 @@
          To get the available options for 'LogLevel' and 'LogAdapter' please take a look at the documentation -->
     <Log>
       <Level>DEBUG</Level>
-      <Adapters>FILE;CONSOLE</Adapters>         
-    </Log>
+     </Log>
     
     <!-- the kernel uses the first available networkadapter found in the system. This may not be the one you like to use! -->
     <!-- so you can type in the network adapter name the application should use!-->
