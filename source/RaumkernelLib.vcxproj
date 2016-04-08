@@ -53,6 +53,7 @@
     <LinkIncremental>true</LinkIncremental>
     <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);includes</IncludePath>
     <IntDir>$(SolutionDir)temp\$(Configuration)\</IntDir>
+    <TargetName>raumkernel</TargetName>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
