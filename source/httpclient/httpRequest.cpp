@@ -1,17 +1,17 @@
 
-#include <raumkernel/httpclient/httpRequest.h>
+#include <httpclient/httpRequest.h>
 
-namespace Raumkernel
+namespace RaumserverInstaller
 {
     namespace HttpClient
     {
 
-        HttpRequest::HttpRequest() : RaumkernelBase()
+        HttpRequest::HttpRequest() : RaumserverInstallerBase()
         {     
         }
        
               
-        HttpRequest::HttpRequest(const std::string _requestId, const std::string _requestUrl, std::shared_ptr<std::unordered_map<std::string, std::string>> _headerVars, std::shared_ptr<std::unordered_map<std::string, std::string>> _postVars, void *_userData, std::function<void(HttpRequest*)> _callback) : RaumkernelBase()
+        HttpRequest::HttpRequest(const std::string _requestId, const std::string _requestUrl, std::shared_ptr<std::unordered_map<std::string, std::string>> _headerVars, std::shared_ptr<std::unordered_map<std::string, std::string>> _postVars, void *_userData, std::function<void(HttpRequest*)> _callback) : RaumserverInstallerBase()
         {   
             httpResponse = nullptr;
             setRequestUrl(_requestUrl);
@@ -264,12 +264,34 @@ namespace Raumkernel
                 header = *headerVars;
 
             std::string pathAndQuery = "/" + parsedUrl.m_Path + query;
-            conn.request("GET", pathAndQuery.c_str(), header);
 
-            while (conn.outstanding() && !stopRequestThread)
+            try
             {
-                conn.pump();
-                std::this_thread::sleep_for(std::chrono::milliseconds(sleepTimeRequestPump));
+                conn.request("GET", pathAndQuery.c_str(), header);            
+
+                while (conn.outstanding() && !stopRequestThread)
+                {
+                    conn.pump();
+                    std::this_thread::sleep_for(std::chrono::milliseconds(sleepTimeRequestPump));
+                }
+            }
+            catch (happyhttp::Wobbly _ex)
+            {
+                // something went wrong (maybe a access denied or something like that)
+                // due we will get not callbacls now we have to finish the request and set an error              
+                httpResponse = std::shared_ptr<HttpResponse>(new HttpResponse());
+                httpResponse->setData(_ex.what());                
+                httpResponse->setErrorCode(999);
+                setResponse(httpResponse);                
+                finished = true;
+            }
+            catch ( ... )
+            { 
+                httpResponse = std::shared_ptr<HttpResponse>(new HttpResponse());
+                httpResponse->setData("unknown Error");
+                httpResponse->setErrorCode(998);
+                setResponse(httpResponse);
+                finished = true;
             }
 
             // TODO: @@@ will make crash but without we have a memory leak :(
