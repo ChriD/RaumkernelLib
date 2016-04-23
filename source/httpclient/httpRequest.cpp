@@ -1,17 +1,17 @@
 
-#include <httpclient/httpRequest.h>
+#include <raumkernel/httpclient/httpRequest.h>
 
-namespace RaumserverInstaller
+namespace Raumkernel
 {
     namespace HttpClient
     {
 
-        HttpRequest::HttpRequest() : RaumserverInstallerBase()
+        HttpRequest::HttpRequest() : RaumkernelBase()
         {     
         }
        
               
-        HttpRequest::HttpRequest(const std::string _requestId, const std::string _requestUrl, std::shared_ptr<std::unordered_map<std::string, std::string>> _headerVars, std::shared_ptr<std::unordered_map<std::string, std::string>> _postVars, void *_userData, std::function<void(HttpRequest*)> _callback) : RaumserverInstallerBase()
+        HttpRequest::HttpRequest(const std::string _requestId, const std::string _requestUrl, std::shared_ptr<std::unordered_map<std::string, std::string>> _headerVars, std::shared_ptr<std::unordered_map<std::string, std::string>> _postVars, void *_userData, std::function<void(HttpRequest*)> _callback) : RaumkernelBase()
         {   
             httpResponse = nullptr;
             setRequestUrl(_requestUrl);
