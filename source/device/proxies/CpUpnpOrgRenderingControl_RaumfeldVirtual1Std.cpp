@@ -1,4 +1,4 @@
-#include <raumkernel/device/proxies/CpUpnpOrgRenderingControl_RaumfeldVirtual1.h>
+#include "raumkernel/device/proxies/CpUpnpOrgRenderingControl_RaumfeldVirtual1.h"
 #include <OpenHome/Net/Core/CpProxy.h>
 #include <OpenHome/Net/Private/CpiService.h>
 #include <OpenHome/Private/Thread.h>
@@ -25,8 +25,8 @@ private:
 };
 
 SyncGetMuteUpnpOrgRenderingControl_RaumfeldVirtual1Cpp::SyncGetMuteUpnpOrgRenderingControl_RaumfeldVirtual1Cpp(CpProxyUpnpOrgRenderingControl_RaumfeldVirtual1Cpp& aProxy, bool& aCurrentMute)
-: iService(aProxy)
-, iCurrentMute(aCurrentMute)
+    : iService(aProxy)
+    , iCurrentMute(aCurrentMute)
 {
 }
 
@@ -47,7 +47,7 @@ private:
 };
 
 SyncSetMuteUpnpOrgRenderingControl_RaumfeldVirtual1Cpp::SyncSetMuteUpnpOrgRenderingControl_RaumfeldVirtual1Cpp(CpProxyUpnpOrgRenderingControl_RaumfeldVirtual1Cpp& aProxy)
-: iService(aProxy)
+    : iService(aProxy)
 {
 }
 
@@ -69,8 +69,8 @@ private:
 };
 
 SyncGetRoomVolumeUpnpOrgRenderingControl_RaumfeldVirtual1Cpp::SyncGetRoomVolumeUpnpOrgRenderingControl_RaumfeldVirtual1Cpp(CpProxyUpnpOrgRenderingControl_RaumfeldVirtual1Cpp& aProxy, uint32_t& aCurrentVolume)
-: iService(aProxy)
-, iCurrentVolume(aCurrentVolume)
+    : iService(aProxy)
+    , iCurrentVolume(aCurrentVolume)
 {
 }
 
@@ -91,7 +91,7 @@ private:
 };
 
 SyncSetRoomVolumeUpnpOrgRenderingControl_RaumfeldVirtual1Cpp::SyncSetRoomVolumeUpnpOrgRenderingControl_RaumfeldVirtual1Cpp(CpProxyUpnpOrgRenderingControl_RaumfeldVirtual1Cpp& aProxy)
-: iService(aProxy)
+    : iService(aProxy)
 {
 }
 
@@ -113,8 +113,8 @@ private:
 };
 
 SyncGetRoomMuteUpnpOrgRenderingControl_RaumfeldVirtual1Cpp::SyncGetRoomMuteUpnpOrgRenderingControl_RaumfeldVirtual1Cpp(CpProxyUpnpOrgRenderingControl_RaumfeldVirtual1Cpp& aProxy, bool& aCurrentMute)
-: iService(aProxy)
-, iCurrentMute(aCurrentMute)
+    : iService(aProxy)
+    , iCurrentMute(aCurrentMute)
 {
 }
 
@@ -135,7 +135,7 @@ private:
 };
 
 SyncSetRoomMuteUpnpOrgRenderingControl_RaumfeldVirtual1Cpp::SyncSetRoomMuteUpnpOrgRenderingControl_RaumfeldVirtual1Cpp(CpProxyUpnpOrgRenderingControl_RaumfeldVirtual1Cpp& aProxy)
-: iService(aProxy)
+    : iService(aProxy)
 {
 }
 
@@ -156,7 +156,7 @@ private:
 };
 
 SyncChangeVolumeUpnpOrgRenderingControl_RaumfeldVirtual1Cpp::SyncChangeVolumeUpnpOrgRenderingControl_RaumfeldVirtual1Cpp(CpProxyUpnpOrgRenderingControl_RaumfeldVirtual1Cpp& aProxy)
-: iService(aProxy)
+    : iService(aProxy)
 {
 }
 
@@ -178,8 +178,8 @@ private:
 };
 
 SyncGetVolumeUpnpOrgRenderingControl_RaumfeldVirtual1Cpp::SyncGetVolumeUpnpOrgRenderingControl_RaumfeldVirtual1Cpp(CpProxyUpnpOrgRenderingControl_RaumfeldVirtual1Cpp& aProxy, uint32_t& aCurrentVolume)
-: iService(aProxy)
-, iCurrentVolume(aCurrentVolume)
+    : iService(aProxy)
+    , iCurrentVolume(aCurrentVolume)
 {
 }
 
@@ -200,7 +200,7 @@ private:
 };
 
 SyncSetVolumeUpnpOrgRenderingControl_RaumfeldVirtual1Cpp::SyncSetVolumeUpnpOrgRenderingControl_RaumfeldVirtual1Cpp(CpProxyUpnpOrgRenderingControl_RaumfeldVirtual1Cpp& aProxy)
-: iService(aProxy)
+    : iService(aProxy)
 {
 }
 
@@ -211,7 +211,7 @@ void SyncSetVolumeUpnpOrgRenderingControl_RaumfeldVirtual1Cpp::CompleteRequest(I
 
 
 CpProxyUpnpOrgRenderingControl_RaumfeldVirtual1Cpp::CpProxyUpnpOrgRenderingControl_RaumfeldVirtual1Cpp(CpDeviceCpp& aDevice)
-: CpProxy("schemas-upnp-org", "RenderingControl", 1, aDevice.Device())
+    : iCpProxy("schemas-upnp-org", "RenderingControl", 1, aDevice.Device())
 {
     OpenHome::Net::Parameter* param;
     TChar** allowedValues;
@@ -305,7 +305,7 @@ CpProxyUpnpOrgRenderingControl_RaumfeldVirtual1Cpp::CpProxyUpnpOrgRenderingContr
 
     Functor functor;
     functor = MakeFunctor(*this, &CpProxyUpnpOrgRenderingControl_RaumfeldVirtual1Cpp::LastChangePropertyChanged);
-    iLastChange = new PropertyString(aDevice.Device().GetCpStack().Env(), "LastChange", functor);
+    iLastChange = new PropertyString("LastChange", functor);
     AddProperty(iLastChange);
 }
 
@@ -332,7 +332,7 @@ void CpProxyUpnpOrgRenderingControl_RaumfeldVirtual1Cpp::SyncGetMute(uint32_t aI
 
 void CpProxyUpnpOrgRenderingControl_RaumfeldVirtual1Cpp::BeginGetMute(uint32_t aInstanceID, const std::string& aChannel, FunctorAsync& aFunctor)
 {
-    Invocation* invocation = iService->Invocation(*iActionGetMute, aFunctor);
+    Invocation* invocation = iCpProxy.GetService().Invocation(*iActionGetMute, aFunctor);
     TUint inIndex = 0;
     const Action::VectorParameters& inParams = iActionGetMute->InputParameters();
     invocation->AddInput(new ArgumentUint(*inParams[inIndex++], aInstanceID));
@@ -343,7 +343,7 @@ void CpProxyUpnpOrgRenderingControl_RaumfeldVirtual1Cpp::BeginGetMute(uint32_t a
     TUint outIndex = 0;
     const Action::VectorParameters& outParams = iActionGetMute->OutputParameters();
     invocation->AddOutput(new ArgumentBool(*outParams[outIndex++]));
-    iInvocable.InvokeAction(*invocation);
+    iCpProxy.GetInvocable().InvokeAction(*invocation);
 }
 
 void CpProxyUpnpOrgRenderingControl_RaumfeldVirtual1Cpp::EndGetMute(IAsync& aAsync, bool& aCurrentMute)
@@ -371,7 +371,7 @@ void CpProxyUpnpOrgRenderingControl_RaumfeldVirtual1Cpp::SyncSetMute(uint32_t aI
 
 void CpProxyUpnpOrgRenderingControl_RaumfeldVirtual1Cpp::BeginSetMute(uint32_t aInstanceID, const std::string& aChannel, bool aDesiredMute, FunctorAsync& aFunctor)
 {
-    Invocation* invocation = iService->Invocation(*iActionSetMute, aFunctor);
+    Invocation* invocation = iCpProxy.GetService().Invocation(*iActionSetMute, aFunctor);
     TUint inIndex = 0;
     const Action::VectorParameters& inParams = iActionSetMute->InputParameters();
     invocation->AddInput(new ArgumentUint(*inParams[inIndex++], aInstanceID));
@@ -380,7 +380,7 @@ void CpProxyUpnpOrgRenderingControl_RaumfeldVirtual1Cpp::BeginSetMute(uint32_t a
         invocation->AddInput(new ArgumentString(*inParams[inIndex++], buf));
     }
     invocation->AddInput(new ArgumentBool(*inParams[inIndex++], aDesiredMute));
-    iInvocable.InvokeAction(*invocation);
+    iCpProxy.GetInvocable().InvokeAction(*invocation);
 }
 
 void CpProxyUpnpOrgRenderingControl_RaumfeldVirtual1Cpp::EndSetMute(IAsync& aAsync)
@@ -406,7 +406,7 @@ void CpProxyUpnpOrgRenderingControl_RaumfeldVirtual1Cpp::SyncGetRoomVolume(uint3
 
 void CpProxyUpnpOrgRenderingControl_RaumfeldVirtual1Cpp::BeginGetRoomVolume(uint32_t aInstanceID, const std::string& aRoom, FunctorAsync& aFunctor)
 {
-    Invocation* invocation = iService->Invocation(*iActionGetRoomVolume, aFunctor);
+    Invocation* invocation = iCpProxy.GetService().Invocation(*iActionGetRoomVolume, aFunctor);
     TUint inIndex = 0;
     const Action::VectorParameters& inParams = iActionGetRoomVolume->InputParameters();
     invocation->AddInput(new ArgumentUint(*inParams[inIndex++], aInstanceID));
@@ -417,7 +417,7 @@ void CpProxyUpnpOrgRenderingControl_RaumfeldVirtual1Cpp::BeginGetRoomVolume(uint
     TUint outIndex = 0;
     const Action::VectorParameters& outParams = iActionGetRoomVolume->OutputParameters();
     invocation->AddOutput(new ArgumentUint(*outParams[outIndex++]));
-    iInvocable.InvokeAction(*invocation);
+    iCpProxy.GetInvocable().InvokeAction(*invocation);
 }
 
 void CpProxyUpnpOrgRenderingControl_RaumfeldVirtual1Cpp::EndGetRoomVolume(IAsync& aAsync, uint32_t& aCurrentVolume)
@@ -445,7 +445,7 @@ void CpProxyUpnpOrgRenderingControl_RaumfeldVirtual1Cpp::SyncSetRoomVolume(uint3
 
 void CpProxyUpnpOrgRenderingControl_RaumfeldVirtual1Cpp::BeginSetRoomVolume(uint32_t aInstanceID, const std::string& aRoom, uint32_t aDesiredVolume, FunctorAsync& aFunctor)
 {
-    Invocation* invocation = iService->Invocation(*iActionSetRoomVolume, aFunctor);
+    Invocation* invocation = iCpProxy.GetService().Invocation(*iActionSetRoomVolume, aFunctor);
     TUint inIndex = 0;
     const Action::VectorParameters& inParams = iActionSetRoomVolume->InputParameters();
     invocation->AddInput(new ArgumentUint(*inParams[inIndex++], aInstanceID));
@@ -454,7 +454,7 @@ void CpProxyUpnpOrgRenderingControl_RaumfeldVirtual1Cpp::BeginSetRoomVolume(uint
         invocation->AddInput(new ArgumentString(*inParams[inIndex++], buf));
     }
     invocation->AddInput(new ArgumentUint(*inParams[inIndex++], aDesiredVolume));
-    iInvocable.InvokeAction(*invocation);
+    iCpProxy.GetInvocable().InvokeAction(*invocation);
 }
 
 void CpProxyUpnpOrgRenderingControl_RaumfeldVirtual1Cpp::EndSetRoomVolume(IAsync& aAsync)
@@ -480,7 +480,7 @@ void CpProxyUpnpOrgRenderingControl_RaumfeldVirtual1Cpp::SyncGetRoomMute(uint32_
 
 void CpProxyUpnpOrgRenderingControl_RaumfeldVirtual1Cpp::BeginGetRoomMute(uint32_t aInstanceID, const std::string& aRoom, FunctorAsync& aFunctor)
 {
-    Invocation* invocation = iService->Invocation(*iActionGetRoomMute, aFunctor);
+    Invocation* invocation = iCpProxy.GetService().Invocation(*iActionGetRoomMute, aFunctor);
     TUint inIndex = 0;
     const Action::VectorParameters& inParams = iActionGetRoomMute->InputParameters();
     invocation->AddInput(new ArgumentUint(*inParams[inIndex++], aInstanceID));
@@ -491,7 +491,7 @@ void CpProxyUpnpOrgRenderingControl_RaumfeldVirtual1Cpp::BeginGetRoomMute(uint32
     TUint outIndex = 0;
     const Action::VectorParameters& outParams = iActionGetRoomMute->OutputParameters();
     invocation->AddOutput(new ArgumentBool(*outParams[outIndex++]));
-    iInvocable.InvokeAction(*invocation);
+    iCpProxy.GetInvocable().InvokeAction(*invocation);
 }
 
 void CpProxyUpnpOrgRenderingControl_RaumfeldVirtual1Cpp::EndGetRoomMute(IAsync& aAsync, bool& aCurrentMute)
@@ -519,7 +519,7 @@ void CpProxyUpnpOrgRenderingControl_RaumfeldVirtual1Cpp::SyncSetRoomMute(uint32_
 
 void CpProxyUpnpOrgRenderingControl_RaumfeldVirtual1Cpp::BeginSetRoomMute(uint32_t aInstanceID, const std::string& aRoom, bool aDesiredMute, FunctorAsync& aFunctor)
 {
-    Invocation* invocation = iService->Invocation(*iActionSetRoomMute, aFunctor);
+    Invocation* invocation = iCpProxy.GetService().Invocation(*iActionSetRoomMute, aFunctor);
     TUint inIndex = 0;
     const Action::VectorParameters& inParams = iActionSetRoomMute->InputParameters();
     invocation->AddInput(new ArgumentUint(*inParams[inIndex++], aInstanceID));
@@ -528,7 +528,7 @@ void CpProxyUpnpOrgRenderingControl_RaumfeldVirtual1Cpp::BeginSetRoomMute(uint32
         invocation->AddInput(new ArgumentString(*inParams[inIndex++], buf));
     }
     invocation->AddInput(new ArgumentBool(*inParams[inIndex++], aDesiredMute));
-    iInvocable.InvokeAction(*invocation);
+    iCpProxy.GetInvocable().InvokeAction(*invocation);
 }
 
 void CpProxyUpnpOrgRenderingControl_RaumfeldVirtual1Cpp::EndSetRoomMute(IAsync& aAsync)
@@ -554,12 +554,12 @@ void CpProxyUpnpOrgRenderingControl_RaumfeldVirtual1Cpp::SyncChangeVolume(uint32
 
 void CpProxyUpnpOrgRenderingControl_RaumfeldVirtual1Cpp::BeginChangeVolume(uint32_t aInstanceID, int32_t aAmount, FunctorAsync& aFunctor)
 {
-    Invocation* invocation = iService->Invocation(*iActionChangeVolume, aFunctor);
+    Invocation* invocation = iCpProxy.GetService().Invocation(*iActionChangeVolume, aFunctor);
     TUint inIndex = 0;
     const Action::VectorParameters& inParams = iActionChangeVolume->InputParameters();
     invocation->AddInput(new ArgumentUint(*inParams[inIndex++], aInstanceID));
     invocation->AddInput(new ArgumentInt(*inParams[inIndex++], aAmount));
-    iInvocable.InvokeAction(*invocation);
+    iCpProxy.GetInvocable().InvokeAction(*invocation);
 }
 
 void CpProxyUpnpOrgRenderingControl_RaumfeldVirtual1Cpp::EndChangeVolume(IAsync& aAsync)
@@ -585,7 +585,7 @@ void CpProxyUpnpOrgRenderingControl_RaumfeldVirtual1Cpp::SyncGetVolume(uint32_t 
 
 void CpProxyUpnpOrgRenderingControl_RaumfeldVirtual1Cpp::BeginGetVolume(uint32_t aInstanceID, const std::string& aChannel, FunctorAsync& aFunctor)
 {
-    Invocation* invocation = iService->Invocation(*iActionGetVolume, aFunctor);
+    Invocation* invocation = iCpProxy.GetService().Invocation(*iActionGetVolume, aFunctor);
     TUint inIndex = 0;
     const Action::VectorParameters& inParams = iActionGetVolume->InputParameters();
     invocation->AddInput(new ArgumentUint(*inParams[inIndex++], aInstanceID));
@@ -596,7 +596,7 @@ void CpProxyUpnpOrgRenderingControl_RaumfeldVirtual1Cpp::BeginGetVolume(uint32_t
     TUint outIndex = 0;
     const Action::VectorParameters& outParams = iActionGetVolume->OutputParameters();
     invocation->AddOutput(new ArgumentUint(*outParams[outIndex++]));
-    iInvocable.InvokeAction(*invocation);
+    iCpProxy.GetInvocable().InvokeAction(*invocation);
 }
 
 void CpProxyUpnpOrgRenderingControl_RaumfeldVirtual1Cpp::EndGetVolume(IAsync& aAsync, uint32_t& aCurrentVolume)
@@ -624,7 +624,7 @@ void CpProxyUpnpOrgRenderingControl_RaumfeldVirtual1Cpp::SyncSetVolume(uint32_t 
 
 void CpProxyUpnpOrgRenderingControl_RaumfeldVirtual1Cpp::BeginSetVolume(uint32_t aInstanceID, const std::string& aChannel, uint32_t aDesiredVolume, FunctorAsync& aFunctor)
 {
-    Invocation* invocation = iService->Invocation(*iActionSetVolume, aFunctor);
+    Invocation* invocation = iCpProxy.GetService().Invocation(*iActionSetVolume, aFunctor);
     TUint inIndex = 0;
     const Action::VectorParameters& inParams = iActionSetVolume->InputParameters();
     invocation->AddInput(new ArgumentUint(*inParams[inIndex++], aInstanceID));
@@ -633,7 +633,7 @@ void CpProxyUpnpOrgRenderingControl_RaumfeldVirtual1Cpp::BeginSetVolume(uint32_t
         invocation->AddInput(new ArgumentString(*inParams[inIndex++], buf));
     }
     invocation->AddInput(new ArgumentUint(*inParams[inIndex++], aDesiredVolume));
-    iInvocable.InvokeAction(*invocation);
+    iCpProxy.GetInvocable().InvokeAction(*invocation);
 }
 
 void CpProxyUpnpOrgRenderingControl_RaumfeldVirtual1Cpp::EndSetVolume(IAsync& aAsync)
@@ -652,15 +652,15 @@ void CpProxyUpnpOrgRenderingControl_RaumfeldVirtual1Cpp::EndSetVolume(IAsync& aA
 
 void CpProxyUpnpOrgRenderingControl_RaumfeldVirtual1Cpp::SetPropertyLastChangeChanged(Functor& aFunctor)
 {
-    iLock->Wait();
+    iCpProxy.GetLock().Wait();
     iLastChangeChanged = aFunctor;
-    iLock->Signal();
+    iCpProxy.GetLock().Signal();
 }
 
 void CpProxyUpnpOrgRenderingControl_RaumfeldVirtual1Cpp::PropertyLastChange(std::string& aLastChange) const
 {
-    AutoMutex a(PropertyReadLock());
-    ASSERT(iCpSubscriptionStatus == CpProxy::eSubscribed);
+    AutoMutex a(iCpProxy.PropertyReadLock());
+    ASSERT(iCpProxy.GetSubscriptionStatus() == CpProxy::eSubscribed);
     const Brx& val = iLastChange->Value();
     aLastChange.assign((const char*)val.Ptr(), val.Bytes());
 }
@@ -668,5 +668,44 @@ void CpProxyUpnpOrgRenderingControl_RaumfeldVirtual1Cpp::PropertyLastChange(std:
 void CpProxyUpnpOrgRenderingControl_RaumfeldVirtual1Cpp::LastChangePropertyChanged()
 {
     ReportEvent(iLastChangeChanged);
+}
+
+void CpProxyUpnpOrgRenderingControl_RaumfeldVirtual1Cpp::Subscribe()
+{
+  iCpProxy.Subscribe();
+}
+
+void CpProxyUpnpOrgRenderingControl_RaumfeldVirtual1Cpp::Unsubscribe()
+{
+ iCpProxy.Unsubscribe();
+}
+
+void CpProxyUpnpOrgRenderingControl_RaumfeldVirtual1Cpp::SetPropertyChanged(Functor& aFunctor)
+{
+  iCpProxy.SetPropertyChanged(aFunctor);
+}
+
+void CpProxyUpnpOrgRenderingControl_RaumfeldVirtual1Cpp::SetPropertyInitialEvent(Functor& aFunctor)
+{
+  iCpProxy.SetPropertyInitialEvent(aFunctor);
+}
+void CpProxyUpnpOrgRenderingControl_RaumfeldVirtual1Cpp::AddProperty(Property* aProperty)
+{
+  iCpProxy.AddProperty(aProperty);
+}
+
+void CpProxyUpnpOrgRenderingControl_RaumfeldVirtual1Cpp::DestroyService()
+{
+  iCpProxy.DestroyService();
+}
+
+void CpProxyUpnpOrgRenderingControl_RaumfeldVirtual1Cpp::ReportEvent(Functor aFunctor)
+{
+  iCpProxy.ReportEvent(aFunctor);
+}
+
+TUint CpProxyUpnpOrgRenderingControl_RaumfeldVirtual1Cpp::Version() const
+{
+  return iCpProxy.Version();
 }
 

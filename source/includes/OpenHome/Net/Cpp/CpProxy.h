@@ -52,14 +52,37 @@ private:
 #define THROW_PROXYERROR(level, code)   throw(ProxyError(__FILE__, __LINE__, (level), (code)))
 
 
+class ICpProxy
+{
+public:
+    virtual ~ICpProxy() {}
+    virtual void Subscribe() = 0;
+    virtual void Unsubscribe() = 0;
+    virtual void SetPropertyChanged(Functor& aFunctor) = 0;
+    virtual void SetPropertyInitialEvent(Functor& aFunctor) = 0;
+    virtual void AddProperty(Property* aProperty) = 0;
+    virtual void DestroyService() = 0;
+    virtual void ReportEvent(Functor aFunctor) = 0;
+    virtual TUint Version() const = 0;
+};
+
 /**
  * Base class for all proxies
  * @ingroup ControlPoint
  */
-class DllExportClass CpProxy : private IEventProcessor
+class DllExportClass CpProxy : public ICpProxy, private IEventProcessor
 {
 public:
+    enum SubscriptionStatus
+    {
+        eNotSubscribed
+       ,eSubscribing
+       ,eSubscribed
+    };
+
+public:
     DllExport virtual ~CpProxy();
+public: // from ICpProxy
     /**
      * Subscribe to notification of changes in state variables.
      * Use SetProperty[stateVarName]Changed() to register a callback on change
@@ -92,7 +115,7 @@ public:
      * @return  Service version
      */
     DllExport TUint Version() const;
-protected:
+
     DllExport CpProxy(const TChar* aDomain, const TChar* aName, TUint aVersion, CpiDevice& aDevice);
 
     /**
@@ -110,6 +133,10 @@ protected:
 
     DllExport void DestroyService();
     DllExport void ReportEvent(Functor aFunctor);
+    CpiService& GetService() const;
+    IInvocable& GetInvocable() const;
+    Mutex& GetLock() const;
+    SubscriptionStatus GetSubscriptionStatus() const;
 private: // IEventProcessor
     DllExport void EventUpdateStart();
     DllExport void EventUpdate(const Brx& aName, const Brx& aValue, IOutputProcessor& aProcessor);
@@ -118,14 +145,7 @@ private: // IEventProcessor
     DllExport void EventUpdatePrepareForDelete();
 private:
     void operator=(const CpProxy&);
-protected:
-    enum SubscriptionStatus
-    {
-        eNotSubscribed
-       ,eSubscribing
-       ,eSubscribed
-    };
-protected:
+private: //gettable
     CpiService* iService;
     IInvocable& iInvocable;
     Mutex* iLock;

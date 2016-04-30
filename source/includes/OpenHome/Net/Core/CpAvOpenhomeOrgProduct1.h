@@ -18,18 +18,99 @@ class PropertyBool;
 class PropertyInt;
 class PropertyString;
 class PropertyUint;
+class CpProxy;
+class ICpProxyAvOpenhomeOrgProduct1 : public ICpProxy
+{
+public:
+    virtual ~ICpProxyAvOpenhomeOrgProduct1() {}
+    virtual void SyncManufacturer(Brh& aName, Brh& aInfo, Brh& aUrl, Brh& aImageUri) = 0;
+    virtual void BeginManufacturer(FunctorAsync& aFunctor) = 0;
+    virtual void EndManufacturer(IAsync& aAsync, Brh& aName, Brh& aInfo, Brh& aUrl, Brh& aImageUri) = 0;
+    virtual void SyncModel(Brh& aName, Brh& aInfo, Brh& aUrl, Brh& aImageUri) = 0;
+    virtual void BeginModel(FunctorAsync& aFunctor) = 0;
+    virtual void EndModel(IAsync& aAsync, Brh& aName, Brh& aInfo, Brh& aUrl, Brh& aImageUri) = 0;
+    virtual void SyncProduct(Brh& aRoom, Brh& aName, Brh& aInfo, Brh& aUrl, Brh& aImageUri) = 0;
+    virtual void BeginProduct(FunctorAsync& aFunctor) = 0;
+    virtual void EndProduct(IAsync& aAsync, Brh& aRoom, Brh& aName, Brh& aInfo, Brh& aUrl, Brh& aImageUri) = 0;
+    virtual void SyncStandby(TBool& aValue) = 0;
+    virtual void BeginStandby(FunctorAsync& aFunctor) = 0;
+    virtual void EndStandby(IAsync& aAsync, TBool& aValue) = 0;
+    virtual void SyncSetStandby(TBool aValue) = 0;
+    virtual void BeginSetStandby(TBool aValue, FunctorAsync& aFunctor) = 0;
+    virtual void EndSetStandby(IAsync& aAsync) = 0;
+    virtual void SyncSourceCount(TUint& aValue) = 0;
+    virtual void BeginSourceCount(FunctorAsync& aFunctor) = 0;
+    virtual void EndSourceCount(IAsync& aAsync, TUint& aValue) = 0;
+    virtual void SyncSourceXml(Brh& aValue) = 0;
+    virtual void BeginSourceXml(FunctorAsync& aFunctor) = 0;
+    virtual void EndSourceXml(IAsync& aAsync, Brh& aValue) = 0;
+    virtual void SyncSourceIndex(TUint& aValue) = 0;
+    virtual void BeginSourceIndex(FunctorAsync& aFunctor) = 0;
+    virtual void EndSourceIndex(IAsync& aAsync, TUint& aValue) = 0;
+    virtual void SyncSetSourceIndex(TUint aValue) = 0;
+    virtual void BeginSetSourceIndex(TUint aValue, FunctorAsync& aFunctor) = 0;
+    virtual void EndSetSourceIndex(IAsync& aAsync) = 0;
+    virtual void SyncSetSourceIndexByName(const Brx& aValue) = 0;
+    virtual void BeginSetSourceIndexByName(const Brx& aValue, FunctorAsync& aFunctor) = 0;
+    virtual void EndSetSourceIndexByName(IAsync& aAsync) = 0;
+    virtual void SyncSource(TUint aIndex, Brh& aSystemName, Brh& aType, Brh& aName, TBool& aVisible) = 0;
+    virtual void BeginSource(TUint aIndex, FunctorAsync& aFunctor) = 0;
+    virtual void EndSource(IAsync& aAsync, Brh& aSystemName, Brh& aType, Brh& aName, TBool& aVisible) = 0;
+    virtual void SyncAttributes(Brh& aValue) = 0;
+    virtual void BeginAttributes(FunctorAsync& aFunctor) = 0;
+    virtual void EndAttributes(IAsync& aAsync, Brh& aValue) = 0;
+    virtual void SyncSourceXmlChangeCount(TUint& aValue) = 0;
+    virtual void BeginSourceXmlChangeCount(FunctorAsync& aFunctor) = 0;
+    virtual void EndSourceXmlChangeCount(IAsync& aAsync, TUint& aValue) = 0;
+    virtual void SetPropertyManufacturerNameChanged(Functor& aManufacturerNameChanged) = 0;
+    virtual void PropertyManufacturerName(Brhz& aManufacturerName) const = 0;
+    virtual void SetPropertyManufacturerInfoChanged(Functor& aManufacturerInfoChanged) = 0;
+    virtual void PropertyManufacturerInfo(Brhz& aManufacturerInfo) const = 0;
+    virtual void SetPropertyManufacturerUrlChanged(Functor& aManufacturerUrlChanged) = 0;
+    virtual void PropertyManufacturerUrl(Brhz& aManufacturerUrl) const = 0;
+    virtual void SetPropertyManufacturerImageUriChanged(Functor& aManufacturerImageUriChanged) = 0;
+    virtual void PropertyManufacturerImageUri(Brhz& aManufacturerImageUri) const = 0;
+    virtual void SetPropertyModelNameChanged(Functor& aModelNameChanged) = 0;
+    virtual void PropertyModelName(Brhz& aModelName) const = 0;
+    virtual void SetPropertyModelInfoChanged(Functor& aModelInfoChanged) = 0;
+    virtual void PropertyModelInfo(Brhz& aModelInfo) const = 0;
+    virtual void SetPropertyModelUrlChanged(Functor& aModelUrlChanged) = 0;
+    virtual void PropertyModelUrl(Brhz& aModelUrl) const = 0;
+    virtual void SetPropertyModelImageUriChanged(Functor& aModelImageUriChanged) = 0;
+    virtual void PropertyModelImageUri(Brhz& aModelImageUri) const = 0;
+    virtual void SetPropertyProductRoomChanged(Functor& aProductRoomChanged) = 0;
+    virtual void PropertyProductRoom(Brhz& aProductRoom) const = 0;
+    virtual void SetPropertyProductNameChanged(Functor& aProductNameChanged) = 0;
+    virtual void PropertyProductName(Brhz& aProductName) const = 0;
+    virtual void SetPropertyProductInfoChanged(Functor& aProductInfoChanged) = 0;
+    virtual void PropertyProductInfo(Brhz& aProductInfo) const = 0;
+    virtual void SetPropertyProductUrlChanged(Functor& aProductUrlChanged) = 0;
+    virtual void PropertyProductUrl(Brhz& aProductUrl) const = 0;
+    virtual void SetPropertyProductImageUriChanged(Functor& aProductImageUriChanged) = 0;
+    virtual void PropertyProductImageUri(Brhz& aProductImageUri) const = 0;
+    virtual void SetPropertyStandbyChanged(Functor& aStandbyChanged) = 0;
+    virtual void PropertyStandby(TBool& aStandby) const = 0;
+    virtual void SetPropertySourceIndexChanged(Functor& aSourceIndexChanged) = 0;
+    virtual void PropertySourceIndex(TUint& aSourceIndex) const = 0;
+    virtual void SetPropertySourceCountChanged(Functor& aSourceCountChanged) = 0;
+    virtual void PropertySourceCount(TUint& aSourceCount) const = 0;
+    virtual void SetPropertySourceXmlChanged(Functor& aSourceXmlChanged) = 0;
+    virtual void PropertySourceXml(Brhz& aSourceXml) const = 0;
+    virtual void SetPropertyAttributesChanged(Functor& aAttributesChanged) = 0;
+    virtual void PropertyAttributes(Brhz& aAttributes) const = 0;
+};
 
 /**
  * Proxy for av.openhome.org:Product:1
  * @ingroup Proxies
  */
-class CpProxyAvOpenhomeOrgProduct1 : public CpProxy
+class CpProxyAvOpenhomeOrgProduct1 : public ICpProxyAvOpenhomeOrgProduct1
 {
 public:
     /**
      * Constructor.
      *
-     * Use CpProxy::[Un]Subscribe() to enable/disable querying of state variable
+     * Use iCpProxy::[Un]Subscribe() to enable/disable querying of state variable
      * and reporting of their changes.
      *
      * @param[in]  aDevice   The device to use
@@ -753,7 +834,40 @@ public:
      * @param[out] aAttributes
      */
     void PropertyAttributes(Brhz& aAttributes) const;
+    /**
+    * This function exposes the Subscribe() function of the iCpProxy member variable
+    */
+    void Subscribe();
+    /**
+    * This function exposes the Unsubscribe() function of the iCpProxy member variable
+    */
+    void Unsubscribe();
+    /**
+    * This function exposes the SetPropertyChanged() function of the iCpProxy member variable
+    */
+    void SetPropertyChanged(Functor& aFunctor);
+    /**
+    * This function exposes the SetPropertyInitialEvent() function of the iCpProxy member variable
+    */
+    void SetPropertyInitialEvent(Functor& aFunctor);
+    /**
+    * This function exposes the AddProperty() function of the iCpProxy member variable
+    */
+    void AddProperty(Property* aProperty);
+    /**
+    * This function exposes DestroyService() function of the iCpProxy member variable
+    */
+    void DestroyService();
+    /**
+    * This function exposes the REportEvent() function of the iCpProxy member variable
+    */
+    void ReportEvent(Functor aFunctor);
+    /**
+    * This function exposes the Version() function of the iCpProxy member variable
+    */
+    TUint Version() const;
 private:
+    CpProxy iCpProxy;
     void ManufacturerNamePropertyChanged();
     void ManufacturerInfoPropertyChanged();
     void ManufacturerUrlPropertyChanged();

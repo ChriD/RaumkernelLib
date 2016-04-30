@@ -98,6 +98,7 @@ public:
     static TUint AppendDec(Bwx& aBuffer, TBool aValue);
     static TUint AppendHex(Bwx& aBuffer, TUint aValue);
     static TUint AppendHex(Bwx& aBuffer, TByte aValue);
+    static TUint AppendHex(Bwx& aBuffer, const Brx& aValue); //where aBuf is atleast 5x the size of the aValue to be converted.
     static TUint AppendHexTrim(Bwx& aBuffer, TUint aValue);
     static TUint AppendHexPrefix(Bwx& aBuffer);
 
@@ -120,19 +121,6 @@ public:
 };
 
 // Stream classes
-
-class ReaderAscii : public IReader, public INonCopyable
-{
-public:
-    ReaderAscii(IReader& aReader);
-    TInt ReadInt(TByte aSeparator);
-    TUint ReadUint(TByte aSeparator);
-    // IReader
-    virtual Brn Read(TUint aBytes);
-    virtual Brn ReadUntil(TByte aSeparator);
-private:
-    IReader& iReader;
-};
 
 class IWriterAscii : public IWriter
 {

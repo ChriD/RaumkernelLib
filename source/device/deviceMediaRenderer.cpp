@@ -67,7 +67,7 @@ namespace Raumkernel
 
         void MediaRenderer::createProxyAvTransport()
         {
-            avTransportProxy = std::shared_ptr<OpenHome::Net::CpProxyUpnpOrgAVTransport1Cpp>(new OpenHome::Net::CpProxyUpnpOrgAVTransport1Cpp(*cpDevice));
+            avTransportProxy = std::shared_ptr<OpenHome::Net::ICpProxyUpnpOrgAVTransport1Cpp>(new OpenHome::Net::CpProxyUpnpOrgAVTransport1Cpp(*cpDevice));
             OpenHome::Functor functor = OpenHome::MakeFunctor(*this, &MediaRenderer::onAvTransportProxyPropertyChanged);
             auto proxy = std::dynamic_pointer_cast<OpenHome::Net::CpProxyUpnpOrgAVTransport1Cpp>(getAvTransportProxy());
             proxy->SetPropertyInitialEvent(functor);
@@ -80,7 +80,7 @@ namespace Raumkernel
 
         void MediaRenderer::createProxyConnectionManager()
         {
-            connectionManagerProxy = std::shared_ptr<OpenHome::Net::CpProxyUpnpOrgConnectionManager1Cpp>(new OpenHome::Net::CpProxyUpnpOrgConnectionManager1Cpp(*cpDevice));
+            connectionManagerProxy = std::shared_ptr<OpenHome::Net::ICpProxyUpnpOrgConnectionManager1Cpp>(new OpenHome::Net::CpProxyUpnpOrgConnectionManager1Cpp(*cpDevice));
             OpenHome::Functor functor = OpenHome::MakeFunctor(*this, &MediaRenderer::oConnectionManagerProxyPropertyChanged);
             auto proxy = std::dynamic_pointer_cast<OpenHome::Net::CpProxyUpnpOrgConnectionManager1Cpp>(getConnectionManagerProxy());
             proxy->SetPropertyInitialEvent(functor);
@@ -131,19 +131,19 @@ namespace Raumkernel
         }
 
 
-        std::shared_ptr<OpenHome::Net::CpProxy> MediaRenderer::getAvTransportProxy()
+        std::shared_ptr<OpenHome::Net::ICpProxy> MediaRenderer::getAvTransportProxy()
         {
             return avTransportProxy;
         }
 
 
-        std::shared_ptr<OpenHome::Net::CpProxy> MediaRenderer::getConnectionManagerProxy()
+        std::shared_ptr<OpenHome::Net::ICpProxy> MediaRenderer::getConnectionManagerProxy()
         {
             return connectionManagerProxy;
         }
 
 
-        std::shared_ptr<OpenHome::Net::CpProxy> MediaRenderer::getRenderingControlProxy()
+        std::shared_ptr<OpenHome::Net::ICpProxy> MediaRenderer::getRenderingControlProxy()
         {
             return renderingControlProxy;
         }

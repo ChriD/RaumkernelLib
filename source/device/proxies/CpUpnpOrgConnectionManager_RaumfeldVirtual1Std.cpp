@@ -1,4 +1,4 @@
-#include <raumkernel/device/proxies/CpUpnpOrgConnectionManager_RaumfeldVirtual1.h>
+#include "raumkernel/device/proxies/CpUpnpOrgConnectionManager_RaumfeldVirtual1.h"
 #include <OpenHome/Net/Core/CpProxy.h>
 #include <OpenHome/Net/Private/CpiService.h>
 #include <OpenHome/Private/Thread.h>
@@ -26,9 +26,9 @@ private:
 };
 
 SyncGetProtocolInfoUpnpOrgConnectionManager_RaumfeldVirtual1Cpp::SyncGetProtocolInfoUpnpOrgConnectionManager_RaumfeldVirtual1Cpp(CpProxyUpnpOrgConnectionManager_RaumfeldVirtual1Cpp& aProxy, std::string& aSource, std::string& aSink)
-: iService(aProxy)
-, iSource(aSource)
-, iSink(aSink)
+    : iService(aProxy)
+    , iSource(aSource)
+    , iSink(aSink)
 {
 }
 
@@ -50,8 +50,8 @@ private:
 };
 
 SyncGetCurrentConnectionIDsUpnpOrgConnectionManager_RaumfeldVirtual1Cpp::SyncGetCurrentConnectionIDsUpnpOrgConnectionManager_RaumfeldVirtual1Cpp(CpProxyUpnpOrgConnectionManager_RaumfeldVirtual1Cpp& aProxy, std::string& aConnectionIDs)
-: iService(aProxy)
-, iConnectionIDs(aConnectionIDs)
+    : iService(aProxy)
+    , iConnectionIDs(aConnectionIDs)
 {
 }
 
@@ -79,14 +79,14 @@ private:
 };
 
 SyncGetCurrentConnectionInfoUpnpOrgConnectionManager_RaumfeldVirtual1Cpp::SyncGetCurrentConnectionInfoUpnpOrgConnectionManager_RaumfeldVirtual1Cpp(CpProxyUpnpOrgConnectionManager_RaumfeldVirtual1Cpp& aProxy, int32_t& aRcsID, int32_t& aAVTransportID, std::string& aProtocolInfo, std::string& aPeerConnectionManager, int32_t& aPeerConnectionID, std::string& aDirection, std::string& aStatus)
-: iService(aProxy)
-, iRcsID(aRcsID)
-, iAVTransportID(aAVTransportID)
-, iProtocolInfo(aProtocolInfo)
-, iPeerConnectionManager(aPeerConnectionManager)
-, iPeerConnectionID(aPeerConnectionID)
-, iDirection(aDirection)
-, iStatus(aStatus)
+    : iService(aProxy)
+    , iRcsID(aRcsID)
+    , iAVTransportID(aAVTransportID)
+    , iProtocolInfo(aProtocolInfo)
+    , iPeerConnectionManager(aPeerConnectionManager)
+    , iPeerConnectionID(aPeerConnectionID)
+    , iDirection(aDirection)
+    , iStatus(aStatus)
 {
 }
 
@@ -97,7 +97,7 @@ void SyncGetCurrentConnectionInfoUpnpOrgConnectionManager_RaumfeldVirtual1Cpp::C
 
 
 CpProxyUpnpOrgConnectionManager_RaumfeldVirtual1Cpp::CpProxyUpnpOrgConnectionManager_RaumfeldVirtual1Cpp(CpDeviceCpp& aDevice)
-: CpProxy("schemas-upnp-org", "ConnectionManager", 1, aDevice.Device())
+    : iCpProxy("schemas-upnp-org", "ConnectionManager", 1, aDevice.Device())
 {
     OpenHome::Net::Parameter* param;
     TChar** allowedValues;
@@ -146,13 +146,13 @@ CpProxyUpnpOrgConnectionManager_RaumfeldVirtual1Cpp::CpProxyUpnpOrgConnectionMan
 
     Functor functor;
     functor = MakeFunctor(*this, &CpProxyUpnpOrgConnectionManager_RaumfeldVirtual1Cpp::SourceProtocolInfoPropertyChanged);
-    iSourceProtocolInfo = new PropertyString(aDevice.Device().GetCpStack().Env(), "SourceProtocolInfo", functor);
+    iSourceProtocolInfo = new PropertyString("SourceProtocolInfo", functor);
     AddProperty(iSourceProtocolInfo);
     functor = MakeFunctor(*this, &CpProxyUpnpOrgConnectionManager_RaumfeldVirtual1Cpp::SinkProtocolInfoPropertyChanged);
-    iSinkProtocolInfo = new PropertyString(aDevice.Device().GetCpStack().Env(), "SinkProtocolInfo", functor);
+    iSinkProtocolInfo = new PropertyString("SinkProtocolInfo", functor);
     AddProperty(iSinkProtocolInfo);
     functor = MakeFunctor(*this, &CpProxyUpnpOrgConnectionManager_RaumfeldVirtual1Cpp::CurrentConnectionIDsPropertyChanged);
-    iCurrentConnectionIDs = new PropertyString(aDevice.Device().GetCpStack().Env(), "CurrentConnectionIDs", functor);
+    iCurrentConnectionIDs = new PropertyString("CurrentConnectionIDs", functor);
     AddProperty(iCurrentConnectionIDs);
 }
 
@@ -173,12 +173,12 @@ void CpProxyUpnpOrgConnectionManager_RaumfeldVirtual1Cpp::SyncGetProtocolInfo(st
 
 void CpProxyUpnpOrgConnectionManager_RaumfeldVirtual1Cpp::BeginGetProtocolInfo(FunctorAsync& aFunctor)
 {
-    Invocation* invocation = iService->Invocation(*iActionGetProtocolInfo, aFunctor);
+    Invocation* invocation = iCpProxy.GetService().Invocation(*iActionGetProtocolInfo, aFunctor);
     TUint outIndex = 0;
     const Action::VectorParameters& outParams = iActionGetProtocolInfo->OutputParameters();
     invocation->AddOutput(new ArgumentString(*outParams[outIndex++]));
     invocation->AddOutput(new ArgumentString(*outParams[outIndex++]));
-    iInvocable.InvokeAction(*invocation);
+    iCpProxy.GetInvocable().InvokeAction(*invocation);
 }
 
 void CpProxyUpnpOrgConnectionManager_RaumfeldVirtual1Cpp::EndGetProtocolInfo(IAsync& aAsync, std::string& aSource, std::string& aSink)
@@ -213,11 +213,11 @@ void CpProxyUpnpOrgConnectionManager_RaumfeldVirtual1Cpp::SyncGetCurrentConnecti
 
 void CpProxyUpnpOrgConnectionManager_RaumfeldVirtual1Cpp::BeginGetCurrentConnectionIDs(FunctorAsync& aFunctor)
 {
-    Invocation* invocation = iService->Invocation(*iActionGetCurrentConnectionIDs, aFunctor);
+    Invocation* invocation = iCpProxy.GetService().Invocation(*iActionGetCurrentConnectionIDs, aFunctor);
     TUint outIndex = 0;
     const Action::VectorParameters& outParams = iActionGetCurrentConnectionIDs->OutputParameters();
     invocation->AddOutput(new ArgumentString(*outParams[outIndex++]));
-    iInvocable.InvokeAction(*invocation);
+    iCpProxy.GetInvocable().InvokeAction(*invocation);
 }
 
 void CpProxyUpnpOrgConnectionManager_RaumfeldVirtual1Cpp::EndGetCurrentConnectionIDs(IAsync& aAsync, std::string& aConnectionIDs)
@@ -248,7 +248,7 @@ void CpProxyUpnpOrgConnectionManager_RaumfeldVirtual1Cpp::SyncGetCurrentConnecti
 
 void CpProxyUpnpOrgConnectionManager_RaumfeldVirtual1Cpp::BeginGetCurrentConnectionInfo(int32_t aConnectionID, FunctorAsync& aFunctor)
 {
-    Invocation* invocation = iService->Invocation(*iActionGetCurrentConnectionInfo, aFunctor);
+    Invocation* invocation = iCpProxy.GetService().Invocation(*iActionGetCurrentConnectionInfo, aFunctor);
     TUint inIndex = 0;
     const Action::VectorParameters& inParams = iActionGetCurrentConnectionInfo->InputParameters();
     invocation->AddInput(new ArgumentInt(*inParams[inIndex++], aConnectionID));
@@ -261,7 +261,7 @@ void CpProxyUpnpOrgConnectionManager_RaumfeldVirtual1Cpp::BeginGetCurrentConnect
     invocation->AddOutput(new ArgumentInt(*outParams[outIndex++]));
     invocation->AddOutput(new ArgumentString(*outParams[outIndex++]));
     invocation->AddOutput(new ArgumentString(*outParams[outIndex++]));
-    iInvocable.InvokeAction(*invocation);
+    iCpProxy.GetInvocable().InvokeAction(*invocation);
 }
 
 void CpProxyUpnpOrgConnectionManager_RaumfeldVirtual1Cpp::EndGetCurrentConnectionInfo(IAsync& aAsync, int32_t& aRcsID, int32_t& aAVTransportID, std::string& aProtocolInfo, std::string& aPeerConnectionManager, int32_t& aPeerConnectionID, std::string& aDirection, std::string& aStatus)
@@ -300,45 +300,45 @@ void CpProxyUpnpOrgConnectionManager_RaumfeldVirtual1Cpp::EndGetCurrentConnectio
 
 void CpProxyUpnpOrgConnectionManager_RaumfeldVirtual1Cpp::SetPropertySourceProtocolInfoChanged(Functor& aFunctor)
 {
-    iLock->Wait();
+    iCpProxy.GetLock().Wait();
     iSourceProtocolInfoChanged = aFunctor;
-    iLock->Signal();
+    iCpProxy.GetLock().Signal();
 }
 
 void CpProxyUpnpOrgConnectionManager_RaumfeldVirtual1Cpp::SetPropertySinkProtocolInfoChanged(Functor& aFunctor)
 {
-    iLock->Wait();
+    iCpProxy.GetLock().Wait();
     iSinkProtocolInfoChanged = aFunctor;
-    iLock->Signal();
+    iCpProxy.GetLock().Signal();
 }
 
 void CpProxyUpnpOrgConnectionManager_RaumfeldVirtual1Cpp::SetPropertyCurrentConnectionIDsChanged(Functor& aFunctor)
 {
-    iLock->Wait();
+    iCpProxy.GetLock().Wait();
     iCurrentConnectionIDsChanged = aFunctor;
-    iLock->Signal();
+    iCpProxy.GetLock().Signal();
 }
 
 void CpProxyUpnpOrgConnectionManager_RaumfeldVirtual1Cpp::PropertySourceProtocolInfo(std::string& aSourceProtocolInfo) const
 {
-    AutoMutex a(PropertyReadLock());
-    ASSERT(iCpSubscriptionStatus == CpProxy::eSubscribed);
+    AutoMutex a(iCpProxy.PropertyReadLock());
+    ASSERT(iCpProxy.GetSubscriptionStatus() == CpProxy::eSubscribed);
     const Brx& val = iSourceProtocolInfo->Value();
     aSourceProtocolInfo.assign((const char*)val.Ptr(), val.Bytes());
 }
 
 void CpProxyUpnpOrgConnectionManager_RaumfeldVirtual1Cpp::PropertySinkProtocolInfo(std::string& aSinkProtocolInfo) const
 {
-    AutoMutex a(PropertyReadLock());
-    ASSERT(iCpSubscriptionStatus == CpProxy::eSubscribed);
+    AutoMutex a(iCpProxy.PropertyReadLock());
+    ASSERT(iCpProxy.GetSubscriptionStatus() == CpProxy::eSubscribed);
     const Brx& val = iSinkProtocolInfo->Value();
     aSinkProtocolInfo.assign((const char*)val.Ptr(), val.Bytes());
 }
 
 void CpProxyUpnpOrgConnectionManager_RaumfeldVirtual1Cpp::PropertyCurrentConnectionIDs(std::string& aCurrentConnectionIDs) const
 {
-    AutoMutex a(PropertyReadLock());
-    ASSERT(iCpSubscriptionStatus == CpProxy::eSubscribed);
+    AutoMutex a(iCpProxy.PropertyReadLock());
+    ASSERT(iCpProxy.GetSubscriptionStatus() == CpProxy::eSubscribed);
     const Brx& val = iCurrentConnectionIDs->Value();
     aCurrentConnectionIDs.assign((const char*)val.Ptr(), val.Bytes());
 }
@@ -356,5 +356,44 @@ void CpProxyUpnpOrgConnectionManager_RaumfeldVirtual1Cpp::SinkProtocolInfoProper
 void CpProxyUpnpOrgConnectionManager_RaumfeldVirtual1Cpp::CurrentConnectionIDsPropertyChanged()
 {
     ReportEvent(iCurrentConnectionIDsChanged);
+}
+
+void CpProxyUpnpOrgConnectionManager_RaumfeldVirtual1Cpp::Subscribe()
+{
+  iCpProxy.Subscribe();
+}
+
+void CpProxyUpnpOrgConnectionManager_RaumfeldVirtual1Cpp::Unsubscribe()
+{
+ iCpProxy.Unsubscribe();
+}
+
+void CpProxyUpnpOrgConnectionManager_RaumfeldVirtual1Cpp::SetPropertyChanged(Functor& aFunctor)
+{
+  iCpProxy.SetPropertyChanged(aFunctor);
+}
+
+void CpProxyUpnpOrgConnectionManager_RaumfeldVirtual1Cpp::SetPropertyInitialEvent(Functor& aFunctor)
+{
+  iCpProxy.SetPropertyInitialEvent(aFunctor);
+}
+void CpProxyUpnpOrgConnectionManager_RaumfeldVirtual1Cpp::AddProperty(Property* aProperty)
+{
+  iCpProxy.AddProperty(aProperty);
+}
+
+void CpProxyUpnpOrgConnectionManager_RaumfeldVirtual1Cpp::DestroyService()
+{
+  iCpProxy.DestroyService();
+}
+
+void CpProxyUpnpOrgConnectionManager_RaumfeldVirtual1Cpp::ReportEvent(Functor aFunctor)
+{
+  iCpProxy.ReportEvent(aFunctor);
+}
+
+TUint CpProxyUpnpOrgConnectionManager_RaumfeldVirtual1Cpp::Version() const
+{
+  return iCpProxy.Version();
 }
 

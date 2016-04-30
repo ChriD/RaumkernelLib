@@ -5,12 +5,18 @@
 #include <OpenHome/Buffer.h>
 #include <OpenHome/FunctorMsg.h>
 #include <OpenHome/Private/Thread.h>
+#include <OpenHome/Private/Stream.h>
 #include <stdarg.h>
 #include <stdio.h>
 
 #include <vector>
 
+
 namespace OpenHome {
+//For use with formatted strings e.g. 'printf("Print this buffer %.*s. Print this bool %s. Print this hex %.*s", PBUF(buffer), PBool(bool), PBUF(hexconvertedstring))'
+//To print hex, you should first use AppendHex(Bwx& aBuf, const Brx& aValue) where aBuf is atleast 5x the size of the aValue to be converted.
+#define PBUF(buf) buf.Bytes(), (const TChar*)(buf.Ptr())
+inline const TChar* PBool(TBool aBool, const TChar* aIfTrue = "true", const TChar* aIfFalse = "false"){ return  aBool ? aIfTrue : aIfFalse;}
 
 // class that logs to RAM, discarding old data if it fills up
 // output is only passed on if Output() is called.
@@ -42,6 +48,31 @@ private:
     std::vector<Chunk*> iChunks;
 };
 
+// A class that records the last N bytes of log data
+// in a ring-buffer.
+// It installs itself at the head of the log-chain
+// on construction, uninstalling on destruction. This
+// is racy (SwapOutput) and not quite as composable as
+// it seems.
+// Call Read() to stream out a snapshot of the current
+// buffer.
+class RingBufferLogger
+{
+public:
+    RingBufferLogger(TUint aBytes);
+    ~RingBufferLogger();
+    void PrefixTimestamp(TBool aEnable); // defaults to off
+    void Read(OpenHome::IWriter& aWriter);
+private:
+    void LogFunctor(const TChar*);
+private:
+    Mutex iMutex;
+    TUint iBytes;
+    WriterRingBuffer iRingBuffer;
+    FunctorMsg iDownstreamFunctorMsg;
+    TBool iTimestamp;
+};
+
 class Log
 {
     friend class Environment;
@@ -64,6 +95,8 @@ private:
     static TInt DoPrint(FunctorMsg& aOutput, const TByte* aMessage);
     Log(FunctorMsg& aLogOutput);
     static inline FunctorMsg& LogOutput();
+    static inline void Lock();
+    static inline void Unlock();
 private:
     FunctorMsg iLogOutput;
     Mutex iLockStdio;

@@ -358,15 +358,15 @@ namespace Raumkernel
                 EXPORT bool isConnectionManagerProxyAvailable();
                 EXPORT bool isAvTransportProxyAvailable();
 
-                EXPORT std::shared_ptr<OpenHome::Net::CpProxy> getAvTransportProxy();
-                EXPORT std::shared_ptr<OpenHome::Net::CpProxy> getConnectionManagerProxy();
-                EXPORT std::shared_ptr<OpenHome::Net::CpProxy> getRenderingControlProxy();
+                EXPORT std::shared_ptr<OpenHome::Net::ICpProxy> getAvTransportProxy();
+                EXPORT std::shared_ptr<OpenHome::Net::ICpProxy> getConnectionManagerProxy();
+                EXPORT std::shared_ptr<OpenHome::Net::ICpProxy> getRenderingControlProxy();
 
             protected:
                 // proxies of the media renderer device
-                std::shared_ptr<OpenHome::Net::CpProxy> avTransportProxy;
-                std::shared_ptr<OpenHome::Net::CpProxy>	renderingControlProxy;
-                std::shared_ptr<OpenHome::Net::CpProxy>	connectionManagerProxy;
+                std::shared_ptr<OpenHome::Net::ICpProxy> avTransportProxy;
+                std::shared_ptr<OpenHome::Net::ICpProxy>	renderingControlProxy;
+                std::shared_ptr<OpenHome::Net::ICpProxy>	connectionManagerProxy;
 
                 std::uint32_t instance = 0;
                 

@@ -105,13 +105,13 @@ namespace Raumkernel
         }
 
 
-        std::shared_ptr<OpenHome::Net::CpProxy> MediaServer::getContentDirectoryProxy()
+        std::shared_ptr<OpenHome::Net::ICpProxy> MediaServer::getContentDirectoryProxy()
         {
             return contentDirectoryProxy;
         }
 
 
-        std::shared_ptr<OpenHome::Net::CpProxy> MediaServer::getConnectionManagerProxy()
+        std::shared_ptr<OpenHome::Net::ICpProxy> MediaServer::getConnectionManagerProxy()
         {
             return connectionManagerProxy;
         }

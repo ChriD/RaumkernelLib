@@ -31,7 +31,32 @@ protected:
 
 class TimerManager;
 
-class Timer : public QueueSortedEntryTimer
+class ITimer
+{
+public:
+    virtual ~ITimer() {}
+    virtual void FireIn(TUint aMs) = 0;
+    virtual void Cancel() = 0;
+};
+
+class ITimerFactory
+{
+public:
+    virtual ~ITimerFactory() {}
+    virtual ITimer* CreateTimer(Functor aCallback, const TChar* aId) = 0;
+};
+
+class TimerFactory : public ITimerFactory, private OpenHome::INonCopyable
+{
+public:
+    TimerFactory(Environment& aEnv);
+public: // from ITimerFactory
+    ITimer* CreateTimer(Functor aCallback, const TChar* aId);
+private:
+    Environment& iEnv;
+};
+
+class Timer : public QueueSortedEntryTimer, public ITimer
 {
     friend class TimerManager;
 public:
@@ -54,7 +79,7 @@ class TimerManager : public QueueSorted<Timer>
 {
     friend class Timer;
 public:
-    TimerManager(Environment& aEnv);
+    TimerManager(Environment& aEnv, TUint aThreadPriority);
     void Stop();
     ~TimerManager();
     void CallbackLock();
@@ -88,6 +113,7 @@ private:
 private:
     void Run();
     void Fire();
+    void FireAt(Timer& aTimer, TUint aTime);
     Thread* MgrThread() const;
     virtual void HeadChanged(QueueSortedEntry& aEntry);
     virtual TInt Compare(QueueSortedEntry& aEntry1, QueueSortedEntry& aEntry2);
@@ -99,6 +125,7 @@ private:
     ThreadFunctor* iThread;
     Semaphore iSemaphore;
     Mutex iMutex;
+    Mutex iMutexTimer;
     TUint iNextTimer;
     TBool iStop;
     Semaphore iStopped;

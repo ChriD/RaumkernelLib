@@ -31,7 +31,7 @@ class Environment;
  * Auto ptr for NetworkAdapter references.
  * @ingroup Core
  */
-class AutoNetworkAdapterRef
+class DllExportClass AutoNetworkAdapterRef
 {
 public:
     AutoNetworkAdapterRef(Environment& aEnv, const char* aCookie); // creates ref to stack's current adapter
@@ -48,7 +48,7 @@ private:
  * Represents a single network interface
  * @ingroup Core
  */
-class NetworkAdapter : private IStackObject
+class DllExportClass NetworkAdapter : private IStackObject
 {
 public:
     /**
@@ -59,6 +59,8 @@ public:
      * @param[in] aEnv      Returned by UpnpLibrary::Initialise().
      * @param[in] aAddress  IPv4 address for the interface (in network byte order)
      * @param[in] aNetMask  IPv4 net mask for the interface (in network byte order)
+     * @param[in] aDhcp     IPv4 address for the DHCP server for the interface (in network byte order)
+     * @param[in] aGateway  IPv4 address for the Gateway for the interface (in network byte order)
      * @param[in] aName     Name for the interface.  Will be copied inside this function
      *                      so can safely be deleted by the caller when this returns
      * @param[in] aCookie   String identifying the caller.  Needn't be unique although a
@@ -66,7 +68,9 @@ public:
      *                      leaked NetworkAdapter references.  The later matching call
      *                      to RemoveRef must use the same cookie.
      */
-    NetworkAdapter(Environment& aEnv, TIpAddress aAddress, TIpAddress aNetMask, const char* aName, const char* aCookie);
+    NetworkAdapter(Environment& aEnv, TIpAddress aAddress, TIpAddress aNetMask,
+                   TIpAddress aDhcp, TIpAddress aGateway,
+                   const char* aName, const char* aCookie);
     /**
      * Add a reference.  This NetworkAdapter instance won't be deleted until the last reference is removed.
      *
@@ -127,6 +131,30 @@ public:
      *          The caller is responsible for freeing this.
      */
     char* FullName() const;
+    /**
+     * Query whether the host OS supports reporting DHCP server addresses.
+     *
+     * @return  true if DhcpServerAddress() will return a valid address; false otherwise
+     */
+    TBool DhcpServerAddressAvailable() const;
+    /**
+     * Query the address of the DHCP server for this adapter
+     *
+     * @return  IP address of the DHCP server for this adapter
+     */
+    TIpAddress DhcpServerAddress() const;
+    /**
+    * Query whether the host OS supports reporting Gateway addresses.
+    *
+    * @return  true if GatewayAddress() will return a valid address; false otherwise
+    */
+    TBool GatewayAddressAvailable() const;
+    /**
+     * Query the address of the gateway for this adapter
+     *
+     * @return  IP address of the gateway for this adapter
+     */
+    TIpAddress GatewayAddress() const;
 private:
     virtual ~NetworkAdapter();
 private: // from IStackObject
@@ -136,6 +164,8 @@ private:
     TUint iRefCount;
     TIpAddress iAddress;
     TIpAddress iNetMask;
+    TIpAddress iDhcpServer;
+    TIpAddress iGateway;
     Brhz iName;
     std::vector<const char*> iCookies;
 };
@@ -151,7 +181,7 @@ class DefaultLogger;
  * specific to a particular stack include either 'Cp' or 'Dv'
  * @ingroup Core
  */
-class InitialisationParams
+class DllExportClass InitialisationParams
 {
 public:
     enum ELoopback
@@ -312,7 +342,7 @@ public:
      * Behaviour when more than one DvDevice sets the "MdnsHostName" attribute is undefined.
      * Note that enabling Bonjour will cause the device stack to run a http server on port 80, requiring root privileges on linux.
      */
-    void SetDvEnableBonjour();
+    void SetDvEnableBonjour(const TChar* aHostName);
     /**
      * Set the number of threads which will be dedicated LPEC clients.
      * One thread will be used per active connection so a higher number of threads
@@ -334,6 +364,11 @@ public:
      * signal that devices have been removed in fewer circumstances).
      */
     void SetHostUdpIsLowQuality(TBool aLow);
+
+    /**
+     * Set TimerManager priority.
+     */
+    void SetTimerManagerPriority(uint32_t aPriority);
 
     FunctorMsg& LogOutput();
     FunctorMsg& FatalErrorHandler();
@@ -364,10 +399,11 @@ public:
     uint32_t CpUpnpEventServerPort() const;
     uint32_t DvUpnpServerPort() const;
     uint32_t DvWebSocketPort() const;
-    bool DvIsBonjourEnabled() const;
+    bool DvIsBonjourEnabled(const TChar*& aHostName) const;
     uint32_t DvNumLpecThreads();
     uint32_t DvLpecServerPort();
     bool IsHostUdpLowQuality();
+    uint32_t TimerManagerPriority() const;
 private:
     InitialisationParams();
     void FatalErrorHandlerDefault(const char* aMsg);
@@ -403,10 +439,12 @@ private:
     uint32_t iCpUpnpEventServerPort;
     uint32_t iDvUpnpWebServerPort;
     uint32_t iDvWebSocketPort;
-    bool iEnableBonjour;
     bool iHostUdpLowQuality;
+    bool iEnableBonjour;
+    Brhz iDvBonjourHostName;
     uint32_t iDvNumLpecThreads;
     uint32_t iDvLpecServerPort;
+    uint32_t iTimerManagerThreadPriority;
 };
 
 class CpStack;
@@ -522,6 +560,14 @@ public:
      *          Or NULL if there is no currently selected adapter.
      */
     NetworkAdapter* CurrentSubnetAdapter(const char* aCookie);
+
+    /**
+     * Force a refresh of the library's list of available network adapters
+     *
+     * This should only be required on platforms that are not capable of
+     * automatically detecting adapter changes.
+     */
+    void RefreshNetworkAdapterList();
 
     /**
      * Inform the library that the application has been suspended.
@@ -659,6 +705,14 @@ public:
      *          Or NULL if there is no currently selected adapter.
      */
     static NetworkAdapter* CurrentSubnetAdapter(const char* aCookie);
+
+    /**
+     * Force a refresh of the library's list of available network adapters
+     *
+     * This should only be required on platforms that are not capable of
+     * automatically detecting adapter changes.
+     */
+    static void RefreshNetworkAdapterList();
 
     /**
      * Inform the library that the application has been suspended.

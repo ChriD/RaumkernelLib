@@ -19,18 +19,81 @@ class PropertyBool;
 class PropertyInt;
 class PropertyString;
 class PropertyUint;
+class CpProxy;
+class ICpProxyUpnpOrgContentDirectory2Cpp : public ICpProxy
+{
+public:
+    virtual ~ICpProxyUpnpOrgContentDirectory2Cpp() {}
+    virtual void SyncGetSearchCapabilities(std::string& aSearchCaps) = 0;
+    virtual void BeginGetSearchCapabilities(FunctorAsync& aFunctor) = 0;
+    virtual void EndGetSearchCapabilities(IAsync& aAsync, std::string& aSearchCaps) = 0;
+    virtual void SyncGetSortCapabilities(std::string& aSortCaps) = 0;
+    virtual void BeginGetSortCapabilities(FunctorAsync& aFunctor) = 0;
+    virtual void EndGetSortCapabilities(IAsync& aAsync, std::string& aSortCaps) = 0;
+    virtual void SyncGetSortExtensionCapabilities(std::string& aSortExtensionCaps) = 0;
+    virtual void BeginGetSortExtensionCapabilities(FunctorAsync& aFunctor) = 0;
+    virtual void EndGetSortExtensionCapabilities(IAsync& aAsync, std::string& aSortExtensionCaps) = 0;
+    virtual void SyncGetFeatureList(std::string& aFeatureList) = 0;
+    virtual void BeginGetFeatureList(FunctorAsync& aFunctor) = 0;
+    virtual void EndGetFeatureList(IAsync& aAsync, std::string& aFeatureList) = 0;
+    virtual void SyncGetSystemUpdateID(uint32_t& aId) = 0;
+    virtual void BeginGetSystemUpdateID(FunctorAsync& aFunctor) = 0;
+    virtual void EndGetSystemUpdateID(IAsync& aAsync, uint32_t& aId) = 0;
+    virtual void SyncBrowse(const std::string& aObjectID, const std::string& aBrowseFlag, const std::string& aFilter, uint32_t aStartingIndex, uint32_t aRequestedCount, const std::string& aSortCriteria, std::string& aResult, uint32_t& aNumberReturned, uint32_t& aTotalMatches, uint32_t& aUpdateID) = 0;
+    virtual void BeginBrowse(const std::string& aObjectID, const std::string& aBrowseFlag, const std::string& aFilter, uint32_t aStartingIndex, uint32_t aRequestedCount, const std::string& aSortCriteria, FunctorAsync& aFunctor) = 0;
+    virtual void EndBrowse(IAsync& aAsync, std::string& aResult, uint32_t& aNumberReturned, uint32_t& aTotalMatches, uint32_t& aUpdateID) = 0;
+    virtual void SyncSearch(const std::string& aContainerID, const std::string& aSearchCriteria, const std::string& aFilter, uint32_t aStartingIndex, uint32_t aRequestedCount, const std::string& aSortCriteria, std::string& aResult, uint32_t& aNumberReturned, uint32_t& aTotalMatches, uint32_t& aUpdateID) = 0;
+    virtual void BeginSearch(const std::string& aContainerID, const std::string& aSearchCriteria, const std::string& aFilter, uint32_t aStartingIndex, uint32_t aRequestedCount, const std::string& aSortCriteria, FunctorAsync& aFunctor) = 0;
+    virtual void EndSearch(IAsync& aAsync, std::string& aResult, uint32_t& aNumberReturned, uint32_t& aTotalMatches, uint32_t& aUpdateID) = 0;
+    virtual void SyncCreateObject(const std::string& aContainerID, const std::string& aElements, std::string& aObjectID, std::string& aResult) = 0;
+    virtual void BeginCreateObject(const std::string& aContainerID, const std::string& aElements, FunctorAsync& aFunctor) = 0;
+    virtual void EndCreateObject(IAsync& aAsync, std::string& aObjectID, std::string& aResult) = 0;
+    virtual void SyncDestroyObject(const std::string& aObjectID) = 0;
+    virtual void BeginDestroyObject(const std::string& aObjectID, FunctorAsync& aFunctor) = 0;
+    virtual void EndDestroyObject(IAsync& aAsync) = 0;
+    virtual void SyncUpdateObject(const std::string& aObjectID, const std::string& aCurrentTagValue, const std::string& aNewTagValue) = 0;
+    virtual void BeginUpdateObject(const std::string& aObjectID, const std::string& aCurrentTagValue, const std::string& aNewTagValue, FunctorAsync& aFunctor) = 0;
+    virtual void EndUpdateObject(IAsync& aAsync) = 0;
+    virtual void SyncMoveObject(const std::string& aObjectID, const std::string& aNewParentID, std::string& aNewObjectID) = 0;
+    virtual void BeginMoveObject(const std::string& aObjectID, const std::string& aNewParentID, FunctorAsync& aFunctor) = 0;
+    virtual void EndMoveObject(IAsync& aAsync, std::string& aNewObjectID) = 0;
+    virtual void SyncImportResource(const std::string& aSourceURI, const std::string& aDestinationURI, uint32_t& aTransferID) = 0;
+    virtual void BeginImportResource(const std::string& aSourceURI, const std::string& aDestinationURI, FunctorAsync& aFunctor) = 0;
+    virtual void EndImportResource(IAsync& aAsync, uint32_t& aTransferID) = 0;
+    virtual void SyncExportResource(const std::string& aSourceURI, const std::string& aDestinationURI, uint32_t& aTransferID) = 0;
+    virtual void BeginExportResource(const std::string& aSourceURI, const std::string& aDestinationURI, FunctorAsync& aFunctor) = 0;
+    virtual void EndExportResource(IAsync& aAsync, uint32_t& aTransferID) = 0;
+    virtual void SyncDeleteResource(const std::string& aResourceURI) = 0;
+    virtual void BeginDeleteResource(const std::string& aResourceURI, FunctorAsync& aFunctor) = 0;
+    virtual void EndDeleteResource(IAsync& aAsync) = 0;
+    virtual void SyncStopTransferResource(uint32_t aTransferID) = 0;
+    virtual void BeginStopTransferResource(uint32_t aTransferID, FunctorAsync& aFunctor) = 0;
+    virtual void EndStopTransferResource(IAsync& aAsync) = 0;
+    virtual void SyncGetTransferProgress(uint32_t aTransferID, std::string& aTransferStatus, std::string& aTransferLength, std::string& aTransferTotal) = 0;
+    virtual void BeginGetTransferProgress(uint32_t aTransferID, FunctorAsync& aFunctor) = 0;
+    virtual void EndGetTransferProgress(IAsync& aAsync, std::string& aTransferStatus, std::string& aTransferLength, std::string& aTransferTotal) = 0;
+    virtual void SyncCreateReference(const std::string& aContainerID, const std::string& aObjectID, std::string& aNewID) = 0;
+    virtual void BeginCreateReference(const std::string& aContainerID, const std::string& aObjectID, FunctorAsync& aFunctor) = 0;
+    virtual void EndCreateReference(IAsync& aAsync, std::string& aNewID) = 0;
+    virtual void SetPropertySystemUpdateIDChanged(Functor& aSystemUpdateIDChanged) = 0;
+    virtual void PropertySystemUpdateID(uint32_t& aSystemUpdateID) const = 0;
+    virtual void SetPropertyContainerUpdateIDsChanged(Functor& aContainerUpdateIDsChanged) = 0;
+    virtual void PropertyContainerUpdateIDs(std::string& aContainerUpdateIDs) const = 0;
+    virtual void SetPropertyTransferIDsChanged(Functor& aTransferIDsChanged) = 0;
+    virtual void PropertyTransferIDs(std::string& aTransferIDs) const = 0;
+};
 
 /**
  * Proxy for upnp.org:ContentDirectory:2
  * @ingroup Proxies
  */
-class CpProxyUpnpOrgContentDirectory2Cpp : public CpProxy
+class CpProxyUpnpOrgContentDirectory2Cpp : public ICpProxyUpnpOrgContentDirectory2Cpp
 {
 public:
     /**
      * Constructor.
      *
-     * Use CpProxy::[Un]Subscribe() to enable/disable querying of state variable
+     * Use iCpProxy::[Un]Subscribe() to enable/disable querying of state variable
      * and reporting of their changes.
      *
      * @param[in]  aDevice   The device to use
@@ -613,7 +676,40 @@ public:
      * @param[out] aTransferIDs
      */
     void PropertyTransferIDs(std::string& aTransferIDs) const;
+    /**
+    * This function exposes the Subscribe() function of the iCpProxy member variable
+    */
+    void Subscribe();
+    /**
+    * This function exposes the Unsubscribe() function of the iCpProxy member variable
+    */
+    void Unsubscribe();
+    /**
+    * This function exposes the SetPropertyChanged() function of the iCpProxy member variable
+    */
+    void SetPropertyChanged(Functor& aFunctor);
+    /**
+    * This function exposes the SetPropertyInitialEvent() function of the iCpProxy member variable
+    */
+    void SetPropertyInitialEvent(Functor& aFunctor);
+    /**
+    * This function exposes the AddProperty() function of the iCpProxy member variable
+    */
+    void AddProperty(Property* aProperty);
+    /**
+    * This function exposes DestroyService() function of the iCpProxy member variable
+    */
+    void DestroyService();
+    /**
+    * This function exposes the REportEvent() function of the iCpProxy member variable
+    */
+    void ReportEvent(Functor aFunctor);
+    /**
+    * This function exposes the Version() function of the iCpProxy member variable
+    */
+    TUint Version() const;
 private:
+    CpProxy iCpProxy;
     void SystemUpdateIDPropertyChanged();
     void ContainerUpdateIDsPropertyChanged();
     void TransferIDsPropertyChanged();

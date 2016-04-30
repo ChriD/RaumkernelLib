@@ -19,18 +19,45 @@ class PropertyBool;
 class PropertyInt;
 class PropertyString;
 class PropertyUint;
+class CpProxy;
+class ICpProxyUpnpOrgConnectionManager2Cpp : public ICpProxy
+{
+public:
+    virtual ~ICpProxyUpnpOrgConnectionManager2Cpp() {}
+    virtual void SyncGetProtocolInfo(std::string& aSource, std::string& aSink) = 0;
+    virtual void BeginGetProtocolInfo(FunctorAsync& aFunctor) = 0;
+    virtual void EndGetProtocolInfo(IAsync& aAsync, std::string& aSource, std::string& aSink) = 0;
+    virtual void SyncPrepareForConnection(const std::string& aRemoteProtocolInfo, const std::string& aPeerConnectionManager, int32_t aPeerConnectionID, const std::string& aDirection, int32_t& aConnectionID, int32_t& aAVTransportID, int32_t& aRcsID) = 0;
+    virtual void BeginPrepareForConnection(const std::string& aRemoteProtocolInfo, const std::string& aPeerConnectionManager, int32_t aPeerConnectionID, const std::string& aDirection, FunctorAsync& aFunctor) = 0;
+    virtual void EndPrepareForConnection(IAsync& aAsync, int32_t& aConnectionID, int32_t& aAVTransportID, int32_t& aRcsID) = 0;
+    virtual void SyncConnectionComplete(int32_t aConnectionID) = 0;
+    virtual void BeginConnectionComplete(int32_t aConnectionID, FunctorAsync& aFunctor) = 0;
+    virtual void EndConnectionComplete(IAsync& aAsync) = 0;
+    virtual void SyncGetCurrentConnectionIDs(std::string& aConnectionIDs) = 0;
+    virtual void BeginGetCurrentConnectionIDs(FunctorAsync& aFunctor) = 0;
+    virtual void EndGetCurrentConnectionIDs(IAsync& aAsync, std::string& aConnectionIDs) = 0;
+    virtual void SyncGetCurrentConnectionInfo(int32_t aConnectionID, int32_t& aRcsID, int32_t& aAVTransportID, std::string& aProtocolInfo, std::string& aPeerConnectionManager, int32_t& aPeerConnectionID, std::string& aDirection, std::string& aStatus) = 0;
+    virtual void BeginGetCurrentConnectionInfo(int32_t aConnectionID, FunctorAsync& aFunctor) = 0;
+    virtual void EndGetCurrentConnectionInfo(IAsync& aAsync, int32_t& aRcsID, int32_t& aAVTransportID, std::string& aProtocolInfo, std::string& aPeerConnectionManager, int32_t& aPeerConnectionID, std::string& aDirection, std::string& aStatus) = 0;
+    virtual void SetPropertySourceProtocolInfoChanged(Functor& aSourceProtocolInfoChanged) = 0;
+    virtual void PropertySourceProtocolInfo(std::string& aSourceProtocolInfo) const = 0;
+    virtual void SetPropertySinkProtocolInfoChanged(Functor& aSinkProtocolInfoChanged) = 0;
+    virtual void PropertySinkProtocolInfo(std::string& aSinkProtocolInfo) const = 0;
+    virtual void SetPropertyCurrentConnectionIDsChanged(Functor& aCurrentConnectionIDsChanged) = 0;
+    virtual void PropertyCurrentConnectionIDs(std::string& aCurrentConnectionIDs) const = 0;
+};
 
 /**
  * Proxy for upnp.org:ConnectionManager:2
  * @ingroup Proxies
  */
-class CpProxyUpnpOrgConnectionManager2Cpp : public CpProxy
+class CpProxyUpnpOrgConnectionManager2Cpp : public ICpProxyUpnpOrgConnectionManager2Cpp
 {
 public:
     /**
      * Constructor.
      *
-     * Use CpProxy::[Un]Subscribe() to enable/disable querying of state variable
+     * Use iCpProxy::[Un]Subscribe() to enable/disable querying of state variable
      * and reporting of their changes.
      *
      * @param[in]  aDevice   The device to use
@@ -261,7 +288,40 @@ public:
      * @param[out] aCurrentConnectionIDs
      */
     void PropertyCurrentConnectionIDs(std::string& aCurrentConnectionIDs) const;
+    /**
+    * This function exposes the Subscribe() function of the iCpProxy member variable
+    */
+    void Subscribe();
+    /**
+    * This function exposes the Unsubscribe() function of the iCpProxy member variable
+    */
+    void Unsubscribe();
+    /**
+    * This function exposes the SetPropertyChanged() function of the iCpProxy member variable
+    */
+    void SetPropertyChanged(Functor& aFunctor);
+    /**
+    * This function exposes the SetPropertyInitialEvent() function of the iCpProxy member variable
+    */
+    void SetPropertyInitialEvent(Functor& aFunctor);
+    /**
+    * This function exposes the AddProperty() function of the iCpProxy member variable
+    */
+    void AddProperty(Property* aProperty);
+    /**
+    * This function exposes DestroyService() function of the iCpProxy member variable
+    */
+    void DestroyService();
+    /**
+    * This function exposes the REportEvent() function of the iCpProxy member variable
+    */
+    void ReportEvent(Functor aFunctor);
+    /**
+    * This function exposes the Version() function of the iCpProxy member variable
+    */
+    TUint Version() const;
 private:
+    CpProxy iCpProxy;
     void SourceProtocolInfoPropertyChanged();
     void SinkProtocolInfoPropertyChanged();
     void CurrentConnectionIDsPropertyChanged();

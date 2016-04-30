@@ -19,18 +19,137 @@ class PropertyBool;
 class PropertyInt;
 class PropertyString;
 class PropertyUint;
+class CpProxy;
+class ICpProxyUpnpOrgRenderingControl2Cpp : public ICpProxy
+{
+public:
+    virtual ~ICpProxyUpnpOrgRenderingControl2Cpp() {}
+    virtual void SyncListPresets(uint32_t aInstanceID, std::string& aCurrentPresetNameList) = 0;
+    virtual void BeginListPresets(uint32_t aInstanceID, FunctorAsync& aFunctor) = 0;
+    virtual void EndListPresets(IAsync& aAsync, std::string& aCurrentPresetNameList) = 0;
+    virtual void SyncSelectPreset(uint32_t aInstanceID, const std::string& aPresetName) = 0;
+    virtual void BeginSelectPreset(uint32_t aInstanceID, const std::string& aPresetName, FunctorAsync& aFunctor) = 0;
+    virtual void EndSelectPreset(IAsync& aAsync) = 0;
+    virtual void SyncGetBrightness(uint32_t aInstanceID, uint32_t& aCurrentBrightness) = 0;
+    virtual void BeginGetBrightness(uint32_t aInstanceID, FunctorAsync& aFunctor) = 0;
+    virtual void EndGetBrightness(IAsync& aAsync, uint32_t& aCurrentBrightness) = 0;
+    virtual void SyncSetBrightness(uint32_t aInstanceID, uint32_t aDesiredBrightness) = 0;
+    virtual void BeginSetBrightness(uint32_t aInstanceID, uint32_t aDesiredBrightness, FunctorAsync& aFunctor) = 0;
+    virtual void EndSetBrightness(IAsync& aAsync) = 0;
+    virtual void SyncGetContrast(uint32_t aInstanceID, uint32_t& aCurrentContrast) = 0;
+    virtual void BeginGetContrast(uint32_t aInstanceID, FunctorAsync& aFunctor) = 0;
+    virtual void EndGetContrast(IAsync& aAsync, uint32_t& aCurrentContrast) = 0;
+    virtual void SyncSetContrast(uint32_t aInstanceID, uint32_t aDesiredContrast) = 0;
+    virtual void BeginSetContrast(uint32_t aInstanceID, uint32_t aDesiredContrast, FunctorAsync& aFunctor) = 0;
+    virtual void EndSetContrast(IAsync& aAsync) = 0;
+    virtual void SyncGetSharpness(uint32_t aInstanceID, uint32_t& aCurrentSharpness) = 0;
+    virtual void BeginGetSharpness(uint32_t aInstanceID, FunctorAsync& aFunctor) = 0;
+    virtual void EndGetSharpness(IAsync& aAsync, uint32_t& aCurrentSharpness) = 0;
+    virtual void SyncSetSharpness(uint32_t aInstanceID, uint32_t aDesiredSharpness) = 0;
+    virtual void BeginSetSharpness(uint32_t aInstanceID, uint32_t aDesiredSharpness, FunctorAsync& aFunctor) = 0;
+    virtual void EndSetSharpness(IAsync& aAsync) = 0;
+    virtual void SyncGetRedVideoGain(uint32_t aInstanceID, uint32_t& aCurrentRedVideoGain) = 0;
+    virtual void BeginGetRedVideoGain(uint32_t aInstanceID, FunctorAsync& aFunctor) = 0;
+    virtual void EndGetRedVideoGain(IAsync& aAsync, uint32_t& aCurrentRedVideoGain) = 0;
+    virtual void SyncSetRedVideoGain(uint32_t aInstanceID, uint32_t aDesiredRedVideoGain) = 0;
+    virtual void BeginSetRedVideoGain(uint32_t aInstanceID, uint32_t aDesiredRedVideoGain, FunctorAsync& aFunctor) = 0;
+    virtual void EndSetRedVideoGain(IAsync& aAsync) = 0;
+    virtual void SyncGetGreenVideoGain(uint32_t aInstanceID, uint32_t& aCurrentGreenVideoGain) = 0;
+    virtual void BeginGetGreenVideoGain(uint32_t aInstanceID, FunctorAsync& aFunctor) = 0;
+    virtual void EndGetGreenVideoGain(IAsync& aAsync, uint32_t& aCurrentGreenVideoGain) = 0;
+    virtual void SyncSetGreenVideoGain(uint32_t aInstanceID, uint32_t aDesiredGreenVideoGain) = 0;
+    virtual void BeginSetGreenVideoGain(uint32_t aInstanceID, uint32_t aDesiredGreenVideoGain, FunctorAsync& aFunctor) = 0;
+    virtual void EndSetGreenVideoGain(IAsync& aAsync) = 0;
+    virtual void SyncGetBlueVideoGain(uint32_t aInstanceID, uint32_t& aCurrentBlueVideoGain) = 0;
+    virtual void BeginGetBlueVideoGain(uint32_t aInstanceID, FunctorAsync& aFunctor) = 0;
+    virtual void EndGetBlueVideoGain(IAsync& aAsync, uint32_t& aCurrentBlueVideoGain) = 0;
+    virtual void SyncSetBlueVideoGain(uint32_t aInstanceID, uint32_t aDesiredBlueVideoGain) = 0;
+    virtual void BeginSetBlueVideoGain(uint32_t aInstanceID, uint32_t aDesiredBlueVideoGain, FunctorAsync& aFunctor) = 0;
+    virtual void EndSetBlueVideoGain(IAsync& aAsync) = 0;
+    virtual void SyncGetRedVideoBlackLevel(uint32_t aInstanceID, uint32_t& aCurrentRedVideoBlackLevel) = 0;
+    virtual void BeginGetRedVideoBlackLevel(uint32_t aInstanceID, FunctorAsync& aFunctor) = 0;
+    virtual void EndGetRedVideoBlackLevel(IAsync& aAsync, uint32_t& aCurrentRedVideoBlackLevel) = 0;
+    virtual void SyncSetRedVideoBlackLevel(uint32_t aInstanceID, uint32_t aDesiredRedVideoBlackLevel) = 0;
+    virtual void BeginSetRedVideoBlackLevel(uint32_t aInstanceID, uint32_t aDesiredRedVideoBlackLevel, FunctorAsync& aFunctor) = 0;
+    virtual void EndSetRedVideoBlackLevel(IAsync& aAsync) = 0;
+    virtual void SyncGetGreenVideoBlackLevel(uint32_t aInstanceID, uint32_t& aCurrentGreenVideoBlackLevel) = 0;
+    virtual void BeginGetGreenVideoBlackLevel(uint32_t aInstanceID, FunctorAsync& aFunctor) = 0;
+    virtual void EndGetGreenVideoBlackLevel(IAsync& aAsync, uint32_t& aCurrentGreenVideoBlackLevel) = 0;
+    virtual void SyncSetGreenVideoBlackLevel(uint32_t aInstanceID, uint32_t aDesiredGreenVideoBlackLevel) = 0;
+    virtual void BeginSetGreenVideoBlackLevel(uint32_t aInstanceID, uint32_t aDesiredGreenVideoBlackLevel, FunctorAsync& aFunctor) = 0;
+    virtual void EndSetGreenVideoBlackLevel(IAsync& aAsync) = 0;
+    virtual void SyncGetBlueVideoBlackLevel(uint32_t aInstanceID, uint32_t& aCurrentBlueVideoBlackLevel) = 0;
+    virtual void BeginGetBlueVideoBlackLevel(uint32_t aInstanceID, FunctorAsync& aFunctor) = 0;
+    virtual void EndGetBlueVideoBlackLevel(IAsync& aAsync, uint32_t& aCurrentBlueVideoBlackLevel) = 0;
+    virtual void SyncSetBlueVideoBlackLevel(uint32_t aInstanceID, uint32_t aDesiredBlueVideoBlackLevel) = 0;
+    virtual void BeginSetBlueVideoBlackLevel(uint32_t aInstanceID, uint32_t aDesiredBlueVideoBlackLevel, FunctorAsync& aFunctor) = 0;
+    virtual void EndSetBlueVideoBlackLevel(IAsync& aAsync) = 0;
+    virtual void SyncGetColorTemperature(uint32_t aInstanceID, uint32_t& aCurrentColorTemperature) = 0;
+    virtual void BeginGetColorTemperature(uint32_t aInstanceID, FunctorAsync& aFunctor) = 0;
+    virtual void EndGetColorTemperature(IAsync& aAsync, uint32_t& aCurrentColorTemperature) = 0;
+    virtual void SyncSetColorTemperature(uint32_t aInstanceID, uint32_t aDesiredColorTemperature) = 0;
+    virtual void BeginSetColorTemperature(uint32_t aInstanceID, uint32_t aDesiredColorTemperature, FunctorAsync& aFunctor) = 0;
+    virtual void EndSetColorTemperature(IAsync& aAsync) = 0;
+    virtual void SyncGetHorizontalKeystone(uint32_t aInstanceID, int32_t& aCurrentHorizontalKeystone) = 0;
+    virtual void BeginGetHorizontalKeystone(uint32_t aInstanceID, FunctorAsync& aFunctor) = 0;
+    virtual void EndGetHorizontalKeystone(IAsync& aAsync, int32_t& aCurrentHorizontalKeystone) = 0;
+    virtual void SyncSetHorizontalKeystone(uint32_t aInstanceID, int32_t aDesiredHorizontalKeystone) = 0;
+    virtual void BeginSetHorizontalKeystone(uint32_t aInstanceID, int32_t aDesiredHorizontalKeystone, FunctorAsync& aFunctor) = 0;
+    virtual void EndSetHorizontalKeystone(IAsync& aAsync) = 0;
+    virtual void SyncGetVerticalKeystone(uint32_t aInstanceID, int32_t& aCurrentVerticalKeystone) = 0;
+    virtual void BeginGetVerticalKeystone(uint32_t aInstanceID, FunctorAsync& aFunctor) = 0;
+    virtual void EndGetVerticalKeystone(IAsync& aAsync, int32_t& aCurrentVerticalKeystone) = 0;
+    virtual void SyncSetVerticalKeystone(uint32_t aInstanceID, int32_t aDesiredVerticalKeystone) = 0;
+    virtual void BeginSetVerticalKeystone(uint32_t aInstanceID, int32_t aDesiredVerticalKeystone, FunctorAsync& aFunctor) = 0;
+    virtual void EndSetVerticalKeystone(IAsync& aAsync) = 0;
+    virtual void SyncGetMute(uint32_t aInstanceID, const std::string& aChannel, bool& aCurrentMute) = 0;
+    virtual void BeginGetMute(uint32_t aInstanceID, const std::string& aChannel, FunctorAsync& aFunctor) = 0;
+    virtual void EndGetMute(IAsync& aAsync, bool& aCurrentMute) = 0;
+    virtual void SyncSetMute(uint32_t aInstanceID, const std::string& aChannel, bool aDesiredMute) = 0;
+    virtual void BeginSetMute(uint32_t aInstanceID, const std::string& aChannel, bool aDesiredMute, FunctorAsync& aFunctor) = 0;
+    virtual void EndSetMute(IAsync& aAsync) = 0;
+    virtual void SyncGetVolume(uint32_t aInstanceID, const std::string& aChannel, uint32_t& aCurrentVolume) = 0;
+    virtual void BeginGetVolume(uint32_t aInstanceID, const std::string& aChannel, FunctorAsync& aFunctor) = 0;
+    virtual void EndGetVolume(IAsync& aAsync, uint32_t& aCurrentVolume) = 0;
+    virtual void SyncSetVolume(uint32_t aInstanceID, const std::string& aChannel, uint32_t aDesiredVolume) = 0;
+    virtual void BeginSetVolume(uint32_t aInstanceID, const std::string& aChannel, uint32_t aDesiredVolume, FunctorAsync& aFunctor) = 0;
+    virtual void EndSetVolume(IAsync& aAsync) = 0;
+    virtual void SyncGetVolumeDB(uint32_t aInstanceID, const std::string& aChannel, int32_t& aCurrentVolume) = 0;
+    virtual void BeginGetVolumeDB(uint32_t aInstanceID, const std::string& aChannel, FunctorAsync& aFunctor) = 0;
+    virtual void EndGetVolumeDB(IAsync& aAsync, int32_t& aCurrentVolume) = 0;
+    virtual void SyncSetVolumeDB(uint32_t aInstanceID, const std::string& aChannel, int32_t aDesiredVolume) = 0;
+    virtual void BeginSetVolumeDB(uint32_t aInstanceID, const std::string& aChannel, int32_t aDesiredVolume, FunctorAsync& aFunctor) = 0;
+    virtual void EndSetVolumeDB(IAsync& aAsync) = 0;
+    virtual void SyncGetVolumeDBRange(uint32_t aInstanceID, const std::string& aChannel, int32_t& aMinValue, int32_t& aMaxValue) = 0;
+    virtual void BeginGetVolumeDBRange(uint32_t aInstanceID, const std::string& aChannel, FunctorAsync& aFunctor) = 0;
+    virtual void EndGetVolumeDBRange(IAsync& aAsync, int32_t& aMinValue, int32_t& aMaxValue) = 0;
+    virtual void SyncGetLoudness(uint32_t aInstanceID, const std::string& aChannel, bool& aCurrentLoudness) = 0;
+    virtual void BeginGetLoudness(uint32_t aInstanceID, const std::string& aChannel, FunctorAsync& aFunctor) = 0;
+    virtual void EndGetLoudness(IAsync& aAsync, bool& aCurrentLoudness) = 0;
+    virtual void SyncSetLoudness(uint32_t aInstanceID, const std::string& aChannel, bool aDesiredLoudness) = 0;
+    virtual void BeginSetLoudness(uint32_t aInstanceID, const std::string& aChannel, bool aDesiredLoudness, FunctorAsync& aFunctor) = 0;
+    virtual void EndSetLoudness(IAsync& aAsync) = 0;
+    virtual void SyncGetStateVariables(uint32_t aInstanceID, const std::string& aStateVariableList, std::string& aStateVariableValuePairs) = 0;
+    virtual void BeginGetStateVariables(uint32_t aInstanceID, const std::string& aStateVariableList, FunctorAsync& aFunctor) = 0;
+    virtual void EndGetStateVariables(IAsync& aAsync, std::string& aStateVariableValuePairs) = 0;
+    virtual void SyncSetStateVariables(uint32_t aInstanceID, const std::string& aRenderingControlUDN, const std::string& aServiceType, const std::string& aServiceId, const std::string& aStateVariableValuePairs, std::string& aStateVariableList) = 0;
+    virtual void BeginSetStateVariables(uint32_t aInstanceID, const std::string& aRenderingControlUDN, const std::string& aServiceType, const std::string& aServiceId, const std::string& aStateVariableValuePairs, FunctorAsync& aFunctor) = 0;
+    virtual void EndSetStateVariables(IAsync& aAsync, std::string& aStateVariableList) = 0;
+    virtual void SetPropertyLastChangeChanged(Functor& aLastChangeChanged) = 0;
+    virtual void PropertyLastChange(std::string& aLastChange) const = 0;
+};
 
 /**
  * Proxy for upnp.org:RenderingControl:2
  * @ingroup Proxies
  */
-class CpProxyUpnpOrgRenderingControl2Cpp : public CpProxy
+class CpProxyUpnpOrgRenderingControl2Cpp : public ICpProxyUpnpOrgRenderingControl2Cpp
 {
 public:
     /**
      * Constructor.
      *
-     * Use CpProxy::[Un]Subscribe() to enable/disable querying of state variable
+     * Use iCpProxy::[Un]Subscribe() to enable/disable querying of state variable
      * and reporting of their changes.
      *
      * @param[in]  aDevice   The device to use
@@ -1131,7 +1250,40 @@ public:
      * @param[out] aLastChange
      */
     void PropertyLastChange(std::string& aLastChange) const;
+    /**
+    * This function exposes the Subscribe() function of the iCpProxy member variable
+    */
+    void Subscribe();
+    /**
+    * This function exposes the Unsubscribe() function of the iCpProxy member variable
+    */
+    void Unsubscribe();
+    /**
+    * This function exposes the SetPropertyChanged() function of the iCpProxy member variable
+    */
+    void SetPropertyChanged(Functor& aFunctor);
+    /**
+    * This function exposes the SetPropertyInitialEvent() function of the iCpProxy member variable
+    */
+    void SetPropertyInitialEvent(Functor& aFunctor);
+    /**
+    * This function exposes the AddProperty() function of the iCpProxy member variable
+    */
+    void AddProperty(Property* aProperty);
+    /**
+    * This function exposes DestroyService() function of the iCpProxy member variable
+    */
+    void DestroyService();
+    /**
+    * This function exposes the REportEvent() function of the iCpProxy member variable
+    */
+    void ReportEvent(Functor aFunctor);
+    /**
+    * This function exposes the Version() function of the iCpProxy member variable
+    */
+    TUint Version() const;
 private:
+    CpProxy iCpProxy;
     void LastChangePropertyChanged();
 private:
     Action* iActionListPresets;

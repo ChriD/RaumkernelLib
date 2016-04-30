@@ -19,18 +19,100 @@ class PropertyBool;
 class PropertyInt;
 class PropertyString;
 class PropertyUint;
+class CpProxy;
+class ICpProxyOpenhomeOrgTestBasic1Cpp : public ICpProxy
+{
+public:
+    virtual ~ICpProxyOpenhomeOrgTestBasic1Cpp() {}
+    virtual void SyncIncrement(uint32_t aValue, uint32_t& aResult) = 0;
+    virtual void BeginIncrement(uint32_t aValue, FunctorAsync& aFunctor) = 0;
+    virtual void EndIncrement(IAsync& aAsync, uint32_t& aResult) = 0;
+    virtual void SyncEchoAllowedRangeUint(uint32_t aValue, uint32_t& aResult) = 0;
+    virtual void BeginEchoAllowedRangeUint(uint32_t aValue, FunctorAsync& aFunctor) = 0;
+    virtual void EndEchoAllowedRangeUint(IAsync& aAsync, uint32_t& aResult) = 0;
+    virtual void SyncDecrement(int32_t aValue, int32_t& aResult) = 0;
+    virtual void BeginDecrement(int32_t aValue, FunctorAsync& aFunctor) = 0;
+    virtual void EndDecrement(IAsync& aAsync, int32_t& aResult) = 0;
+    virtual void SyncToggle(bool aValue, bool& aResult) = 0;
+    virtual void BeginToggle(bool aValue, FunctorAsync& aFunctor) = 0;
+    virtual void EndToggle(IAsync& aAsync, bool& aResult) = 0;
+    virtual void SyncEchoString(const std::string& aValue, std::string& aResult) = 0;
+    virtual void BeginEchoString(const std::string& aValue, FunctorAsync& aFunctor) = 0;
+    virtual void EndEchoString(IAsync& aAsync, std::string& aResult) = 0;
+    virtual void SyncEchoAllowedValueString(const std::string& aValue, std::string& aResult) = 0;
+    virtual void BeginEchoAllowedValueString(const std::string& aValue, FunctorAsync& aFunctor) = 0;
+    virtual void EndEchoAllowedValueString(IAsync& aAsync, std::string& aResult) = 0;
+    virtual void SyncEchoBinary(const std::string& aValue, std::string& aResult) = 0;
+    virtual void BeginEchoBinary(const std::string& aValue, FunctorAsync& aFunctor) = 0;
+    virtual void EndEchoBinary(IAsync& aAsync, std::string& aResult) = 0;
+    virtual void SyncSetUint(uint32_t aValueUint) = 0;
+    virtual void BeginSetUint(uint32_t aValueUint, FunctorAsync& aFunctor) = 0;
+    virtual void EndSetUint(IAsync& aAsync) = 0;
+    virtual void SyncGetUint(uint32_t& aValueUint) = 0;
+    virtual void BeginGetUint(FunctorAsync& aFunctor) = 0;
+    virtual void EndGetUint(IAsync& aAsync, uint32_t& aValueUint) = 0;
+    virtual void SyncSetInt(int32_t aValueInt) = 0;
+    virtual void BeginSetInt(int32_t aValueInt, FunctorAsync& aFunctor) = 0;
+    virtual void EndSetInt(IAsync& aAsync) = 0;
+    virtual void SyncGetInt(int32_t& aValueInt) = 0;
+    virtual void BeginGetInt(FunctorAsync& aFunctor) = 0;
+    virtual void EndGetInt(IAsync& aAsync, int32_t& aValueInt) = 0;
+    virtual void SyncSetBool(bool aValueBool) = 0;
+    virtual void BeginSetBool(bool aValueBool, FunctorAsync& aFunctor) = 0;
+    virtual void EndSetBool(IAsync& aAsync) = 0;
+    virtual void SyncGetBool(bool& aValueBool) = 0;
+    virtual void BeginGetBool(FunctorAsync& aFunctor) = 0;
+    virtual void EndGetBool(IAsync& aAsync, bool& aValueBool) = 0;
+    virtual void SyncSetMultiple(uint32_t aValueUint, int32_t aValueInt, bool aValueBool) = 0;
+    virtual void BeginSetMultiple(uint32_t aValueUint, int32_t aValueInt, bool aValueBool, FunctorAsync& aFunctor) = 0;
+    virtual void EndSetMultiple(IAsync& aAsync) = 0;
+    virtual void SyncGetMultiple(uint32_t& aValueUint, int32_t& aValueInt, bool& aValueBool) = 0;
+    virtual void BeginGetMultiple(FunctorAsync& aFunctor) = 0;
+    virtual void EndGetMultiple(IAsync& aAsync, uint32_t& aValueUint, int32_t& aValueInt, bool& aValueBool) = 0;
+    virtual void SyncSetString(const std::string& aValueStr) = 0;
+    virtual void BeginSetString(const std::string& aValueStr, FunctorAsync& aFunctor) = 0;
+    virtual void EndSetString(IAsync& aAsync) = 0;
+    virtual void SyncGetString(std::string& aValueStr) = 0;
+    virtual void BeginGetString(FunctorAsync& aFunctor) = 0;
+    virtual void EndGetString(IAsync& aAsync, std::string& aValueStr) = 0;
+    virtual void SyncSetBinary(const std::string& aValueBin) = 0;
+    virtual void BeginSetBinary(const std::string& aValueBin, FunctorAsync& aFunctor) = 0;
+    virtual void EndSetBinary(IAsync& aAsync) = 0;
+    virtual void SyncGetBinary(std::string& aValueBin) = 0;
+    virtual void BeginGetBinary(FunctorAsync& aFunctor) = 0;
+    virtual void EndGetBinary(IAsync& aAsync, std::string& aValueBin) = 0;
+    virtual void SyncToggleBool() = 0;
+    virtual void BeginToggleBool(FunctorAsync& aFunctor) = 0;
+    virtual void EndToggleBool(IAsync& aAsync) = 0;
+    virtual void SyncWriteFile(const std::string& aData, const std::string& aFileFullName) = 0;
+    virtual void BeginWriteFile(const std::string& aData, const std::string& aFileFullName, FunctorAsync& aFunctor) = 0;
+    virtual void EndWriteFile(IAsync& aAsync) = 0;
+    virtual void SyncShutdown() = 0;
+    virtual void BeginShutdown(FunctorAsync& aFunctor) = 0;
+    virtual void EndShutdown(IAsync& aAsync) = 0;
+    virtual void SetPropertyVarUintChanged(Functor& aVarUintChanged) = 0;
+    virtual void PropertyVarUint(uint32_t& aVarUint) const = 0;
+    virtual void SetPropertyVarIntChanged(Functor& aVarIntChanged) = 0;
+    virtual void PropertyVarInt(int32_t& aVarInt) const = 0;
+    virtual void SetPropertyVarBoolChanged(Functor& aVarBoolChanged) = 0;
+    virtual void PropertyVarBool(bool& aVarBool) const = 0;
+    virtual void SetPropertyVarStrChanged(Functor& aVarStrChanged) = 0;
+    virtual void PropertyVarStr(std::string& aVarStr) const = 0;
+    virtual void SetPropertyVarBinChanged(Functor& aVarBinChanged) = 0;
+    virtual void PropertyVarBin(std::string& aVarBin) const = 0;
+};
 
 /**
  * Proxy for openhome.org:TestBasic:1
  * @ingroup Proxies
  */
-class CpProxyOpenhomeOrgTestBasic1Cpp : public CpProxy
+class CpProxyOpenhomeOrgTestBasic1Cpp : public ICpProxyOpenhomeOrgTestBasic1Cpp
 {
 public:
     /**
      * Constructor.
      *
-     * Use CpProxy::[Un]Subscribe() to enable/disable querying of state variable
+     * Use iCpProxy::[Un]Subscribe() to enable/disable querying of state variable
      * and reporting of their changes.
      *
      * @param[in]  aDevice   The device to use
@@ -731,7 +813,40 @@ public:
      * @param[out] aVarBin
      */
     void PropertyVarBin(std::string& aVarBin) const;
+    /**
+    * This function exposes the Subscribe() function of the iCpProxy member variable
+    */
+    void Subscribe();
+    /**
+    * This function exposes the Unsubscribe() function of the iCpProxy member variable
+    */
+    void Unsubscribe();
+    /**
+    * This function exposes the SetPropertyChanged() function of the iCpProxy member variable
+    */
+    void SetPropertyChanged(Functor& aFunctor);
+    /**
+    * This function exposes the SetPropertyInitialEvent() function of the iCpProxy member variable
+    */
+    void SetPropertyInitialEvent(Functor& aFunctor);
+    /**
+    * This function exposes the AddProperty() function of the iCpProxy member variable
+    */
+    void AddProperty(Property* aProperty);
+    /**
+    * This function exposes DestroyService() function of the iCpProxy member variable
+    */
+    void DestroyService();
+    /**
+    * This function exposes the REportEvent() function of the iCpProxy member variable
+    */
+    void ReportEvent(Functor aFunctor);
+    /**
+    * This function exposes the Version() function of the iCpProxy member variable
+    */
+    TUint Version() const;
 private:
+    CpProxy iCpProxy;
     void VarUintPropertyChanged();
     void VarIntPropertyChanged();
     void VarBoolPropertyChanged();

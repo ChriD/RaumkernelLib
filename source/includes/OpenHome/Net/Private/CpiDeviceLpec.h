@@ -11,6 +11,8 @@
 #include <OpenHome/Private/Stream.h>
 #include <OpenHome/Private/Thread.h>
 
+#include <limits.h>
+
 namespace OpenHome {
     class Uri;
 namespace Net {
@@ -28,6 +30,7 @@ public:
 
 class CpiDeviceLpec : private ICpiProtocol, private ICpiDeviceObserver
 {
+    static const TUint kSubscriptionDurationSecs = 60 * 60 * 24; // arbitrarily chosen largish value
 public:
     CpiDeviceLpec(CpStack& aCpStack, Endpoint aLocation, const Brx& aLpecName, Functor aStateChanged);
     void Destroy();
@@ -44,6 +47,7 @@ private: // from ICpiProtocol
     TUint Subscribe(CpiSubscription& aSubscription, const OpenHome::Uri& aSubscriber);
     TUint Renew(CpiSubscription& aSubscription);
     void Unsubscribe(CpiSubscription& aSubscription, const Brx& aSid);
+    TBool OrphanSubscriptionsOnSubnetChange() const;
     void NotifyRemovedBeforeReady();
     TUint Version(const TChar* aDomain, const TChar* aName, TUint aProxyVersion) const;
 private: // from ICpiDeviceObserver
@@ -77,7 +81,7 @@ private:
         TBool HandleLpecResponse(const Brx& aMethod, const Brx& aBody);
     private:
         Semaphore& iComplete;
-        Brn iSidFragment;
+        Bws<Ascii::kMaxUintStringBytes> iSidFragment;
     };
     class OutputProcessor : public IOutputProcessor
     {
@@ -95,7 +99,8 @@ private:
     CpStack& iCpStack;
     Mutex iLock;
     SocketTcpClient iSocket;
-    Srs<kMaxReadBufferBytes>* iReadBuffer;
+    Srx* iReadBuffer;
+    ReaderUntilS<kMaxReadBufferBytes>* iReaderUntil;
     Sws<kMaxWriteBufferBytes>* iWriteBuffer;
     Endpoint iLocation;
     Bws<64> iLpecName;

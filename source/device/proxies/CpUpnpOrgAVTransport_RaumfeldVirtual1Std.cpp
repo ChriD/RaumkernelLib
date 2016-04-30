@@ -1,4 +1,4 @@
-#include <raumkernel/device/proxies/CpUpnpOrgAVTransport_RaumfeldVirtual1.h>
+#include "raumkernel/device/proxies/CpUpnpOrgAVTransport_RaumfeldVirtual1.h"
 #include <OpenHome/Net/Core/CpProxy.h>
 #include <OpenHome/Net/Private/CpiService.h>
 #include <OpenHome/Private/Thread.h>
@@ -24,7 +24,7 @@ private:
 };
 
 SyncSetAVTransportURIUpnpOrgAVTransport_RaumfeldVirtual1Cpp::SyncSetAVTransportURIUpnpOrgAVTransport_RaumfeldVirtual1Cpp(CpProxyUpnpOrgAVTransport_RaumfeldVirtual1Cpp& aProxy)
-: iService(aProxy)
+    : iService(aProxy)
 {
 }
 
@@ -45,7 +45,7 @@ private:
 };
 
 SyncBendAVTransportURIUpnpOrgAVTransport_RaumfeldVirtual1Cpp::SyncBendAVTransportURIUpnpOrgAVTransport_RaumfeldVirtual1Cpp(CpProxyUpnpOrgAVTransport_RaumfeldVirtual1Cpp& aProxy)
-: iService(aProxy)
+    : iService(aProxy)
 {
 }
 
@@ -66,7 +66,7 @@ private:
 };
 
 SyncSetResourceForCurrentStreamUpnpOrgAVTransport_RaumfeldVirtual1Cpp::SyncSetResourceForCurrentStreamUpnpOrgAVTransport_RaumfeldVirtual1Cpp(CpProxyUpnpOrgAVTransport_RaumfeldVirtual1Cpp& aProxy)
-: iService(aProxy)
+    : iService(aProxy)
 {
 }
 
@@ -96,16 +96,16 @@ private:
 };
 
 SyncGetMediaInfoUpnpOrgAVTransport_RaumfeldVirtual1Cpp::SyncGetMediaInfoUpnpOrgAVTransport_RaumfeldVirtual1Cpp(CpProxyUpnpOrgAVTransport_RaumfeldVirtual1Cpp& aProxy, uint32_t& aNrTracks, std::string& aMediaDuration, std::string& aCurrentURI, std::string& aCurrentURIMetaData, std::string& aNextURI, std::string& aNextURIMetaData, std::string& aPlayMedium, std::string& aRecordMedium, std::string& aWriteStatus)
-: iService(aProxy)
-, iNrTracks(aNrTracks)
-, iMediaDuration(aMediaDuration)
-, iCurrentURI(aCurrentURI)
-, iCurrentURIMetaData(aCurrentURIMetaData)
-, iNextURI(aNextURI)
-, iNextURIMetaData(aNextURIMetaData)
-, iPlayMedium(aPlayMedium)
-, iRecordMedium(aRecordMedium)
-, iWriteStatus(aWriteStatus)
+    : iService(aProxy)
+    , iNrTracks(aNrTracks)
+    , iMediaDuration(aMediaDuration)
+    , iCurrentURI(aCurrentURI)
+    , iCurrentURIMetaData(aCurrentURIMetaData)
+    , iNextURI(aNextURI)
+    , iNextURIMetaData(aNextURIMetaData)
+    , iPlayMedium(aPlayMedium)
+    , iRecordMedium(aRecordMedium)
+    , iWriteStatus(aWriteStatus)
 {
 }
 
@@ -129,10 +129,10 @@ private:
 };
 
 SyncGetTransportInfoUpnpOrgAVTransport_RaumfeldVirtual1Cpp::SyncGetTransportInfoUpnpOrgAVTransport_RaumfeldVirtual1Cpp(CpProxyUpnpOrgAVTransport_RaumfeldVirtual1Cpp& aProxy, std::string& aCurrentTransportState, std::string& aCurrentTransportStatus, std::string& aCurrentSpeed)
-: iService(aProxy)
-, iCurrentTransportState(aCurrentTransportState)
-, iCurrentTransportStatus(aCurrentTransportStatus)
-, iCurrentSpeed(aCurrentSpeed)
+    : iService(aProxy)
+    , iCurrentTransportState(aCurrentTransportState)
+    , iCurrentTransportStatus(aCurrentTransportStatus)
+    , iCurrentSpeed(aCurrentSpeed)
 {
 }
 
@@ -161,15 +161,15 @@ private:
 };
 
 SyncGetPositionInfoUpnpOrgAVTransport_RaumfeldVirtual1Cpp::SyncGetPositionInfoUpnpOrgAVTransport_RaumfeldVirtual1Cpp(CpProxyUpnpOrgAVTransport_RaumfeldVirtual1Cpp& aProxy, uint32_t& aTrack, std::string& aTrackDuration, std::string& aTrackMetaData, std::string& aTrackURI, std::string& aRelTime, std::string& aAbsTime, int32_t& aRelCount, int32_t& aAbsCount)
-: iService(aProxy)
-, iTrack(aTrack)
-, iTrackDuration(aTrackDuration)
-, iTrackMetaData(aTrackMetaData)
-, iTrackURI(aTrackURI)
-, iRelTime(aRelTime)
-, iAbsTime(aAbsTime)
-, iRelCount(aRelCount)
-, iAbsCount(aAbsCount)
+    : iService(aProxy)
+    , iTrack(aTrack)
+    , iTrackDuration(aTrackDuration)
+    , iTrackMetaData(aTrackMetaData)
+    , iTrackURI(aTrackURI)
+    , iRelTime(aRelTime)
+    , iAbsTime(aAbsTime)
+    , iRelCount(aRelCount)
+    , iAbsCount(aAbsCount)
 {
 }
 
@@ -193,10 +193,10 @@ private:
 };
 
 SyncGetDeviceCapabilitiesUpnpOrgAVTransport_RaumfeldVirtual1Cpp::SyncGetDeviceCapabilitiesUpnpOrgAVTransport_RaumfeldVirtual1Cpp(CpProxyUpnpOrgAVTransport_RaumfeldVirtual1Cpp& aProxy, std::string& aPlayMedia, std::string& aRecMedia, std::string& aRecQualityModes)
-: iService(aProxy)
-, iPlayMedia(aPlayMedia)
-, iRecMedia(aRecMedia)
-, iRecQualityModes(aRecQualityModes)
+    : iService(aProxy)
+    , iPlayMedia(aPlayMedia)
+    , iRecMedia(aRecMedia)
+    , iRecQualityModes(aRecQualityModes)
 {
 }
 
@@ -219,9 +219,9 @@ private:
 };
 
 SyncGetTransportSettingsUpnpOrgAVTransport_RaumfeldVirtual1Cpp::SyncGetTransportSettingsUpnpOrgAVTransport_RaumfeldVirtual1Cpp(CpProxyUpnpOrgAVTransport_RaumfeldVirtual1Cpp& aProxy, std::string& aPlayMode, std::string& aRecQualityMode)
-: iService(aProxy)
-, iPlayMode(aPlayMode)
-, iRecQualityMode(aRecQualityMode)
+    : iService(aProxy)
+    , iPlayMode(aPlayMode)
+    , iRecQualityMode(aRecQualityMode)
 {
 }
 
@@ -242,7 +242,7 @@ private:
 };
 
 SyncStopUpnpOrgAVTransport_RaumfeldVirtual1Cpp::SyncStopUpnpOrgAVTransport_RaumfeldVirtual1Cpp(CpProxyUpnpOrgAVTransport_RaumfeldVirtual1Cpp& aProxy)
-: iService(aProxy)
+    : iService(aProxy)
 {
 }
 
@@ -263,7 +263,7 @@ private:
 };
 
 SyncPlayUpnpOrgAVTransport_RaumfeldVirtual1Cpp::SyncPlayUpnpOrgAVTransport_RaumfeldVirtual1Cpp(CpProxyUpnpOrgAVTransport_RaumfeldVirtual1Cpp& aProxy)
-: iService(aProxy)
+    : iService(aProxy)
 {
 }
 
@@ -284,7 +284,7 @@ private:
 };
 
 SyncPauseUpnpOrgAVTransport_RaumfeldVirtual1Cpp::SyncPauseUpnpOrgAVTransport_RaumfeldVirtual1Cpp(CpProxyUpnpOrgAVTransport_RaumfeldVirtual1Cpp& aProxy)
-: iService(aProxy)
+    : iService(aProxy)
 {
 }
 
@@ -305,7 +305,7 @@ private:
 };
 
 SyncStartSleepTimerUpnpOrgAVTransport_RaumfeldVirtual1Cpp::SyncStartSleepTimerUpnpOrgAVTransport_RaumfeldVirtual1Cpp(CpProxyUpnpOrgAVTransport_RaumfeldVirtual1Cpp& aProxy)
-: iService(aProxy)
+    : iService(aProxy)
 {
 }
 
@@ -326,7 +326,7 @@ private:
 };
 
 SyncSeekUpnpOrgAVTransport_RaumfeldVirtual1Cpp::SyncSeekUpnpOrgAVTransport_RaumfeldVirtual1Cpp(CpProxyUpnpOrgAVTransport_RaumfeldVirtual1Cpp& aProxy)
-: iService(aProxy)
+    : iService(aProxy)
 {
 }
 
@@ -347,7 +347,7 @@ private:
 };
 
 SyncNextUpnpOrgAVTransport_RaumfeldVirtual1Cpp::SyncNextUpnpOrgAVTransport_RaumfeldVirtual1Cpp(CpProxyUpnpOrgAVTransport_RaumfeldVirtual1Cpp& aProxy)
-: iService(aProxy)
+    : iService(aProxy)
 {
 }
 
@@ -368,7 +368,7 @@ private:
 };
 
 SyncPreviousUpnpOrgAVTransport_RaumfeldVirtual1Cpp::SyncPreviousUpnpOrgAVTransport_RaumfeldVirtual1Cpp(CpProxyUpnpOrgAVTransport_RaumfeldVirtual1Cpp& aProxy)
-: iService(aProxy)
+    : iService(aProxy)
 {
 }
 
@@ -389,7 +389,7 @@ private:
 };
 
 SyncSetPlayModeUpnpOrgAVTransport_RaumfeldVirtual1Cpp::SyncSetPlayModeUpnpOrgAVTransport_RaumfeldVirtual1Cpp(CpProxyUpnpOrgAVTransport_RaumfeldVirtual1Cpp& aProxy)
-: iService(aProxy)
+    : iService(aProxy)
 {
 }
 
@@ -412,9 +412,9 @@ private:
 };
 
 SyncGetStreamPropertiesUpnpOrgAVTransport_RaumfeldVirtual1Cpp::SyncGetStreamPropertiesUpnpOrgAVTransport_RaumfeldVirtual1Cpp(CpProxyUpnpOrgAVTransport_RaumfeldVirtual1Cpp& aProxy, std::string& aCurrentContentType, uint32_t& aCurrentBitrate)
-: iService(aProxy)
-, iCurrentContentType(aCurrentContentType)
-, iCurrentBitrate(aCurrentBitrate)
+    : iService(aProxy)
+    , iCurrentContentType(aCurrentContentType)
+    , iCurrentBitrate(aCurrentBitrate)
 {
 }
 
@@ -436,8 +436,8 @@ private:
 };
 
 SyncGetCurrentTransportActionsUpnpOrgAVTransport_RaumfeldVirtual1Cpp::SyncGetCurrentTransportActionsUpnpOrgAVTransport_RaumfeldVirtual1Cpp(CpProxyUpnpOrgAVTransport_RaumfeldVirtual1Cpp& aProxy, std::string& aActions)
-: iService(aProxy)
-, iActions(aActions)
+    : iService(aProxy)
+    , iActions(aActions)
 {
 }
 
@@ -448,7 +448,7 @@ void SyncGetCurrentTransportActionsUpnpOrgAVTransport_RaumfeldVirtual1Cpp::Compl
 
 
 CpProxyUpnpOrgAVTransport_RaumfeldVirtual1Cpp::CpProxyUpnpOrgAVTransport_RaumfeldVirtual1Cpp(CpDeviceCpp& aDevice)
-: CpProxy("schemas-upnp-org", "AVTransport", 1, aDevice.Device())
+    : iCpProxy("schemas-upnp-org", "AVTransport", 1, aDevice.Device())
 {
     OpenHome::Net::Parameter* param;
     TChar** allowedValues;
@@ -668,7 +668,7 @@ CpProxyUpnpOrgAVTransport_RaumfeldVirtual1Cpp::CpProxyUpnpOrgAVTransport_Raumfel
 
     Functor functor;
     functor = MakeFunctor(*this, &CpProxyUpnpOrgAVTransport_RaumfeldVirtual1Cpp::LastChangePropertyChanged);
-    iLastChange = new PropertyString(aDevice.Device().GetCpStack().Env(), "LastChange", functor);
+    iLastChange = new PropertyString("LastChange", functor);
     AddProperty(iLastChange);
 }
 
@@ -687,7 +687,7 @@ CpProxyUpnpOrgAVTransport_RaumfeldVirtual1Cpp::~CpProxyUpnpOrgAVTransport_Raumfe
     delete iActionPlay;
     delete iActionPause;
     delete iActionStartSleepTimer;
-    delete iActionSeek;    
+    delete iActionSeek;
     delete iActionNext;
     delete iActionPrevious;
     delete iActionSetPlayMode;
@@ -704,7 +704,7 @@ void CpProxyUpnpOrgAVTransport_RaumfeldVirtual1Cpp::SyncSetAVTransportURI(uint32
 
 void CpProxyUpnpOrgAVTransport_RaumfeldVirtual1Cpp::BeginSetAVTransportURI(uint32_t aInstanceID, const std::string& aCurrentURI, const std::string& aCurrentURIMetaData, FunctorAsync& aFunctor)
 {
-    Invocation* invocation = iService->Invocation(*iActionSetAVTransportURI, aFunctor);
+    Invocation* invocation = iCpProxy.GetService().Invocation(*iActionSetAVTransportURI, aFunctor);
     TUint inIndex = 0;
     const Action::VectorParameters& inParams = iActionSetAVTransportURI->InputParameters();
     invocation->AddInput(new ArgumentUint(*inParams[inIndex++], aInstanceID));
@@ -716,7 +716,7 @@ void CpProxyUpnpOrgAVTransport_RaumfeldVirtual1Cpp::BeginSetAVTransportURI(uint3
         Brn buf((const TByte*)aCurrentURIMetaData.c_str(), (TUint)aCurrentURIMetaData.length());
         invocation->AddInput(new ArgumentString(*inParams[inIndex++], buf));
     }
-    iInvocable.InvokeAction(*invocation);
+    iCpProxy.GetInvocable().InvokeAction(*invocation);
 }
 
 void CpProxyUpnpOrgAVTransport_RaumfeldVirtual1Cpp::EndSetAVTransportURI(IAsync& aAsync)
@@ -742,7 +742,7 @@ void CpProxyUpnpOrgAVTransport_RaumfeldVirtual1Cpp::SyncBendAVTransportURI(uint3
 
 void CpProxyUpnpOrgAVTransport_RaumfeldVirtual1Cpp::BeginBendAVTransportURI(uint32_t aInstanceID, const std::string& aCurrentURI, const std::string& aCurrentURIMetaData, FunctorAsync& aFunctor)
 {
-    Invocation* invocation = iService->Invocation(*iActionBendAVTransportURI, aFunctor);
+    Invocation* invocation = iCpProxy.GetService().Invocation(*iActionBendAVTransportURI, aFunctor);
     TUint inIndex = 0;
     const Action::VectorParameters& inParams = iActionBendAVTransportURI->InputParameters();
     invocation->AddInput(new ArgumentUint(*inParams[inIndex++], aInstanceID));
@@ -754,7 +754,7 @@ void CpProxyUpnpOrgAVTransport_RaumfeldVirtual1Cpp::BeginBendAVTransportURI(uint
         Brn buf((const TByte*)aCurrentURIMetaData.c_str(), (TUint)aCurrentURIMetaData.length());
         invocation->AddInput(new ArgumentString(*inParams[inIndex++], buf));
     }
-    iInvocable.InvokeAction(*invocation);
+    iCpProxy.GetInvocable().InvokeAction(*invocation);
 }
 
 void CpProxyUpnpOrgAVTransport_RaumfeldVirtual1Cpp::EndBendAVTransportURI(IAsync& aAsync)
@@ -780,14 +780,14 @@ void CpProxyUpnpOrgAVTransport_RaumfeldVirtual1Cpp::SyncSetResourceForCurrentStr
 
 void CpProxyUpnpOrgAVTransport_RaumfeldVirtual1Cpp::BeginSetResourceForCurrentStream(const std::string& aResourceURI, FunctorAsync& aFunctor)
 {
-    Invocation* invocation = iService->Invocation(*iActionSetResourceForCurrentStream, aFunctor);
+    Invocation* invocation = iCpProxy.GetService().Invocation(*iActionSetResourceForCurrentStream, aFunctor);
     TUint inIndex = 0;
     const Action::VectorParameters& inParams = iActionSetResourceForCurrentStream->InputParameters();
     {
         Brn buf((const TByte*)aResourceURI.c_str(), (TUint)aResourceURI.length());
         invocation->AddInput(new ArgumentString(*inParams[inIndex++], buf));
     }
-    iInvocable.InvokeAction(*invocation);
+    iCpProxy.GetInvocable().InvokeAction(*invocation);
 }
 
 void CpProxyUpnpOrgAVTransport_RaumfeldVirtual1Cpp::EndSetResourceForCurrentStream(IAsync& aAsync)
@@ -813,7 +813,7 @@ void CpProxyUpnpOrgAVTransport_RaumfeldVirtual1Cpp::SyncGetMediaInfo(uint32_t aI
 
 void CpProxyUpnpOrgAVTransport_RaumfeldVirtual1Cpp::BeginGetMediaInfo(uint32_t aInstanceID, FunctorAsync& aFunctor)
 {
-    Invocation* invocation = iService->Invocation(*iActionGetMediaInfo, aFunctor);
+    Invocation* invocation = iCpProxy.GetService().Invocation(*iActionGetMediaInfo, aFunctor);
     TUint inIndex = 0;
     const Action::VectorParameters& inParams = iActionGetMediaInfo->InputParameters();
     invocation->AddInput(new ArgumentUint(*inParams[inIndex++], aInstanceID));
@@ -828,7 +828,7 @@ void CpProxyUpnpOrgAVTransport_RaumfeldVirtual1Cpp::BeginGetMediaInfo(uint32_t a
     invocation->AddOutput(new ArgumentString(*outParams[outIndex++]));
     invocation->AddOutput(new ArgumentString(*outParams[outIndex++]));
     invocation->AddOutput(new ArgumentString(*outParams[outIndex++]));
-    iInvocable.InvokeAction(*invocation);
+    iCpProxy.GetInvocable().InvokeAction(*invocation);
 }
 
 void CpProxyUpnpOrgAVTransport_RaumfeldVirtual1Cpp::EndGetMediaInfo(IAsync& aAsync, uint32_t& aNrTracks, std::string& aMediaDuration, std::string& aCurrentURI, std::string& aCurrentURIMetaData, std::string& aNextURI, std::string& aNextURIMetaData, std::string& aPlayMedium, std::string& aRecordMedium, std::string& aWriteStatus)
@@ -888,7 +888,7 @@ void CpProxyUpnpOrgAVTransport_RaumfeldVirtual1Cpp::SyncGetTransportInfo(uint32_
 
 void CpProxyUpnpOrgAVTransport_RaumfeldVirtual1Cpp::BeginGetTransportInfo(uint32_t aInstanceID, FunctorAsync& aFunctor)
 {
-    Invocation* invocation = iService->Invocation(*iActionGetTransportInfo, aFunctor);
+    Invocation* invocation = iCpProxy.GetService().Invocation(*iActionGetTransportInfo, aFunctor);
     TUint inIndex = 0;
     const Action::VectorParameters& inParams = iActionGetTransportInfo->InputParameters();
     invocation->AddInput(new ArgumentUint(*inParams[inIndex++], aInstanceID));
@@ -897,7 +897,7 @@ void CpProxyUpnpOrgAVTransport_RaumfeldVirtual1Cpp::BeginGetTransportInfo(uint32
     invocation->AddOutput(new ArgumentString(*outParams[outIndex++]));
     invocation->AddOutput(new ArgumentString(*outParams[outIndex++]));
     invocation->AddOutput(new ArgumentString(*outParams[outIndex++]));
-    iInvocable.InvokeAction(*invocation);
+    iCpProxy.GetInvocable().InvokeAction(*invocation);
 }
 
 void CpProxyUpnpOrgAVTransport_RaumfeldVirtual1Cpp::EndGetTransportInfo(IAsync& aAsync, std::string& aCurrentTransportState, std::string& aCurrentTransportStatus, std::string& aCurrentSpeed)
@@ -936,7 +936,7 @@ void CpProxyUpnpOrgAVTransport_RaumfeldVirtual1Cpp::SyncGetPositionInfo(uint32_t
 
 void CpProxyUpnpOrgAVTransport_RaumfeldVirtual1Cpp::BeginGetPositionInfo(uint32_t aInstanceID, FunctorAsync& aFunctor)
 {
-    Invocation* invocation = iService->Invocation(*iActionGetPositionInfo, aFunctor);
+    Invocation* invocation = iCpProxy.GetService().Invocation(*iActionGetPositionInfo, aFunctor);
     TUint inIndex = 0;
     const Action::VectorParameters& inParams = iActionGetPositionInfo->InputParameters();
     invocation->AddInput(new ArgumentUint(*inParams[inIndex++], aInstanceID));
@@ -950,7 +950,7 @@ void CpProxyUpnpOrgAVTransport_RaumfeldVirtual1Cpp::BeginGetPositionInfo(uint32_
     invocation->AddOutput(new ArgumentString(*outParams[outIndex++]));
     invocation->AddOutput(new ArgumentInt(*outParams[outIndex++]));
     invocation->AddOutput(new ArgumentInt(*outParams[outIndex++]));
-    iInvocable.InvokeAction(*invocation);
+    iCpProxy.GetInvocable().InvokeAction(*invocation);
 }
 
 void CpProxyUpnpOrgAVTransport_RaumfeldVirtual1Cpp::EndGetPositionInfo(IAsync& aAsync, uint32_t& aTrack, std::string& aTrackDuration, std::string& aTrackMetaData, std::string& aTrackURI, std::string& aRelTime, std::string& aAbsTime, int32_t& aRelCount, int32_t& aAbsCount)
@@ -1000,7 +1000,7 @@ void CpProxyUpnpOrgAVTransport_RaumfeldVirtual1Cpp::SyncGetDeviceCapabilities(ui
 
 void CpProxyUpnpOrgAVTransport_RaumfeldVirtual1Cpp::BeginGetDeviceCapabilities(uint32_t aInstanceID, FunctorAsync& aFunctor)
 {
-    Invocation* invocation = iService->Invocation(*iActionGetDeviceCapabilities, aFunctor);
+    Invocation* invocation = iCpProxy.GetService().Invocation(*iActionGetDeviceCapabilities, aFunctor);
     TUint inIndex = 0;
     const Action::VectorParameters& inParams = iActionGetDeviceCapabilities->InputParameters();
     invocation->AddInput(new ArgumentUint(*inParams[inIndex++], aInstanceID));
@@ -1009,7 +1009,7 @@ void CpProxyUpnpOrgAVTransport_RaumfeldVirtual1Cpp::BeginGetDeviceCapabilities(u
     invocation->AddOutput(new ArgumentString(*outParams[outIndex++]));
     invocation->AddOutput(new ArgumentString(*outParams[outIndex++]));
     invocation->AddOutput(new ArgumentString(*outParams[outIndex++]));
-    iInvocable.InvokeAction(*invocation);
+    iCpProxy.GetInvocable().InvokeAction(*invocation);
 }
 
 void CpProxyUpnpOrgAVTransport_RaumfeldVirtual1Cpp::EndGetDeviceCapabilities(IAsync& aAsync, std::string& aPlayMedia, std::string& aRecMedia, std::string& aRecQualityModes)
@@ -1048,7 +1048,7 @@ void CpProxyUpnpOrgAVTransport_RaumfeldVirtual1Cpp::SyncGetTransportSettings(uin
 
 void CpProxyUpnpOrgAVTransport_RaumfeldVirtual1Cpp::BeginGetTransportSettings(uint32_t aInstanceID, FunctorAsync& aFunctor)
 {
-    Invocation* invocation = iService->Invocation(*iActionGetTransportSettings, aFunctor);
+    Invocation* invocation = iCpProxy.GetService().Invocation(*iActionGetTransportSettings, aFunctor);
     TUint inIndex = 0;
     const Action::VectorParameters& inParams = iActionGetTransportSettings->InputParameters();
     invocation->AddInput(new ArgumentUint(*inParams[inIndex++], aInstanceID));
@@ -1056,7 +1056,7 @@ void CpProxyUpnpOrgAVTransport_RaumfeldVirtual1Cpp::BeginGetTransportSettings(ui
     const Action::VectorParameters& outParams = iActionGetTransportSettings->OutputParameters();
     invocation->AddOutput(new ArgumentString(*outParams[outIndex++]));
     invocation->AddOutput(new ArgumentString(*outParams[outIndex++]));
-    iInvocable.InvokeAction(*invocation);
+    iCpProxy.GetInvocable().InvokeAction(*invocation);
 }
 
 void CpProxyUpnpOrgAVTransport_RaumfeldVirtual1Cpp::EndGetTransportSettings(IAsync& aAsync, std::string& aPlayMode, std::string& aRecQualityMode)
@@ -1091,11 +1091,11 @@ void CpProxyUpnpOrgAVTransport_RaumfeldVirtual1Cpp::SyncStop(uint32_t aInstanceI
 
 void CpProxyUpnpOrgAVTransport_RaumfeldVirtual1Cpp::BeginStop(uint32_t aInstanceID, FunctorAsync& aFunctor)
 {
-    Invocation* invocation = iService->Invocation(*iActionStop, aFunctor);
+    Invocation* invocation = iCpProxy.GetService().Invocation(*iActionStop, aFunctor);
     TUint inIndex = 0;
     const Action::VectorParameters& inParams = iActionStop->InputParameters();
     invocation->AddInput(new ArgumentUint(*inParams[inIndex++], aInstanceID));
-    iInvocable.InvokeAction(*invocation);
+    iCpProxy.GetInvocable().InvokeAction(*invocation);
 }
 
 void CpProxyUpnpOrgAVTransport_RaumfeldVirtual1Cpp::EndStop(IAsync& aAsync)
@@ -1121,7 +1121,7 @@ void CpProxyUpnpOrgAVTransport_RaumfeldVirtual1Cpp::SyncPlay(uint32_t aInstanceI
 
 void CpProxyUpnpOrgAVTransport_RaumfeldVirtual1Cpp::BeginPlay(uint32_t aInstanceID, const std::string& aSpeed, FunctorAsync& aFunctor)
 {
-    Invocation* invocation = iService->Invocation(*iActionPlay, aFunctor);
+    Invocation* invocation = iCpProxy.GetService().Invocation(*iActionPlay, aFunctor);
     TUint inIndex = 0;
     const Action::VectorParameters& inParams = iActionPlay->InputParameters();
     invocation->AddInput(new ArgumentUint(*inParams[inIndex++], aInstanceID));
@@ -1129,7 +1129,7 @@ void CpProxyUpnpOrgAVTransport_RaumfeldVirtual1Cpp::BeginPlay(uint32_t aInstance
         Brn buf((const TByte*)aSpeed.c_str(), (TUint)aSpeed.length());
         invocation->AddInput(new ArgumentString(*inParams[inIndex++], buf));
     }
-    iInvocable.InvokeAction(*invocation);
+    iCpProxy.GetInvocable().InvokeAction(*invocation);
 }
 
 void CpProxyUpnpOrgAVTransport_RaumfeldVirtual1Cpp::EndPlay(IAsync& aAsync)
@@ -1155,11 +1155,11 @@ void CpProxyUpnpOrgAVTransport_RaumfeldVirtual1Cpp::SyncPause(uint32_t aInstance
 
 void CpProxyUpnpOrgAVTransport_RaumfeldVirtual1Cpp::BeginPause(uint32_t aInstanceID, FunctorAsync& aFunctor)
 {
-    Invocation* invocation = iService->Invocation(*iActionPause, aFunctor);
+    Invocation* invocation = iCpProxy.GetService().Invocation(*iActionPause, aFunctor);
     TUint inIndex = 0;
     const Action::VectorParameters& inParams = iActionPause->InputParameters();
     invocation->AddInput(new ArgumentUint(*inParams[inIndex++], aInstanceID));
-    iInvocable.InvokeAction(*invocation);
+    iCpProxy.GetInvocable().InvokeAction(*invocation);
 }
 
 void CpProxyUpnpOrgAVTransport_RaumfeldVirtual1Cpp::EndPause(IAsync& aAsync)
@@ -1185,13 +1185,13 @@ void CpProxyUpnpOrgAVTransport_RaumfeldVirtual1Cpp::SyncStartSleepTimer(uint32_t
 
 void CpProxyUpnpOrgAVTransport_RaumfeldVirtual1Cpp::BeginStartSleepTimer(uint32_t aInstanceID, uint32_t aSecondsUntilSleep, uint32_t aSecondsForVolumeRamp, FunctorAsync& aFunctor)
 {
-    Invocation* invocation = iService->Invocation(*iActionStartSleepTimer, aFunctor);
+    Invocation* invocation = iCpProxy.GetService().Invocation(*iActionStartSleepTimer, aFunctor);
     TUint inIndex = 0;
     const Action::VectorParameters& inParams = iActionStartSleepTimer->InputParameters();
     invocation->AddInput(new ArgumentUint(*inParams[inIndex++], aInstanceID));
     invocation->AddInput(new ArgumentUint(*inParams[inIndex++], aSecondsUntilSleep));
     invocation->AddInput(new ArgumentUint(*inParams[inIndex++], aSecondsForVolumeRamp));
-    iInvocable.InvokeAction(*invocation);
+    iCpProxy.GetInvocable().InvokeAction(*invocation);
 }
 
 void CpProxyUpnpOrgAVTransport_RaumfeldVirtual1Cpp::EndStartSleepTimer(IAsync& aAsync)
@@ -1217,7 +1217,7 @@ void CpProxyUpnpOrgAVTransport_RaumfeldVirtual1Cpp::SyncSeek(uint32_t aInstanceI
 
 void CpProxyUpnpOrgAVTransport_RaumfeldVirtual1Cpp::BeginSeek(uint32_t aInstanceID, const std::string& aUnit, const std::string& aTarget, FunctorAsync& aFunctor)
 {
-    Invocation* invocation = iService->Invocation(*iActionSeek, aFunctor);
+    Invocation* invocation = iCpProxy.GetService().Invocation(*iActionSeek, aFunctor);
     TUint inIndex = 0;
     const Action::VectorParameters& inParams = iActionSeek->InputParameters();
     invocation->AddInput(new ArgumentUint(*inParams[inIndex++], aInstanceID));
@@ -1229,7 +1229,7 @@ void CpProxyUpnpOrgAVTransport_RaumfeldVirtual1Cpp::BeginSeek(uint32_t aInstance
         Brn buf((const TByte*)aTarget.c_str(), (TUint)aTarget.length());
         invocation->AddInput(new ArgumentString(*inParams[inIndex++], buf));
     }
-    iInvocable.InvokeAction(*invocation);
+    iCpProxy.GetInvocable().InvokeAction(*invocation);
 }
 
 void CpProxyUpnpOrgAVTransport_RaumfeldVirtual1Cpp::EndSeek(IAsync& aAsync)
@@ -1255,11 +1255,11 @@ void CpProxyUpnpOrgAVTransport_RaumfeldVirtual1Cpp::SyncNext(uint32_t aInstanceI
 
 void CpProxyUpnpOrgAVTransport_RaumfeldVirtual1Cpp::BeginNext(uint32_t aInstanceID, FunctorAsync& aFunctor)
 {
-    Invocation* invocation = iService->Invocation(*iActionNext, aFunctor);
+    Invocation* invocation = iCpProxy.GetService().Invocation(*iActionNext, aFunctor);
     TUint inIndex = 0;
     const Action::VectorParameters& inParams = iActionNext->InputParameters();
     invocation->AddInput(new ArgumentUint(*inParams[inIndex++], aInstanceID));
-    iInvocable.InvokeAction(*invocation);
+    iCpProxy.GetInvocable().InvokeAction(*invocation);
 }
 
 void CpProxyUpnpOrgAVTransport_RaumfeldVirtual1Cpp::EndNext(IAsync& aAsync)
@@ -1285,11 +1285,11 @@ void CpProxyUpnpOrgAVTransport_RaumfeldVirtual1Cpp::SyncPrevious(uint32_t aInsta
 
 void CpProxyUpnpOrgAVTransport_RaumfeldVirtual1Cpp::BeginPrevious(uint32_t aInstanceID, FunctorAsync& aFunctor)
 {
-    Invocation* invocation = iService->Invocation(*iActionPrevious, aFunctor);
+    Invocation* invocation = iCpProxy.GetService().Invocation(*iActionPrevious, aFunctor);
     TUint inIndex = 0;
     const Action::VectorParameters& inParams = iActionPrevious->InputParameters();
     invocation->AddInput(new ArgumentUint(*inParams[inIndex++], aInstanceID));
-    iInvocable.InvokeAction(*invocation);
+    iCpProxy.GetInvocable().InvokeAction(*invocation);
 }
 
 void CpProxyUpnpOrgAVTransport_RaumfeldVirtual1Cpp::EndPrevious(IAsync& aAsync)
@@ -1315,7 +1315,7 @@ void CpProxyUpnpOrgAVTransport_RaumfeldVirtual1Cpp::SyncSetPlayMode(uint32_t aIn
 
 void CpProxyUpnpOrgAVTransport_RaumfeldVirtual1Cpp::BeginSetPlayMode(uint32_t aInstanceID, const std::string& aNewPlayMode, FunctorAsync& aFunctor)
 {
-    Invocation* invocation = iService->Invocation(*iActionSetPlayMode, aFunctor);
+    Invocation* invocation = iCpProxy.GetService().Invocation(*iActionSetPlayMode, aFunctor);
     TUint inIndex = 0;
     const Action::VectorParameters& inParams = iActionSetPlayMode->InputParameters();
     invocation->AddInput(new ArgumentUint(*inParams[inIndex++], aInstanceID));
@@ -1323,7 +1323,7 @@ void CpProxyUpnpOrgAVTransport_RaumfeldVirtual1Cpp::BeginSetPlayMode(uint32_t aI
         Brn buf((const TByte*)aNewPlayMode.c_str(), (TUint)aNewPlayMode.length());
         invocation->AddInput(new ArgumentString(*inParams[inIndex++], buf));
     }
-    iInvocable.InvokeAction(*invocation);
+    iCpProxy.GetInvocable().InvokeAction(*invocation);
 }
 
 void CpProxyUpnpOrgAVTransport_RaumfeldVirtual1Cpp::EndSetPlayMode(IAsync& aAsync)
@@ -1349,12 +1349,12 @@ void CpProxyUpnpOrgAVTransport_RaumfeldVirtual1Cpp::SyncGetStreamProperties(std:
 
 void CpProxyUpnpOrgAVTransport_RaumfeldVirtual1Cpp::BeginGetStreamProperties(FunctorAsync& aFunctor)
 {
-    Invocation* invocation = iService->Invocation(*iActionGetStreamProperties, aFunctor);
+    Invocation* invocation = iCpProxy.GetService().Invocation(*iActionGetStreamProperties, aFunctor);
     TUint outIndex = 0;
     const Action::VectorParameters& outParams = iActionGetStreamProperties->OutputParameters();
     invocation->AddOutput(new ArgumentString(*outParams[outIndex++]));
     invocation->AddOutput(new ArgumentUint(*outParams[outIndex++]));
-    iInvocable.InvokeAction(*invocation);
+    iCpProxy.GetInvocable().InvokeAction(*invocation);
 }
 
 void CpProxyUpnpOrgAVTransport_RaumfeldVirtual1Cpp::EndGetStreamProperties(IAsync& aAsync, std::string& aCurrentContentType, uint32_t& aCurrentBitrate)
@@ -1386,14 +1386,14 @@ void CpProxyUpnpOrgAVTransport_RaumfeldVirtual1Cpp::SyncGetCurrentTransportActio
 
 void CpProxyUpnpOrgAVTransport_RaumfeldVirtual1Cpp::BeginGetCurrentTransportActions(uint32_t aInstanceID, FunctorAsync& aFunctor)
 {
-    Invocation* invocation = iService->Invocation(*iActionGetCurrentTransportActions, aFunctor);
+    Invocation* invocation = iCpProxy.GetService().Invocation(*iActionGetCurrentTransportActions, aFunctor);
     TUint inIndex = 0;
     const Action::VectorParameters& inParams = iActionGetCurrentTransportActions->InputParameters();
     invocation->AddInput(new ArgumentUint(*inParams[inIndex++], aInstanceID));
     TUint outIndex = 0;
     const Action::VectorParameters& outParams = iActionGetCurrentTransportActions->OutputParameters();
     invocation->AddOutput(new ArgumentString(*outParams[outIndex++]));
-    iInvocable.InvokeAction(*invocation);
+    iCpProxy.GetInvocable().InvokeAction(*invocation);
 }
 
 void CpProxyUpnpOrgAVTransport_RaumfeldVirtual1Cpp::EndGetCurrentTransportActions(IAsync& aAsync, std::string& aActions)
@@ -1417,15 +1417,15 @@ void CpProxyUpnpOrgAVTransport_RaumfeldVirtual1Cpp::EndGetCurrentTransportAction
 
 void CpProxyUpnpOrgAVTransport_RaumfeldVirtual1Cpp::SetPropertyLastChangeChanged(Functor& aFunctor)
 {
-    iLock->Wait();
+    iCpProxy.GetLock().Wait();
     iLastChangeChanged = aFunctor;
-    iLock->Signal();
+    iCpProxy.GetLock().Signal();
 }
 
 void CpProxyUpnpOrgAVTransport_RaumfeldVirtual1Cpp::PropertyLastChange(std::string& aLastChange) const
 {
-    AutoMutex a(PropertyReadLock());
-    ASSERT(iCpSubscriptionStatus == CpProxy::eSubscribed);
+    AutoMutex a(iCpProxy.PropertyReadLock());
+    ASSERT(iCpProxy.GetSubscriptionStatus() == CpProxy::eSubscribed);
     const Brx& val = iLastChange->Value();
     aLastChange.assign((const char*)val.Ptr(), val.Bytes());
 }
@@ -1433,5 +1433,44 @@ void CpProxyUpnpOrgAVTransport_RaumfeldVirtual1Cpp::PropertyLastChange(std::stri
 void CpProxyUpnpOrgAVTransport_RaumfeldVirtual1Cpp::LastChangePropertyChanged()
 {
     ReportEvent(iLastChangeChanged);
+}
+
+void CpProxyUpnpOrgAVTransport_RaumfeldVirtual1Cpp::Subscribe()
+{
+  iCpProxy.Subscribe();
+}
+
+void CpProxyUpnpOrgAVTransport_RaumfeldVirtual1Cpp::Unsubscribe()
+{
+ iCpProxy.Unsubscribe();
+}
+
+void CpProxyUpnpOrgAVTransport_RaumfeldVirtual1Cpp::SetPropertyChanged(Functor& aFunctor)
+{
+  iCpProxy.SetPropertyChanged(aFunctor);
+}
+
+void CpProxyUpnpOrgAVTransport_RaumfeldVirtual1Cpp::SetPropertyInitialEvent(Functor& aFunctor)
+{
+  iCpProxy.SetPropertyInitialEvent(aFunctor);
+}
+void CpProxyUpnpOrgAVTransport_RaumfeldVirtual1Cpp::AddProperty(Property* aProperty)
+{
+  iCpProxy.AddProperty(aProperty);
+}
+
+void CpProxyUpnpOrgAVTransport_RaumfeldVirtual1Cpp::DestroyService()
+{
+  iCpProxy.DestroyService();
+}
+
+void CpProxyUpnpOrgAVTransport_RaumfeldVirtual1Cpp::ReportEvent(Functor aFunctor)
+{
+  iCpProxy.ReportEvent(aFunctor);
+}
+
+TUint CpProxyUpnpOrgAVTransport_RaumfeldVirtual1Cpp::Version() const
+{
+  return iCpProxy.Version();
 }
 

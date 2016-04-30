@@ -18,18 +18,36 @@ class PropertyBool;
 class PropertyInt;
 class PropertyString;
 class PropertyUint;
+class CpProxy;
+class ICpProxyOpenhomeOrgSubscriptionLongPoll1 : public ICpProxy
+{
+public:
+    virtual ~ICpProxyOpenhomeOrgSubscriptionLongPoll1() {}
+    virtual void SyncSubscribe(const Brx& aClientId, const Brx& aUdn, const Brx& aService, TUint aRequestedDuration, Brh& aSid, TUint& aDuration) = 0;
+    virtual void BeginSubscribe(const Brx& aClientId, const Brx& aUdn, const Brx& aService, TUint aRequestedDuration, FunctorAsync& aFunctor) = 0;
+    virtual void EndSubscribe(IAsync& aAsync, Brh& aSid, TUint& aDuration) = 0;
+    virtual void SyncUnsubscribe(const Brx& aSid) = 0;
+    virtual void BeginUnsubscribe(const Brx& aSid, FunctorAsync& aFunctor) = 0;
+    virtual void EndUnsubscribe(IAsync& aAsync) = 0;
+    virtual void SyncRenew(const Brx& aSid, TUint aRequestedDuration, TUint& aDuration) = 0;
+    virtual void BeginRenew(const Brx& aSid, TUint aRequestedDuration, FunctorAsync& aFunctor) = 0;
+    virtual void EndRenew(IAsync& aAsync, TUint& aDuration) = 0;
+    virtual void SyncGetPropertyUpdates(const Brx& aClientId, Brh& aUpdates) = 0;
+    virtual void BeginGetPropertyUpdates(const Brx& aClientId, FunctorAsync& aFunctor) = 0;
+    virtual void EndGetPropertyUpdates(IAsync& aAsync, Brh& aUpdates) = 0;
+};
 
 /**
  * Proxy for openhome.org:SubscriptionLongPoll:1
  * @ingroup Proxies
  */
-class CpProxyOpenhomeOrgSubscriptionLongPoll1 : public CpProxy
+class CpProxyOpenhomeOrgSubscriptionLongPoll1 : public ICpProxyOpenhomeOrgSubscriptionLongPoll1
 {
 public:
     /**
      * Constructor.
      *
-     * Use CpProxy::[Un]Subscribe() to enable/disable querying of state variable
+     * Use iCpProxy::[Un]Subscribe() to enable/disable querying of state variable
      * and reporting of their changes.
      *
      * @param[in]  aDevice   The device to use
@@ -165,7 +183,40 @@ public:
     void EndGetPropertyUpdates(IAsync& aAsync, Brh& aUpdates);
 
 
+    /**
+    * This function exposes the Subscribe() function of the iCpProxy member variable
+    */
+    void Subscribe();
+    /**
+    * This function exposes the Unsubscribe() function of the iCpProxy member variable
+    */
+    void Unsubscribe();
+    /**
+    * This function exposes the SetPropertyChanged() function of the iCpProxy member variable
+    */
+    void SetPropertyChanged(Functor& aFunctor);
+    /**
+    * This function exposes the SetPropertyInitialEvent() function of the iCpProxy member variable
+    */
+    void SetPropertyInitialEvent(Functor& aFunctor);
+    /**
+    * This function exposes the AddProperty() function of the iCpProxy member variable
+    */
+    void AddProperty(Property* aProperty);
+    /**
+    * This function exposes DestroyService() function of the iCpProxy member variable
+    */
+    void DestroyService();
+    /**
+    * This function exposes the REportEvent() function of the iCpProxy member variable
+    */
+    void ReportEvent(Functor aFunctor);
+    /**
+    * This function exposes the Version() function of the iCpProxy member variable
+    */
+    TUint Version() const;
 private:
+    CpProxy iCpProxy;
 private:
     Action* iActionSubscribe;
     Action* iActionUnsubscribe;

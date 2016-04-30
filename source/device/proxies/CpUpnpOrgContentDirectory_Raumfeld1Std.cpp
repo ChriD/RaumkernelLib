@@ -1,4 +1,4 @@
-#include <raumkernel/device/proxies/CpUpnpOrgContentDirectory_Raumfeld1.h>
+#include "raumkernel/device/proxies/CpUpnpOrgContentDirectory_Raumfeld1.h"
 #include <OpenHome/Net/Core/CpProxy.h>
 #include <OpenHome/Net/Private/CpiService.h>
 #include <OpenHome/Private/Thread.h>
@@ -517,7 +517,7 @@ void SyncGetStationButtonAssignmentUpnpOrgContentDirectory_Raumfeld1Cpp::Complet
 
 
 CpProxyUpnpOrgContentDirectory_Raumfeld1Cpp::CpProxyUpnpOrgContentDirectory_Raumfeld1Cpp(CpDeviceCpp& aDevice)
-    : CpProxy("schemas-upnp-org", "ContentDirectory", 1, aDevice.Device())
+    : iCpProxy("schemas-upnp-org", "ContentDirectory", 1, aDevice.Device())
 {
     OpenHome::Net::Parameter* param;
     TChar** allowedValues;
@@ -744,16 +744,16 @@ CpProxyUpnpOrgContentDirectory_Raumfeld1Cpp::CpProxyUpnpOrgContentDirectory_Raum
 
     Functor functor;
     functor = MakeFunctor(*this, &CpProxyUpnpOrgContentDirectory_Raumfeld1Cpp::SystemUpdateIDPropertyChanged);
-    iSystemUpdateID = new PropertyUint(aDevice.Device().GetCpStack().Env(), "SystemUpdateID", functor);
+    iSystemUpdateID = new PropertyUint("SystemUpdateID", functor);
     AddProperty(iSystemUpdateID);
     functor = MakeFunctor(*this, &CpProxyUpnpOrgContentDirectory_Raumfeld1Cpp::ContainerUpdateIDsPropertyChanged);
-    iContainerUpdateIDs = new PropertyString(aDevice.Device().GetCpStack().Env(), "ContainerUpdateIDs", functor);
+    iContainerUpdateIDs = new PropertyString("ContainerUpdateIDs", functor);
     AddProperty(iContainerUpdateIDs);
     functor = MakeFunctor(*this, &CpProxyUpnpOrgContentDirectory_Raumfeld1Cpp::IndexerStatusPropertyChanged);
-    iIndexerStatus = new PropertyString(aDevice.Device().GetCpStack().Env(), "IndexerStatus", functor);
+    iIndexerStatus = new PropertyString("IndexerStatus", functor);
     AddProperty(iIndexerStatus);
     functor = MakeFunctor(*this, &CpProxyUpnpOrgContentDirectory_Raumfeld1Cpp::A_ARG_TYPE_ScopePropertyChanged);
-    iA_ARG_TYPE_Scope = new PropertyString(aDevice.Device().GetCpStack().Env(), "A_ARG_TYPE_Scope", functor);
+    iA_ARG_TYPE_Scope = new PropertyString("A_ARG_TYPE_Scope", functor);
     AddProperty(iA_ARG_TYPE_Scope);
 }
 
@@ -792,7 +792,7 @@ void CpProxyUpnpOrgContentDirectory_Raumfeld1Cpp::SyncBrowse(const std::string& 
 
 void CpProxyUpnpOrgContentDirectory_Raumfeld1Cpp::BeginBrowse(const std::string& aObjectID, const std::string& aBrowseFlag, const std::string& aFilter, uint32_t aStartingIndex, uint32_t aRequestedCount, const std::string& aSortCriteria, FunctorAsync& aFunctor)
 {
-    Invocation* invocation = iService->Invocation(*iActionBrowse, aFunctor);
+    Invocation* invocation = iCpProxy.GetService().Invocation(*iActionBrowse, aFunctor);
     TUint inIndex = 0;
     const Action::VectorParameters& inParams = iActionBrowse->InputParameters();
     {
@@ -819,7 +819,7 @@ void CpProxyUpnpOrgContentDirectory_Raumfeld1Cpp::BeginBrowse(const std::string&
     invocation->AddOutput(new ArgumentUint(*outParams[outIndex++]));
     invocation->AddOutput(new ArgumentUint(*outParams[outIndex++]));
     invocation->AddOutput(new ArgumentUint(*outParams[outIndex++]));
-    iInvocable.InvokeAction(*invocation);
+    iCpProxy.GetInvocable().InvokeAction(*invocation);
 }
 
 void CpProxyUpnpOrgContentDirectory_Raumfeld1Cpp::EndBrowse(IAsync& aAsync, std::string& aResult, uint32_t& aNumberReturned, uint32_t& aTotalMatches, uint32_t& aUpdateID)
@@ -853,7 +853,7 @@ void CpProxyUpnpOrgContentDirectory_Raumfeld1Cpp::SyncSearch(const std::string& 
 
 void CpProxyUpnpOrgContentDirectory_Raumfeld1Cpp::BeginSearch(const std::string& aContainerID, const std::string& aSearchCriteria, const std::string& aFilter, uint32_t aStartingIndex, uint32_t aRequestedCount, const std::string& aSortCriteria, FunctorAsync& aFunctor)
 {
-    Invocation* invocation = iService->Invocation(*iActionSearch, aFunctor);
+    Invocation* invocation = iCpProxy.GetService().Invocation(*iActionSearch, aFunctor);
     TUint inIndex = 0;
     const Action::VectorParameters& inParams = iActionSearch->InputParameters();
     {
@@ -880,7 +880,7 @@ void CpProxyUpnpOrgContentDirectory_Raumfeld1Cpp::BeginSearch(const std::string&
     invocation->AddOutput(new ArgumentUint(*outParams[outIndex++]));
     invocation->AddOutput(new ArgumentUint(*outParams[outIndex++]));
     invocation->AddOutput(new ArgumentUint(*outParams[outIndex++]));
-    iInvocable.InvokeAction(*invocation);
+    iCpProxy.GetInvocable().InvokeAction(*invocation);
 }
 
 void CpProxyUpnpOrgContentDirectory_Raumfeld1Cpp::EndSearch(IAsync& aAsync, std::string& aResult, uint32_t& aNumberReturned, uint32_t& aTotalMatches, uint32_t& aUpdateID)
@@ -914,7 +914,7 @@ void CpProxyUpnpOrgContentDirectory_Raumfeld1Cpp::SyncShuffle(const std::string&
 
 void CpProxyUpnpOrgContentDirectory_Raumfeld1Cpp::BeginShuffle(const std::string& aContainerID, const std::string& aSelection, FunctorAsync& aFunctor)
 {
-    Invocation* invocation = iService->Invocation(*iActionShuffle, aFunctor);
+    Invocation* invocation = iCpProxy.GetService().Invocation(*iActionShuffle, aFunctor);
     TUint inIndex = 0;
     const Action::VectorParameters& inParams = iActionShuffle->InputParameters();
     {
@@ -929,7 +929,7 @@ void CpProxyUpnpOrgContentDirectory_Raumfeld1Cpp::BeginShuffle(const std::string
     const Action::VectorParameters& outParams = iActionShuffle->OutputParameters();
     invocation->AddOutput(new ArgumentString(*outParams[outIndex++]));
     invocation->AddOutput(new ArgumentString(*outParams[outIndex++]));
-    iInvocable.InvokeAction(*invocation);
+    iCpProxy.GetInvocable().InvokeAction(*invocation);
 }
 
 void CpProxyUpnpOrgContentDirectory_Raumfeld1Cpp::EndShuffle(IAsync& aAsync, std::string& aPlaylistID, std::string& aPlaylistMetadata)
@@ -964,11 +964,11 @@ void CpProxyUpnpOrgContentDirectory_Raumfeld1Cpp::SyncGetSearchCapabilities(std:
 
 void CpProxyUpnpOrgContentDirectory_Raumfeld1Cpp::BeginGetSearchCapabilities(FunctorAsync& aFunctor)
 {
-    Invocation* invocation = iService->Invocation(*iActionGetSearchCapabilities, aFunctor);
+    Invocation* invocation = iCpProxy.GetService().Invocation(*iActionGetSearchCapabilities, aFunctor);
     TUint outIndex = 0;
     const Action::VectorParameters& outParams = iActionGetSearchCapabilities->OutputParameters();
     invocation->AddOutput(new ArgumentString(*outParams[outIndex++]));
-    iInvocable.InvokeAction(*invocation);
+    iCpProxy.GetInvocable().InvokeAction(*invocation);
 }
 
 void CpProxyUpnpOrgContentDirectory_Raumfeld1Cpp::EndGetSearchCapabilities(IAsync& aAsync, std::string& aSearchCaps)
@@ -999,11 +999,11 @@ void CpProxyUpnpOrgContentDirectory_Raumfeld1Cpp::SyncGetSortCapabilities(std::s
 
 void CpProxyUpnpOrgContentDirectory_Raumfeld1Cpp::BeginGetSortCapabilities(FunctorAsync& aFunctor)
 {
-    Invocation* invocation = iService->Invocation(*iActionGetSortCapabilities, aFunctor);
+    Invocation* invocation = iCpProxy.GetService().Invocation(*iActionGetSortCapabilities, aFunctor);
     TUint outIndex = 0;
     const Action::VectorParameters& outParams = iActionGetSortCapabilities->OutputParameters();
     invocation->AddOutput(new ArgumentString(*outParams[outIndex++]));
-    iInvocable.InvokeAction(*invocation);
+    iCpProxy.GetInvocable().InvokeAction(*invocation);
 }
 
 void CpProxyUpnpOrgContentDirectory_Raumfeld1Cpp::EndGetSortCapabilities(IAsync& aAsync, std::string& aSortCaps)
@@ -1034,7 +1034,7 @@ void CpProxyUpnpOrgContentDirectory_Raumfeld1Cpp::SyncCreateReference(const std:
 
 void CpProxyUpnpOrgContentDirectory_Raumfeld1Cpp::BeginCreateReference(const std::string& aContainerID, const std::string& aObjectID, FunctorAsync& aFunctor)
 {
-    Invocation* invocation = iService->Invocation(*iActionCreateReference, aFunctor);
+    Invocation* invocation = iCpProxy.GetService().Invocation(*iActionCreateReference, aFunctor);
     TUint inIndex = 0;
     const Action::VectorParameters& inParams = iActionCreateReference->InputParameters();
     {
@@ -1048,7 +1048,7 @@ void CpProxyUpnpOrgContentDirectory_Raumfeld1Cpp::BeginCreateReference(const std
     TUint outIndex = 0;
     const Action::VectorParameters& outParams = iActionCreateReference->OutputParameters();
     invocation->AddOutput(new ArgumentString(*outParams[outIndex++]));
-    iInvocable.InvokeAction(*invocation);
+    iCpProxy.GetInvocable().InvokeAction(*invocation);
 }
 
 void CpProxyUpnpOrgContentDirectory_Raumfeld1Cpp::EndCreateReference(IAsync& aAsync, std::string& aNewID)
@@ -1079,7 +1079,7 @@ void CpProxyUpnpOrgContentDirectory_Raumfeld1Cpp::SyncAddContainerToQueue(const 
 
 void CpProxyUpnpOrgContentDirectory_Raumfeld1Cpp::BeginAddContainerToQueue(const std::string& aQueueID, const std::string& aContainerID, const std::string& aSourceID, const std::string& aSearchCriteria, const std::string& aSortCriteria, uint32_t aStartIndex, uint32_t aEndIndex, uint32_t aPosition, FunctorAsync& aFunctor)
 {
-    Invocation* invocation = iService->Invocation(*iActionAddContainerToQueue, aFunctor);
+    Invocation* invocation = iCpProxy.GetService().Invocation(*iActionAddContainerToQueue, aFunctor);
     TUint inIndex = 0;
     const Action::VectorParameters& inParams = iActionAddContainerToQueue->InputParameters();
     {
@@ -1105,7 +1105,7 @@ void CpProxyUpnpOrgContentDirectory_Raumfeld1Cpp::BeginAddContainerToQueue(const
     invocation->AddInput(new ArgumentUint(*inParams[inIndex++], aStartIndex));
     invocation->AddInput(new ArgumentUint(*inParams[inIndex++], aEndIndex));
     invocation->AddInput(new ArgumentUint(*inParams[inIndex++], aPosition));
-    iInvocable.InvokeAction(*invocation);
+    iCpProxy.GetInvocable().InvokeAction(*invocation);
 }
 
 void CpProxyUpnpOrgContentDirectory_Raumfeld1Cpp::EndAddContainerToQueue(IAsync& aAsync)
@@ -1131,7 +1131,7 @@ void CpProxyUpnpOrgContentDirectory_Raumfeld1Cpp::SyncAddItemToQueue(const std::
 
 void CpProxyUpnpOrgContentDirectory_Raumfeld1Cpp::BeginAddItemToQueue(const std::string& aQueueID, const std::string& aObjectID, uint32_t aPosition, FunctorAsync& aFunctor)
 {
-    Invocation* invocation = iService->Invocation(*iActionAddItemToQueue, aFunctor);
+    Invocation* invocation = iCpProxy.GetService().Invocation(*iActionAddItemToQueue, aFunctor);
     TUint inIndex = 0;
     const Action::VectorParameters& inParams = iActionAddItemToQueue->InputParameters();
     {
@@ -1143,7 +1143,7 @@ void CpProxyUpnpOrgContentDirectory_Raumfeld1Cpp::BeginAddItemToQueue(const std:
         invocation->AddInput(new ArgumentString(*inParams[inIndex++], buf));
     }
     invocation->AddInput(new ArgumentUint(*inParams[inIndex++], aPosition));
-    iInvocable.InvokeAction(*invocation);
+    iCpProxy.GetInvocable().InvokeAction(*invocation);
 }
 
 void CpProxyUpnpOrgContentDirectory_Raumfeld1Cpp::EndAddItemToQueue(IAsync& aAsync)
@@ -1169,7 +1169,7 @@ void CpProxyUpnpOrgContentDirectory_Raumfeld1Cpp::SyncRemoveFromQueue(const std:
 
 void CpProxyUpnpOrgContentDirectory_Raumfeld1Cpp::BeginRemoveFromQueue(const std::string& aQueueID, uint32_t aFromPosition, uint32_t aToPosition, FunctorAsync& aFunctor)
 {
-    Invocation* invocation = iService->Invocation(*iActionRemoveFromQueue, aFunctor);
+    Invocation* invocation = iCpProxy.GetService().Invocation(*iActionRemoveFromQueue, aFunctor);
     TUint inIndex = 0;
     const Action::VectorParameters& inParams = iActionRemoveFromQueue->InputParameters();
     {
@@ -1181,7 +1181,7 @@ void CpProxyUpnpOrgContentDirectory_Raumfeld1Cpp::BeginRemoveFromQueue(const std
     TUint outIndex = 0;
     const Action::VectorParameters& outParams = iActionRemoveFromQueue->OutputParameters();
     invocation->AddOutput(new ArgumentUint(*outParams[outIndex++]));
-    iInvocable.InvokeAction(*invocation);
+    iCpProxy.GetInvocable().InvokeAction(*invocation);
 }
 
 void CpProxyUpnpOrgContentDirectory_Raumfeld1Cpp::EndRemoveFromQueue(IAsync& aAsync, uint32_t& aContainerUpdateID)
@@ -1209,7 +1209,7 @@ void CpProxyUpnpOrgContentDirectory_Raumfeld1Cpp::SyncCreateQueue(const std::str
 
 void CpProxyUpnpOrgContentDirectory_Raumfeld1Cpp::BeginCreateQueue(const std::string& aDesiredName, const std::string& aContainerID, FunctorAsync& aFunctor)
 {
-    Invocation* invocation = iService->Invocation(*iActionCreateQueue, aFunctor);
+    Invocation* invocation = iCpProxy.GetService().Invocation(*iActionCreateQueue, aFunctor);
     TUint inIndex = 0;
     const Action::VectorParameters& inParams = iActionCreateQueue->InputParameters();
     {
@@ -1225,7 +1225,7 @@ void CpProxyUpnpOrgContentDirectory_Raumfeld1Cpp::BeginCreateQueue(const std::st
     invocation->AddOutput(new ArgumentString(*outParams[outIndex++]));
     invocation->AddOutput(new ArgumentString(*outParams[outIndex++]));
     invocation->AddOutput(new ArgumentString(*outParams[outIndex++]));
-    iInvocable.InvokeAction(*invocation);
+    iCpProxy.GetInvocable().InvokeAction(*invocation);
 }
 
 void CpProxyUpnpOrgContentDirectory_Raumfeld1Cpp::EndCreateQueue(IAsync& aAsync, std::string& aGivenName, std::string& aQueueID, std::string& aMetaData)
@@ -1264,7 +1264,7 @@ void CpProxyUpnpOrgContentDirectory_Raumfeld1Cpp::SyncRenameQueue(const std::str
 
 void CpProxyUpnpOrgContentDirectory_Raumfeld1Cpp::BeginRenameQueue(const std::string& aQueueID, const std::string& aDesiredName, FunctorAsync& aFunctor)
 {
-    Invocation* invocation = iService->Invocation(*iActionRenameQueue, aFunctor);
+    Invocation* invocation = iCpProxy.GetService().Invocation(*iActionRenameQueue, aFunctor);
     TUint inIndex = 0;
     const Action::VectorParameters& inParams = iActionRenameQueue->InputParameters();
     {
@@ -1278,7 +1278,7 @@ void CpProxyUpnpOrgContentDirectory_Raumfeld1Cpp::BeginRenameQueue(const std::st
     TUint outIndex = 0;
     const Action::VectorParameters& outParams = iActionRenameQueue->OutputParameters();
     invocation->AddOutput(new ArgumentString(*outParams[outIndex++]));
-    iInvocable.InvokeAction(*invocation);
+    iCpProxy.GetInvocable().InvokeAction(*invocation);
 }
 
 void CpProxyUpnpOrgContentDirectory_Raumfeld1Cpp::EndRenameQueue(IAsync& aAsync, std::string& aGivenName)
@@ -1309,7 +1309,7 @@ void CpProxyUpnpOrgContentDirectory_Raumfeld1Cpp::SyncMoveInQueue(const std::str
 
 void CpProxyUpnpOrgContentDirectory_Raumfeld1Cpp::BeginMoveInQueue(const std::string& aObjectID, uint32_t aNewPosition, FunctorAsync& aFunctor)
 {
-    Invocation* invocation = iService->Invocation(*iActionMoveInQueue, aFunctor);
+    Invocation* invocation = iCpProxy.GetService().Invocation(*iActionMoveInQueue, aFunctor);
     TUint inIndex = 0;
     const Action::VectorParameters& inParams = iActionMoveInQueue->InputParameters();
     {
@@ -1320,7 +1320,7 @@ void CpProxyUpnpOrgContentDirectory_Raumfeld1Cpp::BeginMoveInQueue(const std::st
     TUint outIndex = 0;
     const Action::VectorParameters& outParams = iActionMoveInQueue->OutputParameters();
     invocation->AddOutput(new ArgumentUint(*outParams[outIndex++]));
-    iInvocable.InvokeAction(*invocation);
+    iCpProxy.GetInvocable().InvokeAction(*invocation);
 }
 
 void CpProxyUpnpOrgContentDirectory_Raumfeld1Cpp::EndMoveInQueue(IAsync& aAsync, uint32_t& aContainerUpdateID)
@@ -1348,14 +1348,14 @@ void CpProxyUpnpOrgContentDirectory_Raumfeld1Cpp::SyncDestroyObject(const std::s
 
 void CpProxyUpnpOrgContentDirectory_Raumfeld1Cpp::BeginDestroyObject(const std::string& aObjectID, FunctorAsync& aFunctor)
 {
-    Invocation* invocation = iService->Invocation(*iActionDestroyObject, aFunctor);
+    Invocation* invocation = iCpProxy.GetService().Invocation(*iActionDestroyObject, aFunctor);
     TUint inIndex = 0;
     const Action::VectorParameters& inParams = iActionDestroyObject->InputParameters();
     {
         Brn buf((const TByte*)aObjectID.c_str(), (TUint)aObjectID.length());
         invocation->AddInput(new ArgumentString(*inParams[inIndex++], buf));
     }
-    iInvocable.InvokeAction(*invocation);
+    iCpProxy.GetInvocable().InvokeAction(*invocation);
 }
 
 void CpProxyUpnpOrgContentDirectory_Raumfeld1Cpp::EndDestroyObject(IAsync& aAsync)
@@ -1381,14 +1381,14 @@ void CpProxyUpnpOrgContentDirectory_Raumfeld1Cpp::SyncResetDatabase(const std::s
 
 void CpProxyUpnpOrgContentDirectory_Raumfeld1Cpp::BeginResetDatabase(const std::string& aScope, FunctorAsync& aFunctor)
 {
-    Invocation* invocation = iService->Invocation(*iActionResetDatabase, aFunctor);
+    Invocation* invocation = iCpProxy.GetService().Invocation(*iActionResetDatabase, aFunctor);
     TUint inIndex = 0;
     const Action::VectorParameters& inParams = iActionResetDatabase->InputParameters();
     {
         Brn buf((const TByte*)aScope.c_str(), (TUint)aScope.length());
         invocation->AddInput(new ArgumentString(*inParams[inIndex++], buf));
     }
-    iInvocable.InvokeAction(*invocation);
+    iCpProxy.GetInvocable().InvokeAction(*invocation);
 }
 
 void CpProxyUpnpOrgContentDirectory_Raumfeld1Cpp::EndResetDatabase(IAsync& aAsync)
@@ -1414,11 +1414,11 @@ void CpProxyUpnpOrgContentDirectory_Raumfeld1Cpp::SyncGetSystemUpdateID(uint32_t
 
 void CpProxyUpnpOrgContentDirectory_Raumfeld1Cpp::BeginGetSystemUpdateID(FunctorAsync& aFunctor)
 {
-    Invocation* invocation = iService->Invocation(*iActionGetSystemUpdateID, aFunctor);
+    Invocation* invocation = iCpProxy.GetService().Invocation(*iActionGetSystemUpdateID, aFunctor);
     TUint outIndex = 0;
     const Action::VectorParameters& outParams = iActionGetSystemUpdateID->OutputParameters();
     invocation->AddOutput(new ArgumentUint(*outParams[outIndex++]));
-    iInvocable.InvokeAction(*invocation);
+    iCpProxy.GetInvocable().InvokeAction(*invocation);
 }
 
 void CpProxyUpnpOrgContentDirectory_Raumfeld1Cpp::EndGetSystemUpdateID(IAsync& aAsync, uint32_t& aId)
@@ -1446,11 +1446,11 @@ void CpProxyUpnpOrgContentDirectory_Raumfeld1Cpp::SyncGetIndexerStatus(std::stri
 
 void CpProxyUpnpOrgContentDirectory_Raumfeld1Cpp::BeginGetIndexerStatus(FunctorAsync& aFunctor)
 {
-    Invocation* invocation = iService->Invocation(*iActionGetIndexerStatus, aFunctor);
+    Invocation* invocation = iCpProxy.GetService().Invocation(*iActionGetIndexerStatus, aFunctor);
     TUint outIndex = 0;
     const Action::VectorParameters& outParams = iActionGetIndexerStatus->OutputParameters();
     invocation->AddOutput(new ArgumentString(*outParams[outIndex++]));
-    iInvocable.InvokeAction(*invocation);
+    iCpProxy.GetInvocable().InvokeAction(*invocation);
 }
 
 void CpProxyUpnpOrgContentDirectory_Raumfeld1Cpp::EndGetIndexerStatus(IAsync& aAsync, std::string& aStatus)
@@ -1481,7 +1481,7 @@ void CpProxyUpnpOrgContentDirectory_Raumfeld1Cpp::SyncGetSourceInfo(const std::s
 
 void CpProxyUpnpOrgContentDirectory_Raumfeld1Cpp::BeginGetSourceInfo(const std::string& aSourceID, FunctorAsync& aFunctor)
 {
-    Invocation* invocation = iService->Invocation(*iActionGetSourceInfo, aFunctor);
+    Invocation* invocation = iCpProxy.GetService().Invocation(*iActionGetSourceInfo, aFunctor);
     TUint inIndex = 0;
     const Action::VectorParameters& inParams = iActionGetSourceInfo->InputParameters();
     {
@@ -1495,7 +1495,7 @@ void CpProxyUpnpOrgContentDirectory_Raumfeld1Cpp::BeginGetSourceInfo(const std::
     invocation->AddOutput(new ArgumentUint(*outParams[outIndex++]));
     invocation->AddOutput(new ArgumentUint(*outParams[outIndex++]));
     invocation->AddOutput(new ArgumentString(*outParams[outIndex++]));
-    iInvocable.InvokeAction(*invocation);
+    iCpProxy.GetInvocable().InvokeAction(*invocation);
 }
 
 void CpProxyUpnpOrgContentDirectory_Raumfeld1Cpp::EndGetSourceInfo(IAsync& aAsync, uint32_t& aNumTracks, uint32_t& aTotalSize, uint32_t& aTotalDuration, uint32_t& aScanProgress, std::string& aIndexerResult)
@@ -1530,7 +1530,7 @@ void CpProxyUpnpOrgContentDirectory_Raumfeld1Cpp::SyncRescanSource(const std::st
 
 void CpProxyUpnpOrgContentDirectory_Raumfeld1Cpp::BeginRescanSource(const std::string& aSourceID, const std::string& aRescanMode, FunctorAsync& aFunctor)
 {
-    Invocation* invocation = iService->Invocation(*iActionRescanSource, aFunctor);
+    Invocation* invocation = iCpProxy.GetService().Invocation(*iActionRescanSource, aFunctor);
     TUint inIndex = 0;
     const Action::VectorParameters& inParams = iActionRescanSource->InputParameters();
     {
@@ -1541,7 +1541,7 @@ void CpProxyUpnpOrgContentDirectory_Raumfeld1Cpp::BeginRescanSource(const std::s
         Brn buf((const TByte*)aRescanMode.c_str(), (TUint)aRescanMode.length());
         invocation->AddInput(new ArgumentString(*inParams[inIndex++], buf));
     }
-    iInvocable.InvokeAction(*invocation);
+    iCpProxy.GetInvocable().InvokeAction(*invocation);
 }
 
 void CpProxyUpnpOrgContentDirectory_Raumfeld1Cpp::EndRescanSource(IAsync& aAsync)
@@ -1567,14 +1567,14 @@ void CpProxyUpnpOrgContentDirectory_Raumfeld1Cpp::SyncQueryDatabaseState(uint32_
 
 void CpProxyUpnpOrgContentDirectory_Raumfeld1Cpp::BeginQueryDatabaseState(FunctorAsync& aFunctor)
 {
-    Invocation* invocation = iService->Invocation(*iActionQueryDatabaseState, aFunctor);
+    Invocation* invocation = iCpProxy.GetService().Invocation(*iActionQueryDatabaseState, aFunctor);
     TUint outIndex = 0;
     const Action::VectorParameters& outParams = iActionQueryDatabaseState->OutputParameters();
     invocation->AddOutput(new ArgumentUint(*outParams[outIndex++]));
     invocation->AddOutput(new ArgumentUint(*outParams[outIndex++]));
     invocation->AddOutput(new ArgumentUint(*outParams[outIndex++]));
     invocation->AddOutput(new ArgumentUint(*outParams[outIndex++]));
-    iInvocable.InvokeAction(*invocation);
+    iCpProxy.GetInvocable().InvokeAction(*invocation);
 }
 
 void CpProxyUpnpOrgContentDirectory_Raumfeld1Cpp::EndQueryDatabaseState(IAsync& aAsync, uint32_t& aCurrentNumResources, uint32_t& aCriticalNumResources, uint32_t& aCurrentDiskUsage, uint32_t& aMaxDiskUsage)
@@ -1605,7 +1605,7 @@ void CpProxyUpnpOrgContentDirectory_Raumfeld1Cpp::SyncAssignStationButton(const 
 
 void CpProxyUpnpOrgContentDirectory_Raumfeld1Cpp::BeginAssignStationButton(const std::string& aRenderer, uint32_t aButton, const std::string& aObjectID, FunctorAsync& aFunctor)
 {
-    Invocation* invocation = iService->Invocation(*iActionAssignStationButton, aFunctor);
+    Invocation* invocation = iCpProxy.GetService().Invocation(*iActionAssignStationButton, aFunctor);
     TUint inIndex = 0;
     const Action::VectorParameters& inParams = iActionAssignStationButton->InputParameters();
     {
@@ -1617,7 +1617,7 @@ void CpProxyUpnpOrgContentDirectory_Raumfeld1Cpp::BeginAssignStationButton(const
         Brn buf((const TByte*)aObjectID.c_str(), (TUint)aObjectID.length());
         invocation->AddInput(new ArgumentString(*inParams[inIndex++], buf));
     }
-    iInvocable.InvokeAction(*invocation);
+    iCpProxy.GetInvocable().InvokeAction(*invocation);
 }
 
 void CpProxyUpnpOrgContentDirectory_Raumfeld1Cpp::EndAssignStationButton(IAsync& aAsync)
@@ -1643,7 +1643,7 @@ void CpProxyUpnpOrgContentDirectory_Raumfeld1Cpp::SyncGetStationButtonAssignment
 
 void CpProxyUpnpOrgContentDirectory_Raumfeld1Cpp::BeginGetStationButtonAssignment(const std::string& aRenderer, uint32_t aButton, FunctorAsync& aFunctor)
 {
-    Invocation* invocation = iService->Invocation(*iActionGetStationButtonAssignment, aFunctor);
+    Invocation* invocation = iCpProxy.GetService().Invocation(*iActionGetStationButtonAssignment, aFunctor);
     TUint inIndex = 0;
     const Action::VectorParameters& inParams = iActionGetStationButtonAssignment->InputParameters();
     {
@@ -1654,7 +1654,7 @@ void CpProxyUpnpOrgContentDirectory_Raumfeld1Cpp::BeginGetStationButtonAssignmen
     TUint outIndex = 0;
     const Action::VectorParameters& outParams = iActionGetStationButtonAssignment->OutputParameters();
     invocation->AddOutput(new ArgumentString(*outParams[outIndex++]));
-    iInvocable.InvokeAction(*invocation);
+    iCpProxy.GetInvocable().InvokeAction(*invocation);
 }
 
 void CpProxyUpnpOrgContentDirectory_Raumfeld1Cpp::EndGetStationButtonAssignment(IAsync& aAsync, std::string& aObjectID)
@@ -1678,59 +1678,59 @@ void CpProxyUpnpOrgContentDirectory_Raumfeld1Cpp::EndGetStationButtonAssignment(
 
 void CpProxyUpnpOrgContentDirectory_Raumfeld1Cpp::SetPropertySystemUpdateIDChanged(Functor& aFunctor)
 {
-    iLock->Wait();
+    iCpProxy.GetLock().Wait();
     iSystemUpdateIDChanged = aFunctor;
-    iLock->Signal();
+    iCpProxy.GetLock().Signal();
 }
 
 void CpProxyUpnpOrgContentDirectory_Raumfeld1Cpp::SetPropertyContainerUpdateIDsChanged(Functor& aFunctor)
 {
-    iLock->Wait();
+    iCpProxy.GetLock().Wait();
     iContainerUpdateIDsChanged = aFunctor;
-    iLock->Signal();
+    iCpProxy.GetLock().Signal();
 }
 
 void CpProxyUpnpOrgContentDirectory_Raumfeld1Cpp::SetPropertyIndexerStatusChanged(Functor& aFunctor)
 {
-    iLock->Wait();
+    iCpProxy.GetLock().Wait();
     iIndexerStatusChanged = aFunctor;
-    iLock->Signal();
+    iCpProxy.GetLock().Signal();
 }
 
 void CpProxyUpnpOrgContentDirectory_Raumfeld1Cpp::SetPropertyA_ARG_TYPE_ScopeChanged(Functor& aFunctor)
 {
-    iLock->Wait();
+    iCpProxy.GetLock().Wait();
     iA_ARG_TYPE_ScopeChanged = aFunctor;
-    iLock->Signal();
+    iCpProxy.GetLock().Signal();
 }
 
 void CpProxyUpnpOrgContentDirectory_Raumfeld1Cpp::PropertySystemUpdateID(uint32_t& aSystemUpdateID) const
 {
-    AutoMutex a(PropertyReadLock());
-    ASSERT(iCpSubscriptionStatus == CpProxy::eSubscribed);
+    AutoMutex a(iCpProxy.PropertyReadLock());
+    ASSERT(iCpProxy.GetSubscriptionStatus() == CpProxy::eSubscribed);
     aSystemUpdateID = iSystemUpdateID->Value();
 }
 
 void CpProxyUpnpOrgContentDirectory_Raumfeld1Cpp::PropertyContainerUpdateIDs(std::string& aContainerUpdateIDs) const
 {
-    AutoMutex a(PropertyReadLock());
-    ASSERT(iCpSubscriptionStatus == CpProxy::eSubscribed);
+    AutoMutex a(iCpProxy.PropertyReadLock());
+    ASSERT(iCpProxy.GetSubscriptionStatus() == CpProxy::eSubscribed);
     const Brx& val = iContainerUpdateIDs->Value();
     aContainerUpdateIDs.assign((const char*)val.Ptr(), val.Bytes());
 }
 
 void CpProxyUpnpOrgContentDirectory_Raumfeld1Cpp::PropertyIndexerStatus(std::string& aIndexerStatus) const
 {
-    AutoMutex a(PropertyReadLock());
-    ASSERT(iCpSubscriptionStatus == CpProxy::eSubscribed);
+    AutoMutex a(iCpProxy.PropertyReadLock());
+    ASSERT(iCpProxy.GetSubscriptionStatus() == CpProxy::eSubscribed);
     const Brx& val = iIndexerStatus->Value();
     aIndexerStatus.assign((const char*)val.Ptr(), val.Bytes());
 }
 
 void CpProxyUpnpOrgContentDirectory_Raumfeld1Cpp::PropertyA_ARG_TYPE_Scope(std::string& aA_ARG_TYPE_Scope) const
 {
-    AutoMutex a(PropertyReadLock());
-    ASSERT(iCpSubscriptionStatus == CpProxy::eSubscribed);
+    AutoMutex a(iCpProxy.PropertyReadLock());
+    ASSERT(iCpProxy.GetSubscriptionStatus() == CpProxy::eSubscribed);
     const Brx& val = iA_ARG_TYPE_Scope->Value();
     aA_ARG_TYPE_Scope.assign((const char*)val.Ptr(), val.Bytes());
 }
@@ -1753,5 +1753,44 @@ void CpProxyUpnpOrgContentDirectory_Raumfeld1Cpp::IndexerStatusPropertyChanged()
 void CpProxyUpnpOrgContentDirectory_Raumfeld1Cpp::A_ARG_TYPE_ScopePropertyChanged()
 {
     ReportEvent(iA_ARG_TYPE_ScopeChanged);
+}
+
+void CpProxyUpnpOrgContentDirectory_Raumfeld1Cpp::Subscribe()
+{
+  iCpProxy.Subscribe();
+}
+
+void CpProxyUpnpOrgContentDirectory_Raumfeld1Cpp::Unsubscribe()
+{
+ iCpProxy.Unsubscribe();
+}
+
+void CpProxyUpnpOrgContentDirectory_Raumfeld1Cpp::SetPropertyChanged(Functor& aFunctor)
+{
+  iCpProxy.SetPropertyChanged(aFunctor);
+}
+
+void CpProxyUpnpOrgContentDirectory_Raumfeld1Cpp::SetPropertyInitialEvent(Functor& aFunctor)
+{
+  iCpProxy.SetPropertyInitialEvent(aFunctor);
+}
+void CpProxyUpnpOrgContentDirectory_Raumfeld1Cpp::AddProperty(Property* aProperty)
+{
+  iCpProxy.AddProperty(aProperty);
+}
+
+void CpProxyUpnpOrgContentDirectory_Raumfeld1Cpp::DestroyService()
+{
+  iCpProxy.DestroyService();
+}
+
+void CpProxyUpnpOrgContentDirectory_Raumfeld1Cpp::ReportEvent(Functor aFunctor)
+{
+  iCpProxy.ReportEvent(aFunctor);
+}
+
+TUint CpProxyUpnpOrgContentDirectory_Raumfeld1Cpp::Version() const
+{
+  return iCpProxy.Version();
 }
 

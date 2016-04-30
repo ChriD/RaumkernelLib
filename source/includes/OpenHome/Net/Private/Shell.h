@@ -27,6 +27,7 @@ public:
 class WriterShellResponse : public IWriter
 {
     static const TUint kWriteBufferSizeBytes = 1024;
+    static const Brn kCrLf;
 public:
     WriterShellResponse(IWriter& aWriter);
     ~WriterShellResponse();
@@ -51,27 +52,40 @@ private: // from SocketTcpSession
     void Run();
 private:
     IShellCommandHandler& iCommandHandler;
-    Srs<kMaxCommandBytes>* iReadBuffer;
+    Srx* iReadBuffer;
+    ReaderUntil* iReaderUntil;
     WriterShellResponse* iWriterResponse;
     Semaphore iShutdownSem;
 };
     
 class ShellCommandHelp;
 
-class Shell : private IShellCommandHandler
+class IShell
+{
+public:
+    virtual ~IShell() {}
+    virtual void AddCommandHandler(const TChar* aCommand, IShellCommandHandler& aHandler) = 0;
+    virtual void RemoveCommandHandler(const TChar* aCommand) = 0;
+};
+
+class Shell : public IShell, private IShellCommandHandler
 {
     friend class ShellCommandHelp;
 public:
     static const TUint kServerPortDefault = 2323;
 public:
     Shell(Environment& aStack, TUint aPort=kServerPortDefault);
+    Shell(Environment& aStack, TUint aPort, TUint aSessionPriority);
     ~Shell();
     TUint Port() const;
+public: // from IShell
     void AddCommandHandler(const TChar* aCommand, IShellCommandHandler& aHandler);
     void RemoveCommandHandler(const TChar* aCommand);
 private: // from IShellCommandHandler
     void HandleShellCommand(Brn aCommand, const std::vector<Brn>& aArgs, IWriter& aResponse);
     void DisplayHelp(IWriter& aResponse);
+private:
+    void Initialise(Environment& aEnv, TUint aPort, TUint aSessionPriority);
 private:
     Mutex iLock;
     SocketTcpServer* iServer;
@@ -90,6 +104,13 @@ private: // from IShellCommandHandler
     void DisplayHelp(IWriter& aResponse);
 private:
     Shell& iShell;
+};
+
+class ShellNull : public IShell
+{
+public: // from IShell
+    void AddCommandHandler(const TChar* aCommand, IShellCommandHandler& aHandler);
+    void RemoveCommandHandler(const TChar* aCommand);
 };
 
 } // namespace Net

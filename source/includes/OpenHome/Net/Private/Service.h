@@ -12,6 +12,7 @@
 #include <OpenHome/Exception.h>
 #include <OpenHome/Functor.h>
 #include <OpenHome/Private/Network.h>
+#include <OpenHome/Private/Ascii.h>
 
 #include <vector>
 #include <map>
@@ -204,13 +205,13 @@ public:
     virtual void Process(IOutputProcessor& aProcessor, const Brx& aBuffer) = 0;
     virtual void Write(IPropertyWriter& aWriter) = 0;
 protected:
-    Property(Environment& aStack, OpenHome::Net::Parameter* aParameter, Functor& aFunctor);
-    Property(Environment& aStack, OpenHome::Net::Parameter* aParameter);
+    Property(OpenHome::Net::Parameter* aParameter, Functor& aFunctor);
+    Property(OpenHome::Net::Parameter* aParameter);
     void operator=(const Property &);
 private:
     void Construct(OpenHome::Net::Parameter* aParameter);
 protected:
-    Environment& iEnv;
+    mutable Mutex iLock;
     OpenHome::Net::Parameter* iParameter;
     Functor iFunctor;
     TBool iChanged;
@@ -223,8 +224,8 @@ protected:
 class PropertyString : public Property
 {
 public:
-    DllExport PropertyString(Environment& aStack, const TChar* aName, Functor& aFunctor);
-    DllExport PropertyString(Environment& aStack, OpenHome::Net::Parameter* aParameter);
+    DllExport PropertyString(const TChar* aName, Functor& aFunctor);
+    DllExport PropertyString(OpenHome::Net::Parameter* aParameter);
     DllExport ~PropertyString();
     DllExport const Brx& Value() const; // !!!! threadsafe?
     void Process(IOutputProcessor& aProcessor, const Brx& aBuffer);
@@ -240,8 +241,8 @@ private:
 class PropertyInt : public Property
 {
 public:
-    DllExport PropertyInt(Environment& aStack, const TChar* aName, Functor& aFunctor);
-    DllExport PropertyInt(Environment& aStack, OpenHome::Net::Parameter* aParameter);
+    DllExport PropertyInt(const TChar* aName, Functor& aFunctor);
+    DllExport PropertyInt(OpenHome::Net::Parameter* aParameter);
     DllExport ~PropertyInt();
     DllExport TInt Value() const;
     void Process(IOutputProcessor& aProcessor, const Brx& aBuffer);
@@ -257,8 +258,8 @@ private:
 class PropertyUint : public Property
 {
 public:
-    DllExport PropertyUint(Environment& aStack, const TChar* aName, Functor& aFunctor);
-    DllExport PropertyUint(Environment& aStack, OpenHome::Net::Parameter* aParameter);
+    DllExport PropertyUint(const TChar* aName, Functor& aFunctor);
+    DllExport PropertyUint(OpenHome::Net::Parameter* aParameter);
     DllExport ~PropertyUint();
     DllExport TUint Value() const;
     void Process(IOutputProcessor& aProcessor, const Brx& aBuffer);
@@ -274,10 +275,10 @@ private:
 class PropertyBool : public Property
 {
 public:
-    DllExport PropertyBool(Environment& aStack, const TChar* aName, Functor& aFunctor);
-    DllExport PropertyBool(Environment& aStack, OpenHome::Net::Parameter* aParameter);
+    DllExport PropertyBool(const TChar* aName, Functor& aFunctor);
+    DllExport PropertyBool(OpenHome::Net::Parameter* aParameter);
     DllExport ~PropertyBool();
-    DllExport TBool Value() const; // !!!! threadsafe?
+    DllExport TBool Value() const;
     void Process(IOutputProcessor& aProcessor, const Brx& aBuffer);
     TBool SetValue(TBool aValue);
     void Write(IPropertyWriter& aWriter);
@@ -291,8 +292,8 @@ private:
 class PropertyBinary : public Property
 {
 public:
-    DllExport PropertyBinary(Environment& aStack, const TChar* aName, Functor& aFunctor);
-    DllExport PropertyBinary(Environment& aStack, OpenHome::Net::Parameter* aParameter);
+    DllExport PropertyBinary(const TChar* aName, Functor& aFunctor);
+    DllExport PropertyBinary(OpenHome::Net::Parameter* aParameter);
     DllExport ~PropertyBinary();
     DllExport const Brx& Value() const;
     void Process(IOutputProcessor& aProcessor, const Brx& aBuffer);
@@ -353,6 +354,7 @@ public:
     const Brx& Domain() const;
     const Brx& Name() const;
     TUint Version() const;
+    const Brx& VersionBuf() const; // nul terminated
     const Brx& FullName() const;
     const Brx& FullNameUpnp() const; // serviceType tag from device xml
     const Brx& PathUpnp() const; // paths within device xml
@@ -367,6 +369,7 @@ private:
     Brh iDomain;
     Brh iName;
     TUint iVersion;
+    mutable Bws<Ascii::kMaxUintStringBytes+1> iVersionBuf;
     mutable Bwh iFullName;
     mutable Bwh iServiceType;
     mutable Bwh iPathUpnp;

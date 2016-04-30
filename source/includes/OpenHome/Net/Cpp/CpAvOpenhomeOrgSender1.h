@@ -19,18 +19,49 @@ class PropertyBool;
 class PropertyInt;
 class PropertyString;
 class PropertyUint;
+class CpProxy;
+class ICpProxyAvOpenhomeOrgSender1Cpp : public ICpProxy
+{
+public:
+    virtual ~ICpProxyAvOpenhomeOrgSender1Cpp() {}
+    virtual void SyncPresentationUrl(std::string& aValue) = 0;
+    virtual void BeginPresentationUrl(FunctorAsync& aFunctor) = 0;
+    virtual void EndPresentationUrl(IAsync& aAsync, std::string& aValue) = 0;
+    virtual void SyncMetadata(std::string& aValue) = 0;
+    virtual void BeginMetadata(FunctorAsync& aFunctor) = 0;
+    virtual void EndMetadata(IAsync& aAsync, std::string& aValue) = 0;
+    virtual void SyncAudio(bool& aValue) = 0;
+    virtual void BeginAudio(FunctorAsync& aFunctor) = 0;
+    virtual void EndAudio(IAsync& aAsync, bool& aValue) = 0;
+    virtual void SyncStatus(std::string& aValue) = 0;
+    virtual void BeginStatus(FunctorAsync& aFunctor) = 0;
+    virtual void EndStatus(IAsync& aAsync, std::string& aValue) = 0;
+    virtual void SyncAttributes(std::string& aValue) = 0;
+    virtual void BeginAttributes(FunctorAsync& aFunctor) = 0;
+    virtual void EndAttributes(IAsync& aAsync, std::string& aValue) = 0;
+    virtual void SetPropertyPresentationUrlChanged(Functor& aPresentationUrlChanged) = 0;
+    virtual void PropertyPresentationUrl(std::string& aPresentationUrl) const = 0;
+    virtual void SetPropertyMetadataChanged(Functor& aMetadataChanged) = 0;
+    virtual void PropertyMetadata(std::string& aMetadata) const = 0;
+    virtual void SetPropertyAudioChanged(Functor& aAudioChanged) = 0;
+    virtual void PropertyAudio(bool& aAudio) const = 0;
+    virtual void SetPropertyStatusChanged(Functor& aStatusChanged) = 0;
+    virtual void PropertyStatus(std::string& aStatus) const = 0;
+    virtual void SetPropertyAttributesChanged(Functor& aAttributesChanged) = 0;
+    virtual void PropertyAttributes(std::string& aAttributes) const = 0;
+};
 
 /**
  * Proxy for av.openhome.org:Sender:1
  * @ingroup Proxies
  */
-class CpProxyAvOpenhomeOrgSender1Cpp : public CpProxy
+class CpProxyAvOpenhomeOrgSender1Cpp : public ICpProxyAvOpenhomeOrgSender1Cpp
 {
 public:
     /**
      * Constructor.
      *
-     * Use CpProxy::[Un]Subscribe() to enable/disable querying of state variable
+     * Use iCpProxy::[Un]Subscribe() to enable/disable querying of state variable
      * and reporting of their changes.
      *
      * @param[in]  aDevice   The device to use
@@ -271,7 +302,40 @@ public:
      * @param[out] aAttributes
      */
     void PropertyAttributes(std::string& aAttributes) const;
+    /**
+    * This function exposes the Subscribe() function of the iCpProxy member variable
+    */
+    void Subscribe();
+    /**
+    * This function exposes the Unsubscribe() function of the iCpProxy member variable
+    */
+    void Unsubscribe();
+    /**
+    * This function exposes the SetPropertyChanged() function of the iCpProxy member variable
+    */
+    void SetPropertyChanged(Functor& aFunctor);
+    /**
+    * This function exposes the SetPropertyInitialEvent() function of the iCpProxy member variable
+    */
+    void SetPropertyInitialEvent(Functor& aFunctor);
+    /**
+    * This function exposes the AddProperty() function of the iCpProxy member variable
+    */
+    void AddProperty(Property* aProperty);
+    /**
+    * This function exposes DestroyService() function of the iCpProxy member variable
+    */
+    void DestroyService();
+    /**
+    * This function exposes the REportEvent() function of the iCpProxy member variable
+    */
+    void ReportEvent(Functor aFunctor);
+    /**
+    * This function exposes the Version() function of the iCpProxy member variable
+    */
+    TUint Version() const;
 private:
+    CpProxy iCpProxy;
     void PresentationUrlPropertyChanged();
     void MetadataPropertyChanged();
     void AudioPropertyChanged();

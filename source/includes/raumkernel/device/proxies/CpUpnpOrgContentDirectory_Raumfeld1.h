@@ -19,18 +19,95 @@ class PropertyBool;
 class PropertyInt;
 class PropertyString;
 class PropertyUint;
+class CpProxy;
+class ICpProxyUpnpOrgContentDirectory_Raumfeld1Cpp : public ICpProxy
+{
+public:
+    virtual ~ICpProxyUpnpOrgContentDirectory_Raumfeld1Cpp() {}
+    virtual void SyncBrowse(const std::string& aObjectID, const std::string& aBrowseFlag, const std::string& aFilter, uint32_t aStartingIndex, uint32_t aRequestedCount, const std::string& aSortCriteria, std::string& aResult, uint32_t& aNumberReturned, uint32_t& aTotalMatches, uint32_t& aUpdateID) = 0;
+    virtual void BeginBrowse(const std::string& aObjectID, const std::string& aBrowseFlag, const std::string& aFilter, uint32_t aStartingIndex, uint32_t aRequestedCount, const std::string& aSortCriteria, FunctorAsync& aFunctor) = 0;
+    virtual void EndBrowse(IAsync& aAsync, std::string& aResult, uint32_t& aNumberReturned, uint32_t& aTotalMatches, uint32_t& aUpdateID) = 0;
+    virtual void SyncSearch(const std::string& aContainerID, const std::string& aSearchCriteria, const std::string& aFilter, uint32_t aStartingIndex, uint32_t aRequestedCount, const std::string& aSortCriteria, std::string& aResult, uint32_t& aNumberReturned, uint32_t& aTotalMatches, uint32_t& aUpdateID) = 0;
+    virtual void BeginSearch(const std::string& aContainerID, const std::string& aSearchCriteria, const std::string& aFilter, uint32_t aStartingIndex, uint32_t aRequestedCount, const std::string& aSortCriteria, FunctorAsync& aFunctor) = 0;
+    virtual void EndSearch(IAsync& aAsync, std::string& aResult, uint32_t& aNumberReturned, uint32_t& aTotalMatches, uint32_t& aUpdateID) = 0;
+    virtual void SyncShuffle(const std::string& aContainerID, const std::string& aSelection, std::string& aPlaylistID, std::string& aPlaylistMetadata) = 0;
+    virtual void BeginShuffle(const std::string& aContainerID, const std::string& aSelection, FunctorAsync& aFunctor) = 0;
+    virtual void EndShuffle(IAsync& aAsync, std::string& aPlaylistID, std::string& aPlaylistMetadata) = 0;
+    virtual void SyncGetSearchCapabilities(std::string& aSearchCaps) = 0;
+    virtual void BeginGetSearchCapabilities(FunctorAsync& aFunctor) = 0;
+    virtual void EndGetSearchCapabilities(IAsync& aAsync, std::string& aSearchCaps) = 0;
+    virtual void SyncGetSortCapabilities(std::string& aSortCaps) = 0;
+    virtual void BeginGetSortCapabilities(FunctorAsync& aFunctor) = 0;
+    virtual void EndGetSortCapabilities(IAsync& aAsync, std::string& aSortCaps) = 0;
+    virtual void SyncCreateReference(const std::string& aContainerID, const std::string& aObjectID, std::string& aNewID) = 0;
+    virtual void BeginCreateReference(const std::string& aContainerID, const std::string& aObjectID, FunctorAsync& aFunctor) = 0;
+    virtual void EndCreateReference(IAsync& aAsync, std::string& aNewID) = 0;
+    virtual void SyncAddContainerToQueue(const std::string& aQueueID, const std::string& aContainerID, const std::string& aSourceID, const std::string& aSearchCriteria, const std::string& aSortCriteria, uint32_t aStartIndex, uint32_t aEndIndex, uint32_t aPosition) = 0;
+    virtual void BeginAddContainerToQueue(const std::string& aQueueID, const std::string& aContainerID, const std::string& aSourceID, const std::string& aSearchCriteria, const std::string& aSortCriteria, uint32_t aStartIndex, uint32_t aEndIndex, uint32_t aPosition, FunctorAsync& aFunctor) = 0;
+    virtual void EndAddContainerToQueue(IAsync& aAsync) = 0;
+    virtual void SyncAddItemToQueue(const std::string& aQueueID, const std::string& aObjectID, uint32_t aPosition) = 0;
+    virtual void BeginAddItemToQueue(const std::string& aQueueID, const std::string& aObjectID, uint32_t aPosition, FunctorAsync& aFunctor) = 0;
+    virtual void EndAddItemToQueue(IAsync& aAsync) = 0;
+    virtual void SyncRemoveFromQueue(const std::string& aQueueID, uint32_t aFromPosition, uint32_t aToPosition, uint32_t& aContainerUpdateID) = 0;
+    virtual void BeginRemoveFromQueue(const std::string& aQueueID, uint32_t aFromPosition, uint32_t aToPosition, FunctorAsync& aFunctor) = 0;
+    virtual void EndRemoveFromQueue(IAsync& aAsync, uint32_t& aContainerUpdateID) = 0;
+    virtual void SyncCreateQueue(const std::string& aDesiredName, const std::string& aContainerID, std::string& aGivenName, std::string& aQueueID, std::string& aMetaData) = 0;
+    virtual void BeginCreateQueue(const std::string& aDesiredName, const std::string& aContainerID, FunctorAsync& aFunctor) = 0;
+    virtual void EndCreateQueue(IAsync& aAsync, std::string& aGivenName, std::string& aQueueID, std::string& aMetaData) = 0;
+    virtual void SyncRenameQueue(const std::string& aQueueID, const std::string& aDesiredName, std::string& aGivenName) = 0;
+    virtual void BeginRenameQueue(const std::string& aQueueID, const std::string& aDesiredName, FunctorAsync& aFunctor) = 0;
+    virtual void EndRenameQueue(IAsync& aAsync, std::string& aGivenName) = 0;
+    virtual void SyncMoveInQueue(const std::string& aObjectID, uint32_t aNewPosition, uint32_t& aContainerUpdateID) = 0;
+    virtual void BeginMoveInQueue(const std::string& aObjectID, uint32_t aNewPosition, FunctorAsync& aFunctor) = 0;
+    virtual void EndMoveInQueue(IAsync& aAsync, uint32_t& aContainerUpdateID) = 0;
+    virtual void SyncDestroyObject(const std::string& aObjectID) = 0;
+    virtual void BeginDestroyObject(const std::string& aObjectID, FunctorAsync& aFunctor) = 0;
+    virtual void EndDestroyObject(IAsync& aAsync) = 0;
+    virtual void SyncResetDatabase(const std::string& aScope) = 0;
+    virtual void BeginResetDatabase(const std::string& aScope, FunctorAsync& aFunctor) = 0;
+    virtual void EndResetDatabase(IAsync& aAsync) = 0;
+    virtual void SyncGetSystemUpdateID(uint32_t& aId) = 0;
+    virtual void BeginGetSystemUpdateID(FunctorAsync& aFunctor) = 0;
+    virtual void EndGetSystemUpdateID(IAsync& aAsync, uint32_t& aId) = 0;
+    virtual void SyncGetIndexerStatus(std::string& aStatus) = 0;
+    virtual void BeginGetIndexerStatus(FunctorAsync& aFunctor) = 0;
+    virtual void EndGetIndexerStatus(IAsync& aAsync, std::string& aStatus) = 0;
+    virtual void SyncGetSourceInfo(const std::string& aSourceID, uint32_t& aNumTracks, uint32_t& aTotalSize, uint32_t& aTotalDuration, uint32_t& aScanProgress, std::string& aIndexerResult) = 0;
+    virtual void BeginGetSourceInfo(const std::string& aSourceID, FunctorAsync& aFunctor) = 0;
+    virtual void EndGetSourceInfo(IAsync& aAsync, uint32_t& aNumTracks, uint32_t& aTotalSize, uint32_t& aTotalDuration, uint32_t& aScanProgress, std::string& aIndexerResult) = 0;
+    virtual void SyncRescanSource(const std::string& aSourceID, const std::string& aRescanMode) = 0;
+    virtual void BeginRescanSource(const std::string& aSourceID, const std::string& aRescanMode, FunctorAsync& aFunctor) = 0;
+    virtual void EndRescanSource(IAsync& aAsync) = 0;
+    virtual void SyncQueryDatabaseState(uint32_t& aCurrentNumResources, uint32_t& aCriticalNumResources, uint32_t& aCurrentDiskUsage, uint32_t& aMaxDiskUsage) = 0;
+    virtual void BeginQueryDatabaseState(FunctorAsync& aFunctor) = 0;
+    virtual void EndQueryDatabaseState(IAsync& aAsync, uint32_t& aCurrentNumResources, uint32_t& aCriticalNumResources, uint32_t& aCurrentDiskUsage, uint32_t& aMaxDiskUsage) = 0;
+    virtual void SyncAssignStationButton(const std::string& aRenderer, uint32_t aButton, const std::string& aObjectID) = 0;
+    virtual void BeginAssignStationButton(const std::string& aRenderer, uint32_t aButton, const std::string& aObjectID, FunctorAsync& aFunctor) = 0;
+    virtual void EndAssignStationButton(IAsync& aAsync) = 0;
+    virtual void SyncGetStationButtonAssignment(const std::string& aRenderer, uint32_t aButton, std::string& aObjectID) = 0;
+    virtual void BeginGetStationButtonAssignment(const std::string& aRenderer, uint32_t aButton, FunctorAsync& aFunctor) = 0;
+    virtual void EndGetStationButtonAssignment(IAsync& aAsync, std::string& aObjectID) = 0;
+    virtual void SetPropertySystemUpdateIDChanged(Functor& aSystemUpdateIDChanged) = 0;
+    virtual void PropertySystemUpdateID(uint32_t& aSystemUpdateID) const = 0;
+    virtual void SetPropertyContainerUpdateIDsChanged(Functor& aContainerUpdateIDsChanged) = 0;
+    virtual void PropertyContainerUpdateIDs(std::string& aContainerUpdateIDs) const = 0;
+    virtual void SetPropertyIndexerStatusChanged(Functor& aIndexerStatusChanged) = 0;
+    virtual void PropertyIndexerStatus(std::string& aIndexerStatus) const = 0;
+    virtual void SetPropertyA_ARG_TYPE_ScopeChanged(Functor& aA_ARG_TYPE_ScopeChanged) = 0;
+    virtual void PropertyA_ARG_TYPE_Scope(std::string& aA_ARG_TYPE_Scope) const = 0;
+};
 
 /**
  * Proxy for upnp.org:ContentDirectory_Raumfeld:1
  * @ingroup Proxies
  */
-class CpProxyUpnpOrgContentDirectory_Raumfeld1Cpp : public CpProxy
+class CpProxyUpnpOrgContentDirectory_Raumfeld1Cpp : public ICpProxyUpnpOrgContentDirectory_Raumfeld1Cpp
 {
 public:
     /**
      * Constructor.
      *
-     * Use CpProxy::[Un]Subscribe() to enable/disable querying of state variable
+     * Use iCpProxy::[Un]Subscribe() to enable/disable querying of state variable
      * and reporting of their changes.
      *
      * @param[in]  aDevice   The device to use
@@ -780,7 +857,40 @@ public:
      * @param[out] aA_ARG_TYPE_Scope
      */
     void PropertyA_ARG_TYPE_Scope(std::string& aA_ARG_TYPE_Scope) const;
+    /**
+    * This function exposes the Subscribe() function of the iCpProxy member variable
+    */
+    void Subscribe();
+    /**
+    * This function exposes the Unsubscribe() function of the iCpProxy member variable
+    */
+    void Unsubscribe();
+    /**
+    * This function exposes the SetPropertyChanged() function of the iCpProxy member variable
+    */
+    void SetPropertyChanged(Functor& aFunctor);
+    /**
+    * This function exposes the SetPropertyInitialEvent() function of the iCpProxy member variable
+    */
+    void SetPropertyInitialEvent(Functor& aFunctor);
+    /**
+    * This function exposes the AddProperty() function of the iCpProxy member variable
+    */
+    void AddProperty(Property* aProperty);
+    /**
+    * This function exposes DestroyService() function of the iCpProxy member variable
+    */
+    void DestroyService();
+    /**
+    * This function exposes the REportEvent() function of the iCpProxy member variable
+    */
+    void ReportEvent(Functor aFunctor);
+    /**
+    * This function exposes the Version() function of the iCpProxy member variable
+    */
+    TUint Version() const;
 private:
+    CpProxy iCpProxy;
     void SystemUpdateIDPropertyChanged();
     void ContainerUpdateIDsPropertyChanged();
     void IndexerStatusPropertyChanged();

@@ -291,15 +291,18 @@ int32_t OsMutexUnlock(THandle aMutex);
 typedef void(*ThreadEntryPoint)(void*);
 
 /**
+ * Read the range of thread priorities supported by teh host platform
+ */
+void OsThreadGetPriorityRange(OsContext* aContext, uint32_t* aHostMin, uint32_t* aHostMax);
+
+/**
  * Create a thread.
  *
  * @param[in] aContext    Returned from OsCreate().
  * @param[in] aName        Name for this thread.  May not be unique.
  *                         Maximum length is 4 characters.
  * @param[in] aPriority    Priority the thread should run at.  Will be in the range
- *                         (50 - 150) which may need to be mapped onto a suitable native
- *                         range.  If thread priorities are not supported, this value
- *                         should be stored and returned by calls to ThreadPriority()
+ *                         reported by OsThreadGetPriorityRange.
  * @param[in] aStackBytes  Size of the thread stack in bytes.  If this is 0 a sensible
  *                         default value should be used.
  * @param[in] aEntryPoint  Pointer to a function which must be called from the native
@@ -416,7 +419,9 @@ int32_t OsNetworkPort(THandle aHandle, uint32_t* aPort);
  * @param[in] aTimeoutMs   Number of milliseconds to wait.  An error will be returned
  *                         if the connection did not complete or fail before this.
  *
- * @return  0 on success; -1 on failure
+ * @return  0 on success
+ *          -1 on timeout
+ *          -2 on connection refused
  */
 int32_t OsNetworkConnect(THandle aHandle, TIpAddress aAddress, uint16_t aPort, uint32_t aTimeoutMs);
 
@@ -646,10 +651,14 @@ int32_t OsNetworkSocketSetMulticastIf(THandle aHandle, TIpAddress aInterface);
  */
 typedef struct OsNetworkAdapter
 {
-    TIpAddress iAddress;  /**< Address of the interface */
-    char*      iName;     /**< Nul-terminated name of the interface */
-    TIpAddress iNetMask;  /**< netmask for the interface */
-    int32_t    iReserved; /**< for OS-internal use */
+    TIpAddress iAddress;    /**< Address of the interface */
+    char*      iName;       /**< Nul-terminated name of the interface */
+    TIpAddress iNetMask;    /**< netmask for the interface */
+    TIpAddress iDhcpServer; /**< DHCP server address for the interface.
+                                 0 => not supported by this platform */
+    TIpAddress iGateway;    /**< Gateway address for the interface.
+                                  0 => not supported by this platform */
+    int32_t    iReserved;   /**< for OS-internal use */
     struct OsNetworkAdapter* iNext; /**< Pointer to next interface or NULL */
 } OsNetworkAdapter;
 

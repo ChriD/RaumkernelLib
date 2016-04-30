@@ -19,18 +19,91 @@ class PropertyBool;
 class PropertyInt;
 class PropertyString;
 class PropertyUint;
+class CpProxy;
+class ICpProxyUpnpOrgAVTransport2Cpp : public ICpProxy
+{
+public:
+    virtual ~ICpProxyUpnpOrgAVTransport2Cpp() {}
+    virtual void SyncSetAVTransportURI(uint32_t aInstanceID, const std::string& aCurrentURI, const std::string& aCurrentURIMetaData) = 0;
+    virtual void BeginSetAVTransportURI(uint32_t aInstanceID, const std::string& aCurrentURI, const std::string& aCurrentURIMetaData, FunctorAsync& aFunctor) = 0;
+    virtual void EndSetAVTransportURI(IAsync& aAsync) = 0;
+    virtual void SyncSetNextAVTransportURI(uint32_t aInstanceID, const std::string& aNextURI, const std::string& aNextURIMetaData) = 0;
+    virtual void BeginSetNextAVTransportURI(uint32_t aInstanceID, const std::string& aNextURI, const std::string& aNextURIMetaData, FunctorAsync& aFunctor) = 0;
+    virtual void EndSetNextAVTransportURI(IAsync& aAsync) = 0;
+    virtual void SyncGetMediaInfo(uint32_t aInstanceID, uint32_t& aNrTracks, std::string& aMediaDuration, std::string& aCurrentURI, std::string& aCurrentURIMetaData, std::string& aNextURI, std::string& aNextURIMetaData, std::string& aPlayMedium, std::string& aRecordMedium, std::string& aWriteStatus) = 0;
+    virtual void BeginGetMediaInfo(uint32_t aInstanceID, FunctorAsync& aFunctor) = 0;
+    virtual void EndGetMediaInfo(IAsync& aAsync, uint32_t& aNrTracks, std::string& aMediaDuration, std::string& aCurrentURI, std::string& aCurrentURIMetaData, std::string& aNextURI, std::string& aNextURIMetaData, std::string& aPlayMedium, std::string& aRecordMedium, std::string& aWriteStatus) = 0;
+    virtual void SyncGetMediaInfo_Ext(uint32_t aInstanceID, std::string& aCurrentType, uint32_t& aNrTracks, std::string& aMediaDuration, std::string& aCurrentURI, std::string& aCurrentURIMetaData, std::string& aNextURI, std::string& aNextURIMetaData, std::string& aPlayMedium, std::string& aRecordMedium, std::string& aWriteStatus) = 0;
+    virtual void BeginGetMediaInfo_Ext(uint32_t aInstanceID, FunctorAsync& aFunctor) = 0;
+    virtual void EndGetMediaInfo_Ext(IAsync& aAsync, std::string& aCurrentType, uint32_t& aNrTracks, std::string& aMediaDuration, std::string& aCurrentURI, std::string& aCurrentURIMetaData, std::string& aNextURI, std::string& aNextURIMetaData, std::string& aPlayMedium, std::string& aRecordMedium, std::string& aWriteStatus) = 0;
+    virtual void SyncGetTransportInfo(uint32_t aInstanceID, std::string& aCurrentTransportState, std::string& aCurrentTransportStatus, std::string& aCurrentSpeed) = 0;
+    virtual void BeginGetTransportInfo(uint32_t aInstanceID, FunctorAsync& aFunctor) = 0;
+    virtual void EndGetTransportInfo(IAsync& aAsync, std::string& aCurrentTransportState, std::string& aCurrentTransportStatus, std::string& aCurrentSpeed) = 0;
+    virtual void SyncGetPositionInfo(uint32_t aInstanceID, uint32_t& aTrack, std::string& aTrackDuration, std::string& aTrackMetaData, std::string& aTrackURI, std::string& aRelTime, std::string& aAbsTime, int32_t& aRelCount, int32_t& aAbsCount) = 0;
+    virtual void BeginGetPositionInfo(uint32_t aInstanceID, FunctorAsync& aFunctor) = 0;
+    virtual void EndGetPositionInfo(IAsync& aAsync, uint32_t& aTrack, std::string& aTrackDuration, std::string& aTrackMetaData, std::string& aTrackURI, std::string& aRelTime, std::string& aAbsTime, int32_t& aRelCount, int32_t& aAbsCount) = 0;
+    virtual void SyncGetDeviceCapabilities(uint32_t aInstanceID, std::string& aPlayMedia, std::string& aRecMedia, std::string& aRecQualityModes) = 0;
+    virtual void BeginGetDeviceCapabilities(uint32_t aInstanceID, FunctorAsync& aFunctor) = 0;
+    virtual void EndGetDeviceCapabilities(IAsync& aAsync, std::string& aPlayMedia, std::string& aRecMedia, std::string& aRecQualityModes) = 0;
+    virtual void SyncGetTransportSettings(uint32_t aInstanceID, std::string& aPlayMode, std::string& aRecQualityMode) = 0;
+    virtual void BeginGetTransportSettings(uint32_t aInstanceID, FunctorAsync& aFunctor) = 0;
+    virtual void EndGetTransportSettings(IAsync& aAsync, std::string& aPlayMode, std::string& aRecQualityMode) = 0;
+    virtual void SyncStop(uint32_t aInstanceID) = 0;
+    virtual void BeginStop(uint32_t aInstanceID, FunctorAsync& aFunctor) = 0;
+    virtual void EndStop(IAsync& aAsync) = 0;
+    virtual void SyncPlay(uint32_t aInstanceID, const std::string& aSpeed) = 0;
+    virtual void BeginPlay(uint32_t aInstanceID, const std::string& aSpeed, FunctorAsync& aFunctor) = 0;
+    virtual void EndPlay(IAsync& aAsync) = 0;
+    virtual void SyncPause(uint32_t aInstanceID) = 0;
+    virtual void BeginPause(uint32_t aInstanceID, FunctorAsync& aFunctor) = 0;
+    virtual void EndPause(IAsync& aAsync) = 0;
+    virtual void SyncRecord(uint32_t aInstanceID) = 0;
+    virtual void BeginRecord(uint32_t aInstanceID, FunctorAsync& aFunctor) = 0;
+    virtual void EndRecord(IAsync& aAsync) = 0;
+    virtual void SyncSeek(uint32_t aInstanceID, const std::string& aUnit, const std::string& aTarget) = 0;
+    virtual void BeginSeek(uint32_t aInstanceID, const std::string& aUnit, const std::string& aTarget, FunctorAsync& aFunctor) = 0;
+    virtual void EndSeek(IAsync& aAsync) = 0;
+    virtual void SyncNext(uint32_t aInstanceID) = 0;
+    virtual void BeginNext(uint32_t aInstanceID, FunctorAsync& aFunctor) = 0;
+    virtual void EndNext(IAsync& aAsync) = 0;
+    virtual void SyncPrevious(uint32_t aInstanceID) = 0;
+    virtual void BeginPrevious(uint32_t aInstanceID, FunctorAsync& aFunctor) = 0;
+    virtual void EndPrevious(IAsync& aAsync) = 0;
+    virtual void SyncSetPlayMode(uint32_t aInstanceID, const std::string& aNewPlayMode) = 0;
+    virtual void BeginSetPlayMode(uint32_t aInstanceID, const std::string& aNewPlayMode, FunctorAsync& aFunctor) = 0;
+    virtual void EndSetPlayMode(IAsync& aAsync) = 0;
+    virtual void SyncSetRecordQualityMode(uint32_t aInstanceID, const std::string& aNewRecordQualityMode) = 0;
+    virtual void BeginSetRecordQualityMode(uint32_t aInstanceID, const std::string& aNewRecordQualityMode, FunctorAsync& aFunctor) = 0;
+    virtual void EndSetRecordQualityMode(IAsync& aAsync) = 0;
+    virtual void SyncGetCurrentTransportActions(uint32_t aInstanceID, std::string& aActions) = 0;
+    virtual void BeginGetCurrentTransportActions(uint32_t aInstanceID, FunctorAsync& aFunctor) = 0;
+    virtual void EndGetCurrentTransportActions(IAsync& aAsync, std::string& aActions) = 0;
+    virtual void SyncGetDRMState(uint32_t aInstanceID, std::string& aCurrentDRMState) = 0;
+    virtual void BeginGetDRMState(uint32_t aInstanceID, FunctorAsync& aFunctor) = 0;
+    virtual void EndGetDRMState(IAsync& aAsync, std::string& aCurrentDRMState) = 0;
+    virtual void SyncGetStateVariables(uint32_t aInstanceID, const std::string& aStateVariableList, std::string& aStateVariableValuePairs) = 0;
+    virtual void BeginGetStateVariables(uint32_t aInstanceID, const std::string& aStateVariableList, FunctorAsync& aFunctor) = 0;
+    virtual void EndGetStateVariables(IAsync& aAsync, std::string& aStateVariableValuePairs) = 0;
+    virtual void SyncSetStateVariables(uint32_t aInstanceID, const std::string& aAVTransportUDN, const std::string& aServiceType, const std::string& aServiceId, const std::string& aStateVariableValuePairs, std::string& aStateVariableList) = 0;
+    virtual void BeginSetStateVariables(uint32_t aInstanceID, const std::string& aAVTransportUDN, const std::string& aServiceType, const std::string& aServiceId, const std::string& aStateVariableValuePairs, FunctorAsync& aFunctor) = 0;
+    virtual void EndSetStateVariables(IAsync& aAsync, std::string& aStateVariableList) = 0;
+    virtual void SetPropertyLastChangeChanged(Functor& aLastChangeChanged) = 0;
+    virtual void PropertyLastChange(std::string& aLastChange) const = 0;
+    virtual void SetPropertyDRMStateChanged(Functor& aDRMStateChanged) = 0;
+    virtual void PropertyDRMState(std::string& aDRMState) const = 0;
+};
 
 /**
  * Proxy for upnp.org:AVTransport:2
  * @ingroup Proxies
  */
-class CpProxyUpnpOrgAVTransport2Cpp : public CpProxy
+class CpProxyUpnpOrgAVTransport2Cpp : public ICpProxyUpnpOrgAVTransport2Cpp
 {
 public:
     /**
      * Constructor.
      *
-     * Use CpProxy::[Un]Subscribe() to enable/disable querying of state variable
+     * Use iCpProxy::[Un]Subscribe() to enable/disable querying of state variable
      * and reporting of their changes.
      *
      * @param[in]  aDevice   The device to use
@@ -736,7 +809,40 @@ public:
      * @param[out] aDRMState
      */
     void PropertyDRMState(std::string& aDRMState) const;
+    /**
+    * This function exposes the Subscribe() function of the iCpProxy member variable
+    */
+    void Subscribe();
+    /**
+    * This function exposes the Unsubscribe() function of the iCpProxy member variable
+    */
+    void Unsubscribe();
+    /**
+    * This function exposes the SetPropertyChanged() function of the iCpProxy member variable
+    */
+    void SetPropertyChanged(Functor& aFunctor);
+    /**
+    * This function exposes the SetPropertyInitialEvent() function of the iCpProxy member variable
+    */
+    void SetPropertyInitialEvent(Functor& aFunctor);
+    /**
+    * This function exposes the AddProperty() function of the iCpProxy member variable
+    */
+    void AddProperty(Property* aProperty);
+    /**
+    * This function exposes DestroyService() function of the iCpProxy member variable
+    */
+    void DestroyService();
+    /**
+    * This function exposes the REportEvent() function of the iCpProxy member variable
+    */
+    void ReportEvent(Functor aFunctor);
+    /**
+    * This function exposes the Version() function of the iCpProxy member variable
+    */
+    TUint Version() const;
 private:
+    CpProxy iCpProxy;
     void LastChangePropertyChanged();
     void DRMStatePropertyChanged();
 private:

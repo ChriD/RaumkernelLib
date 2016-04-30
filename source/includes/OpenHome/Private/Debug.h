@@ -52,7 +52,7 @@ private:
     #define LOGT(x,...) \
         {if(OpenHome::Debug::TestLevel(OpenHome::Debug::x)) \
          { \
-            const Brx& name = OpenHome::Thread::CurrentThreadName(); \
+            const OpenHome::Brx& name = OpenHome::Thread::CurrentThreadName(); \
             OpenHome::Log::Print("T:%c%c%c%c:",name[0],name[1],name[2],name[3]); \
             OpenHome::Log::Print(__VA_ARGS__); \
          } \
@@ -134,9 +134,6 @@ public:
     static void SetLevel(TUint aLevel);
     static void AddLevel(TUint aLevel);
     static void RemoveLevel(TUint aLevel);
-    static TBool BreakBeforeThrow();
-    static void SetBreakBeforeThrow(TBool aBreak);
-
 private:
     static TUint iLevel;
     static TBool iBreak;

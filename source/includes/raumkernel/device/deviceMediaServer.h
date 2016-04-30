@@ -78,8 +78,8 @@ namespace Raumkernel
 
             protected:
                 // proxies of the media server device                
-                std::shared_ptr<OpenHome::Net::CpProxy>	contentDirectoryProxy;
-                std::shared_ptr<OpenHome::Net::CpProxy>	connectionManagerProxy;
+                std::shared_ptr<OpenHome::Net::ICpProxy>	contentDirectoryProxy;
+                std::shared_ptr<OpenHome::Net::ICpProxy>	connectionManagerProxy;
 
                 virtual void deleteProxies() override;
                 virtual void createProxies() override;
@@ -90,8 +90,8 @@ namespace Raumkernel
                 bool isContentDirectoryProxyAvailable();
                 bool isConnectionManagerProxyAvailable();
 
-                std::shared_ptr<OpenHome::Net::CpProxy> getContentDirectoryProxy();
-                std::shared_ptr<OpenHome::Net::CpProxy> getConnectionManagerProxy();
+                std::shared_ptr<OpenHome::Net::ICpProxy> getContentDirectoryProxy();
+                std::shared_ptr<OpenHome::Net::ICpProxy> getConnectionManagerProxy();
 
                 void logServerError(std::string _error, std::string _location);
 

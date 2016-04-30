@@ -107,6 +107,20 @@ private:
     Socket& iSocket;
 };
 
+/**
+* Utility class.
+*
+* Calls ReadFlush() on its IReader and Close() on its Socket on destruction.
+*/
+class AutoSocketReader : public AutoSocket
+{
+public:
+    AutoSocketReader(Socket& aSocket, IReader& aReader);
+    ~AutoSocketReader();
+private:
+    IReader& iReader;
+};
+
 /// Shared Tcp client / Tcp session base class
 class SocketTcp : public Socket, public IWriter, public IReaderSource
 {
@@ -148,8 +162,8 @@ class Environment;
 class SocketTcpClient : public SocketTcp
 {
 public:
-    void Open(Environment& aEnv);                              /// Open
-    void Connect(const Endpoint& aEndpoint, TUint aTimeout);    /// Connect to a given IP address and port number (timeout in milliseconds)
+    void Open(Environment& aEnv);
+    void Connect(const Endpoint& aEndpoint, TUint aTimeoutMs);
 };
 
 /// Tcp Session

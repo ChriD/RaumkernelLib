@@ -476,8 +476,9 @@ DllExport void STDCALL OhNetInitParamsSetDvWebSocketPort(OhNetHandleInitParams a
  * Note that enabling Bonjour will cause the device stack to run a http server on port 80, requiring root privileges on linux.
  *
  * @param[in] aParams          Initialisation params
+ * @param[in] aHostName        mDNS host name
  */
-DllExport void STDCALL OhNetInitParamsSetDvEnableBonjour(OhNetHandleInitParams aParams);
+DllExport void STDCALL OhNetInitParamsSetDvEnableBonjour(OhNetHandleInitParams aParams, const char* aHostName);
 
 /**
  * Query the tcp connection timeout
@@ -809,6 +810,14 @@ DllExport void STDCALL OhNetSetCurrentSubnet(uint32_t aSubnet);
  *          Or NULL if there is no currently selected adapter.
  */
 DllExport OhNetHandleNetworkAdapter STDCALL OhNetCurrentSubnetAdapter(const char* aCookie);
+
+/**
+* Force a refresh of the library's list of available network adapters
+*
+* This should only be required on platforms that are not capable of
+* automatically detecting adapter changes.
+*/
+DllExport void STDCALL OhNetRefreshNetworkAdapterList();
 
 /* @} */
 
