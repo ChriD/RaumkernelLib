@@ -5,14 +5,15 @@
          To get the available options for 'LogLevel' and 'LogAdapter' please take a look at the documentation -->
     <Log>
       <Level>DEBUG</Level>
-     </Log>
+    </Log>
     
     <!-- the kernel uses the first available networkadapter found in the system. This may not be the one you like to use! -->
     <!-- so you can type in the network adapter name the application should use!-->
     <NetworkAdapterName>Killer Wireless-N 1202 (2.4GHz and 5GHz)</NetworkAdapterName>
     
     <!-- the time step in ms on which the kernel does refresh the device list to get abruplty removed UPNP devices (without announcing its removal) -->
-    <UPNPRefreshTime>5000</UPNPRefreshTime>
+	<UPNPRefreshTimeActive>1</UPNPRefreshTimeActive>
+    <UPNPRefreshTime>30000</UPNPRefreshTime>
 	
 	<!-- Some internal sleeping values -->
 	<HTTPRequestPumpSleep>20</HTTPRequestPumpSleep>

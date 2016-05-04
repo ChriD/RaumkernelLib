@@ -129,19 +129,27 @@ namespace Raumkernel
             // start  
             if (!refreshDeviceListThreadStarted)
             {
-                std::uint32_t refreshTime = 5000;
+                std::uint32_t refreshTime = 30000;
+                std::string refreshTimeActiveString = getManagerEngineer()->getSettingsManager()->getValue(Raumkernel::Manager::SETTINGS_RAUMKERNEL_UPNPREFRESHTIMEACTIVE);
                 std::string refreshTimeString   = getManagerEngineer()->getSettingsManager()->getValue(Raumkernel::Manager::SETTINGS_RAUMKERNEL_UPNPREFRESHTIME);
-                if (refreshTimeString.empty())
+                if (!refreshTimeString.empty() && refreshTimeActiveString == "1")
                 {
-                    logWarning("UPNP refresh time is not set. Will use Standard value of " + std::to_string(refreshTime) + "ms", CURRENT_POSITION);
+                    if (refreshTimeString.empty())
+                    {
+                        logWarning("UPNP refresh time is not set. Will use Standard value of " + std::to_string(refreshTime) + "ms", CURRENT_POSITION);
+                    }
+                    else
+                    {
+                        refreshTime = std::stoi(refreshTimeString);
+                    }
+                    logDebug("Starting UPNP-Stack auto referesh thread", CURRENT_POSITION);
+                    refreshDeviceListThreadObject = std::thread(&UPNPManager::refreshDeviceListThread, this, std::ref(stopThreads), refreshTime);
+                    refreshDeviceListThreadStarted = true;
                 }
                 else
                 {
-                    refreshTime = std::stoi(refreshTimeString);
+                    logWarning("UPNP refresh time is disabled!", CURRENT_POSITION);
                 }
-                logDebug("Starting UPNP-Stack auto referesh thread", CURRENT_POSITION);
-                refreshDeviceListThreadObject = std::thread(&UPNPManager::refreshDeviceListThread, this, std::ref(stopThreads), refreshTime);
-                refreshDeviceListThreadStarted = true;
             }
         }
 

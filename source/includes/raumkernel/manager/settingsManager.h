@@ -46,6 +46,7 @@ namespace Raumkernel
         const std::string SETTINGS_RAUMKERNEL_MEDIASERVERIDENTIFICATION = "/Raumkernel/Raumfeld/MediaServerIdentification";
         const std::string SETTINGS_RAUMKERNEL_RAUMFELDDESCRIPTIONVIRTUALMEDIAPLAYER = "/Raumkernel/Raumfeld/RaumfeldDescriptionVirtualMediaPlayer";
         const std::string SETTINGS_RAUMKERNEL_RAUMFELDMANUFACTURER = "/Raumkernel/Raumfeld/RaumfeldManufacturer";
+        const std::string SETTINGS_RAUMKERNEL_UPNPREFRESHTIMEACTIVE = "/Raumkernel/UPNPRefreshTimeActive";
         const std::string SETTINGS_RAUMKERNEL_UPNPREFRESHTIME = "/Raumkernel/UPNPRefreshTime";
         const std::string SETTINGS_RAUMKERNEL_HTTPREQUESTPUMPSLEEP = "/Raumkernel/HTTPRequestPumpSleep";
         const std::string SETTINGS_RAUMKERNEL_HTTPREQUESTHANDLERSLEEP = "/Raumkernel/HTTPRequestHandlerSleep";
