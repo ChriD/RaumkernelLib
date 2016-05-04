@@ -624,7 +624,7 @@ namespace Raumkernel
         }
 
 
-        void MediaRenderer_RaumfeldVirtual::startSleepTimer(std::int16_t _instanceId, std::uint16_t _secondsUntilSleep, std::int16_t _secondsForVolumeRamp, bool _sync)
+        void MediaRenderer_RaumfeldVirtual::startSleepTimer(std::uint16_t _secondsUntilSleep, std::int16_t _secondsForVolumeRamp, bool _sync)
         {            
             if (!isAvTransportProxyAvailable())
             {
@@ -636,7 +636,7 @@ namespace Raumkernel
 
             try
             {
-                startSleepTimerProxy(_instanceId, _secondsUntilSleep, _secondsForVolumeRamp, _sync);
+                startSleepTimerProxy(instance, _secondsUntilSleep, _secondsForVolumeRamp, _sync);
             }
             catch (Raumkernel::Exception::RaumkernelException &e)
             {
@@ -684,6 +684,69 @@ namespace Raumkernel
 
             auto proxy = std::dynamic_pointer_cast<OpenHome::Net::CpProxyUpnpOrgAVTransport_RaumfeldVirtual1Cpp>(getAvTransportProxy());
             proxy->EndStartSleepTimer(_aAsync);
+        }
+
+
+        void MediaRenderer_RaumfeldVirtual::cancelSleepTimer(bool _sync)
+        {
+            if (!isAvTransportProxyAvailable())
+            {
+                logWarning("Calling 'cancelSleepTimer' on renderer '" + getDeviceDescription() + "' without AvTransportProxy!", CURRENT_FUNCTION);
+                return;
+            }
+
+            logDebug("Calling 'cancelSleepTimer' on renderer '" + getDeviceDescription() + "'", CURRENT_FUNCTION);
+
+            try
+            {
+                cancelSleepTimerProxy(instance, _sync);
+            }
+            catch (Raumkernel::Exception::RaumkernelException &e)
+            {
+                if (e.type() == Raumkernel::Exception::ExceptionType::EXCEPTIONTYPE_APPCRASH)
+                    throw e;
+                logRendererError(e.what(), CURRENT_FUNCTION);
+            }
+            catch (std::exception &e)
+            {
+                logRendererError(e.what(), CURRENT_FUNCTION);
+            }
+            catch (std::string &e)
+            {
+                logRendererError(e, CURRENT_FUNCTION);
+            }
+            catch (OpenHome::Exception &e)
+            {
+                logRendererError(e.Message(), CURRENT_FUNCTION);
+            }
+            catch (...)
+            {
+                logRendererError("Unknown Exception", CURRENT_FUNCTION);
+            }
+        }
+
+
+        void MediaRenderer_RaumfeldVirtual::cancelSleepTimerProxy(std::int16_t _instanceId, bool _sync)
+        {
+            auto proxy = std::dynamic_pointer_cast<OpenHome::Net::CpProxyUpnpOrgAVTransport_RaumfeldVirtual1Cpp>(getAvTransportProxy());
+
+            if (_sync)
+                proxy->SyncCancelSleepTimer(_instanceId);
+            else
+            {
+                OpenHome::Net::FunctorAsync functorAsync = OpenHome::Net::MakeFunctorAsync(*this, &MediaRenderer_RaumfeldVirtual::onCancelSleepTimerExecuted);
+                proxy->BeginCancelSleepTimer(_instanceId, functorAsync);
+            }
+        }
+
+
+        void MediaRenderer_RaumfeldVirtual::onCancelSleepTimerExecuted(OpenHome::Net::IAsync& _aAsync)
+        {
+            if (!isAvTransportProxyAvailable())
+                return;
+
+            auto proxy = std::dynamic_pointer_cast<OpenHome::Net::CpProxyUpnpOrgAVTransport_RaumfeldVirtual1Cpp>(getAvTransportProxy());
+            proxy->EndCancelSleepTimer(_aAsync);
         }
 
 

@@ -50,9 +50,13 @@ namespace Raumkernel
                 */
                 EXPORT virtual void bendAvTransportUri(std::string _avTransportUri, std::string _avTransportUriMetaData, bool _sync = true);
                 /**
-                * function not used/tested in raumfeld firmware until now (20160114)
+                * use this to start a sleep timer with volume ramp
                 */
-                EXPORT virtual void startSleepTimer(std::int16_t _instanceId, std::uint16_t _secondsUntilSleep, std::int16_t _secondsForVolumeRamp, bool _sync = true);
+                EXPORT virtual void startSleepTimer(std::uint16_t _secondsUntilSleep, std::int16_t _secondsForVolumeRamp, bool _sync = true);
+                /**
+                * use this to cancel a sleep timer with volume ramp
+                */
+                EXPORT virtual void cancelSleepTimer(bool _sync = true);
 
                 /**
                 * use this to set the mute state of a room
@@ -93,7 +97,7 @@ namespace Raumkernel
                 /**
                 * this method fades the volume to a specific value in a specific time
                 */
-                EXPORT virtual void fadeToVolume(const std::uint32_t _volume, std::uint32_t _duration, bool sync);
+                EXPORT virtual void fadeToVolume(const std::uint32_t _volume, std::uint32_t _duration, bool sync);           
                              
             protected:                
                 virtual void createProxyAvTransport() override;
@@ -114,7 +118,8 @@ namespace Raumkernel
                 virtual void setAvTransportUriProxy(std::string _avTransportUri, std::string _avTransportUriMetaData, bool _sync = true) override;
 
                 virtual void bendAvTransportUriProxy(std::string _avTransportUri, std::string _avTransportUriMetaData, bool _sync = true);
-                virtual void startSleepTimerProxy(std::int16_t _instanceId, std::uint16_t _secondsUntilSleep, std::int16_t _secondsForVolumeRamp, bool _sync = true);                
+                virtual void startSleepTimerProxy(std::int16_t _instanceId, std::uint16_t _secondsUntilSleep, std::int16_t _secondsForVolumeRamp, bool _sync = true); 
+                virtual void cancelSleepTimerProxy(std::int16_t _instanceId, bool _sync = true);
 
                 virtual void setMuteProxy(bool _mute, bool _sync = true) override;
                 virtual void setVolumeProxy(std::uint32_t _volume, bool _sync = true) override;
@@ -142,6 +147,7 @@ namespace Raumkernel
 
                 virtual void onBendAvTransportUriExecuted(OpenHome::Net::IAsync& _aAsync);
                 virtual void onStartSleepTimerExecuted(OpenHome::Net::IAsync& _aAsync);
+                virtual void onCancelSleepTimerExecuted(OpenHome::Net::IAsync& _aAsync);
 
                 virtual void onSetMuteExecuted(OpenHome::Net::IAsync& _aAsync) override;
                 virtual void onSetVolumeExecuted(OpenHome::Net::IAsync& _aAsync) override;

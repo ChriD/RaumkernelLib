@@ -79,7 +79,10 @@ public:
     virtual void BeginGetCurrentTransportActions(uint32_t aInstanceID, FunctorAsync& aFunctor) = 0;
     virtual void EndGetCurrentTransportActions(IAsync& aAsync, std::string& aActions) = 0;
     virtual void SetPropertyLastChangeChanged(Functor& aLastChangeChanged) = 0;
-    virtual void PropertyLastChange(std::string& aLastChange) const = 0;
+    virtual void PropertyLastChange(std::string& aLastChange) const = 0;    
+    virtual void SyncCancelSleepTimer(uint32_t aInstanceID) = 0;
+    virtual void BeginCancelSleepTimer(uint32_t aInstanceID, FunctorAsync& aFunctor) = 0;
+    virtual void EndCancelSleepTimer(IAsync& aAsync) = 0;
 };
 
 /**
@@ -565,6 +568,33 @@ public:
      */
     void EndPrevious(IAsync& aAsync);
 
+    void SyncCancelSleepTimer(uint32_t aInstanceID);
+    /**
+    * Invoke the action asynchronously.
+    * Returns immediately and will run the client-specified callback when the action
+    * later completes.  Any output arguments can then be retrieved by calling
+    * EndNext().
+    *
+    * @param[in] aInstanceID
+    * @param[in] aFunctor   Callback to run when the action completes.
+    *                       This is guaranteed to be run but may indicate an error
+    */
+    void BeginCancelSleepTimer(uint32_t aInstanceID, FunctorAsync& aFunctor);
+    /**
+    * Retrieve the output arguments from an asynchronously invoked action.
+    * This may only be called from the callback set in the above Begin function.
+    *
+    * @param[in]  aAsync  Argument passed to the callback set in the above Begin function
+    */
+    void EndCancelSleepTimer(IAsync& aAsync);
+
+    /**
+    * Invoke the action synchronously.  Blocks until the action has been processed
+    * on the device and sets any output arguments.
+    *
+    * @param[in]  aInstanceID
+    */
+
     /**
      * Invoke the action synchronously.  Blocks until the action has been processed
      * on the device and sets any output arguments.
@@ -723,6 +753,7 @@ private:
     Action* iActionSetPlayMode;
     Action* iActionGetStreamProperties;
     Action* iActionGetCurrentTransportActions;
+    Action* iActionCancelSleepTimer;
     PropertyString* iLastChange;
     Functor iLastChangeChanged;
 };

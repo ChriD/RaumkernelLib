@@ -357,6 +357,27 @@ void SyncNextUpnpOrgAVTransport_RaumfeldVirtual1Cpp::CompleteRequest(IAsync& aAs
 }
 
 
+class SyncCancelSleepTimerUpnpOrgAVTransport_RaumfeldVirtual1Cpp : public SyncProxyAction
+{
+public:
+    SyncCancelSleepTimerUpnpOrgAVTransport_RaumfeldVirtual1Cpp(CpProxyUpnpOrgAVTransport_RaumfeldVirtual1Cpp& aProxy);
+    virtual void CompleteRequest(IAsync& aAsync);
+    virtual ~SyncCancelSleepTimerUpnpOrgAVTransport_RaumfeldVirtual1Cpp() {}
+private:
+    CpProxyUpnpOrgAVTransport_RaumfeldVirtual1Cpp& iService;
+};
+
+SyncCancelSleepTimerUpnpOrgAVTransport_RaumfeldVirtual1Cpp::SyncCancelSleepTimerUpnpOrgAVTransport_RaumfeldVirtual1Cpp(CpProxyUpnpOrgAVTransport_RaumfeldVirtual1Cpp& aProxy)
+: iService(aProxy)
+{
+}
+
+void SyncCancelSleepTimerUpnpOrgAVTransport_RaumfeldVirtual1Cpp::CompleteRequest(IAsync& aAsync)
+{
+    iService.EndCancelSleepTimer(aAsync);
+}
+
+
 class SyncPreviousUpnpOrgAVTransport_RaumfeldVirtual1Cpp : public SyncProxyAction
 {
 public:
@@ -634,6 +655,10 @@ CpProxyUpnpOrgAVTransport_RaumfeldVirtual1Cpp::CpProxyUpnpOrgAVTransport_Raumfel
     param = new OpenHome::Net::ParameterUint("InstanceID");
     iActionNext->AddInputParameter(param);
 
+    iActionCancelSleepTimer = new Action("CancelSleepTimer");
+    param = new OpenHome::Net::ParameterUint("InstanceID");
+    iActionCancelSleepTimer->AddInputParameter(param);
+
     iActionPrevious = new Action("Previous");
     param = new OpenHome::Net::ParameterUint("InstanceID");
     iActionPrevious->AddInputParameter(param);
@@ -689,6 +714,7 @@ CpProxyUpnpOrgAVTransport_RaumfeldVirtual1Cpp::~CpProxyUpnpOrgAVTransport_Raumfe
     delete iActionStartSleepTimer;
     delete iActionSeek;
     delete iActionNext;
+    delete iActionCancelSleepTimer;
     delete iActionPrevious;
     delete iActionSetPlayMode;
     delete iActionGetStreamProperties;
@@ -1267,6 +1293,37 @@ void CpProxyUpnpOrgAVTransport_RaumfeldVirtual1Cpp::EndNext(IAsync& aAsync)
     ASSERT(((Async&)aAsync).Type() == Async::eInvocation);
     Invocation& invocation = (Invocation&)aAsync;
     ASSERT(invocation.Action().Name() == Brn("Next"));
+
+    Error::ELevel level;
+    TUint code;
+    const TChar* ignore;
+    if (invocation.Error(level, code, ignore)) {
+        THROW_PROXYERROR(level, code);
+    }
+}
+
+
+void CpProxyUpnpOrgAVTransport_RaumfeldVirtual1Cpp::SyncCancelSleepTimer(uint32_t aInstanceID)
+{
+    SyncCancelSleepTimerUpnpOrgAVTransport_RaumfeldVirtual1Cpp sync(*this);
+    BeginCancelSleepTimer(aInstanceID, sync.Functor());
+    sync.Wait();
+}
+
+void CpProxyUpnpOrgAVTransport_RaumfeldVirtual1Cpp::BeginCancelSleepTimer(uint32_t aInstanceID, FunctorAsync& aFunctor)
+{
+    Invocation* invocation = iCpProxy.GetService().Invocation(*iActionCancelSleepTimer, aFunctor);
+    TUint inIndex = 0;
+    const Action::VectorParameters& inParams = iActionCancelSleepTimer->InputParameters();
+    invocation->AddInput(new ArgumentUint(*inParams[inIndex++], aInstanceID));
+    iCpProxy.GetInvocable().InvokeAction(*invocation);
+}
+
+void CpProxyUpnpOrgAVTransport_RaumfeldVirtual1Cpp::EndCancelSleepTimer(IAsync& aAsync)
+{
+    ASSERT(((Async&)aAsync).Type() == Async::eInvocation);
+    Invocation& invocation = (Invocation&)aAsync;
+    ASSERT(invocation.Action().Name() == Brn("CancelSleepTimer"));
 
     Error::ELevel level;
     TUint code;
