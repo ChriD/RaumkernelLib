@@ -12,12 +12,12 @@
     <NetworkAdapterName>Killer Wireless-N 1202 (2.4GHz and 5GHz)</NetworkAdapterName>
     
     <!-- the time step in ms on which the kernel does refresh the device list to get abruplty removed UPNP devices (without announcing its removal) -->
-	<UPNPRefreshTimeActive>1</UPNPRefreshTimeActive>
+    <UPNPRefreshTimeActive>1</UPNPRefreshTimeActive>
     <UPNPRefreshTime>30000</UPNPRefreshTime>
-	
-	<!-- Some internal sleeping values -->
-	<HTTPRequestPumpSleep>20</HTTPRequestPumpSleep>
-	<HTTPRequestHandlerSleep>20</HTTPRequestHandlerSleep>
+
+    <!-- Some internal sleeping values -->
+    <HTTPRequestPumpSleep>20</HTTPRequestPumpSleep>
+    <HTTPRequestHandlerSleep>20</HTTPRequestHandlerSleep>
     
     <!-- Some basic kernel setting for recognizing the RaumfeldUPNP devices and for requesting the host when using RAUMFELD system -->
     <Raumfeld>
