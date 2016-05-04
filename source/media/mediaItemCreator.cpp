@@ -17,7 +17,7 @@ namespace Raumkernel
         std::shared_ptr<Item::MediaItem> MediaItemCreator::createMediaItemFromTrackMetadata(std::string _trackMetadata)
         {
             pugi::xml_document doc;
-            pugi::xml_node itemNode, rootNode;
+            pugi::xml_node itemNode, containerNode, rootNode;
             std::shared_ptr<Item::MediaItem> mediaItem;
 
             try
@@ -31,18 +31,26 @@ namespace Raumkernel
                 {
                     logError("TrackMetadata XML is not formated properly! (Missing 'DIDL-Lite' node)", CURRENT_POSITION);
                     return nullptr;
-                }
+                }            
 
-                // there should be only one item in the trackMetadata XML 
+                // there should be only one item in the trackMetadata XML, but this can be a "container" too
                 itemNode = rootNode.child("item");
-                if (!itemNode)
+                containerNode = rootNode.child("container");
+
+                if (!itemNode && !containerNode)
                 {
-                    logError("TrackMetadata XML is not formated properly! (Missing 'Item' node)", CURRENT_POSITION);
+                    logError("TrackMetadata XML is not formated properly! (Missing 'item' or 'container' node)", CURRENT_POSITION);
                     return nullptr;
-                }
-             
-                // noe that we have successfully found  the item node we can try to create the mediaItem object 
-                mediaItem = this->createMediaItemFromXMLNode(itemNode);
+                }                
+            
+                // now that we have successfully found the item node we can try to create the mediaItem object 
+                if (itemNode)
+                    mediaItem = this->createMediaItemFromXMLNode(itemNode);
+
+                // if we found a container node, well, we do nothing for now... we may read the container data maybe we can use the 'createMediaItemFromXMLNode'
+                // without any changes?!
+                //if (containerNode)
+                //    mediaItem = this->createMediaItemFromXMLNode(containerNode);
 
             }
             catch (Raumkernel::Exception::RaumkernelException &e)
