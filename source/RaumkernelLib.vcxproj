@@ -157,7 +157,8 @@
     <ClInclude Include="includes\raumkernel\tools\urlParser.h" />
     <ClInclude Include="includes\raumkernel\tools\numUtil.h" />
     <ClInclude Include="includes\raumkernel\tools\uriUtil.h" />
-    <ClInclude Include="includes\raumkernel\tools\versionInfo.h" />
+    <ClInclude Include="includes\raumkernel\versionInfo.h" />
+    <ClInclude Include="includes\raumkernel\versionNumber.h" />
     <ClInclude Include="includes\raumkernel\xml\pugixml\pugiconfig.hpp" />
     <ClInclude Include="includes\raumkernel\xml\pugixml\pugixml.hpp" />
   </ItemGroup>

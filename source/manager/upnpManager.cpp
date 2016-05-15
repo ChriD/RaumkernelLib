@@ -156,7 +156,7 @@ namespace Raumkernel
         
         void UPNPManager::refresh()
         {
-            // forec refreshing of the upnpDevice list which may lead to 'deviceFound' or 'deviceLost' signals
+            // force refreshing of the upnpDevice list which may lead to 'deviceFound' or 'deviceLost' signals
             if (upupDeviceListAll != nullptr)                
                 upupDeviceListAll->Refresh();
         }
@@ -184,14 +184,20 @@ namespace Raumkernel
    
             
         void UPNPManager::refreshDeviceListThread(std::atomic_bool &_stopThread, std::uint32_t _refreshTimeMS)
-        {                                           
+        {     
+            std::uint32_t timeCount = 0;
             while (!_stopThread)
             {
                 try
                 {                    
-                    std::this_thread::sleep_for(std::chrono::milliseconds(_refreshTimeMS));                    
-                    logDebug("Refreshing UPNP device list", CURRENT_POSITION);
-                    refresh();
+                    std::this_thread::sleep_for(std::chrono::milliseconds(500));   
+                    timeCount += 500;
+                    if (timeCount > _refreshTimeMS)
+                    {
+                        logDebug("Refreshing UPNP device list", CURRENT_POSITION);
+                        refresh();
+                        timeCount = 0;
+                    }
                 }
                 catch (Raumkernel::Exception::RaumkernelException &e)
                 {
@@ -208,7 +214,7 @@ namespace Raumkernel
                 }
                 catch (OpenHome::Exception &e)
                 {
-                    logError(e.Message(), CURRENT_POSITION);;
+                    logError(e.Message(), CURRENT_POSITION);
                 }
                 catch (...)
                 {

@@ -297,14 +297,17 @@
     <ClInclude Include="includes\raumkernel\media\mediaItemCreator.h">
       <Filter>includes\raumkernel\media</Filter>
     </ClInclude>
-    <ClInclude Include="includes\raumkernel\tools\versionInfo.h">
-      <Filter>includes\raumkernel\tools</Filter>
-    </ClInclude>
     <ClInclude Include="includes\raumkernel\xml\pugixml\pugiconfig.hpp">
       <Filter>includes\raumkernel\xml\pugixml</Filter>
     </ClInclude>
     <ClInclude Include="includes\raumkernel\xml\pugixml\pugixml.hpp">
       <Filter>includes\raumkernel\xml\pugixml</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\raumkernel\versionInfo.h">
+      <Filter>includes\raumkernel</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\raumkernel\versionNumber.h">
+      <Filter>includes\raumkernel</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

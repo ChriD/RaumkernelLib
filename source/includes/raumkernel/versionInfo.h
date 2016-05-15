@@ -22,26 +22,21 @@
 //
 
 #pragma once
-#ifndef RAUMKERNEL_VERSIONINFO_H
-#define RAUMKERNEL_VERSIONINFO_H
+#ifndef VERSIONINFO_H
+#define VERSIONINFO_H
 
 
 #include <string>
+#include "versionNumber.h"
 
-#include <raumkernel/os/os.h>
-
-namespace Raumkernel
+namespace VersionInfo
 {
-    namespace Tools
+    struct VersionInfo
     {
-        struct VersionInfo
-        {
-            std::string appName = "";
-            std::string appVersion = "";
-            bool isBeta = false;
-        };       
-
-    }
+        const std::string appName = AppName;
+        const std::string appVersion = VersionNumber;
+        const std::string appVersionName = VersionName;
+    };           
 }
 
 

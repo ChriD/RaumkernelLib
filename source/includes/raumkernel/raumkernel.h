@@ -27,7 +27,7 @@
 
 #include <raumkernel/raumkernelBaseMgr.h>
 #include <raumkernel/device/deviceMediaServer.h>
-#include <raumkernel/tools/versionInfo.h>
+#include <raumkernel/versionInfo.h>
 
 
 namespace Raumkernel
@@ -51,7 +51,7 @@ namespace Raumkernel
             /**
             * returns the version info object/structure for the raumkernel
             */
-            EXPORT virtual Tools::VersionInfo getVersionInfo();
+            EXPORT virtual VersionInfo::VersionInfo getVersionInfo();
             /**
             * returns if the raumfeldSystem is online
             */
@@ -78,7 +78,7 @@ namespace Raumkernel
 
             bool isOnline;
 
-            Tools::VersionInfo versionInfo;
+            VersionInfo::VersionInfo versionInfo;
 
             sigs::connections connections;           
     };

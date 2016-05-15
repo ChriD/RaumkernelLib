@@ -7,11 +7,6 @@ namespace Raumkernel
 
     Raumkernel::Raumkernel() : RaumkernelBaseMgr()
     {    
-        // set the current version info of the library
-        versionInfo.appName     = "Raumkernel Library";
-        versionInfo.appVersion  = "1.0.0";
-        versionInfo.isBeta      = false;
-
         isOnline = false;
     }
 
@@ -139,7 +134,7 @@ namespace Raumkernel
     }
 
 
-    Tools::VersionInfo Raumkernel::getVersionInfo()
+    VersionInfo::VersionInfo Raumkernel::getVersionInfo()
     {
         return versionInfo;
     }
