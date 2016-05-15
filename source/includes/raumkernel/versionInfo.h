@@ -25,7 +25,6 @@
 #ifndef VERSIONINFO_H
 #define VERSIONINFO_H
 
-
 #include <string>
 #include "versionNumber.h"
 
@@ -33,9 +32,9 @@ namespace VersionInfo
 {
     struct VersionInfo
     {
-        const std::string appName = AppName;
-        const std::string appVersion = VersionNumber;
-        const std::string appVersionName = VersionName;
+        std::string appName = AppName;
+        std::string appVersion = VersionNumber;
+        std::string appVersionName = VersionName;
     };           
 }
 
