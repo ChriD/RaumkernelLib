@@ -34,7 +34,7 @@ namespace VersionInfo
     {
         std::string appName = AppName;
         std::string appVersion = VersionNumber;
-        std::string appVersionName = VersionName;
+        std::string appVersionName = VersionName;       
     };           
 }
 

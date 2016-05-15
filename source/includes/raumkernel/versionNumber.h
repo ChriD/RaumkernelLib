@@ -25,8 +25,10 @@
 #ifndef VERSIONNUMBER_H
 #define VERSIONNUMBER_H
 
-#define AppName         "Raumkernel Library"
-#define VersionNumber   "1.0.0"
-#define VersionName     ""
+#include <string>
+
+const std::string AppName = "Raumkernel Library";
+const std::string VersionNumber = "1.0.0";
+const std::string VersionName = "";
 
 #endif
