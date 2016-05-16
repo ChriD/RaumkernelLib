@@ -52,30 +52,40 @@ namespace Raumkernel
 
         std::shared_ptr<SettingsManager> ManagerEngineer::getSettingsManager()
         {
+           if (!deviceManager)
+                logError("Calling SettingsManager without existance!", CURRENT_POSITION);
             return settingsManager;
         }
 
 
         std::shared_ptr<UPNPManager> ManagerEngineer::getUPNPManager()
         {
+            if (!deviceManager)
+                logError("Calling UPNPManager without existance!", CURRENT_POSITION);
             return upnpManager;
         }
 
 
         std::shared_ptr<DeviceManager> ManagerEngineer::getDeviceManager()
         {
+            if (!deviceManager)
+                logError("Calling DeviceManager without existance!", CURRENT_POSITION);
             return deviceManager;
         }
 
 
         std::shared_ptr<ZoneManager> ManagerEngineer::getZoneManager()
         {
+            if (!deviceManager)
+                logError("Calling ZoneManager without existance!", CURRENT_POSITION);
             return zoneManager;
         }
 
 
         std::shared_ptr<MediaListManager> ManagerEngineer::getMediaListManager()
         {
+            if (!deviceManager)
+                logError("Calling DeviceManager without existance!", CURRENT_POSITION);
             return mediaListManager;
         }
 
