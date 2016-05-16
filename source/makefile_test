@@ -45,7 +45,7 @@ ifeq ($(arch),ARMV5TE)
   CC = arm-linux-gnueabi-g++-4.9 
   CXX = arm-linux-gnueabi-g++-4.9
   LIBSPATH = libs/linux_ARMV5/
-  TARGET = testARMV5HF
+  TARGET = testARMV5TE
 endif 
 
 LIBSDEF =  $(LIBSPATH)raumkernel.so
