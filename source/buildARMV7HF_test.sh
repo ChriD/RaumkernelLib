@@ -1,3 +1,3 @@
 #!/bin/bash
-make -f makefile_test arch=ARMV7HF clean
-make -f makefile_test arch=ARMV7HF
+make -f makefile_test arch=ARMV7HF dbg=1 clean
+make -f makefile_test arch=ARMV7HF dbg=1

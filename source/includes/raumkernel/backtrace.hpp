@@ -130,7 +130,7 @@ namespace Backtrace
 		std::cerr.flush();
 		std::cerr.rdbuf(cerrbuf);
 
-		cout << "SIGNAL FAULT! Check files in fault directory";
+		std::cout << "SIGNAL FAULT! Check files in fault directory";
 		if (!SIGNALERROR_KEEPALIVE)
 		{			
 			exit(EXIT_FAILURE);

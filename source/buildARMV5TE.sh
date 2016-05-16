@@ -1,6 +1,6 @@
 #!/bin/bash
-make arch=ARMV5TE clean
-make arch=ARMV5TE
+make arch=ARMV5TE dbg=1 clean
+make arch=ARMV5TE dbg=1
 /bin/cp -rf libs/_tmpBuild/raumkernel.so libs/linux_ARMV5/raumkernel.so
-make arch=ARMV5TE clean
+make arch=ARMV5TE dbg=1 clean
 
