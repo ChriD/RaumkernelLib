@@ -52,7 +52,7 @@ namespace Raumkernel
 
         std::shared_ptr<SettingsManager> ManagerEngineer::getSettingsManager()
         {
-            logDebug("Calling SettingsManager!", CURRENT_POSITION);
+            //logDebug("Calling SettingsManager!", CURRENT_POSITION);
             if (!settingsManager)
                 logError("Calling SettingsManager without existance!", CURRENT_POSITION);
             return settingsManager;
@@ -61,7 +61,7 @@ namespace Raumkernel
 
         std::shared_ptr<UPNPManager> ManagerEngineer::getUPNPManager()
         {
-            logDebug("Calling UPNPManager!", CURRENT_POSITION);
+            //logDebug("Calling UPNPManager!", CURRENT_POSITION);
             if (!upnpManager)
                 logError("Calling UPNPManager without existance!", CURRENT_POSITION);
             return upnpManager;
@@ -70,7 +70,7 @@ namespace Raumkernel
 
         std::shared_ptr<DeviceManager> ManagerEngineer::getDeviceManager()
         {
-            logDebug("Calling DeviceManager!", CURRENT_POSITION);
+            //logDebug("Calling DeviceManager!", CURRENT_POSITION);
             if (!deviceManager)
                 logError("Calling DeviceManager without existance!", CURRENT_POSITION);
             return deviceManager;
@@ -79,7 +79,7 @@ namespace Raumkernel
 
         std::shared_ptr<ZoneManager> ManagerEngineer::getZoneManager()
         {
-            logDebug("Calling ZoneManager!", CURRENT_POSITION);
+            //logDebug("Calling ZoneManager!", CURRENT_POSITION);
             if (!zoneManager)
                 logError("Calling ZoneManager without existance!", CURRENT_POSITION);
             return zoneManager;
@@ -88,7 +88,7 @@ namespace Raumkernel
 
         std::shared_ptr<MediaListManager> ManagerEngineer::getMediaListManager()
         {
-            logDebug("Calling MediaListManager!", CURRENT_POSITION);
+            //logDebug("Calling MediaListManager!", CURRENT_POSITION);
             if (!mediaListManager)
                 logError("Calling MediaListManager without existance!", CURRENT_POSITION);
             return mediaListManager;
