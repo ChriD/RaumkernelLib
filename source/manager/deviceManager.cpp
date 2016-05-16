@@ -68,8 +68,8 @@ namespace Raumkernel
                 // if we got a pointer to a device, than the device is useable for the kernel
                 if (device != nullptr)
                 {
-                    device->setCpDevice(&_device);      
                     device->setManagerEngineer(getManagerEngineer());
+                    device->setCpDevice(&_device);                          
                    
                     if (std::dynamic_pointer_cast<Devices::MediaRenderer>(device))
                     {                        

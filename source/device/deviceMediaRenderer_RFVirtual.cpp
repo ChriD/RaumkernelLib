@@ -518,7 +518,7 @@ namespace Raumkernel
         {
             std::string propertyXML = "";
             auto proxy = std::dynamic_pointer_cast<OpenHome::Net::CpProxyUpnpOrgAVTransport_RaumfeldVirtual1Cpp>(getAvTransportProxy());
-            proxy->PropertyLastChange(propertyXML);
+            proxy->PropertyLastChange(propertyXML);            
             
             // lock the device list to be sure the "this" object will not be deleted while parsing event subscriptions
             getManagerEngineer()->getDeviceManager()->lockDeviceList();
