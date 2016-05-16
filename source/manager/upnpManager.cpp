@@ -89,10 +89,9 @@ namespace Raumkernel
 
                 // clean up the subnet list, we do not need it anymore...
                 OpenHome::Net::UpnpLibrary::DestroySubnetList(networkAdapterList);
-               
+                                               
                 logInfo("Starting OpenHome UPNP Control Stack with network adapter: " + adapterName, CURRENT_POSITION);
                 OpenHome::Net::UpnpLibrary::StartCp(networkAdapterAddress);
-
             }
             catch (Raumkernel::Exception::RaumkernelException &e)
             {
