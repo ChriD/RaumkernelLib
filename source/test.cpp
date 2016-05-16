@@ -5,6 +5,8 @@
 #include <raumkernel/device/deviceMediaRenderer_RFVirtual.h>
 #include <raumkernel/rlutil/rlutil.h>
 
+#include "raumkernel/backtrace.hpp"
+
 #include <random>
 #include <iostream>
 #include <functional>
@@ -61,6 +63,8 @@ int main()
     miliseconds = std::chrono::duration_cast<std::chrono::milliseconds>(timePointEnd.time_since_epoch() - timePointStart.time_since_epoch());
     std::cout << "Average time to create one log entry [FILE]: " + std::to_string((float)miliseconds.count() / 1000) + "ms\n";
     */
+
+    Backtrace::AddSignalHandlers();
 
     Raumkernel::Raumkernel  raumkernel;
 

@@ -309,6 +309,9 @@
     <ClInclude Include="includes\raumkernel\versionNumber.h">
       <Filter>includes\raumkernel</Filter>
     </ClInclude>
+    <ClInclude Include="includes\raumkernel\backtrace.hpp">
+      <Filter>includes\raumkernel</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="logger\logger.cpp">

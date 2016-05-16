@@ -87,6 +87,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="includes\raumkernel\backtrace.hpp" />
     <ClInclude Include="includes\raumkernel\device\device.h" />
     <ClInclude Include="includes\raumkernel\device\deviceCreator.h" />
     <ClInclude Include="includes\raumkernel\device\deviceMediaRenderer_RF.h" />
