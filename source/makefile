@@ -48,6 +48,14 @@ ifeq ($(arch),ARMV5TE)
   TARGET = libs/_tmpBuild/raumkernel.so
 endif 
 
+ifeq ($(arch),AMDGEODE)
+  ARCHITECTURE = -m32 -march=geode -mtune=generic
+  CC = g++-4.9 
+  CXX = g++-4.9
+  LIBSPATH = libs/linux_AMDGEODE/
+  TARGET = libs/_tmpBuild/raumkernel.so
+endif 
+
 
 LIBSDEF =  $(LIBSPATH)libohNetCore.a $(LIBSPATH)libohNetDevices.a $(LIBSPATH)libohNetProxies.a
 
