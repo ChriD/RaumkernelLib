@@ -7,7 +7,7 @@ namespace Raumkernel
     {
         SettingsManager::SettingsManager() : ManagerBase()
         {
-            settingsFileName = "raumkernel.xml";
+            settingsFileName = "settings.xml";
         }
 
 
