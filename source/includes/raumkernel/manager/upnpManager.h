@@ -38,6 +38,25 @@ namespace Raumkernel
 {
     namespace Manager
     {
+
+        /**
+        * The Network adapter identifier
+        *
+        * This struct holds the network adapter name we want to use and if the system should untill itts online to start 
+        * the upnp stack      
+        */
+        struct NetworkAdapterIdentifier
+        {
+            NetworkAdapterIdentifier(std::string _adapterIdentifier, std::int32_t _timeToWaitForAdapterMS = 0)
+            {
+                adapterIdentifier = _adapterIdentifier;
+                timeToWaitForAdapterMS = _timeToWaitForAdapterMS;
+            }
+
+            std::string adapterIdentifier = "";
+            std::int32_t timeToWaitForAdapterMS = 0;
+        };
+
         /**
         * The UPNPManager
         *

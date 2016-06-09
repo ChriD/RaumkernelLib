@@ -23,73 +23,75 @@ namespace Raumkernel
         }
 
 
-        void SettingsManager::loadSettings()
+        void SettingsManager::initSettings()
         {
-            logDebug("Load settings", CURRENT_POSITION);
-            loadSettingsFromFile(settingsFileName);
-            validateSettings();
+            logDebug("Init settings file", CURRENT_POSITION);
+            initSettingsFile(settingsFileName);
         }
 
 
-        std::string SettingsManager::getValue(const std::string &_settingsPath, const std::string &_defaultValue, const std::uint16_t &_index)
+        std::string SettingsManager::getValue(const std::string &_xPath, const std::string &_defaultValue)
         {
             // lock the map while we do read some settings
-            std::lock_guard<std::mutex> lock(mutexSettingsMapAccess);
+            std::lock_guard<std::mutex> lock(mutexSettingsAccess);
 
-            if (settingsMap.find(_settingsPath) != settingsMap.end())
-                return settingsMap.at(_settingsPath);
+            try
+            {
+                auto settingsXPathNode = applicationNode.select_single_node(_xPath.c_str());
+                if (settingsXPathNode)
+                    return  settingsXPathNode.node().child_value();
+            }
+            catch (...)
+            {
+                logError("Exception while getting value from: " + _xPath, CURRENT_FUNCTION);
+            }
             return _defaultValue;
         }
 
-       
-        void SettingsManager::walkNode(pugi::xml_node _node, const std::string &_path, const int &_indent)
+
+        std::string SettingsManager::getAttributeValue(const std::string &_xPath, const std::string &_attributeName, const std::string &_defaultValue)
         {
-            const auto ind = std::string(_indent * 4, ' ');                   
-            std::string path = "";
+            // lock the map while we do read some settings
+            std::lock_guard<std::mutex> lock(mutexSettingsAccess);
 
-            // we do not want to have the "Application" node be stored in the path!
-            if (_indent >= 1)         
-                path = _path;
-
-            for (auto childNode : _node.children())
+            try
             {
-                if (childNode.value() && !std::string(childNode.value()).empty())
+                auto settingsXPathNode = applicationNode.select_single_node(_xPath.c_str());
+                if (settingsXPathNode)
                 {
-                    logDebug("Found setting: " + path + " = " + std::string(childNode.value()), CURRENT_POSITION);
-                    settingsMap.insert(std::make_pair(path, childNode.value()));
+                    auto attribute = settingsXPathNode.node().attribute(_attributeName.c_str());
+                    if (attribute)
+                        return  attribute.value();
                 }
-                walkNode(childNode, path + "/" + childNode.name(), _indent + 1);
-            }                   
+            }
+            catch (...)
+            {
+                logError("Exception while getting value from: " + _xPath, CURRENT_FUNCTION);
+            }
+            return _defaultValue;
         }
 
-
-        void SettingsManager::loadSettingsFromFile(const std::string &_fileName)
+        void SettingsManager::initSettingsFile(const std::string &_fileName)
         {
             logDebug("Loading settings from file '" + _fileName + "'", CURRENT_POSITION);
 
             // lock the map while we do update it
-            std::lock_guard<std::mutex> lock(mutexSettingsMapAccess);
-
-            // start with a nice clean map.
-            settingsMap.clear();
+            std::lock_guard<std::mutex> lock(mutexSettingsAccess);
 
             try
             {
-                pugi::xml_document doc;       
-                pugi::xml_node applicationNode;                
-
                 // we do have to have a settings file. if no file name is given or we are not able to open the file we have to crash the kernel!
                 if (_fileName.empty())
                 {
                     logCritical("Not settings file specified! System will not be able to start!", CURRENT_POSITION);
-                    throw Raumkernel::Exception::RaumkernelException(Raumkernel::Exception::ExceptionType::EXCEPTIONTYPE_APPCRASH, CURRENT_POSITION, "Unrecoverable error! ABORT!", 100);
+                    throw std::runtime_error("Unrecoverable error! ABORT!");
                 }
 
                 std::ifstream settingsFileStream(_fileName.c_str());
                 if (settingsFileStream.fail())
                 {
                     logCritical("Can not open settings file '" + _fileName + "'! System will not be able to start!", CURRENT_POSITION);
-                    throw Raumkernel::Exception::RaumkernelException(Raumkernel::Exception::ExceptionType::EXCEPTIONTYPE_APPCRASH, CURRENT_POSITION, "Unrecoverable error! ABORT!", 101);
+                    throw std::runtime_error("Unrecoverable error! ABORT!");
                 }
 
                 pugi::xml_parse_result result = doc.load_file(_fileName.c_str());
@@ -99,22 +101,10 @@ namespace Raumkernel
                 if (!applicationNode)
                 {
                     logCritical("'Application' node not found in settings file! System will not be able to start!", CURRENT_POSITION);
-                    throw Raumkernel::Exception::RaumkernelException(Raumkernel::Exception::ExceptionType::EXCEPTIONTYPE_APPCRASH, CURRENT_POSITION, "Unrecoverable error! ABORT!", 102);
+                    throw std::runtime_error("Unrecoverable error! ABORT!");
                 }
-                                              
-                logDebug("Parsing settings file...", CURRENT_POSITION);
 
-                // go through all nodes and load those values and path into the settings map
-                walkNode(applicationNode);
-
-                logDebug("Parsing settings file is done!", CURRENT_POSITION);             
-                logDebug("Settings loaded!", CURRENT_POSITION);
-
-            }
-            catch (Raumkernel::Exception::RaumkernelException &e)
-            {
-                if (e.type() == Raumkernel::Exception::ExceptionType::EXCEPTIONTYPE_APPCRASH)
-                    throw e;                
+                logDebug("Settings file initialized...", CURRENT_POSITION);
             }
             catch (std::exception &e)
             {
@@ -126,7 +116,7 @@ namespace Raumkernel
             }
             catch (...)
             {
-                throw std::runtime_error("Unknown exception! [SettingsManager::loadSettingsFromFile]");
+                throw std::runtime_error("Unknown exception! [SettingsManager::initSettingsFile]");
             }
 
         }
@@ -141,7 +131,6 @@ namespace Raumkernel
                 throw Raumkernel::Exception::RaumkernelException(Raumkernel::Exception::ExceptionType::EXCEPTIONTYPE_APPCRASH, CURRENT_POSITION, "Unrecoverable error! ABORT!", 110);
             }           
         }
-
 
 
         void SettingsManager::validateSettings()

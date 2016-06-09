@@ -71,7 +71,7 @@ namespace Raumkernel
         // and application settings.      
         if (!_settingsFileName.empty())
             managerEngineer->getSettingsManager()->setFileName(_settingsFileName);
-        managerEngineer->getSettingsManager()->loadSettings();
+        managerEngineer->getSettingsManager()->initSettings();
 
         // okay now, when the settingsManager is ready and we have loaded the settings we may get the log settings (log level)   
         std::string logLevelString = managerEngineer->getSettingsManager()->getValue(Manager::SETTINGS_RAUMKERNEL_LOGLEVEL);

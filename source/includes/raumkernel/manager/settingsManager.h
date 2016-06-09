@@ -36,20 +36,20 @@ namespace Raumkernel
     namespace Manager
     {
 
-        const std::string SETTINGS_RAUMKERNEL_LOGLEVEL = "/Raumkernel/Log/Level";
-        const std::string SETTINGS_RAUMKERNEL_LOGADAPTERS = "/Raumkernel/Log/Adapters";
-        const std::string SETTINGS_RAUMKERNEL_NETWORKADAPTERNAME = "/Raumkernel/NetworkAdapterName";
-        const std::string SETTINGS_RAUMKERNEL_HOSTCONFIGDEVICENAME = "/Raumkernel/Raumfeld/HostConfigDeviceName";
-        const std::string SETTINGS_RAUMKERNEL_MEDIASERVERNAME = "/Raumkernel/Raumfeld/MediaServerName";
-        const std::string SETTINGS_RAUMKERNEL_HOSTREQUESTPORT = "/Raumkernel/Raumfeld/HostRequestPort";
-        const std::string SETTINGS_RAUMKERNEL_MEDIARENDERERIDENTIFICATION = "/Raumkernel/Raumfeld/MediaRendererIdentification";
-        const std::string SETTINGS_RAUMKERNEL_MEDIASERVERIDENTIFICATION = "/Raumkernel/Raumfeld/MediaServerIdentification";
-        const std::string SETTINGS_RAUMKERNEL_RAUMFELDDESCRIPTIONVIRTUALMEDIAPLAYER = "/Raumkernel/Raumfeld/RaumfeldDescriptionVirtualMediaPlayer";
-        const std::string SETTINGS_RAUMKERNEL_RAUMFELDMANUFACTURER = "/Raumkernel/Raumfeld/RaumfeldManufacturer";
-        const std::string SETTINGS_RAUMKERNEL_UPNPREFRESHTIMEACTIVE = "/Raumkernel/UPNPRefreshTimeActive";
-        const std::string SETTINGS_RAUMKERNEL_UPNPREFRESHTIME = "/Raumkernel/UPNPRefreshTime";
-        const std::string SETTINGS_RAUMKERNEL_HTTPREQUESTPUMPSLEEP = "/Raumkernel/HTTPRequestPumpSleep";
-        const std::string SETTINGS_RAUMKERNEL_HTTPREQUESTHANDLERSLEEP = "/Raumkernel/HTTPRequestHandlerSleep";
+        const std::string SETTINGS_RAUMKERNEL_LOGLEVEL = ".//Raumkernel//Log//Level";
+        const std::string SETTINGS_RAUMKERNEL_LOGADAPTERS = ".//Raumkernel//Log//Adapters";
+        const std::string SETTINGS_RAUMKERNEL_NETWORKADAPTERNAME = ".//Raumkernel//NetworkAdapterName";        
+        const std::string SETTINGS_RAUMKERNEL_HOSTCONFIGDEVICENAME = ".//Raumkernel//Raumfeld//HostConfigDeviceName";
+        const std::string SETTINGS_RAUMKERNEL_MEDIASERVERNAME = ".//Raumkernel//Raumfeld//MediaServerName";
+        const std::string SETTINGS_RAUMKERNEL_HOSTREQUESTPORT = ".//Raumkernel//Raumfeld//HostRequestPort";
+        const std::string SETTINGS_RAUMKERNEL_MEDIARENDERERIDENTIFICATION = ".//Raumkernel//Raumfeld//MediaRendererIdentification";
+        const std::string SETTINGS_RAUMKERNEL_MEDIASERVERIDENTIFICATION = ".//Raumkernel//Raumfeld//MediaServerIdentification";
+        const std::string SETTINGS_RAUMKERNEL_RAUMFELDDESCRIPTIONVIRTUALMEDIAPLAYER = ".//Raumkernel//Raumfeld//RaumfeldDescriptionVirtualMediaPlayer";
+        const std::string SETTINGS_RAUMKERNEL_RAUMFELDMANUFACTURER = ".//Raumkernel//Raumfeld//RaumfeldManufacturer";
+        const std::string SETTINGS_RAUMKERNEL_UPNPREFRESHTIMEACTIVE = ".//Raumkernel//UPNPRefreshTimeActive";
+        const std::string SETTINGS_RAUMKERNEL_UPNPREFRESHTIME = ".//Raumkernel//UPNPRefreshTime";
+        const std::string SETTINGS_RAUMKERNEL_HTTPREQUESTPUMPSLEEP = ".//Raumkernel//HTTPRequestPumpSleep";
+        const std::string SETTINGS_RAUMKERNEL_HTTPREQUESTHANDLERSLEEP = ".//Raumkernel//HTTPRequestHandlerSleep";
 
 
         class SettingsManager : public ManagerBase
@@ -57,25 +57,26 @@ namespace Raumkernel
             public:
                 EXPORT SettingsManager();
                 EXPORT virtual ~SettingsManager();
-                EXPORT void loadSettings();   
+                EXPORT void initSettings();
                 EXPORT void setFileName(const std::string &_settingsFileName);
-                EXPORT std::string getValue(const std::string &_settingsPath, const std::string &_defaultValue = "", const std::uint16_t &_index = 0);
+                EXPORT std::string getValue(const std::string &_xPath, const std::string &_defaultValue = "");
+                EXPORT std::string getAttributeValue(const std::string &_xPath, const std::string &_attributeName, const std::string &_defaultValue = "");
                 
 
             protected:
-                void loadSettingsFromFile(const std::string &_fileName);
-                void walkNode(pugi::xml_node _node, const std::string &_path = "", const int &_indent = 0);
+                void initSettingsFile(const std::string &_fileName);
                 void validateSetting(const std::string &_settingPath);
                 void validateSettings();
 
+                // persistent application node of file
+                pugi::xml_node applicationNode;
+                pugi::xml_document doc;
+
                 // a mutex that will secure our settings map 
-                std::mutex mutexSettingsMapAccess;
+                std::mutex mutexSettingsAccess;
 
                 // filename and path for settings file
                 std::string settingsFileName;
-
-                // a map whicxh contains a path as id to the settings and the value
-                std::map<std::string, std::string> settingsMap;
                 
         };
     }

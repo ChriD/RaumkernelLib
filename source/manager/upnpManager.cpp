@@ -34,6 +34,7 @@ namespace Raumkernel
         {            
             OpenHome::Net::InitialisationParams*		initParams;
             std::vector<OpenHome::NetworkAdapter*>*		networkAdapterList;
+            std::vector<NetworkAdapterIdentifier>       preferedNetworkAdapterList;
             std::int8_t                                 networkAdapterIdx = -1;
             TIpAddress									networkAdapterAddress;
 
@@ -43,13 +44,26 @@ namespace Raumkernel
                 logDebug("Init OpenHome UPNP Control Stack", CURRENT_POSITION);
 
                 initParams = OpenHome::Net::InitialisationParams::Create();
-                OpenHome::Net::UpnpLibrary::Initialise(initParams);
+                OpenHome::Net::UpnpLibrary::Initialise(initParams);                                
 
-                // get network adapter name either from parameter or from settings
-                if (_networkAdapterName.empty())
-                    _networkAdapterName = getManagerEngineer()->getSettingsManager()->getValue(SETTINGS_RAUMKERNEL_NETWORKADAPTERNAME);
+                if (!_networkAdapterName.empty())
+                    preferedNetworkAdapterList.emplace_back(NetworkAdapterIdentifier(_networkAdapterName, 0));
 
-                if (_networkAdapterName.empty())
+                for (std::uint16_t priorityIdx = 1; priorityIdx <= 10; priorityIdx++)
+                {
+                    std::int32_t waitTime = 0;
+                    std::string nodeName = SETTINGS_RAUMKERNEL_NETWORKADAPTERNAME + "[@priority='" + std::to_string(priorityIdx) + "']";
+                    _networkAdapterName = getManagerEngineer()->getSettingsManager()->getValue(nodeName);
+                    if (!_networkAdapterName.empty())
+                    {
+                        auto waitForAppearanceValue = getManagerEngineer()->getSettingsManager()->getAttributeValue(nodeName, "waitForAppearance");
+                        if (!waitForAppearanceValue.empty())
+                            waitTime = std::stoi(waitForAppearanceValue);
+                        preferedNetworkAdapterList.emplace_back(NetworkAdapterIdentifier(_networkAdapterName, waitTime));
+                    }
+                }                
+
+                if (preferedNetworkAdapterList.empty())
                 {
                     logInfo("Network adapter name not specified! Raumkernel will use the first one found!", CURRENT_POSITION);
                     networkAdapterIdx = 0;
@@ -64,19 +78,55 @@ namespace Raumkernel
                     throw Raumkernel::Exception::RaumkernelException(Raumkernel::Exception::ExceptionType::EXCEPTIONTYPE_APPCRASH, CURRENT_POSITION, "Unrecoverable error! ABORT!", 200);
                 }
 
-                // iterate through the list and try to find the adapter with the given name
+                // output adapter names from the upnp stack
                 for (std::uint8_t i = 0; i < (*networkAdapterList).size(); i++)
                 {
                     std::string adapterName = (*networkAdapterList)[i]->Name();
-                    logDebug("Adapter " + std::to_string(i) + ": " + adapterName, CURRENT_POSITION);
-                    if (!_networkAdapterName.empty() && adapterName == _networkAdapterName)
+                    logDebug("Adapter " + std::to_string(i) + ": " + adapterName, CURRENT_POSITION);                   
+                }
+
+                // try to use the prefered adapter beginning with the topmost priority
+                for (auto preferedAdapter : preferedNetworkAdapterList)
+                {
+                    std::int32_t waitedMS = 0;
+                    logDebug("Waiting for Adapter " + preferedAdapter.adapterIdentifier + " to appear", CURRENT_POSITION);
+
+                    while (true)
                     {
-                        networkAdapterIdx = i;
+                        // iterate through the list of the stack and try to find the adapter with the given name
+                        for (std::uint8_t i = 0; i < (*networkAdapterList).size(); i++)
+                        {
+                            std::string adapterName = (*networkAdapterList)[i]->Name();
+                            if (adapterName == preferedAdapter.adapterIdentifier)
+                            {
+                                networkAdapterIdx = i;
+                                break;
+                            }
+                        }
+
+                        // if we have not found the adapter then wait a little bit and try it again
+                        if (networkAdapterIdx < 0)
+                        {
+                            std::this_thread::sleep_for(std::chrono::milliseconds(50));
+                            OpenHome::Net::UpnpLibrary::RefreshNetworkAdapterList();
+                            waitedMS += 50;
+                        }
+                        else
+                        {
+                            break;
+                        }
+
+                        if (waitedMS > preferedAdapter.timeToWaitForAdapterMS && preferedAdapter.timeToWaitForAdapterMS != -1)
+                            break;
                     }
+
+                    // adapter 
+                    if (networkAdapterIdx >= 0)
+                        break;                            
                 }
 
                 // if we have defined a network adapter name, but we did not find it in the networkAdapter list we will give some warning
-                if (!_networkAdapterName.empty() && networkAdapterIdx == -1)
+                if (!preferedNetworkAdapterList.empty() && networkAdapterIdx == -1)
                 {
                     logWarning("Network adapter '" + _networkAdapterName + "' not found! Raumkernel will use the first one found!", CURRENT_POSITION);
                     networkAdapterIdx = 0;
