@@ -369,7 +369,7 @@ namespace Raumkernel
                 }
 
                 // store the current update id
-                lastUpdateId = _updateId;
+                setLastUpdateId(_updateId);                
 
                 logDebug("Signaling one configuration changed!", CURRENT_POSITION);
 
@@ -440,6 +440,32 @@ namespace Raumkernel
         }
 
 
+        void ZoneManager::setLastUpdateId(std::string _lastUpdateId)
+        {            
+            std::lock_guard<std::mutex> lock(mutexlastUpdateId);            
+            lastUpdateId = _lastUpdateId;
+        }
+
+
+        std::string ZoneManager::getLastUpdateId()
+        {
+            std::lock_guard<std::mutex> lock(mutexlastUpdateId);
+            return lastUpdateId;
+        }
+
+
+        std::string ZoneManager::getNewUpdateId()
+        {
+            auto updateId = getLastUpdateId();
+            // well, this is not very sophisticated but it does it's job :-/
+            if (!updateId.empty())
+            {                   
+                updateId += "1";
+            }
+            return updateId;
+        }
+
+
         bool ZoneManager::isRoomOnline(const std::string &_roomUDN)
         {
             bool isOnline = false;
@@ -490,9 +516,9 @@ namespace Raumkernel
 
 
         void ZoneManager::setRoomOnlineForRenderer(const std::string &_rendererUDN, bool _isOnline)
-        {
-            // lock has to be handled outside from caller!
-            //std::unique_lock<std::mutex> lock(mutexMapAccess);
+        {            
+            // retrievev a new update id from the old one (because zone condig status has changed)
+            setLastUpdateId(getNewUpdateId());
 
             std::string roomUDN = getRoomUDNFromRendererUDN(_rendererUDN);
             if(!roomUDN.empty())
@@ -501,9 +527,7 @@ namespace Raumkernel
 
 
         std::string ZoneManager::getZoneUDNForRoomUDN(const  std::string &_roomUDN)
-        {
-            // lock has to be handled outside from caller!
-            //std::unique_lock<std::mutex> lock(mutexMapAccess);
+        {          
             if (roomInformationMap.size() > 0)
             {
                 for (auto it : roomInformationMap)
@@ -519,9 +543,7 @@ namespace Raumkernel
      
 
         std::string ZoneManager::getRoomUDNForRoomName(const std::string &_roomName)
-        {
-            // lock has to be handled outside from caller!
-            //std::unique_lock<std::mutex> lock(mutexMapAccess);
+        {     
             if (roomInformationMap.size() > 0)
             {
                 for (auto it : roomInformationMap)
@@ -545,8 +567,6 @@ namespace Raumkernel
 
         bool ZoneManager::existsRoomUDN(const std::string &_roomUDN)
         {     
-            // lock has to be handled outside from caller!
-            //std::unique_lock<std::mutex> lock(mutexMapAccess);
             if (roomInformationMap.find(_roomUDN) != roomInformationMap.end())
                 return true;
             return false;
@@ -555,8 +575,6 @@ namespace Raumkernel
 
         bool ZoneManager::existsZoneUDN(const std::string &_zoneUDN)
         {
-            // lock has to be handled from caller
-            //std::unique_lock<std::mutex> lock(mutexMapAccess);
             if (zoneInformationMap.find(_zoneUDN) != zoneInformationMap.end())
                 return true;
             return false;
@@ -565,8 +583,6 @@ namespace Raumkernel
         
         bool ZoneManager::isRoomInZone(const std::string &_roomUDN, const std::string &_zoneUDN)
         {
-            // lock has to be handled from caller
-            // std::unique_lock<std::mutex> lock(mutexMapAccess);
             auto it = roomInformationMap.find(_roomUDN);
             if(it == roomInformationMap.end())
                 return false;
@@ -578,16 +594,12 @@ namespace Raumkernel
 
         std::unordered_map<std::string, Manager::ZoneInformation> ZoneManager::getZoneInformationMap()
         {      
-            // lock has to be handled from caller
-            //std::unique_lock<std::mutex> lock(mutexMapAccess);
             return zoneInformationMap;
         }
 
   
         std::unordered_map<std::string, Manager::RoomInformation> ZoneManager::getRoomInformationMap()
         {
-            // lock has to be handled from caller
-            //std::unique_lock<std::mutex> lock(mutexMapAccess);
             return roomInformationMap;
         }
 

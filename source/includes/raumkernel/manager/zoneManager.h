@@ -168,6 +168,10 @@ namespace Raumkernel
                 * returns a copy of the room information map
                 */
                 EXPORT std::unordered_map<std::string, Manager::RoomInformation> getRoomInformationMap();
+                /**
+                * gets the last update id value
+                */
+                EXPORT std::string getLastUpdateId();
            
                 EXPORT void lockLists();
                 EXPORT void unlockLists();
@@ -228,6 +232,14 @@ namespace Raumkernel
                 * clears the maps
                 */
                 void clearMaps();
+                /**
+                * sets the last update id value
+                */
+                void setLastUpdateId(std::string _lastUpdateId);      
+                /**
+                * get a new update id from the old one
+                */
+                std::string getNewUpdateId();
 
                 /**
                 * The HTTPClient for requesting the zones in a 'long polling' style and for other zone actions
@@ -262,6 +274,7 @@ namespace Raumkernel
                 * stores the last upadteId for long polling issues
                 */
                 std::string lastUpdateId;
+                std::mutex mutexlastUpdateId;
 
         };
     }
