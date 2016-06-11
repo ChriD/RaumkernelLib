@@ -22,11 +22,13 @@ namespace Raumkernel
 
         void DeviceManager::lockDeviceList()
         {
+            //logDebug("LOCK DEVICELIST", CURRENT_POSITION);
             mutexDeviceLists.lock();
         }
 
         void DeviceManager::unlockDeviceList()
         {
+            //logDebug("UNLOCK DEVICELIST", CURRENT_POSITION);
             mutexDeviceLists.unlock();
         }
 

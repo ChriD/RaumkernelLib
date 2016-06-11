@@ -1193,6 +1193,7 @@ namespace Raumkernel
 
             // lock the device list to be sure the "this" object will not be deleted while parsing event subscriptions
             getManagerEngineer()->getDeviceManager()->lockDeviceList();
+            getManagerEngineer()->getZoneManager()->lockLists();
 
             // parse the event subscription xml, the object will fill the appropriate structure for the given renderer object
             EventParser::DeviceEventParserMediaRenderer eventParser;
@@ -1201,6 +1202,7 @@ namespace Raumkernel
             eventParser.setDevice(this);
             eventParser.propertyChangedAvTransportProxy(propertyXML);
 
+            getManagerEngineer()->getZoneManager()->unlockLists();
             getManagerEngineer()->getDeviceManager()->unlockDeviceList();
         }
 
@@ -1213,6 +1215,7 @@ namespace Raumkernel
 
             // lock the device list to be sure the "this" object will not be deleted while parsing event subscriptions
             getManagerEngineer()->getDeviceManager()->lockDeviceList();
+            getManagerEngineer()->getZoneManager()->lockLists();
 
             // parse the event subscription xml, the object will fill the appropriate structure for the given renderer object
             EventParser::DeviceEventParserMediaRenderer eventParser;
@@ -1221,6 +1224,7 @@ namespace Raumkernel
             eventParser.setDevice(this);
             eventParser.propertyChangedRenderingControlProxy(propertyXML);
 
+            getManagerEngineer()->getZoneManager()->unlockLists();
             getManagerEngineer()->getDeviceManager()->unlockDeviceList();
         }
 

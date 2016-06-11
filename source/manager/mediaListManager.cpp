@@ -102,6 +102,7 @@ namespace Raumkernel
             std::shared_ptr<Devices::MediaRenderer> mediaRenderer;
 
             getManagerEngineer()->getDeviceManager()->lockDeviceList();
+            getManagerEngineer()->getZoneManager()->lockLists();
 
             try
             {
@@ -170,6 +171,7 @@ namespace Raumkernel
                 logError("Unknown Exception", CURRENT_FUNCTION);
             }
 
+            getManagerEngineer()->getZoneManager()->unlockLists();
             getManagerEngineer()->getDeviceManager()->unlockDeviceList();
         }
 

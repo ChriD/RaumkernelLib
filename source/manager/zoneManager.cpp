@@ -331,9 +331,9 @@ namespace Raumkernel
             logDebug("Parsing zone configuration XML", CURRENT_POSITION);  
 
             lastZoneConfigurationXML = _zonesXML;
-            
-            std::unique_lock<std::mutex> lock(mutexMapAccess);   
+                                 
             getManagerEngineer()->getDeviceManager()->lockDeviceList();
+            lockLists();
             
             try
             {
@@ -403,7 +403,8 @@ namespace Raumkernel
 
             logDebug("Parsing zone configuration XML finished", CURRENT_POSITION);
 
-            getManagerEngineer()->getDeviceManager()->unlockDeviceList();
+            unlockLists();
+            getManagerEngineer()->getDeviceManager()->unlockDeviceList();            
         }
 
 
@@ -421,19 +422,48 @@ namespace Raumkernel
 
         void ZoneManager::clearMaps()
         {
-            std::unique_lock<std::mutex> lock(mutexMapAccess);           
+            getManagerEngineer()->getDeviceManager()->lockDeviceList();
+            lockLists();
 
-            clearZoneInformationMap();
-            clearRoomInformationMap();        
+            try
+            {
+                clearZoneInformationMap();
+                clearRoomInformationMap();
+            }
+            catch (...)
+            {
+                logError("Unknown Error!", CURRENT_POSITION);
+            }
+
+            unlockLists();
+            getManagerEngineer()->getDeviceManager()->unlockDeviceList();
         }
 
 
         bool ZoneManager::isRoomOnline(const std::string &_roomUDN)
         {
-            std::unique_lock<std::mutex> lock(mutexMapAccess);
-            if (roomInformationMap.find(_roomUDN) != roomInformationMap.end())
-                return roomInformationMap.find(_roomUDN)->second.isOnline;
-            return false;
+            bool isOnline = false;
+
+            getManagerEngineer()->getDeviceManager()->lockDeviceList();
+            lockLists();
+
+            try
+            {                
+                std::unique_lock<std::mutex> lock(mutexMapAccess);
+                if (roomInformationMap.find(_roomUDN) != roomInformationMap.end())
+                    isOnline = roomInformationMap.find(_roomUDN)->second.isOnline;
+
+            }
+            catch (...)
+            {
+                logError("Unknown Error!", CURRENT_POSITION);
+            }
+            
+
+            unlockLists();
+            getManagerEngineer()->getDeviceManager()->unlockDeviceList();
+
+            return isOnline;
         }
 
 
@@ -564,11 +594,13 @@ namespace Raumkernel
 
         void ZoneManager::lockLists()
         {
+            //logDebug("LOCK ZONELIST", CURRENT_POSITION);
             mutexMapAccess.lock();
         }
 
         void ZoneManager::unlockLists()
         {
+            //logDebug("UNLOCK ZONELIST", CURRENT_POSITION);
             mutexMapAccess.unlock();
         }
 
