@@ -146,11 +146,13 @@ namespace Raumkernel
         
         // due to the fact that the UPNP Stack doesnt support lamdas and we ot no idea which sink called the callbak we do make a thread with async action		
         void MediaServer::search(std::string _containerId, std::string _searchCriteria, std::string _extraData, bool _sync)
-        {
-            std::thread thread;   
-            thread = std::thread(&MediaServer::searchThread, this, _containerId, _searchCriteria, _extraData);
+        {            
+            std::lock_guard<std::mutex> lock(mutexThreadList);         
+            std::shared_ptr<std::thread> newThread;
+            newThread = std::shared_ptr<std::thread>(new std::thread(&MediaServer::searchThread, this, _containerId, _searchCriteria, _extraData));
+            threadList.emplace_back(newThread);
             if (_sync)
-                thread.join();
+                newThread->join();    
         }
 
     
@@ -200,13 +202,15 @@ namespace Raumkernel
         }
         
 
-        // due to the fact that the UPNP Stack doesnt support lamdas and we ot no idea which sink called the callbak we do make a thread with async action°		
+        // due to the fact that the UPNP Stack doesnt support lamdas and i got no idea which sink called the callbak we do make a thread with async action
         void MediaServer::browse(std::string _containerId, MediaServer_BrowseFlag _browseFlag, std::string _extraData, bool _sync)
-        {
-            std::thread thread;
-            thread = std::thread(&MediaServer::browseThread, this, _containerId, _browseFlag, _extraData);
+        {            
+            std::lock_guard<std::mutex> lock(mutexThreadList);
+            std::shared_ptr<std::thread> newThread;            
+            newThread = std::shared_ptr<std::thread>(new std::thread(&MediaServer::browseThread, this, _containerId, _browseFlag, _extraData));
+            threadList.emplace_back(newThread);
             if (_sync)
-                thread.join();
+                newThread->join();
         }
 
 

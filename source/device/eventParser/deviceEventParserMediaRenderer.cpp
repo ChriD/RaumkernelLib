@@ -28,7 +28,7 @@ namespace Raumkernel
             {            
                 Devices::MediaRenderer *mediaRenderer = (Devices::MediaRenderer*)device;
                 bool anyStateChanged = false, avTransportUriValueChanged = false, currentTrackMetadataChanged = false, transportStateChanged = false;
-                bool roomTransitionStateChanged = false;
+                bool roomTransitionStateChanged = false, updateZoneList = false;
  
                 logDebug("A property on AvTransport proxy has changed (Device: " + mediaRenderer->getUDN() + ")", CURRENT_POSITION);
            
@@ -116,23 +116,31 @@ namespace Raumkernel
 
                     }                                 
 
-                    // if the AvTransport uri has changed we have to checl if the new uri is a container or only a link
+                    // if the AvTransport uri has changed we have to check if the new uri is a container or only a link
                     // if its a container the "rendererState.containerId" will be filled, otherwise it will be empty
                     if (avTransportUriValueChanged)
-                    {
-                        auto uri = LUrlParser::clParseURL::ParseURL(rendererState.aVTransportURI);                               
-                        auto queryKeyValues = Tools::UriUtil::parseQueryString(uri.m_Query); 
+                    {                    
+                        // TODO: parsing problem!!!
+                        //auto uri = LUrlParser::clParseURL::ParseURL(rendererState.aVTransportURI);                               
+                        auto pos = rendererState.aVTransportURI.find("?");
+                        if (pos)
+                        {
+                            auto query = rendererState.aVTransportURI.substr(pos + 1, rendererState.aVTransportURI.length());
+                            auto queryKeyValues = Tools::UriUtil::parseQueryString(query);
 
-                        // if there is a "cid" key the current loaded items are from a container 
-                        // the container value is escaped but the "parseQueryString" Method has done the unescaping for us
-                        auto it = queryKeyValues.find("cid");
-                        rendererState.containerId = (it != queryKeyValues.end()) ? it->second : "";        
+                            // if there is a "cid" key the current loaded items are from a container 
+                            // the container value is escaped but the "parseQueryString" Method has done the unescaping for us
+                            auto it = queryKeyValues.find("cid");
+                            rendererState.containerId = (it != queryKeyValues.end()) ? it->second : "";
+                        }
+                        
+                        updateZoneList = true;                      
                     }
 
                     // TODO: create the current media item from the "CurrentTrackMetaData" value (this is necessary for non list/query playlists)                    
                     if (currentTrackMetadataChanged)
                     {
-                        // TODO: @@@              
+                        // TODO: @@@                         
                         if (!rendererState.currentTrackMetaData.empty())
                         {
                             Media::MediaItemCreator mediaItemCreator;
@@ -143,9 +151,20 @@ namespace Raumkernel
                         {
                             rendererState.currentMediaItem = nullptr;
                         }
-                        
+                                                                                              
+                        updateZoneList = true;                    
                     }
 
+
+                    // update the new state of the renderer
+                    mediaRenderer->setState(rendererState);
+
+
+                    if (updateZoneList)
+                    {
+                        auto zoneUDN = Tools::UriUtil::encodeValue(mediaRenderer->getUDN());
+                        getManagerEngineer()->getMediaListManager()->loadMediaItemListByZoneUDN(zoneUDN);                       
+                    }
 
                 }
                 catch (Raumkernel::Exception::RaumkernelException &e)
@@ -169,10 +188,7 @@ namespace Raumkernel
                 catch (...)
                 {
                     logError("Unknown Exception", CURRENT_FUNCTION);
-                }
-
-                // update the new state of the renderer
-                mediaRenderer->setState(rendererState);
+                }                
 
                 // TODO: emit some signal.... maybe from the device manager? 
                 // or from the media renderer which will signal the device manager which will signal again?

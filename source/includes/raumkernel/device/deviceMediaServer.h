@@ -81,6 +81,9 @@ namespace Raumkernel
                 std::shared_ptr<OpenHome::Net::ICpProxy>	contentDirectoryProxy;
                 std::shared_ptr<OpenHome::Net::ICpProxy>	connectionManagerProxy;
 
+                std::mutex mutexThreadList;
+                std::vector<std::shared_ptr<std::thread>> threadList;
+
                 virtual void deleteProxies() override;
                 virtual void createProxies() override;
 

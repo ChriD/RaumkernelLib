@@ -87,8 +87,12 @@ int main()
 
     //rlutil::getkey();
     
-    std::shared_ptr<Raumkernel::Devices::MediaServer_Raumfeld> mediaServer = raumkernel.getManagerEngineer()->getDeviceManager()->getRaumfeldMediaServer();
-    mediaServer->browse("0", Raumkernel::Devices::MediaServer_BrowseFlag::MSBF_BrowseDirectChildren, "root", true);
+    //std::shared_ptr<Raumkernel::Devices::MediaServer_Raumfeld> mediaServer = raumkernel.getManagerEngineer()->getDeviceManager()->getRaumfeldMediaServer();
+    //mediaServer->browse("0", Raumkernel::Devices::MediaServer_BrowseFlag::MSBF_BrowseDirectChildren, "root", true);
+    //mediaServer->browse("0", Raumkernel::Devices::MediaServer_BrowseFlag::MSBF_BrowseDirectChildren, "root");
+
+    auto mediaListManager = raumkernel.getManagerEngineer()->getMediaListManager();
+    mediaListManager->loadMediaItemListByContainerId("0");
 
     rlutil::getkey();
 

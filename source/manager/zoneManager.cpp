@@ -470,12 +470,11 @@ namespace Raumkernel
         {
             bool isOnline = false;
 
-            getManagerEngineer()->getDeviceManager()->lockDeviceList();
-            lockLists();
+            //getManagerEngineer()->getDeviceManager()->lockDeviceList();
+            //lockLists();
 
             try
-            {                
-                std::unique_lock<std::mutex> lock(mutexMapAccess);
+            {                                
                 if (roomInformationMap.find(_roomUDN) != roomInformationMap.end())
                     isOnline = roomInformationMap.find(_roomUDN)->second.isOnline;
 
@@ -486,8 +485,8 @@ namespace Raumkernel
             }
             
 
-            unlockLists();
-            getManagerEngineer()->getDeviceManager()->unlockDeviceList();
+            //unlockLists();
+            //getManagerEngineer()->getDeviceManager()->unlockDeviceList();
 
             return isOnline;
         }

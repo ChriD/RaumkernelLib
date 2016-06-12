@@ -28,6 +28,7 @@
 #include <raumkernel/manager/managerBase.h>
 #include <raumkernel/device/deviceMediaRenderer_RFVirtual.h>
 #include <raumkernel/device/deviceMediaServer_RF.h>
+#include <raumkernel/media/item/mediaItems.h>
 
 namespace Raumkernel
 {
@@ -61,24 +62,37 @@ namespace Raumkernel
                 /**
                 * will retrieve the list for the given containerId
                 */
-                EXPORT void getMediaItemListByContainerId(const std::string &_containerId, const std::string &_searchCriteria = "", const std::string &_listId = "");
+                EXPORT void loadMediaItemListByContainerId(const std::string &_containerId, const std::string &_searchCriteria = "", const std::string &_listId = "");
                 /**
                 * will retrieve the list for the given zoneUDN
                 */
-                EXPORT void getMediaItemListByZoneUDN(const std::string &_zoneUDN);
+                EXPORT void loadMediaItemListByZoneUDN(const std::string &_zoneUDN);
                 /**
                 * will retrieve the list for the given container updateIds
-                * a container updateId will look soemthing like thid: "0/Zones/uuid%3Ad225b9e5-6787-4421-b776-e31b142591ef,42571234"
+                * a container updateId will look soemthing like this: "0/Zones/uuid%3Ad225b9e5-6787-4421-b776-e31b142591ef,42571234"
                 */
-                EXPORT void getMediaItemListsByContainerUpdateIds(const std::string &_containerUpdateIds);
+                EXPORT void loadMediaItemListsByContainerUpdateIds(const std::string &_containerUpdateIds);
+                /**
+                * will return a list from the cache                
+                */
+                EXPORT std::vector<std::shared_ptr<Media::Item::MediaItem>> getList(const std::string &_listId);
+
+                EXPORT void lockLists();
+                EXPORT void unlockLists();
 
                 /**
                 * this signal will be fired if any list has been updated
                 * this signal is in the mutex lock of 'mutexMapAccess' and so acces to the maps is the callback is okay
                 */
-                sigs::signal<void(std::string)> sigListDataChanged;
+                sigs::signal<void(std::string)> sigMediaListDataChanged;
 
             protected:
+
+                void onMediaServerBrowseExecuted(const std::string &_result, const std::uint32_t &_numberReturned, const std::uint32_t &_totalMatches, const std::uint32_t &_updateId, const std::string &_extraData);
+                void onMediaServerSearchExecuted(const std::string &_result, const std::uint32_t &_numberReturned, const std::uint32_t &_totalMatches, const std::uint32_t &_updateId, const std::string &_extraData);
+                void createListFromResultXML(const std::string &_resultXML, const std::string &_extraData);
+                void createEmptyList(const std::string &_listId);
+
                 /**
                 * A mutex for locking the lists
                 */
@@ -88,18 +102,14 @@ namespace Raumkernel
                 */
                 std::shared_ptr<Devices::MediaServer_Raumfeld> mediaServer;
                 /**
-                * connection for signals
-                */
-                sigs::connections connections;
-                /**
                 * a map which contains all cached and selected lists
                 * the key may consists od an identifier and a listId. eg. zpls:[zoneUDN] or pls:[playlistID]
                 */
-                //std::unordered_map<std::string, std::vector<MediaItem>>;
-
-                void onMediaServerBrowseExecuted(const std::string &_result, const std::uint32_t &_numberReturned, const std::uint32_t &_totalMatches, const std::uint32_t &_updateId, const std::string &_extraData);
-                void onMediaServerSearchExecuted(const std::string &_result, const std::uint32_t &_numberReturned, const std::uint32_t &_totalMatches, const std::uint32_t &_updateId, const std::string &_extraData);
-
+                std::unordered_map<std::string, std::vector<std::shared_ptr<Media::Item::MediaItem>>> mediaListCache;
+                /**
+                * connection for signals
+                */
+                sigs::connections connections;                                           
         };
     }
 }

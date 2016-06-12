@@ -68,19 +68,15 @@ namespace Raumkernel
 
 
         void MediaServer_Raumfeld::onContentDirectoryProxyContainerUpdateIdsChanged()
-        {
-            //auto proxy = std::dynamic_pointer_cast<OpenHome::Net::CpProxyUpnpOrgContentDirectory_Raumfeld1Cpp>(getContentDirectoryProxy());
-            
-            /*
+        {                                
             // TODO: @@@
             std::string updateIds = "";
 
-            this->Log(LogType::LOGDEBUG, "ContentDirectory on '" + this->GetIdentificationString() + "': Container Id's changed!", __FUNCTION__);
-
-            this->GetContentDirectoryProxy()->PropertyContainerUpdateIDs(updateIds);
-
-            managerList.contentManager->StartGetMediaItemListsByContainerUpdateIds(updateIds);
-            */
+            logDebug("Container updated id's changed on " + getDeviceDescription(), CURRENT_POSITION);                  
+            auto proxy = std::dynamic_pointer_cast<OpenHome::Net::CpProxyUpnpOrgContentDirectory_Raumfeld1Cpp>(getContentDirectoryProxy());
+            proxy->PropertyContainerUpdateIDs(updateIds);
+            getManagerEngineer()->getMediaListManager()->loadMediaItemListsByContainerUpdateIds(updateIds);
+            
         }
 
 

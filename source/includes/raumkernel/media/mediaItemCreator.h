@@ -39,10 +39,10 @@ namespace Raumkernel
                 MediaItemCreator();
                 virtual ~MediaItemCreator();
 
-                std::shared_ptr<Item::MediaItem> createMediaItemFromTrackMetadata(std::string _trackMetadata);
-
-            protected:
+                std::shared_ptr<Item::MediaItem> createMediaItemFromTrackMetadata(std::string _trackMetadata);                
                 std::shared_ptr<Item::MediaItem> createMediaItemFromXMLNode(pugi::xml_node _xmlNode);
+
+            protected:                
 
             private:
         };
