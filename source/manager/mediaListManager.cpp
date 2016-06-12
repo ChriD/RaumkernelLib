@@ -121,7 +121,7 @@ namespace Raumkernel
                         this->loadMediaItemListByContainerId(containerUpdateId, "", listId);
                     }
 
-                    // TODO: we should cover LastPlayed and Favourites list changes here too
+                    // TODO: we should cover LastPlayed and Favourites list changes here too and maybe content changes on "browse lists" too!
 
                 }
 
@@ -190,7 +190,7 @@ namespace Raumkernel
                             }
                             catch (...)
                             {
-                                logError("Unknown error!", CURRENT_POSITION);
+                                logError("Error when updateing media list for: " + listId, CURRENT_POSITION);
                             }
                             unlockLists();                            
 
@@ -198,8 +198,8 @@ namespace Raumkernel
                         } 
                         else
                         {
-                            // Hmm?? what to do?
-                            bool dummy = true;
+                            // This should not be the case, i have not got here anytime on my tests
+                            logError("Unknown media identification in: " + listId , CURRENT_POSITION);                        
                         }
                     }
                 }
@@ -266,15 +266,13 @@ namespace Raumkernel
 
 
         void MediaListManager::onMediaServerBrowseExecuted(const std::string &_result, const std::uint32_t &_numberReturned, const std::uint32_t &_totalMatches, const std::uint32_t &_updateId, const std::string &_extraData)
-        {
-            // TODO: @@@
+        {            
             createListFromResultXML(_result, _extraData);
         }
 
 
         void MediaListManager::onMediaServerSearchExecuted(const std::string &_result, const std::uint32_t &_numberReturned, const std::uint32_t &_totalMatches, const std::uint32_t &_updateId, const std::string &_extraData)
-        {
-            // TODO: @@@
+        {            
             createListFromResultXML(_result, _extraData);
         }
 
@@ -308,8 +306,7 @@ namespace Raumkernel
             lockLists();
 
             try
-            {
-              
+            {              
                 pugi::xml_parse_result result = doc.load_string(_resultXML.c_str());
 
                 // find the root node
