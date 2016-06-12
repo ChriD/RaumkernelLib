@@ -103,6 +103,31 @@ namespace Raumkernel
         {
             managerEngineer->getZoneManager()->startZoneRequests();
             managerEngineer->getMediaListManager()->setMediaServer(std::dynamic_pointer_cast<Devices::MediaServer_Raumfeld>(_mediaServer));
+
+            getManagerEngineer()->getDeviceManager()->lockDeviceList();
+            getManagerEngineer()->getZoneManager()->lockLists();
+
+            try
+            {
+                // It may be that renderers are online before the media server is online or is found
+                // Due the media renderers inform the media list manager that he should load their playlists from the
+                // media server and the media server s not online the media list manager will not load the lists
+                // so we tell him now to do so...
+                for (auto pair : getManagerEngineer()->getDeviceManager()->getMediaRenderers())
+                {
+                    if (std::dynamic_pointer_cast<Devices::MediaRenderer_RaumfeldVirtual>(pair.second))
+                        getManagerEngineer()->getMediaListManager()->loadMediaItemListByZoneUDN(pair.first);
+                }
+            }
+            catch (...)
+            {
+                logError("Error while updateing zone lists on media server appearance!", CURRENT_POSITION);
+            }
+
+            getManagerEngineer()->getDeviceManager()->unlockDeviceList();
+            getManagerEngineer()->getZoneManager()->unlockLists();
+
+
             isOnline = true;
             sigRaumfeldSystemOnline.fire();
         }
@@ -115,7 +140,7 @@ namespace Raumkernel
         if (_mediaServer->isRaumfeldMediaServer())
         {
             managerEngineer->getZoneManager()->stopZoneRequests(); 
-            managerEngineer->getMediaListManager()->setMediaServer(nullptr);
+            managerEngineer->getMediaListManager()->setMediaServer(nullptr);                     
             isOnline = false;
             sigRaumfeldSystemOffline.fire();
         }

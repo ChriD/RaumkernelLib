@@ -42,15 +42,25 @@ namespace Raumkernel
 
             try
             {
-                mediaServer = _mediaServer;
-                
-                // clear all lists due media server has changed or was lost
-                mediaListCache.clear();
+                mediaServer = _mediaServer;                               
 
                 // add connections to the media server to know when a browse or a search is done
                 connections.disconnect_all();
-                connections.connect(mediaServer->sigBrowseExecuted, this, &MediaListManager::onMediaServerBrowseExecuted);
-                connections.connect(mediaServer->sigSearchExecuted, this, &MediaListManager::onMediaServerSearchExecuted);
+
+                if (mediaServer != nullptr)
+                {
+                    connections.connect(mediaServer->sigBrowseExecuted, this, &MediaListManager::onMediaServerBrowseExecuted);
+                    connections.connect(mediaServer->sigSearchExecuted, this, &MediaListManager::onMediaServerSearchExecuted);
+                }
+                else
+                {
+                    // if the media server is lost we have to clear all cached lists and inform the subscribers that they are empty (createEmptyList will do that for us)
+                    for (auto pair : mediaListCache)
+                    {                        
+                        createEmptyList(pair.first);
+                    }                    
+                    mediaListCache.clear();
+                }
             }
             catch( ... )
             {
@@ -145,8 +155,7 @@ namespace Raumkernel
         void MediaListManager::loadMediaItemListByZoneUDN(const std::string &_zoneUDN)
         {
             std::string zoneUDN = Tools::CommonUtil::formatUDN(Tools::UriUtil::unescape(_zoneUDN));
-            std::string containerId = "";
-            //std::shared_ptr<Devices::MediaRenderer_RaumfeldVirtual> mediaRenderer;
+            std::string containerId = "";            
             std::shared_ptr<Devices::MediaRenderer> mediaRenderer;
    
             try
@@ -169,28 +178,29 @@ namespace Raumkernel
                     // therfore we can only get the info by getting the media item information on ther renderer itself (because its no list or query) 
                     else
                     {
-                        /*
-                        // no container? then it means we do have only one item in list! that means the current item on the MediaRenderer is the list!
-                        // TODO: @@@
-                        this->Lock();
-
-                        std::list<MediaItem> newList;
-
-                        MediaItem mediaItem = mediaRenderer->GetCurrentMediaItem();
-                        if (!mediaItem.id.empty())
+                        if (mediaRenderer->state().numberOfTracks <= 1)
                         {
-                            newList.push_back(mediaItem);
+                            std::vector<std::shared_ptr<Media::Item::MediaItem>> mediaItemList;
+                            lockLists();
+                            try
+                            {
+                                if (mediaRenderer->state().currentMediaItem != nullptr)
+                                    mediaItemList.emplace_back(mediaRenderer->state().currentMediaItem);                                
+                                mediaListCache[listId] = mediaItemList;
+                            }
+                            catch (...)
+                            {
+                                logError("Unknown error!", CURRENT_POSITION);
+                            }
+                            unlockLists();                            
 
-                            auto it = listCache.find(listId);
-                            if (it != listCache.end())
-                                listCache.erase(listId);
-                            listCache.insert(std::make_pair(listId, newList));
+                            sigMediaListDataChanged.fire(listId);
+                        } 
+                        else
+                        {
+                            // Hmm?? what to do?
+                            bool dummy = true;
                         }
-
-                        this->UnLock();
-
-                        this->ListReady(listId, true);
-                        */
                     }
                 }
 
@@ -276,7 +286,7 @@ namespace Raumkernel
             lockLists();
             try
             {
-                mediaListCache.insert(std::make_pair(_listId, mediaItemList));
+                mediaListCache[_listId] = mediaItemList;                
             }
             catch (...)
             {
@@ -318,7 +328,7 @@ namespace Raumkernel
                         auto mediaItem = mediaItemCreator.createMediaItemFromXMLNode(containerNode.node());
                         mediaItemList.emplace_back(mediaItem);
                     }
-                    mediaListCache.insert(std::make_pair(_extraData, mediaItemList));
+                    mediaListCache[_extraData] = mediaItemList;
                 }
                 else
                 {

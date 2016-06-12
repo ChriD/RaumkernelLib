@@ -32,6 +32,18 @@ namespace Raumkernel
             mutexDeviceLists.unlock();
         }
 
+
+        std::unordered_map<std::string, std::shared_ptr<Devices::MediaRenderer>> DeviceManager::getMediaRenderers()
+        {
+            return mediaRendererMap;
+        }
+
+
+        std::unordered_map<std::string, std::shared_ptr<Devices::MediaServer>> DeviceManager::getMediaServers()
+        {
+            return mediaServerMap;
+        }
+
         
         void DeviceManager::addDevice(OpenHome::Net::CpDeviceCpp& _device)
         {
@@ -96,7 +108,7 @@ namespace Raumkernel
                             raumfeldMediaServerUDN = Tools::CommonUtil::formatUDN(deviceUDN);                            
                             _device.GetAttribute("Upnp.Location", location);                          
                             std::int16_t firstPosIP = location.find_first_of(":") + 3;
-                            raumfeldHostIP = location.substr(firstPosIP, location.find_last_of(":") - firstPosIP);
+                            raumfeldHostIP = location.substr(firstPosIP, location.find_last_of(":") - firstPosIP);                             
                         }
                     }
                   

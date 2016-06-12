@@ -96,6 +96,14 @@ namespace Raumkernel
                 * will be empty if host was not found
                 */
                 EXPORT std::string getRaumfeldHostIP();
+                /**
+                * Returns a copy of the media renderer map
+                */
+                EXPORT std::unordered_map<std::string, std::shared_ptr<Devices::MediaRenderer>> getMediaRenderers();
+                /**
+                * Returns a copy of the media renderer map
+                */
+                EXPORT std::unordered_map<std::string, std::shared_ptr<Devices::MediaServer>> getMediaServers();
 
                 /**
                 * this signal will be fired if a media renderer was added to the internal list. 

@@ -113,15 +113,13 @@ namespace Raumkernel
 
                         // Remove rooms which are not listed from the room states!
                         rendererState.removeNonReferredRoomStates(foundUDNs);
-
                     }                                 
 
                     // if the AvTransport uri has changed we have to check if the new uri is a container or only a link
                     // if its a container the "rendererState.containerId" will be filled, otherwise it will be empty
                     if (avTransportUriValueChanged)
                     {                    
-                        // TODO: parsing problem!!!
-                        //auto uri = LUrlParser::clParseURL::ParseURL(rendererState.aVTransportURI);                               
+                        // we have to use simple parsing for getting the query of the uri because its not really a common uri for the converter                            
                         auto pos = rendererState.aVTransportURI.find("?");
                         if (pos)
                         {
@@ -132,8 +130,7 @@ namespace Raumkernel
                             // the container value is escaped but the "parseQueryString" Method has done the unescaping for us
                             auto it = queryKeyValues.find("cid");
                             rendererState.containerId = (it != queryKeyValues.end()) ? it->second : "";
-                        }
-                        
+                        }                        
                         updateZoneList = true;                      
                     }
 
@@ -151,15 +148,16 @@ namespace Raumkernel
                         {
                             rendererState.currentMediaItem = nullptr;
                         }
-                                                                                              
-                        updateZoneList = true;                    
+                          
+                        // Fix: Too much updates on retrieveing lists?
+                        //updateZoneList = true;                    
                     }
 
 
                     // update the new state of the renderer
                     mediaRenderer->setState(rendererState);
 
-
+                    // retrieve the new list for the given renderer (zone) when values have changed that indicate list change!
                     if (updateZoneList)
                     {
                         auto zoneUDN = Tools::UriUtil::encodeValue(mediaRenderer->getUDN());
