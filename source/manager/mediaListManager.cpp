@@ -192,9 +192,12 @@ namespace Raumkernel
                             {
                                 logError("Error when updateing media list for: " + listId, CURRENT_POSITION);
                             }
-                            unlockLists();                            
 
-                            sigMediaListDataChanged.fire(listId);
+                            setLastUpdateIdForList(listId);
+
+                            unlockLists();                            
+                            
+                            listChanged(listId);
                         } 
                         else
                         {
@@ -292,9 +295,9 @@ namespace Raumkernel
             }
             unlockLists();
 
-            sigMediaListDataChanged.fire(_listId);
+            listChanged(_listId);           
         }
-
+       
 
         void MediaListManager::createListFromResultXML(const std::string &_resultXML, const std::string &_extraData)
         {
@@ -337,10 +340,25 @@ namespace Raumkernel
             {
                 logError("Error while parsing media list result!", CURRENT_POSITION);
             }
-            
+
+            setLastUpdateIdForList(_extraData);
+
             unlockLists();          
 
-            sigMediaListDataChanged.fire(_extraData);
+            listChanged(_extraData);
         }        
+
+
+        void MediaListManager::listChanged(const std::string &_listId)
+        {                      
+            sigMediaListDataChanged.fire(_listId);
+        }
+
+
+        void MediaListManager::setLastUpdateIdForList(const std::string &_listId)
+        {
+            // TODO: @@@
+            // generate new id and check if its not the same as the old one and store it into the list
+        }
     }
 }

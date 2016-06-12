@@ -92,6 +92,8 @@ namespace Raumkernel
                 void onMediaServerSearchExecuted(const std::string &_result, const std::uint32_t &_numberReturned, const std::uint32_t &_totalMatches, const std::uint32_t &_updateId, const std::string &_extraData);
                 void createListFromResultXML(const std::string &_resultXML, const std::string &_extraData);
                 void createEmptyList(const std::string &_listId);
+                void listChanged(const std::string &_listId);
+                void setLastUpdateIdForList(const std::string &_listId);
 
                 /**
                 * A mutex for locking the lists
