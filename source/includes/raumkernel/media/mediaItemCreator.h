@@ -26,6 +26,7 @@
 #define RAUMKERNEL_MEDIAITEMCREATOR_H
 
 #include <raumkernel/raumkernelBase.h>
+#include <raumkernel/tools/uriUtil.h>
 #include <raumkernel/media/item/mediaItems.h>
 #include <raumkernel/xml/pugixml/pugixml.hpp>
 

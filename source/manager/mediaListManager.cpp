@@ -293,7 +293,10 @@ namespace Raumkernel
             {
                 logError("Error while parsing media list result!", CURRENT_POSITION);
             }
-            unlockLists();
+
+            setLastUpdateIdForList(_listId);
+
+            unlockLists();            
 
             listChanged(_listId);           
         }
@@ -357,8 +360,48 @@ namespace Raumkernel
 
         void MediaListManager::setLastUpdateIdForList(const std::string &_listId)
         {
-            // TODO: @@@
-            // generate new id and check if its not the same as the old one and store it into the list
+            mutexlastUpdateIds.lock();
+            try
+            {
+                auto oldUpdateId = lastUpdateIds[_listId];
+                auto newUpdateId = generateNewUpdateId(oldUpdateId);
+                lastUpdateIds[_listId] = newUpdateId;
+            }
+            catch (...)
+            {
+                logError("Error while updateing lastUpdateId for list" + _listId, CURRENT_POSITION);
+            }           
+            mutexlastUpdateIds.unlock();
+        }
+
+
+        std::string MediaListManager::generateNewUpdateId(const std::string &_oldId)
+        {
+            // getting a random number does not mean that the number is unique,  so we have to check if this number is present in the 
+            // map and if its the case we change the number until its unqiue
+            std::uint32_t newId = Tools::CommonUtil::randomUInt32();
+            while (lastUpdateIds.count(std::to_string(newId)))
+            {
+                newId += 1;
+            }
+            return std::to_string(newId);
+        }
+
+
+        std::string MediaListManager::getLastUpdateIdForList(std::string _listId)
+        {
+            std::string curUpdateId = "";
+            mutexlastUpdateIds.lock();
+            try
+            {
+                curUpdateId = lastUpdateIds[_listId];              
+            }
+            catch (...)
+            {
+                logError("Error while retrieveing lastUpdateId for list" + _listId, CURRENT_POSITION);
+            }
+            mutexlastUpdateIds.unlock();
+            return curUpdateId;
         }
     }
 }

@@ -76,13 +76,16 @@ namespace Raumkernel
                 * will return a list from the cache                
                 */
                 EXPORT std::vector<std::shared_ptr<Media::Item::MediaItem>> getList(const std::string &_listId);
+                /**
+                * will return the last update id for a list
+                */
+                EXPORT std::string getLastUpdateIdForList(std::string _listId);
 
                 EXPORT void lockLists();
                 EXPORT void unlockLists();
 
                 /**
-                * this signal will be fired if any list has been updated
-                * this signal is in the mutex lock of 'mutexMapAccess' and so acces to the maps is the callback is okay
+                * this signal will be fired if any list has been updated                
                 */
                 sigs::signal<void(std::string)> sigMediaListDataChanged;
 
@@ -94,11 +97,8 @@ namespace Raumkernel
                 void createEmptyList(const std::string &_listId);
                 void listChanged(const std::string &_listId);
                 void setLastUpdateIdForList(const std::string &_listId);
-
-                /**
-                * A mutex for locking the lists
-                */
-                std::mutex mutexMapAccess;
+                std::string generateNewUpdateId(const std::string &_oldId = "");
+                                          
                 /**
                 * a raumfeld media server reference which we will use to get the data from 
                 */
@@ -108,6 +108,12 @@ namespace Raumkernel
                 * the key may consists od an identifier and a listId. eg. zpls:[zoneUDN] or pls:[playlistID]
                 */
                 std::unordered_map<std::string, std::vector<std::shared_ptr<Media::Item::MediaItem>>> mediaListCache;
+                std::mutex mutexMapAccess;
+                /**
+                * a map which stores the last update ids for a list
+                */
+                std::unordered_map<std::string, std::string> lastUpdateIds;
+                std::mutex mutexlastUpdateIds;
                 /**
                 * connection for signals
                 */

@@ -82,17 +82,19 @@ namespace Raumkernel
             // TODO: create object with correct class from "upnp:class"
             // TODO: create better xml parsing with default values like in subscription!
 
+            // ATTENTION: Unescaping is done because the webserver cant handle % in result value
+
             pugi::xml_node itemNode = _xmlNode, valueNode;
             pugi::xml_attribute attribute;
             std::shared_ptr<Item::MediaItem> mediaItem = std::shared_ptr<Item::MediaItem>(new Item::MediaItem()); // TODO: @@@
 
             attribute = itemNode.attribute("id");
             if (attribute)
-                mediaItem->id = attribute.value();
+                mediaItem->id = Tools::UriUtil::unescape(attribute.value());
 
             attribute = itemNode.attribute("parentID");
             if (attribute)
-                mediaItem->parentId = attribute.value();
+                mediaItem->parentId = Tools::UriUtil::unescape(attribute.value());
 
             valueNode = itemNode.child("raumfeld:name");
             if (valueNode)
