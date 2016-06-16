@@ -45,10 +45,10 @@ namespace Raumkernel
             MIT_RHAPSODYRADIO = 9,
             MIT_STORAGEFOLDER = 10,
             MIT_LINEIN = 11,
-            MIT_TRACK = 12
+            MIT_TRACK = 12,
+            MIT_UNDEFINED = 99
         };
-
-
+       
         namespace Item
         {
 
@@ -66,6 +66,70 @@ namespace Raumkernel
                     std::string raumfeldName;
                     std::string raumfeldSection;
                     std::string res;
+
+                    static std::string mediaItemTypeToString(MediaItemType _mediaItemType)
+                    {
+                        switch (_mediaItemType)
+                        {
+                            case MediaItemType::MIT_ALBUM:
+                                return "ALBUM";     
+                            case MediaItemType::MIT_ARTIST:
+                                return "ARTIST";
+                            case MediaItemType::MIT_COMPOSER:
+                                return "COMPOSER";
+                            case MediaItemType::MIT_CONTAINER:
+                                return "CONTAINER";
+                            case MediaItemType::MIT_GENRE:
+                                return "GENRE";
+                            case MediaItemType::MIT_LINEIN:
+                                return "LINEIN";
+                            case MediaItemType::MIT_PLAYLIST:
+                                return "PLAYLIST";
+                            case MediaItemType::MIT_RADIO:
+                                return "RADIO";
+                            case MediaItemType::MIT_RHAPSODYRADIO:
+                                return "RHAPSODYRADIO";
+                            case MediaItemType::MIT_SHUFFLE:
+                                return "SHUFFLE";
+                            case MediaItemType::MIT_STORAGEFOLDER:
+                                return "STORAGEFOLDER";
+                            case MediaItemType::MIT_TRACK:
+                                return "TRACK";
+                            case MediaItemType::MIT_TRACKCONTAINER:
+                                return "TRACKCONTAINER";
+                        }
+                        return "UNDEFINED";
+                    }
+
+                    static MediaItemType stringToMediaItemType(std::string _mediaItemType)
+                    {
+                        _mediaItemType = Tools::StringUtil::tolower(_mediaItemType);
+                        if (_mediaItemType == "ALBUM")
+                            return MediaItemType::MIT_ALBUM;
+                        if (_mediaItemType == "ARTIST")
+                            return MediaItemType::MIT_ALBUM;
+                        if (_mediaItemType == "COMPOSER")
+                            return MediaItemType::MIT_ALBUM;
+                        if (_mediaItemType == "CONTAINER")
+                            return MediaItemType::MIT_ALBUM;
+                        if (_mediaItemType == "GENRE")
+                            return MediaItemType::MIT_ALBUM;
+                        if (_mediaItemType == "LINEIN")
+                            return MediaItemType::MIT_ALBUM;
+                        if (_mediaItemType == "PLAYLIST")
+                            return MediaItemType::MIT_ALBUM;
+                        if (_mediaItemType == "RADIO")
+                            return MediaItemType::MIT_ALBUM;
+                        if (_mediaItemType == "RHAPSODYRADIO")
+                            return MediaItemType::MIT_ALBUM;
+                        if (_mediaItemType == "SHUFFLE")
+                            return MediaItemType::MIT_ALBUM;
+                        if (_mediaItemType == "STORAGEFOLDER")
+                            return MediaItemType::MIT_ALBUM;
+                        if (_mediaItemType == "TRACKCONTAINER")
+                            return MediaItemType::MIT_ALBUM;                                               
+                        return MediaItemType::MIT_UNDEFINED;
+                    }
 
                 protected:
 

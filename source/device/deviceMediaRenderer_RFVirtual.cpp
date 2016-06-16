@@ -13,6 +13,12 @@ namespace Raumkernel
             stopFadeToVolumeThread = false;
         }
 
+
+        bool MediaRenderer_RaumfeldVirtual::isZoneRenderer()
+        {
+            return true;
+        }
+
         
         MediaRenderer_RaumfeldVirtual::~MediaRenderer_RaumfeldVirtual()
         {

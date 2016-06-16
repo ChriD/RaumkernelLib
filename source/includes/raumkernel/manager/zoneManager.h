@@ -144,10 +144,15 @@ namespace Raumkernel
                 */
                 EXPORT std::string getRoomUDNForRoomName(const std::string &_roomName);
                 /**
-                * returns the virtual renderreUDN for the zone
+                * returns the virtual renderer UDN for the zone
                 * returns an empyt string if the zoneUDN is not found
                 */
                 EXPORT std::string getRendererUDNForZoneUDN(const std::string &_zoneUDN);
+                /**
+                * returns the renderer UDN for the room
+                * returns an empyt string if the roomUDN is not found
+                */
+                EXPORT std::string getRendererUDNForRoomUDN(const std::string &_roomUDN);
                 /**
                 * returns true if the room with the given UDN is found in the map
                 */

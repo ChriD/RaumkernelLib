@@ -564,6 +564,15 @@ namespace Raumkernel
         }
 
 
+        std::string ZoneManager::getRendererUDNForRoomUDN(const std::string &_roomUDN)
+        {
+            // get the first renderer found in the room (the room may have more than one renderers, but this is not supported right now)
+            if (roomInformationMap.count(_roomUDN) <= 0)
+                return "";
+            return roomInformationMap[_roomUDN].rendererUDN.front();            
+        }
+
+
         bool ZoneManager::existsRoomUDN(const std::string &_roomUDN)
         {     
             if (roomInformationMap.find(_roomUDN) != roomInformationMap.end())

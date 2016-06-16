@@ -97,7 +97,9 @@ namespace Raumkernel
                 /**
                 * this method fades the volume to a specific value in a specific time
                 */
-                EXPORT virtual void fadeToVolume(const std::uint32_t _volume, std::uint32_t _duration, bool sync);           
+                EXPORT virtual void fadeToVolume(const std::uint32_t _volume, std::uint32_t _duration, bool sync);   
+
+                EXPORT virtual bool isZoneRenderer() override;
                              
             protected:                
                 virtual void createProxyAvTransport() override;

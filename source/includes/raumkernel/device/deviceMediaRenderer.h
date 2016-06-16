@@ -354,9 +354,11 @@ namespace Raumkernel
                 EXPORT virtual void lockRendererState();
                 EXPORT virtual void unlockRendererState();
 
+                EXPORT virtual bool isZoneRenderer();
+
                 EXPORT bool isRenderingControlProxyAvailable();
                 EXPORT bool isConnectionManagerProxyAvailable();
-                EXPORT bool isAvTransportProxyAvailable();
+                EXPORT bool isAvTransportProxyAvailable();                
 
                 EXPORT std::shared_ptr<OpenHome::Net::ICpProxy> getAvTransportProxy();
                 EXPORT std::shared_ptr<OpenHome::Net::ICpProxy> getConnectionManagerProxy();
