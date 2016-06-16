@@ -188,8 +188,7 @@ namespace Raumkernel
                     logError("Unknown Exception", CURRENT_FUNCTION);
                 }                
 
-                // TODO: emit some signal.... maybe from the device manager? 
-                // or from the media renderer which will signal the device manager which will signal again?
+                // TODO: signal the state change and value changes!
             }
 
 
@@ -364,7 +363,9 @@ namespace Raumkernel
                 }
 
                 // update the new state of the renderer
-                mediaRenderer->setState(rendererState);
+                mediaRenderer->setState(rendererState);                
+
+                // TODO: signal the state change and value changes!
             }
 
         }
