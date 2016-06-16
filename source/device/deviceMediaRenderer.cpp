@@ -13,6 +13,8 @@ namespace Raumkernel
             avTransportProxy = nullptr;
             renderingControlProxy = nullptr;
             connectionManagerProxy = nullptr;
+            rendererStateLastUpdateId = "";
+            instance = 0;
         }
 
 
@@ -1253,6 +1255,34 @@ namespace Raumkernel
         {    
             std::unique_lock<std::mutex> lock(mutexRendererStateChange);            
             rendererState = _rendererState;
+            // update the last update id of the media renderer state if renderer state is set / was updated
+            setLastRendererStateUpdateId(getNewRendererStateUpdateId());
+        }
+
+
+        void MediaRenderer::setLastRendererStateUpdateId(std::string _lastUpdateId)
+        {
+            std::lock_guard<std::mutex> lock(mutexLastUpdateId);
+            rendererStateLastUpdateId = _lastUpdateId;
+        }
+
+
+        std::string MediaRenderer::getLastRendererStateUpdateId()
+        {
+            std::lock_guard<std::mutex> lock(mutexLastUpdateId);
+            return rendererStateLastUpdateId;
+        }
+
+
+        std::string MediaRenderer::getNewRendererStateUpdateId()
+        {
+            auto updateId = getLastRendererStateUpdateId();
+            auto random = Tools::CommonUtil::randomUInt32();
+            while (std::to_string(random) == updateId)
+            {
+                random++;
+            }
+            return std::to_string(random);
         }
 
 

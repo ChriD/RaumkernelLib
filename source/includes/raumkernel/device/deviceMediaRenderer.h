@@ -350,6 +350,10 @@ namespace Raumkernel
                 * sets the state structure from outside
                 */
                 EXPORT virtual void setState(MediaRendererState _rendererState);
+                /**
+                * gets the last update id value
+                */
+                EXPORT std::string getLastRendererStateUpdateId();
 
                 EXPORT virtual void lockRendererState();
                 EXPORT virtual void unlockRendererState();
@@ -370,10 +374,17 @@ namespace Raumkernel
                 std::shared_ptr<OpenHome::Net::ICpProxy>	renderingControlProxy;
                 std::shared_ptr<OpenHome::Net::ICpProxy>	connectionManagerProxy;
 
-                std::uint32_t instance = 0;
+                std::uint32_t instance;
+
+                std::string rendererStateLastUpdateId;
+                std::mutex mutexLastUpdateId;
+                
                 
                 MediaRendererState rendererState;
                 std::mutex mutexRendererStateChange;
+             
+                void setLastRendererStateUpdateId(std::string _lastUpdateId);          
+                std::string getNewRendererStateUpdateId();
 
                 virtual void deleteProxies() override;
                 virtual void createProxies() override;
