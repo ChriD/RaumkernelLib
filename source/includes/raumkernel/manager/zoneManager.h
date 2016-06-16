@@ -182,8 +182,7 @@ namespace Raumkernel
                 EXPORT void unlockLists();
 
                 /**
-                * this signal will be fired if the zone configuration changes
-                * this signal is in the mutex lock of 'mutexMapAccess' and so acces to the maps is the callback is okay                
+                * this signal will be fired if the zone configuration changes                
                 */
                 sigs::signal<void()> sigZoneConfigurationChanged;
 

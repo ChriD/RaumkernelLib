@@ -106,33 +106,23 @@ namespace Raumkernel
                 EXPORT std::unordered_map<std::string, std::shared_ptr<Devices::MediaServer>> getMediaServers();
 
                 /**
-                * this signal will be fired if a media renderer was added to the internal list. 
-                * Be aware that this signal is not within the mutexlock scope of the list
-                * Therefore if you want to call any method on the renderer you should lock the deviceManager list
+                * this signal will be fired if a media renderer was added to the internal list.        
                 */
                 sigs::signal<void(std::shared_ptr<Devices::MediaRenderer>)> sigMediaRendererAdded;
                 /**
-                * this signal will be fired if a media renderer was removed from the internal list.
-                * Be aware that this signal is not within the mutexlock scope of the list
-                * Be aware that calling methods on the renderer may fail!
+                * this signal will be fired if a media renderer was removed from the internal list.        
                 */
                 sigs::signal<void(std::shared_ptr<Devices::MediaRenderer>)> sigMediaRendererRemoved;
                 /**
-                * this signal will be fired if a media server was added to the internal list.
-                * Be aware that this signal is not within the mutexlock scope of the list
-                * Therefore if you want to call any method on the server you should lock the deviceManager list
+                * this signal will be fired if a media server was added to the internal list.              
                 */
                 sigs::signal<void(std::shared_ptr<Devices::MediaServer>)> sigMediaServerAdded;
                 /**
-                * this signal will be fired if a media server was removed from the internal list.
-                * Be aware that this signal is not within the mutexlock scope of the list
-                * Be aware that calling methods on the server may fail!
+                * this signal will be fired if a media server was removed from the internal list.             
                 */
                 sigs::signal<void(std::shared_ptr<Devices::MediaServer>)> sigMediaServerRemoved;              
                 /**
-                * this signal will be fired if a usable device (MediaServer, MediaRenderer, ...) was added to the internal list.
-                * Be aware that this signal is not within the mutexlock scope of the list
-                * Therefore if you want to call any method on the renderer you should lock the deviceManager list
+                * this signal will be fired if a usable device (MediaServer, MediaRenderer, ...) was added to the internal list.            
                 */
                 sigs::signal<void()> sigDeviceListChanged;
 

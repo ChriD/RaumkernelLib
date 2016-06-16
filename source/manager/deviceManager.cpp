@@ -110,9 +110,12 @@ namespace Raumkernel
                             std::int16_t firstPosIP = location.find_first_of(":") + 3;
                             raumfeldHostIP = location.substr(firstPosIP, location.find_last_of(":") - firstPosIP);                             
                         }
-                    }
-                  
+                    }                  
                 }
+
+                sigMediaRendererAdded.fire_if(std::dynamic_pointer_cast<Devices::MediaRenderer>(device) != nullptr, std::dynamic_pointer_cast<Devices::MediaRenderer>(device));
+                sigMediaServerAdded.fire_if(std::dynamic_pointer_cast<Devices::MediaServer>(device) != nullptr, std::dynamic_pointer_cast<Devices::MediaServer>(device));
+                sigDeviceListChanged.fire();
             }
             catch (Raumkernel::Exception::RaumkernelException &e)
             {
@@ -138,13 +141,7 @@ namespace Raumkernel
             }
 
             getManagerEngineer()->getZoneManager()->unlockLists();
-            unlockDeviceList(); 
-
-
-            // list is unlocked. now fire signals           
-            sigMediaRendererAdded.fire_if(std::dynamic_pointer_cast<Devices::MediaRenderer>(device) != nullptr, std::dynamic_pointer_cast<Devices::MediaRenderer>(device));
-            sigMediaServerAdded.fire_if(std::dynamic_pointer_cast<Devices::MediaServer>(device) != nullptr, std::dynamic_pointer_cast<Devices::MediaServer>(device));
-            sigDeviceListChanged.fire();
+            unlockDeviceList();             
         }
 
   
@@ -205,7 +202,14 @@ namespace Raumkernel
 
                     mediaServerMap.erase(deviceUDN);
                     logDebug("Media Server '" + friendlyName + "' removed", CURRENT_POSITION);
-                }                
+                }     
+
+                if (device != nullptr)
+                {
+                    sigMediaRendererAdded.fire_if(std::dynamic_pointer_cast<Devices::MediaRenderer>(device) != nullptr, std::dynamic_pointer_cast<Devices::MediaRenderer>(device));
+                    sigMediaServerAdded.fire_if(std::dynamic_pointer_cast<Devices::MediaServer>(device) != nullptr, std::dynamic_pointer_cast<Devices::MediaServer>(device));
+                }
+                sigDeviceListChanged.fire();
 
             }
             catch (Raumkernel::Exception::RaumkernelException &e)
@@ -232,14 +236,7 @@ namespace Raumkernel
             }
 
             getManagerEngineer()->getZoneManager()->unlockLists();
-            unlockDeviceList();
-
-            if (device != nullptr)
-            {
-                sigMediaRendererAdded.fire_if(std::dynamic_pointer_cast<Devices::MediaRenderer>(device) != nullptr, std::dynamic_pointer_cast<Devices::MediaRenderer>(device));
-                sigMediaServerAdded.fire_if(std::dynamic_pointer_cast<Devices::MediaServer>(device) != nullptr, std::dynamic_pointer_cast<Devices::MediaServer>(device));
-            }
-            sigDeviceListChanged.fire();
+            unlockDeviceList();            
         }
 
 

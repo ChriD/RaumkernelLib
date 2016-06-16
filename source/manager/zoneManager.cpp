@@ -369,14 +369,12 @@ namespace Raumkernel
                 }
 
                 // store the current update id
-                setLastUpdateId(_updateId);                
+                setLastUpdateId(_updateId);                                
 
-                logDebug("Signaling one configuration changed!", CURRENT_POSITION);
+                logDebug("Signaling one configuration changed!", CURRENT_POSITION);                
 
-                // now the zone configuration has changed, we do fire a signal and we stay in locked scope
-                // so acces to the maps while signal is beeing processes id locked and the use of the map in the signal is ok
+                // list is unlocked. now fire signals  
                 sigZoneConfigurationChanged.fire();
-
             }
             catch (Raumkernel::Exception::RaumkernelException &e)
             {
@@ -404,7 +402,7 @@ namespace Raumkernel
             logDebug("Parsing zone configuration XML finished", CURRENT_POSITION);
 
             unlockLists();
-            getManagerEngineer()->getDeviceManager()->unlockDeviceList();            
+            getManagerEngineer()->getDeviceManager()->unlockDeviceList();                        
         }
 
 

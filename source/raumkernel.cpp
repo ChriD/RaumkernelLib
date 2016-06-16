@@ -104,8 +104,8 @@ namespace Raumkernel
             managerEngineer->getZoneManager()->startZoneRequests();
             managerEngineer->getMediaListManager()->setMediaServer(std::dynamic_pointer_cast<Devices::MediaServer_Raumfeld>(_mediaServer));
 
-            getManagerEngineer()->getDeviceManager()->lockDeviceList();
-            getManagerEngineer()->getZoneManager()->lockLists();
+            //getManagerEngineer()->getDeviceManager()->lockDeviceList();
+            //getManagerEngineer()->getZoneManager()->lockLists();
 
             try
             {
@@ -124,8 +124,8 @@ namespace Raumkernel
                 logError("Error while updateing zone lists on media server appearance!", CURRENT_POSITION);
             }
 
-            getManagerEngineer()->getDeviceManager()->unlockDeviceList();
-            getManagerEngineer()->getZoneManager()->unlockLists();
+            //getManagerEngineer()->getDeviceManager()->unlockDeviceList();
+            //getManagerEngineer()->getZoneManager()->unlockLists();
 
 
             isOnline = true;
