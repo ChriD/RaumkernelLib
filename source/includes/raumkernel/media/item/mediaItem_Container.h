@@ -40,6 +40,11 @@ namespace Raumkernel
                 public:
                     MediaItem_Container();
                     virtual ~MediaItem_Container();
+                    virtual void initFromXMLNode(const pugi::xml_node &_xmlNode) override;
+
+                    std::string title;
+                    std::string description;
+
                 protected:
 
                 private:

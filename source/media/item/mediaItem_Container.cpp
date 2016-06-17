@@ -16,6 +16,15 @@ namespace Raumkernel
             {
             }
 
+            void MediaItem_Container::initFromXMLNode(const pugi::xml_node &_xmlNode)
+            {
+                MediaItem::initFromXMLNode(_xmlNode);
+
+                title = Tools::UriUtil::unescape(getNodeVal(_xmlNode, "dc:title"));              
+                description = "";
+
+            }
+
         }
     }
 }
