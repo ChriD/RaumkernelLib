@@ -141,6 +141,7 @@
     <ClInclude Include="includes\raumkernel\media\item\mediaItem_StorageFolder.h" />
     <ClInclude Include="includes\raumkernel\media\item\mediaItem_Track.h" />
     <ClInclude Include="includes\raumkernel\media\item\mediaItem_TrackContainer.h" />
+    <ClInclude Include="includes\raumkernel\media\item\mediaItem_Unknown.h" />
     <ClInclude Include="includes\raumkernel\media\mediaItemCreator.h" />
     <ClInclude Include="includes\raumkernel\os\os.h" />
     <ClInclude Include="includes\raumkernel\raumkernel.h" />
@@ -158,6 +159,7 @@
     <ClInclude Include="includes\raumkernel\tools\urlParser.h" />
     <ClInclude Include="includes\raumkernel\tools\numUtil.h" />
     <ClInclude Include="includes\raumkernel\tools\uriUtil.h" />
+    <ClInclude Include="includes\raumkernel\tools\xmlUtil.h" />
     <ClInclude Include="includes\raumkernel\versionInfo.h" />
     <ClInclude Include="includes\raumkernel\versionNumber.h" />
     <ClInclude Include="includes\raumkernel\xml\pugixml\pugiconfig.hpp" />
@@ -214,6 +216,7 @@
     <ClCompile Include="media\item\mediaItem_StorageFolder.cpp" />
     <ClCompile Include="media\item\mediaItem_Track.cpp" />
     <ClCompile Include="media\item\mediaItem_TrackContainer.cpp" />
+    <ClCompile Include="media\item\mediaItem_Unknown.cpp" />
     <ClCompile Include="media\mediaItemCreator.cpp" />
     <ClCompile Include="raumkernel.cpp" />
     <ClCompile Include="raumkernelBase.cpp" />

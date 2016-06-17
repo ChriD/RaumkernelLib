@@ -11,6 +11,7 @@ namespace Raumkernel
             {
                 artist = "";
                 artistArtUri = "";
+                type = MediaItemType::MIT_ARTIST;
             }
 
             MediaItem_Artist::~MediaItem_Artist()

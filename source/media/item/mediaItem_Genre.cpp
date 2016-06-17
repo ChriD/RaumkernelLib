@@ -9,6 +9,7 @@ namespace Raumkernel
         {
             MediaItem_Genre::MediaItem_Genre() : MediaItem()
             {
+                type = MediaItemType::MIT_GENRE;
             }
 
             MediaItem_Genre::~MediaItem_Genre()

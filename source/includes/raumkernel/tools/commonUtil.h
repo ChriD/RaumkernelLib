@@ -94,7 +94,7 @@ namespace Raumkernel
                     {
                     }
                     return 0;
-                }
+                }                
                
         };
 

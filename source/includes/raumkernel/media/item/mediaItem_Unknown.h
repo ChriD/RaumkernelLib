@@ -1,7 +1,7 @@
 //
 // The MIT License (MIT)
 //
-// Copyright (c) 2015 by ChriD
+// Copyright (c) 2016 by ChriD
 //
 // Permission is hereby granted, free of charge,  to any person obtaining a copy of
 // this software and  associated documentation  files  (the "Software"), to deal in
@@ -22,23 +22,34 @@
 //
 
 #pragma once
-#ifndef RAUMKERNEL_MEDIAITEMS_H
-#define RAUMKERNEL_MEDIAITEMS_H
+#ifndef RAUMKERNEL_MEDIAITEM_UNKOWN_H
+#define RAUMKERNEL_MEDIAITEM_UNKOWN_H
 
 #include <raumkernel/media/item/mediaItem.h>
-#include <raumkernel/media/item/mediaItem_Album.h>
-#include <raumkernel/media/item/mediaItem_Artist.h>
-#include <raumkernel/media/item/mediaItem_Composer.h>
-#include <raumkernel/media/item/mediaItem_Container.h>
-#include <raumkernel/media/item/mediaItem_Genre.h>
-#include <raumkernel/media/item/mediaItem_LineIn.h>
-#include <raumkernel/media/item/mediaItem_Playlist.h>
-#include <raumkernel/media/item/mediaItem_Radio.h>
-#include <raumkernel/media/item/mediaItem_RhapsodyRadio.h>
-#include <raumkernel/media/item/mediaItem_Shuffle.h>
-#include <raumkernel/media/item/mediaItem_StorageFolder.h>
-#include <raumkernel/media/item/mediaItem_Track.h>
-#include <raumkernel/media/item/mediaItem_TrackContainer.h>
-#include <raumkernel/media/item/mediaItem_Unknown.h>
+
+
+namespace Raumkernel
+{
+    namespace Media
+    {
+        namespace Item
+        {
+
+            class MediaItem_Unknown : public MediaItem
+            {
+                public:
+                    MediaItem_Unknown();
+                    virtual ~MediaItem_Unknown();              
+
+                protected:
+
+                private:
+            };
+
+        }
+
+    }
+
+}
 
 #endif 

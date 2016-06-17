@@ -9,6 +9,7 @@ namespace Raumkernel
         {
             MediaItem_LineIn::MediaItem_LineIn() : MediaItem()
             {
+                type = MediaItemType::MIT_LINEIN;
             }
 
             MediaItem_LineIn::~MediaItem_LineIn()

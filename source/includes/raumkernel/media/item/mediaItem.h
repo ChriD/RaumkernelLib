@@ -26,6 +26,8 @@
 #define RAUMKERNEL_MEDIAITEM_H
 
 #include <raumkernel/raumkernelBase.h>
+#include <raumkernel/tools/uriUtil.h>
+#include <raumkernel/tools/xmlUtil.h>
 
 
 namespace Raumkernel
@@ -46,7 +48,7 @@ namespace Raumkernel
             MIT_STORAGEFOLDER = 10,
             MIT_LINEIN = 11,
             MIT_TRACK = 12,
-            MIT_UNDEFINED = 99
+            MIT_UNKNOWN = 99
         };
        
         namespace Item
@@ -57,6 +59,8 @@ namespace Raumkernel
                 public:
                     MediaItem();
                     virtual ~MediaItem();
+
+                    virtual void initFromXMLNode(const pugi::xml_node &_xmlNode);                    
 
                     MediaItemType type;
 
@@ -98,7 +102,7 @@ namespace Raumkernel
                             case MediaItemType::MIT_TRACKCONTAINER:
                                 return "TRACKCONTAINER";
                         }
-                        return "UNDEFINED";
+                        return "UNKNOWN";
                     }
 
                     static MediaItemType stringToMediaItemType(std::string _mediaItemType)
@@ -128,10 +132,11 @@ namespace Raumkernel
                             return MediaItemType::MIT_ALBUM;
                         if (_mediaItemType == "TRACKCONTAINER")
                             return MediaItemType::MIT_ALBUM;                                               
-                        return MediaItemType::MIT_UNDEFINED;
+                        return MediaItemType::MIT_UNKNOWN;
                     }
 
                 protected:
+                    std::string getNodeVal(const pugi::xml_node &_parentNode, const std::string &_nodeName, const std::string &_defaultVal = "");
 
                 private:
             };

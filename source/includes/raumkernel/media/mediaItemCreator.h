@@ -40,10 +40,13 @@ namespace Raumkernel
                 MediaItemCreator();
                 virtual ~MediaItemCreator();
 
+                EXPORT static std::shared_ptr<Media::Item::MediaItem> createObject(std::string _upnpClass, std::string _name);
+
                 std::shared_ptr<Item::MediaItem> createMediaItemFromTrackMetadata(std::string _trackMetadata);                
                 std::shared_ptr<Item::MediaItem> createMediaItemFromXMLNode(pugi::xml_node _xmlNode);
 
             protected:                
+                std::string getNodeVal(const pugi::xml_node &_parentNode, const std::string &_nodeName, const std::string &_defaultVal = "");
 
             private:
         };

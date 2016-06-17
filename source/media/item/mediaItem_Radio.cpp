@@ -9,6 +9,7 @@ namespace Raumkernel
         {
             MediaItem_Radio::MediaItem_Radio() : MediaItem()
             {
+                type = MediaItemType::MIT_RADIO;
             }
 
             MediaItem_Radio::~MediaItem_Radio()

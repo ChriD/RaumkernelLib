@@ -9,6 +9,7 @@ namespace Raumkernel
         {
             MediaItem_Composer::MediaItem_Composer() : MediaItem()
             {
+                type = MediaItemType::MIT_COMPOSER;
             }
 
             MediaItem_Composer::~MediaItem_Composer()

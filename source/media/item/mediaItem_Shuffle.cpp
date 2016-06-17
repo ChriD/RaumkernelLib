@@ -9,6 +9,7 @@ namespace Raumkernel
         {
             MediaItem_Shuffle::MediaItem_Shuffle() : MediaItem()
             {
+                type = MediaItemType::MIT_SHUFFLE;
             }
 
             MediaItem_Shuffle::~MediaItem_Shuffle()

@@ -312,6 +312,12 @@
     <ClInclude Include="includes\raumkernel\backtrace.hpp">
       <Filter>includes\raumkernel</Filter>
     </ClInclude>
+    <ClInclude Include="includes\raumkernel\tools\xmlUtil.h">
+      <Filter>includes\raumkernel\tools</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\raumkernel\media\item\mediaItem_Unknown.h">
+      <Filter>includes\raumkernel\media\item</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="logger\logger.cpp">
@@ -475,6 +481,9 @@
     </ClCompile>
     <ClCompile Include="xml\pugixml\pugixml.cpp">
       <Filter>xml\pugixml</Filter>
+    </ClCompile>
+    <ClCompile Include="media\item\mediaItem_Unknown.cpp">
+      <Filter>media\item</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

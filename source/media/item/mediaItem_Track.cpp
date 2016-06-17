@@ -9,6 +9,7 @@ namespace Raumkernel
         {
             MediaItem_Track::MediaItem_Track() : MediaItem_Album()
             {
+                type = MediaItemType::MIT_TRACK;
                 title = "";
                 duration = "";
             }

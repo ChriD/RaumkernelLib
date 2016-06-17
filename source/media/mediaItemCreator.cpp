@@ -15,6 +15,58 @@ namespace Raumkernel
         }
 
 
+        std::shared_ptr<Media::Item::MediaItem> MediaItemCreator::createObject(std::string _upnpClass, std::string _name)
+        {            
+            if (_upnpClass == "object.container")
+                return std::shared_ptr<Media::Item::MediaItem_Container>(new Media::Item::MediaItem_Container());
+            if (_upnpClass == "object.item.audioItem.musicTrack")
+                return std::shared_ptr<Media::Item::MediaItem_Track>(new Media::Item::MediaItem_Track());            
+            if (_upnpClass == "object.item.audioItem.audioBroadcast.radio")
+                return std::shared_ptr<Media::Item::MediaItem_Radio>(new Media::Item::MediaItem_Radio());
+            if (_upnpClass == "object.container.album.musicAlbum")
+                return std::shared_ptr<Media::Item::MediaItem_Album>(new Media::Item::MediaItem_Album());
+            if (_upnpClass == "object.container.person.musicArtis")
+                return std::shared_ptr<Media::Item::MediaItem_Artist>(new Media::Item::MediaItem_Artist());
+            if (_upnpClass == "object.container.playlistContainer")
+                return std::shared_ptr<Media::Item::MediaItem_Playlist>(new Media::Item::MediaItem_Playlist());
+
+
+            // TODO: @@@
+            if (_upnpClass == "object.container.albumContainer")
+                return std::shared_ptr<Media::Item::MediaItem_Container>(new Media::Item::MediaItem_Container());
+            if (_upnpClass == "object.container.favoritesContainer")
+                return std::shared_ptr<Media::Item::MediaItem_Container>(new Media::Item::MediaItem_Container());            
+            if (_upnpClass == "object.container.trackContainer.allTrack")
+                return std::shared_ptr<Media::Item::MediaItem_TrackContainer>(new Media::Item::MediaItem_TrackContainer());
+                                    
+
+            /*
+            if (_upnpClass == "object.item.audioItem.musicTrack")
+                return std::shared_ptr<Media::Item::MediaItem_TrackContainer>(new Media::Item::MediaItem_TrackContainer());                       
+            if (_upnpClass == "object.item.audioItem.musicTrack")
+                return std::shared_ptr<Media::Item::MediaItem_Composer>(new Media::Item::MediaItem_Composer());           
+            if (_upnpClass == "object.item.audioItem.musicTrack")
+                return std::shared_ptr<Media::Item::MediaItem_Genre>(new Media::Item::MediaItem_Genre());
+            if (_upnpClass == "object.item.audioItem.musicTrack")
+                return std::shared_ptr<Media::Item::MediaItem_LineIn>(new Media::Item::MediaItem_LineIn());              
+            if (_upnpClass == "object.item.audioItem.musicTrack")
+                return std::shared_ptr<Media::Item::MediaItem_RhapsodyRadio>(new Media::Item::MediaItem_RhapsodyRadio());
+            if (_upnpClass == "object.item.audioItem.musicTrack")
+                return std::shared_ptr<Media::Item::MediaItem_Shuffle>(new Media::Item::MediaItem_Shuffle());
+            if (_upnpClass == "object.item.audioItem.musicTrack")
+                return std::shared_ptr<Media::Item::MediaItem_StorageFolder>(new Media::Item::MediaItem_StorageFolder());
+            */
+
+            return std::shared_ptr<Media::Item::MediaItem_Unknown>(new Media::Item::MediaItem_Unknown());
+        }
+
+
+        std::string MediaItemCreator::getNodeVal(const pugi::xml_node &_parentNode, const std::string &_nodeName, const std::string &_defaultVal)
+        {
+            return Tools::XMLUtil::getNodeVal(_parentNode, _nodeName, _defaultVal);
+        }
+
+
         std::shared_ptr<Item::MediaItem> MediaItemCreator::createMediaItemFromTrackMetadata(std::string _trackMetadata)
         {
             pugi::xml_document doc;
@@ -79,51 +131,30 @@ namespace Raumkernel
 
         std::shared_ptr<Item::MediaItem> MediaItemCreator::createMediaItemFromXMLNode(pugi::xml_node _xmlNode)
         {
-            // TODO: create object with correct class from "upnp:class"
-            // TODO: create better xml parsing with default values like in subscription!
+            // TODO: create object with correct class from "upnp:class"            
 
-            // ATTENTION: Unescaping is done because the webserver cant handle % in result value
+            // ATTENTION: Unescaping of values is done because the webserver cant handle % in result value
 
             pugi::xml_node itemNode = _xmlNode, valueNode;
             pugi::xml_attribute attribute;
-            std::shared_ptr<Item::MediaItem> mediaItem = std::shared_ptr<Item::MediaItem>(new Item::MediaItem()); // TODO: @@@
 
-            attribute = itemNode.attribute("id");
-            if (attribute)
-                mediaItem->id = Tools::UriUtil::unescape(attribute.value());
+            auto raumfeldName = getNodeVal(itemNode, "raumfeld:name");
+            auto upnpClass = getNodeVal(itemNode, "upnp:class");                        
 
-            attribute = itemNode.attribute("parentID");
-            if (attribute)
-                mediaItem->parentId = Tools::UriUtil::unescape(attribute.value());
+            std::shared_ptr<Item::MediaItem> mediaItem = createObject(upnpClass, raumfeldName);
+            mediaItem->initFromXMLNode(_xmlNode);
 
-            valueNode = itemNode.child("raumfeld:name");
-            if (valueNode)
-                mediaItem->raumfeldName = valueNode.child_value();
-
-            /*
-            valueNode = itemNode->first_node("dc:title", 0, false);
-            if (valueNode)
-                mediaItem->title = valueNode->value();
-                */
-
-            valueNode = itemNode.child("upnp:class");
-            if (valueNode)
-                mediaItem->upnpClass = valueNode.child_value();
-
-            valueNode = itemNode.child("raumfeld:section");
-            if (valueNode)
-                mediaItem->raumfeldSection = valueNode.child_value();
-
-            valueNode = itemNode.child("res");
+            /*valueNode = itemNode.child("res");
             if (valueNode)
             {
                 mediaItem->res = valueNode.child_value();
-                /*
+                
                 attribute = valueNode->first_attribute("duration", 0, false);
                 if (attribute)
                     mediaItem->duration = attribute->value();
-                    */
+                    
             }
+            */
 
             /*
             // ALBUM

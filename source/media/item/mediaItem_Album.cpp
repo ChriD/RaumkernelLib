@@ -11,6 +11,7 @@ namespace Raumkernel
             {
                 album = "";
                 albumArtUri = "";
+                type = MediaItemType::MIT_ALBUM;
             }
 
             MediaItem_Album::~MediaItem_Album()

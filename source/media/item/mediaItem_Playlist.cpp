@@ -9,6 +9,7 @@ namespace Raumkernel
         {
             MediaItem_Playlist::MediaItem_Playlist() : MediaItem()
             {
+                type = MediaItemType::MIT_PLAYLIST;
             }
 
             MediaItem_Playlist::~MediaItem_Playlist()

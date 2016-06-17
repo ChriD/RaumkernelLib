@@ -9,6 +9,7 @@ namespace Raumkernel
         {
             MediaItem_RhapsodyRadio::MediaItem_RhapsodyRadio() : MediaItem()
             {
+                type = MediaItemType::MIT_RHAPSODYRADIO;
             }
 
             MediaItem_RhapsodyRadio::~MediaItem_RhapsodyRadio()

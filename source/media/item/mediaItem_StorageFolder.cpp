@@ -9,6 +9,7 @@ namespace Raumkernel
         {
             MediaItem_StorageFolder::MediaItem_StorageFolder() : MediaItem()
             {
+                type = MediaItemType::MIT_STORAGEFOLDER;
             }
 
             MediaItem_StorageFolder::~MediaItem_StorageFolder()

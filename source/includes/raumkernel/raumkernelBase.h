@@ -30,8 +30,10 @@
 
 #include <raumkernel/os/os.h>
 #include <raumkernel/tools/commonUtil.h>
+#include <raumkernel/tools/xmlUtil.h>
 #include <raumkernel/signals/signals.hpp>
 #include <raumkernel/logger/logger.h>
+#include <raumkernel/xml/pugixml/pugixml.hpp>
 
 
 namespace Raumkernel

@@ -1,7 +1,7 @@
 //
 // The MIT License (MIT)
 //
-// Copyright (c) 2015 by ChriD
+// Copyright (c) 2016 by ChriD
 //
 // Permission is hereby granted, free of charge,  to any person obtaining a copy of
 // this software and  associated documentation  files  (the "Software"), to deal in
@@ -22,23 +22,44 @@
 //
 
 #pragma once
-#ifndef RAUMKERNEL_MEDIAITEMS_H
-#define RAUMKERNEL_MEDIAITEMS_H
+#ifndef RAUMKERNEL_XMLUTIL_H
+#define RAUMKERNEL_XMLUTIL_H
 
-#include <raumkernel/media/item/mediaItem.h>
-#include <raumkernel/media/item/mediaItem_Album.h>
-#include <raumkernel/media/item/mediaItem_Artist.h>
-#include <raumkernel/media/item/mediaItem_Composer.h>
-#include <raumkernel/media/item/mediaItem_Container.h>
-#include <raumkernel/media/item/mediaItem_Genre.h>
-#include <raumkernel/media/item/mediaItem_LineIn.h>
-#include <raumkernel/media/item/mediaItem_Playlist.h>
-#include <raumkernel/media/item/mediaItem_Radio.h>
-#include <raumkernel/media/item/mediaItem_RhapsodyRadio.h>
-#include <raumkernel/media/item/mediaItem_Shuffle.h>
-#include <raumkernel/media/item/mediaItem_StorageFolder.h>
-#include <raumkernel/media/item/mediaItem_Track.h>
-#include <raumkernel/media/item/mediaItem_TrackContainer.h>
-#include <raumkernel/media/item/mediaItem_Unknown.h>
+#include <stdio.h>
+#include <string>
+#include <cstdint>
+#include <random>
+#include <locale>
 
-#endif 
+#include <math.h>
+#include <raumkernel/xml/pugixml/pugixml.hpp>
+
+namespace Raumkernel
+{
+    namespace Tools
+    {
+        class XMLUtil
+        {
+            public:
+
+                static std::string XMLUtil::getNodeVal(const pugi::xml_node &_parentNode, const std::string &_nodeName, const std::string &_defaultVal = "")
+                {
+                    pugi::xml_node valueNode;
+                    std::string value;
+
+                    if (!_parentNode)
+                        return _defaultVal;
+
+                    valueNode = _parentNode.child(_nodeName.c_str());
+                    if (!valueNode)
+                        return _defaultVal;
+
+                    return valueNode.child_value();
+                }
+        };
+
+    }
+}
+
+
+#endif

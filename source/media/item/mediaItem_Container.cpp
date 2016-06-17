@@ -9,6 +9,7 @@ namespace Raumkernel
         {
             MediaItem_Container::MediaItem_Container() : MediaItem()
             {
+                type = MediaItemType::MIT_CONTAINER;
             }
 
             MediaItem_Container::~MediaItem_Container()

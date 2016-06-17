@@ -9,6 +9,7 @@ namespace Raumkernel
         {
             MediaItem_TrackContainer::MediaItem_TrackContainer() : MediaItem()
             {
+                type = MediaItemType::MIT_TRACKCONTAINER;
             }
 
             MediaItem_TrackContainer::~MediaItem_TrackContainer()
