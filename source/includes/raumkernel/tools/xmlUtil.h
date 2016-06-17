@@ -42,7 +42,7 @@ namespace Raumkernel
         {
             public:
 
-                static std::string XMLUtil::getNodeVal(const pugi::xml_node &_parentNode, const std::string &_nodeName, const std::string &_defaultVal = "")
+                static std::string XMLUtil::getChildNodeVal(const pugi::xml_node &_parentNode, const std::string &_nodeName, const std::string &_defaultVal = "")
                 {
                     pugi::xml_node valueNode;
                     std::string value;
@@ -55,6 +55,22 @@ namespace Raumkernel
                         return _defaultVal;
 
                     return valueNode.child_value();
+                }
+
+
+                static std::string XMLUtil::getNodeAttributeVal(const pugi::xml_node &_node, const std::string &_attributeName, const std::string &_defaultVal = "")
+                {
+                    pugi::xml_attribute attrib;
+                    std::string value;
+
+                    if (!_node)
+                        return _defaultVal;
+
+                    attrib = _node.attribute(_attributeName.c_str());
+                    if (!attrib)
+                        return _defaultVal;
+
+                    return attrib.value();
                 }
         };
 

@@ -20,9 +20,8 @@ namespace Raumkernel
             {
                 MediaItem::initFromXMLNode(_xmlNode);
 
-                title = Tools::UriUtil::unescape(getNodeVal(_xmlNode, "dc:title"));              
+                title = Tools::UriUtil::unescape(Tools::XMLUtil::getChildNodeVal(_xmlNode, "dc:title"));
                 description = "";
-
             }
 
         }

@@ -68,8 +68,7 @@ namespace Raumkernel
                     std::string parentId;
                     std::string upnpClass;
                     std::string raumfeldName;
-                    std::string raumfeldSection;
-                    std::string res;
+                    std::string raumfeldSection;                    
 
                     static std::string mediaItemTypeToString(MediaItemType _mediaItemType)
                     {
@@ -135,8 +134,7 @@ namespace Raumkernel
                         return MediaItemType::MIT_UNKNOWN;
                     }
 
-                protected:
-                    std::string getNodeVal(const pugi::xml_node &_parentNode, const std::string &_nodeName, const std::string &_defaultVal = "");
+                protected:                    
 
                 private:
             };

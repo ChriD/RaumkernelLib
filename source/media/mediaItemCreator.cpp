@@ -61,12 +61,6 @@ namespace Raumkernel
         }
 
 
-        std::string MediaItemCreator::getNodeVal(const pugi::xml_node &_parentNode, const std::string &_nodeName, const std::string &_defaultVal)
-        {
-            return Tools::XMLUtil::getNodeVal(_parentNode, _nodeName, _defaultVal);
-        }
-
-
         std::shared_ptr<Item::MediaItem> MediaItemCreator::createMediaItemFromTrackMetadata(std::string _trackMetadata)
         {
             pugi::xml_document doc;
@@ -138,11 +132,11 @@ namespace Raumkernel
             pugi::xml_node itemNode = _xmlNode, valueNode;
             pugi::xml_attribute attribute;
 
-            auto raumfeldName = getNodeVal(itemNode, "raumfeld:name");
-            auto upnpClass = getNodeVal(itemNode, "upnp:class");                        
+            auto raumfeldName = Tools::XMLUtil::getChildNodeVal(itemNode, "raumfeld:name");
+            auto upnpClass = Tools::XMLUtil::getChildNodeVal(itemNode, "upnp:class");
 
             std::shared_ptr<Item::MediaItem> mediaItem = createObject(upnpClass, raumfeldName);
-            mediaItem->initFromXMLNode(_xmlNode);
+            mediaItem->initFromXMLNode(itemNode);
 
             /*valueNode = itemNode.child("res");
             if (valueNode)

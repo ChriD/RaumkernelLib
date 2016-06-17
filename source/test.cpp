@@ -92,7 +92,7 @@ int main()
     //mediaServer->browse("0", Raumkernel::Devices::MediaServer_BrowseFlag::MSBF_BrowseDirectChildren, "root");
 
     auto mediaListManager = raumkernel.getManagerEngineer()->getMediaListManager();
-    mediaListManager->loadMediaItemListByContainerId("0/RadioTime");
+    mediaListManager->loadMediaItemListByContainerId("0");
 
     rlutil::getkey();
 
