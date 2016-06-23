@@ -100,6 +100,8 @@ namespace Raumkernel
                                 return "TRACK";
                             case MediaItemType::MIT_TRACKCONTAINER:
                                 return "TRACKCONTAINER";
+                            case MediaItemType::MIT_UNKNOWN:
+                                return "UNKNOWN";
                         }
                         return "UNKNOWN";
                     }
