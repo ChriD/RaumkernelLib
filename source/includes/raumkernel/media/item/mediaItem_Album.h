@@ -40,9 +40,13 @@ namespace Raumkernel
                 public:
                     MediaItem_Album();
                     virtual ~MediaItem_Album();
+                    virtual void initFromXMLNode(const pugi::xml_node &_xmlNode) override;
 
                     std::string album;
                     std::string albumArtUri;
+                    std::string albumDate;
+                    std::string albumTotalPlaytime;
+                    std::uint32_t albumTrackCount;
 
                 protected:
 

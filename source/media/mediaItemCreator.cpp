@@ -25,7 +25,7 @@ namespace Raumkernel
                 return std::shared_ptr<Media::Item::MediaItem_Radio>(new Media::Item::MediaItem_Radio());
             if (_upnpClass == "object.container.album.musicAlbum")
                 return std::shared_ptr<Media::Item::MediaItem_Album>(new Media::Item::MediaItem_Album());
-            if (_upnpClass == "object.container.person.musicArtis")
+            if (_upnpClass == "object.container.person.musicArtist")
                 return std::shared_ptr<Media::Item::MediaItem_Artist>(new Media::Item::MediaItem_Artist());
             if (_upnpClass == "object.container.playlistContainer")
                 return std::shared_ptr<Media::Item::MediaItem_Playlist>(new Media::Item::MediaItem_Playlist());

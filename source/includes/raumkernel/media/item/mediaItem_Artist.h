@@ -40,6 +40,7 @@ namespace Raumkernel
                 public:
                     MediaItem_Artist();
                     virtual ~MediaItem_Artist();
+                    virtual void initFromXMLNode(const pugi::xml_node &_xmlNode) override;
 
                     std::string artist;
                     std::string artistArtUri;

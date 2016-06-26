@@ -39,6 +39,7 @@ namespace Raumkernel
                 public:
                     MediaItem_Track();
                     virtual ~MediaItem_Track();
+                    virtual void initFromXMLNode(const pugi::xml_node &_xmlNode) override;
 
                     std::string title;
                     std::string duration;
