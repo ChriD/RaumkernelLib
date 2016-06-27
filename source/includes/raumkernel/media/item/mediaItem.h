@@ -41,10 +41,10 @@ namespace Raumkernel
             MIT_GENRE = 3,
             MIT_COMPOSER = 4,
             MIT_CONTAINER = 5,
-            MIT_RADIO = 6,
+            MIT_RADIO_RADIOTIME = 6,
             MIT_PLAYLIST = 7,
             MIT_SHUFFLE = 8,
-            MIT_RHAPSODYRADIO = 9,
+            MIT_RADIO_RHAPSODY = 9,
             MIT_STORAGEFOLDER = 10,
             MIT_LINEIN = 11,
             MIT_TRACK = 12,
@@ -88,10 +88,10 @@ namespace Raumkernel
                                 return "LINEIN";
                             case MediaItemType::MIT_PLAYLIST:
                                 return "PLAYLIST";
-                            case MediaItemType::MIT_RADIO:
-                                return "RADIO";
-                            case MediaItemType::MIT_RHAPSODYRADIO:
-                                return "RHAPSODYRADIO";
+                            case MediaItemType::MIT_RADIO_RADIOTIME:
+                                return "RADIO_RADIOTIME";
+                            case MediaItemType::MIT_RADIO_RHAPSODY:
+                                return "RADIO_RHAPSODY";
                             case MediaItemType::MIT_SHUFFLE:
                                 return "SHUFFLE";
                             case MediaItemType::MIT_STORAGEFOLDER:
@@ -112,27 +112,27 @@ namespace Raumkernel
                         if (_mediaItemType == "ALBUM")
                             return MediaItemType::MIT_ALBUM;
                         if (_mediaItemType == "ARTIST")
-                            return MediaItemType::MIT_ALBUM;
+                            return MediaItemType::MIT_ARTIST;
                         if (_mediaItemType == "COMPOSER")
-                            return MediaItemType::MIT_ALBUM;
+                            return MediaItemType::MIT_COMPOSER;
                         if (_mediaItemType == "CONTAINER")
-                            return MediaItemType::MIT_ALBUM;
+                            return MediaItemType::MIT_CONTAINER;
                         if (_mediaItemType == "GENRE")
-                            return MediaItemType::MIT_ALBUM;
+                            return MediaItemType::MIT_GENRE;
                         if (_mediaItemType == "LINEIN")
-                            return MediaItemType::MIT_ALBUM;
+                            return MediaItemType::MIT_LINEIN;
                         if (_mediaItemType == "PLAYLIST")
-                            return MediaItemType::MIT_ALBUM;
-                        if (_mediaItemType == "RADIO")
-                            return MediaItemType::MIT_ALBUM;
-                        if (_mediaItemType == "RHAPSODYRADIO")
-                            return MediaItemType::MIT_ALBUM;
+                            return MediaItemType::MIT_PLAYLIST;
+                        if (_mediaItemType == "RADIO_RADIOTIME")
+                            return MediaItemType::MIT_RADIO_RADIOTIME;
+                        if (_mediaItemType == "RADIO_RHAPSODY")
+                            return MediaItemType::MIT_RADIO_RHAPSODY;
                         if (_mediaItemType == "SHUFFLE")
-                            return MediaItemType::MIT_ALBUM;
+                            return MediaItemType::MIT_SHUFFLE;
                         if (_mediaItemType == "STORAGEFOLDER")
-                            return MediaItemType::MIT_ALBUM;
+                            return MediaItemType::MIT_STORAGEFOLDER;
                         if (_mediaItemType == "TRACKCONTAINER")
-                            return MediaItemType::MIT_ALBUM;                                               
+                            return MediaItemType::MIT_TRACKCONTAINER;
                         return MediaItemType::MIT_UNKNOWN;
                     }
 

@@ -33,8 +33,8 @@
 #include <raumkernel/media/item/mediaItem_Genre.h>
 #include <raumkernel/media/item/mediaItem_LineIn.h>
 #include <raumkernel/media/item/mediaItem_Playlist.h>
-#include <raumkernel/media/item/mediaItem_Radio.h>
-#include <raumkernel/media/item/mediaItem_RhapsodyRadio.h>
+#include <raumkernel/media/item/mediaItem_Radio_Rhapsody.h>
+#include <raumkernel/media/item/mediaItem_Radio_RadioTime.h>
 #include <raumkernel/media/item/mediaItem_Shuffle.h>
 #include <raumkernel/media/item/mediaItem_StorageFolder.h>
 #include <raumkernel/media/item/mediaItem_Track.h>

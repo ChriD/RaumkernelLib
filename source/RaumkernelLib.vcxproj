@@ -136,7 +136,8 @@
     <ClInclude Include="includes\raumkernel\media\item\mediaItem_LineIn.h" />
     <ClInclude Include="includes\raumkernel\media\item\mediaItem_Playlist.h" />
     <ClInclude Include="includes\raumkernel\media\item\mediaItem_Radio.h" />
-    <ClInclude Include="includes\raumkernel\media\item\mediaItem_RhapsodyRadio.h" />
+    <ClInclude Include="includes\raumkernel\media\item\mediaItem_Radio_RadioTime.h" />
+    <ClInclude Include="includes\raumkernel\media\item\mediaItem_Radio_Rhapsody.h" />
     <ClInclude Include="includes\raumkernel\media\item\mediaItem_Shuffle.h" />
     <ClInclude Include="includes\raumkernel\media\item\mediaItem_StorageFolder.h" />
     <ClInclude Include="includes\raumkernel\media\item\mediaItem_Track.h" />
@@ -211,7 +212,8 @@
     <ClCompile Include="media\item\mediaItem_LineIn.cpp" />
     <ClCompile Include="media\item\mediaItem_Playlist.cpp" />
     <ClCompile Include="media\item\mediaItem_Radio.cpp" />
-    <ClCompile Include="media\item\mediaItem_RhapsodyRadio.cpp" />
+    <ClCompile Include="media\item\mediaItem_Radio_RadioTime.cpp" />
+    <ClCompile Include="media\item\mediaItem_Radio_Rhapsody.cpp" />
     <ClCompile Include="media\item\mediaItem_Shuffle.cpp" />
     <ClCompile Include="media\item\mediaItem_StorageFolder.cpp" />
     <ClCompile Include="media\item\mediaItem_Track.cpp" />

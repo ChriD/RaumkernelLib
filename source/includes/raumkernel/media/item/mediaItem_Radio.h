@@ -42,9 +42,16 @@ namespace Raumkernel
                     virtual ~MediaItem_Radio();
                 protected:
 
-                private:
-            };
+                    std::string title;
+                    std::string region;
+                    std::string albumArtUri;
+                    std::string description;
+                    std::uint16_t signalStrength; 
+                    std::uint16_t bitrate;
+                    std::uint16_t durability;
 
+                private:
+            };                     
         }
 
     }

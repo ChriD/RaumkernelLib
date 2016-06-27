@@ -94,7 +94,9 @@ int main()
     auto mediaListManager = raumkernel.getManagerEngineer()->getMediaListManager();
     //mediaListManager->loadMediaItemListByContainerId("0/Napster");
     //mediaListManager->loadMediaItemListByContainerId("0/My Music/Artists");
-    mediaListManager->loadMediaItemListByContainerId("0/My Music/Artists/2Raumwohnung");
+    //mediaListManager->loadMediaItemListByContainerId("0/My Music/Artists/2Raumwohnung");
+    mediaListManager->loadMediaItemListByContainerId("0/RadioTime/CategoryMusic/c-c10635888");
+    
    
    
 

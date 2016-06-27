@@ -291,9 +291,6 @@
     <ClInclude Include="includes\raumkernel\media\item\mediaItems.h">
       <Filter>includes\raumkernel\media\item</Filter>
     </ClInclude>
-    <ClInclude Include="includes\raumkernel\media\item\mediaItem_RhapsodyRadio.h">
-      <Filter>includes\raumkernel\media\item</Filter>
-    </ClInclude>
     <ClInclude Include="includes\raumkernel\media\mediaItemCreator.h">
       <Filter>includes\raumkernel\media</Filter>
     </ClInclude>
@@ -316,6 +313,12 @@
       <Filter>includes\raumkernel\tools</Filter>
     </ClInclude>
     <ClInclude Include="includes\raumkernel\media\item\mediaItem_Unknown.h">
+      <Filter>includes\raumkernel\media\item</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\raumkernel\media\item\mediaItem_Radio_RadioTime.h">
+      <Filter>includes\raumkernel\media\item</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\raumkernel\media\item\mediaItem_Radio_Rhapsody.h">
       <Filter>includes\raumkernel\media\item</Filter>
     </ClInclude>
   </ItemGroup>
@@ -464,9 +467,6 @@
     <ClCompile Include="media\item\mediaItem_Radio.cpp">
       <Filter>media\item</Filter>
     </ClCompile>
-    <ClCompile Include="media\item\mediaItem_RhapsodyRadio.cpp">
-      <Filter>media\item</Filter>
-    </ClCompile>
     <ClCompile Include="media\item\mediaItem_Shuffle.cpp">
       <Filter>media\item</Filter>
     </ClCompile>
@@ -483,6 +483,12 @@
       <Filter>xml\pugixml</Filter>
     </ClCompile>
     <ClCompile Include="media\item\mediaItem_Unknown.cpp">
+      <Filter>media\item</Filter>
+    </ClCompile>
+    <ClCompile Include="media\item\mediaItem_Radio_RadioTime.cpp">
+      <Filter>media\item</Filter>
+    </ClCompile>
+    <ClCompile Include="media\item\mediaItem_Radio_Rhapsody.cpp">
       <Filter>media\item</Filter>
     </ClCompile>
   </ItemGroup>

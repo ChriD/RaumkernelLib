@@ -22,7 +22,7 @@ namespace Raumkernel
             if (_upnpClass == "object.item.audioItem.musicTrack")
                 return std::shared_ptr<Media::Item::MediaItem_Track>(new Media::Item::MediaItem_Track());            
             if (_upnpClass == "object.item.audioItem.audioBroadcast.radio")
-                return std::shared_ptr<Media::Item::MediaItem_Radio>(new Media::Item::MediaItem_Radio());
+                return std::shared_ptr<Media::Item::MediaItem_Radio_RadioTime>(new Media::Item::MediaItem_Radio_RadioTime());
             if (_upnpClass == "object.container.album.musicAlbum")
                 return std::shared_ptr<Media::Item::MediaItem_Album>(new Media::Item::MediaItem_Album());
             if (_upnpClass == "object.container.person.musicArtist")
@@ -124,9 +124,7 @@ namespace Raumkernel
 
 
         std::shared_ptr<Item::MediaItem> MediaItemCreator::createMediaItemFromXMLNode(pugi::xml_node _xmlNode)
-        {
-            // TODO: create object with correct class from "upnp:class"            
-
+        {           
             // ATTENTION: Unescaping of values is done because the webserver cant handle % in result value
 
             pugi::xml_node itemNode = _xmlNode, valueNode;
@@ -137,40 +135,6 @@ namespace Raumkernel
 
             std::shared_ptr<Item::MediaItem> mediaItem = createObject(upnpClass, raumfeldName);
             mediaItem->initFromXMLNode(itemNode);
-
-            /*valueNode = itemNode.child("res");
-            if (valueNode)
-            {
-                mediaItem->res = valueNode.child_value();
-                
-                attribute = valueNode->first_attribute("duration", 0, false);
-                if (attribute)
-                    mediaItem->duration = attribute->value();
-                    
-            }
-            */
-
-            /*
-            // ALBUM
-            valueNode = itemNode->first_node("upnp:album", 0, false);
-            if (valueNode)
-                mediaItem.album = valueNode->value();
-
-            valueNode = itemNode->first_node("upnp:albumArtUri", 0, false);
-            if (valueNode)
-                mediaItem.albumArtUri = valueNode->value();
-
-            // ARTIST
-            valueNode = itemNode->first_node("upnp:artist", 0, false);
-            if (valueNode)
-                mediaItem.artist = valueNode->value();
-
-            valueNode = itemNode->first_node("upnp:artistArtUri", 0, false);
-            if (valueNode)
-                mediaItem.artistArtUri = valueNode->value();
-                */
-
-
 
             return mediaItem;
 

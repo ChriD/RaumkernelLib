@@ -22,10 +22,10 @@
 //
 
 #pragma once
-#ifndef RAUMKERNEL_MEDIAITEM_RHAPSODYRADIO_H
-#define RAUMKERNEL_MEDIAITEM_RHAPSODYRADIO_H
+#ifndef RAUMKERNEL_MEDIAITEM_RADIO_RHAPSODYRADIO_H
+#define RAUMKERNEL_MEDIAITEM_RADIO_RHAPSODYRADIO_H
 
-#include <raumkernel/media/item/mediaItem.h>
+#include <raumkernel/media/item/mediaItem_Radio.h>
 
 
 namespace Raumkernel
@@ -35,11 +35,11 @@ namespace Raumkernel
         namespace Item
         {
 
-            class MediaItem_RhapsodyRadio : public MediaItem
+            class MediaItem_Radio_Rhapsody : public MediaItem_Radio
             {
                 public:
-                    MediaItem_RhapsodyRadio();
-                    virtual ~MediaItem_RhapsodyRadio();
+                    MediaItem_Radio_Rhapsody();
+                    virtual ~MediaItem_Radio_Rhapsody();
                 protected:
 
                 private:
