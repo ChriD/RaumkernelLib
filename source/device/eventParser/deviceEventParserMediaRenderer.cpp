@@ -134,10 +134,9 @@ namespace Raumkernel
                         updateZoneList = true;                      
                     }
 
-                    // TODO: create the current media item from the "CurrentTrackMetaData" value (this is necessary for non list/query playlists)                    
+                    // create the current media item from the "CurrentTrackMetaData" value (this is necessary for non list/query playlists)                    
                     if (currentTrackMetadataChanged)
-                    {
-                        // TODO: @@@                         
+                    {                                        
                         if (!rendererState.currentTrackMetaData.empty())
                         {
                             Media::MediaItemCreator mediaItemCreator;
