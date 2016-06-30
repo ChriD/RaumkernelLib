@@ -1150,6 +1150,18 @@ namespace Raumkernel
         }
 
 
+        void MediaRenderer_RaumfeldVirtual::loadShuffle(const std::string &_shuffleContainerId, const std::string &_shuffleSelection)
+        {            
+            auto mediasServer = getManagerEngineer()->getDeviceManager()->getRaumfeldMediaServer();
+            if (mediasServer)
+            {
+                auto shufflePlaylistId = mediasServer->getShufflePlaylistId(_shuffleContainerId, _shuffleSelection);
+                if (!shufflePlaylistId.empty())
+                    loadContainer(shufflePlaylistId);          
+            }
+        }
+
+
         void MediaRenderer_RaumfeldVirtual::fadeToVolume(const std::uint32_t _volume, std::uint32_t _duration, bool _sync)
         {
             logDebug("Calling 'fadeToVolume' on renderer '" + getDeviceDescription() + "'", CURRENT_FUNCTION);         

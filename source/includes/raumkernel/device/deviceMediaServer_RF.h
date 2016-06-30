@@ -40,13 +40,14 @@ namespace Raumkernel
                 MediaServer_Raumfeld();
                 virtual ~MediaServer_Raumfeld();
                 EXPORT virtual bool isRaumfeldMediaServer() override;
+                EXPORT virtual std::string getShufflePlaylistId(const std::string &_shuffleContainerId, const std::string &_shuffleSelection) override;
 
             protected:
                 virtual void createProxyContentDirectory() override;
                 virtual void createProxyConnectionManager() override;
 
-                void searchThreadProxy(std::string _containerId, std::string _searchCriteria, std::string _extraData) override;
-                void browseThreadProxy(std::string _containerId, std::string _browseFlag, std::string _extraData) override;
+                void searchThreadProxy(const std::string _containerId, const std::string _searchCriteria, const std::string _extraData) override;
+                void browseThreadProxy(const std::string _containerId, const std::string _browseFlag, const std::string _extraData) override;                
               
                 virtual void onContentDirectoryProxyPropertyChanged() override;
                 virtual void onContentDirectoryProxyContainerUpdateIdsChanged() override;

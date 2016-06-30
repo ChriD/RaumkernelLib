@@ -66,9 +66,14 @@ namespace Raumkernel
                 * creates a valid avTransportUri for a container id
                 * this uri  can be used for bending or setting the uri on a renderer
                 */
-                EXPORT virtual std::string createAVTransportUri_Single(std::string _singleId);
+                EXPORT virtual std::string createAVTransportUri_Single(std::string _singleId);               
                 /**
-                * Returne 'true' if the mesia server is the Raumfeld Media Server
+                * generate a Shuffle playlist            
+                * this method is sync and my process for a while due it calculates a shuffle
+                */
+                EXPORT virtual std::string getShufflePlaylistId(const std::string &_shuffleContainerId, const std::string &_shuffleSelection);
+                /**
+                * Return 'true' if the mesia server is the Raumfeld Media Server
                 */
                 EXPORT virtual bool isRaumfeldMediaServer();
 
@@ -101,11 +106,11 @@ namespace Raumkernel
                 virtual void searchThread(std::string _containerId, std::string _searchCriteria = "", std::string _extraData = "");
                 virtual void browseThread(std::string _containerId, MediaServer_BrowseFlag _browseFlag = MediaServer_BrowseFlag::MSBF_BrowseDirectChildren, std::string _extraData = "");
 
-                virtual void searchThreadProxy(std::string _containerId, std::string _searchCriteria, std::string _extraData);
-                virtual void browseThreadProxy(std::string _containerId, std::string _browseFlag, std::string _extraData);
+                virtual void searchThreadProxy(const std::string _containerId, const std::string _searchCriteria, const std::string _extraData);
+                virtual void browseThreadProxy(const std::string _containerId, const std::string _browseFlag, const std::string _extraData);
 
                 virtual void searchThreadExecuted(std::string _result, std::uint32_t _numberReturned, std::uint32_t _totalMatches, std::uint32_t _updateId, std::string _extraData);
-                virtual void browseThreadExecuted(std::string _result, std::uint32_t _numberReturned, std::uint32_t _totalMatches, std::uint32_t _updateId, std::string _extraData);
+                virtual void browseThreadExecuted(std::string _result, std::uint32_t _numberReturned, std::uint32_t _totalMatches, std::uint32_t _updateId, std::string _extraData);                
 
                 virtual void onContentDirectoryProxyPropertyChanged();
                 virtual void onContentDirectoryProxyContainerUpdateIdsChanged();

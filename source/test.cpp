@@ -73,10 +73,16 @@ int main()
 
     rlutil::getkey();
 
-     auto UDN = raumkernel.getManagerEngineer()->getZoneManager()->getRoomUDNForRoomName("Bad");
+     auto UDN = raumkernel.getManagerEngineer()->getZoneManager()->getRoomUDNForRoomName("Wohnzimmer");
      auto ZONEUDN = raumkernel.getManagerEngineer()->getZoneManager()->getZoneUDNForRoomUDN(UDN); 
      auto exists = raumkernel.getManagerEngineer()->getZoneManager()->existsZoneUDN(ZONEUDN);
      auto rendererUDN = raumkernel.getManagerEngineer()->getZoneManager()->getRendererUDNForZoneUDN(ZONEUDN);
+
+     if (!rendererUDN.empty())
+     {
+         auto mediaRenderer = std::dynamic_pointer_cast<Raumkernel::Devices::MediaRenderer_RaumfeldVirtual>(raumkernel.getManagerEngineer()->getDeviceManager()->getMediaRenderer(rendererUDN));
+         mediaRenderer->loadShuffle("0/Playlists/Shuffles/TopArtists", "");
+     }
 
     //Raumkernel::HttpClient::HttpClient client;
 

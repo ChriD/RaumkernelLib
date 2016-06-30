@@ -171,22 +171,22 @@ namespace Raumkernel
                 {
                     switch (_playMode)
                     {
-                    case MediaRenderer_PlayMode::MRPLAYMODE_NORMAL:
-                        return "NORMAL";
-                    case MediaRenderer_PlayMode::MRPLAYMODE_SHUFFLE:
-                        return "SHUFFLE";
-                    case MediaRenderer_PlayMode::MRPLAYMODE_RANDOM:
-                        return "RANDOM";
-                    case MediaRenderer_PlayMode::MRPLAYMODE_REPEAT_ONE:
-                        return "REPEAT_ONE";
-                    case MediaRenderer_PlayMode::MRPLAYMODE_REPEAT_ALL:
-                        return "REPEAT_ALL";
-                    case MediaRenderer_PlayMode::MRPLAYMODE_DIRECT_1:
-                        return "DIRECT_1";
-                    case MediaRenderer_PlayMode::MRPLAYMODE_INTRO:
-                        return "INTRO";
-                    case MediaRenderer_PlayMode::MRPLAYMODE_UNDEFINED:
-                        return "NORMAL";
+                        case MediaRenderer_PlayMode::MRPLAYMODE_NORMAL:
+                            return "NORMAL";
+                        case MediaRenderer_PlayMode::MRPLAYMODE_SHUFFLE:
+                            return "SHUFFLE";
+                        case MediaRenderer_PlayMode::MRPLAYMODE_RANDOM:
+                            return "RANDOM";
+                        case MediaRenderer_PlayMode::MRPLAYMODE_REPEAT_ONE:
+                            return "REPEAT_ONE";
+                        case MediaRenderer_PlayMode::MRPLAYMODE_REPEAT_ALL:
+                            return "REPEAT_ALL";
+                        case MediaRenderer_PlayMode::MRPLAYMODE_DIRECT_1:
+                            return "DIRECT_1";
+                        case MediaRenderer_PlayMode::MRPLAYMODE_INTRO:
+                            return "INTRO";
+                        case MediaRenderer_PlayMode::MRPLAYMODE_UNDEFINED:
+                            return "NORMAL";
                     }
                     return "NORMAL";
                 }
@@ -194,7 +194,7 @@ namespace Raumkernel
 
                 static MediaRenderer_PlayMode stringToPlayMode(std::string _playModeString)
                 {
-                    _playModeString = Tools::StringUtil::tolower(_playModeString);
+                    _playModeString = Tools::StringUtil::toupper(_playModeString);
                     if (_playModeString == "NORMAL")
                         return MediaRenderer_PlayMode::MRPLAYMODE_NORMAL;
                     if (_playModeString == "SHUFFLE")

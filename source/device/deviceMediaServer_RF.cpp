@@ -13,7 +13,7 @@ namespace Raumkernel
 
 
         MediaServer_Raumfeld::~MediaServer_Raumfeld()
-        {      
+        {
         }
 
 
@@ -30,9 +30,9 @@ namespace Raumkernel
                     CpProxyUpnpOrgContentDirectory_Raumfeld1Cpp::CpProxyUpnpOrgContentDirectory_Raumfeld1Cpp(CpDeviceCpp& aDevice):CpProxy("schemas-upnp-org", "ContentDirectory_Raumfeld", 1, aDevice.Device())
                     ... should be ->
                     CpProxyUpnpOrgContentDirectory_Raumfeld1Cpp::CpProxyUpnpOrgContentDirectory_Raumfeld1Cpp(CpDeviceCpp& aDevice):CpProxy("schemas-upnp-org", "ContentDirectory", 1, aDevice.Device())
-            */
+                    */
             contentDirectoryProxy = std::shared_ptr<OpenHome::Net::CpProxyUpnpOrgContentDirectory_Raumfeld1Cpp>(new OpenHome::Net::CpProxyUpnpOrgContentDirectory_Raumfeld1Cpp(*cpDevice));
-            auto proxy = std::dynamic_pointer_cast<OpenHome::Net::CpProxyUpnpOrgContentDirectory_Raumfeld1Cpp>(getContentDirectoryProxy());           
+            auto proxy = std::dynamic_pointer_cast<OpenHome::Net::CpProxyUpnpOrgContentDirectory_Raumfeld1Cpp>(getContentDirectoryProxy());
             OpenHome::Functor functor = OpenHome::MakeFunctor(*this, &MediaServer_Raumfeld::onContentDirectoryProxyPropertyChanged);
             OpenHome::Functor functorCUID = OpenHome::MakeFunctor(*this, &MediaServer_Raumfeld::onContentDirectoryProxyContainerUpdateIdsChanged);
             proxy->SetPropertyInitialEvent(functor);
@@ -68,15 +68,15 @@ namespace Raumkernel
 
 
         void MediaServer_Raumfeld::onContentDirectoryProxyContainerUpdateIdsChanged()
-        {                                
+        {
             // TODO: @@@
             std::string updateIds = "";
 
-            logDebug("Container updated id's changed on " + getDeviceDescription(), CURRENT_POSITION);                  
+            logDebug("Container updated id's changed on " + getDeviceDescription(), CURRENT_POSITION);
             auto proxy = std::dynamic_pointer_cast<OpenHome::Net::CpProxyUpnpOrgContentDirectory_Raumfeld1Cpp>(getContentDirectoryProxy());
             proxy->PropertyContainerUpdateIDs(updateIds);
             getManagerEngineer()->getMediaListManager()->loadMediaItemListsByContainerUpdateIds(updateIds);
-            
+
         }
 
 
@@ -97,6 +97,15 @@ namespace Raumkernel
             auto proxy = std::dynamic_pointer_cast<OpenHome::Net::CpProxyUpnpOrgContentDirectory_Raumfeld1Cpp>(getContentDirectoryProxy());
             proxy->SyncBrowse(_containerId, _browseFlag, "*", 0, 0, "", result, numberReturned, totalMatches, updateId);
             browseThreadExecuted(result, numberReturned, totalMatches, updateId, _extraData);
+        }
+
+
+        std::string MediaServer_Raumfeld::getShufflePlaylistId(const std::string &_shuffleContainerId, const std::string &_shuffleSelection)
+        {
+            std::string	playlistId, playlistMetaData;    
+            auto proxy = std::dynamic_pointer_cast<OpenHome::Net::CpProxyUpnpOrgContentDirectory_Raumfeld1Cpp>(getContentDirectoryProxy());
+            proxy->SyncShuffle(_shuffleContainerId, _shuffleSelection, playlistId, playlistMetaData);
+            return playlistId;
         }
 
     }

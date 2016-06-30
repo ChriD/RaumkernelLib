@@ -93,7 +93,11 @@ namespace Raumkernel
                 /**
                 * use this to load a uri into the zone renderer
                 */
-                EXPORT virtual void loadUri(const std::string &_uri, bool _sync = true);               
+                EXPORT virtual void loadUri(const std::string &_uri, bool _sync = true);     
+                /**
+                * use this to load a shuffle into the zone renderer
+                */
+                EXPORT virtual void loadShuffle(const std::string &_shuffleContainerId, const std::string &_shuffleSelection);
                 /**
                 * this method fades the volume to a specific value in a specific time
                 */

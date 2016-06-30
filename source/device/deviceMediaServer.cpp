@@ -192,7 +192,7 @@ namespace Raumkernel
         }
 
 
-        void MediaServer::searchThreadProxy(std::string _containerId, std::string _searchCriteria, std::string _extraData)
+        void MediaServer::searchThreadProxy(const std::string _containerId, const std::string _searchCriteria, const std::string _extraData)
         {
             std::string	result = "";
             std::uint32_t numberReturned = 0, totalMatches = 0, updateId = 0;
@@ -255,7 +255,7 @@ namespace Raumkernel
         }
 
 
-        void MediaServer::browseThreadProxy(std::string _containerId, std::string _browseFlag, std::string _extraData)
+        void MediaServer::browseThreadProxy(const std::string _containerId, const std::string _browseFlag, const std::string _extraData)
         {
             std::string	result = "";
             std::uint32_t numberReturned = 0, totalMatches = 0, updateId = 0;
@@ -303,6 +303,14 @@ namespace Raumkernel
             //dlna-playsingle://uuid%3Aed3bd3db-17b1-4dbe-82df-5201c78e632c?sid=urn%3Aupnp-org%3AserviceId%3AContentDirectory&iid=0%2FRadioTime%2FLocalRadio%2Fs-s68932
             return uri;
         }
+
+
+        std::string MediaServer::getShufflePlaylistId(const std::string &_shuffleContainerId, const std::string &_shuffleSelection)
+        {
+            return "";
+        }
+
+       
 
 
 
