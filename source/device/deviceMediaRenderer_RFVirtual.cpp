@@ -1150,15 +1150,17 @@ namespace Raumkernel
         }
 
 
-        void MediaRenderer_RaumfeldVirtual::loadShuffle(const std::string &_shuffleContainerId, const std::string &_shuffleSelection)
+        std::string MediaRenderer_RaumfeldVirtual::loadShuffle(const std::string &_shuffleContainerId, const std::string &_shuffleSelection)
         {            
-            auto mediasServer = getManagerEngineer()->getDeviceManager()->getRaumfeldMediaServer();
-            if (mediasServer)
+            auto mediaServer = getManagerEngineer()->getDeviceManager()->getRaumfeldMediaServer();
+            if (mediaServer)
             {
-                auto shufflePlaylistId = mediasServer->getShufflePlaylistId(_shuffleContainerId, _shuffleSelection);
+                auto shufflePlaylistId = mediaServer->getShufflePlaylistId(_shuffleContainerId, _shuffleSelection);
                 if (!shufflePlaylistId.empty())
                     loadContainer(shufflePlaylistId);          
-            }
+                return shufflePlaylistId;
+            }            
+            return "";
         }
 
 
