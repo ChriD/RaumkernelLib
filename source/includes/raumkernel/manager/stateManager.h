@@ -22,13 +22,33 @@
 //
 
 #pragma once
-#ifndef VERSIONNUMBER_H
-#define VERSIONNUMBER_H
+#ifndef RAUMKERNEL_STATEMANAGER_H
+#define RAUMKERNEL_STATEMANAGER_H
 
-#include <string>
+#include <map>
+#include <raumkernel/manager/managerBase.h>
+#include <raumkernel/xml/pugixml/pugixml.hpp>
 
-const std::string AppName = "Raumkernel Library";
-const std::string VersionNumber = "1.0.1";
-const std::string VersionName = "";
+
+
+namespace Raumkernel
+{
+    namespace Manager
+    {
+        class StateManager : public ManagerBase
+        {
+            public:
+                EXPORT StateManager();
+                EXPORT virtual ~StateManager();  
+
+                EXPORT void saveState(std::string _stateId = "", std::string _roomId = "");
+                EXPORT void restoreState(std::string _stateId = "", std::string _roomId = "");
+
+            protected:                        
+
+        };
+    }
+}
+
 
 #endif

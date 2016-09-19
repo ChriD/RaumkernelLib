@@ -124,6 +124,7 @@
     <ClInclude Include="includes\raumkernel\manager\managerEngineer.h" />
     <ClInclude Include="includes\raumkernel\manager\mediaListManager.h" />
     <ClInclude Include="includes\raumkernel\manager\settingsManager.h" />
+    <ClInclude Include="includes\raumkernel\manager\stateManager.h" />
     <ClInclude Include="includes\raumkernel\manager\upnpManager.h" />
     <ClInclude Include="includes\raumkernel\manager\zoneManager.h" />
     <ClInclude Include="includes\raumkernel\media\item\mediaItem.h" />
@@ -201,6 +202,7 @@
     <ClCompile Include="manager\managerEngineer.cpp" />
     <ClCompile Include="manager\mediaListManager.cpp" />
     <ClCompile Include="manager\settingsManager.cpp" />
+    <ClCompile Include="manager\stateManager.cpp" />
     <ClCompile Include="manager\upnpManager.cpp" />
     <ClCompile Include="manager\zoneManager.cpp" />
     <ClCompile Include="media\item\mediaItem.cpp" />

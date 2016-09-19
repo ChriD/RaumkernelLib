@@ -321,6 +321,9 @@
     <ClInclude Include="includes\raumkernel\media\item\mediaItem_Radio_Rhapsody.h">
       <Filter>includes\raumkernel\media\item</Filter>
     </ClInclude>
+    <ClInclude Include="includes\raumkernel\manager\stateManager.h">
+      <Filter>includes\raumkernel\manager</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="logger\logger.cpp">
@@ -490,6 +493,9 @@
     </ClCompile>
     <ClCompile Include="media\item\mediaItem_Radio_Rhapsody.cpp">
       <Filter>media\item</Filter>
+    </ClCompile>
+    <ClCompile Include="manager\stateManager.cpp">
+      <Filter>manager</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
