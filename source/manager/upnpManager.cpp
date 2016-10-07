@@ -44,7 +44,11 @@ namespace Raumkernel
                 logDebug("Init OpenHome UPNP Control Stack", CURRENT_POSITION);
 
                 initParams = OpenHome::Net::InitialisationParams::Create();
-                OpenHome::Net::UpnpLibrary::Initialise(initParams);                                
+                OpenHome::Net::UpnpLibrary::Initialise(initParams);  
+
+                //UpnpLibrary::SetSubnetListChangedListener(...) and UpnpLibrary::SetNetworkAdapterChangedListener(...).
+                //OpenHome::Net::UpnpLibrary::
+
 
                 if (!_networkAdapterName.empty())
                     preferedNetworkAdapterList.emplace_back(NetworkAdapterIdentifier(_networkAdapterName, 0));

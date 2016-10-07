@@ -16,7 +16,7 @@ namespace Raumkernel
         }
 
 
-        void StateManager::saveState(std::string _stateId = "", std::string _roomId = "")
+        void StateManager::saveState(std::string _stateId, std::string _roomId)
         {
             // TODO: @@@
             // lock the device and zone map to be sure nothing goes out of scope while saving the data
@@ -24,7 +24,7 @@ namespace Raumkernel
         }
 
 
-        void StateManager::restoreState(std::string _stateId = "", std::string _roomId = "")
+        void StateManager::restoreState(std::string _stateId, std::string _roomId)
         {
             // TODO: @@@
             // lock the state file

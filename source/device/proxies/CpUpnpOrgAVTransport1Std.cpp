@@ -24,7 +24,7 @@ private:
 };
 
 SyncSetAVTransportURIUpnpOrgAVTransport1Cpp::SyncSetAVTransportURIUpnpOrgAVTransport1Cpp(CpProxyUpnpOrgAVTransport1Cpp& aProxy)
-    : iService(aProxy)
+: iService(aProxy)
 {
 }
 
@@ -45,7 +45,7 @@ private:
 };
 
 SyncSetNextAVTransportURIUpnpOrgAVTransport1Cpp::SyncSetNextAVTransportURIUpnpOrgAVTransport1Cpp(CpProxyUpnpOrgAVTransport1Cpp& aProxy)
-    : iService(aProxy)
+: iService(aProxy)
 {
 }
 
@@ -75,16 +75,16 @@ private:
 };
 
 SyncGetMediaInfoUpnpOrgAVTransport1Cpp::SyncGetMediaInfoUpnpOrgAVTransport1Cpp(CpProxyUpnpOrgAVTransport1Cpp& aProxy, uint32_t& aNrTracks, std::string& aMediaDuration, std::string& aCurrentURI, std::string& aCurrentURIMetaData, std::string& aNextURI, std::string& aNextURIMetaData, std::string& aPlayMedium, std::string& aRecordMedium, std::string& aWriteStatus)
-    : iService(aProxy)
-    , iNrTracks(aNrTracks)
-    , iMediaDuration(aMediaDuration)
-    , iCurrentURI(aCurrentURI)
-    , iCurrentURIMetaData(aCurrentURIMetaData)
-    , iNextURI(aNextURI)
-    , iNextURIMetaData(aNextURIMetaData)
-    , iPlayMedium(aPlayMedium)
-    , iRecordMedium(aRecordMedium)
-    , iWriteStatus(aWriteStatus)
+: iService(aProxy)
+, iNrTracks(aNrTracks)
+, iMediaDuration(aMediaDuration)
+, iCurrentURI(aCurrentURI)
+, iCurrentURIMetaData(aCurrentURIMetaData)
+, iNextURI(aNextURI)
+, iNextURIMetaData(aNextURIMetaData)
+, iPlayMedium(aPlayMedium)
+, iRecordMedium(aRecordMedium)
+, iWriteStatus(aWriteStatus)
 {
 }
 
@@ -108,10 +108,10 @@ private:
 };
 
 SyncGetTransportInfoUpnpOrgAVTransport1Cpp::SyncGetTransportInfoUpnpOrgAVTransport1Cpp(CpProxyUpnpOrgAVTransport1Cpp& aProxy, std::string& aCurrentTransportState, std::string& aCurrentTransportStatus, std::string& aCurrentSpeed)
-    : iService(aProxy)
-    , iCurrentTransportState(aCurrentTransportState)
-    , iCurrentTransportStatus(aCurrentTransportStatus)
-    , iCurrentSpeed(aCurrentSpeed)
+: iService(aProxy)
+, iCurrentTransportState(aCurrentTransportState)
+, iCurrentTransportStatus(aCurrentTransportStatus)
+, iCurrentSpeed(aCurrentSpeed)
 {
 }
 
@@ -140,15 +140,15 @@ private:
 };
 
 SyncGetPositionInfoUpnpOrgAVTransport1Cpp::SyncGetPositionInfoUpnpOrgAVTransport1Cpp(CpProxyUpnpOrgAVTransport1Cpp& aProxy, uint32_t& aTrack, std::string& aTrackDuration, std::string& aTrackMetaData, std::string& aTrackURI, std::string& aRelTime, std::string& aAbsTime, int32_t& aRelCount, int32_t& aAbsCount)
-    : iService(aProxy)
-    , iTrack(aTrack)
-    , iTrackDuration(aTrackDuration)
-    , iTrackMetaData(aTrackMetaData)
-    , iTrackURI(aTrackURI)
-    , iRelTime(aRelTime)
-    , iAbsTime(aAbsTime)
-    , iRelCount(aRelCount)
-    , iAbsCount(aAbsCount)
+: iService(aProxy)
+, iTrack(aTrack)
+, iTrackDuration(aTrackDuration)
+, iTrackMetaData(aTrackMetaData)
+, iTrackURI(aTrackURI)
+, iRelTime(aRelTime)
+, iAbsTime(aAbsTime)
+, iRelCount(aRelCount)
+, iAbsCount(aAbsCount)
 {
 }
 
@@ -172,10 +172,10 @@ private:
 };
 
 SyncGetDeviceCapabilitiesUpnpOrgAVTransport1Cpp::SyncGetDeviceCapabilitiesUpnpOrgAVTransport1Cpp(CpProxyUpnpOrgAVTransport1Cpp& aProxy, std::string& aPlayMedia, std::string& aRecMedia, std::string& aRecQualityModes)
-    : iService(aProxy)
-    , iPlayMedia(aPlayMedia)
-    , iRecMedia(aRecMedia)
-    , iRecQualityModes(aRecQualityModes)
+: iService(aProxy)
+, iPlayMedia(aPlayMedia)
+, iRecMedia(aRecMedia)
+, iRecQualityModes(aRecQualityModes)
 {
 }
 
@@ -198,9 +198,9 @@ private:
 };
 
 SyncGetTransportSettingsUpnpOrgAVTransport1Cpp::SyncGetTransportSettingsUpnpOrgAVTransport1Cpp(CpProxyUpnpOrgAVTransport1Cpp& aProxy, std::string& aPlayMode, std::string& aRecQualityMode)
-    : iService(aProxy)
-    , iPlayMode(aPlayMode)
-    , iRecQualityMode(aRecQualityMode)
+: iService(aProxy)
+, iPlayMode(aPlayMode)
+, iRecQualityMode(aRecQualityMode)
 {
 }
 
@@ -221,7 +221,7 @@ private:
 };
 
 SyncStopUpnpOrgAVTransport1Cpp::SyncStopUpnpOrgAVTransport1Cpp(CpProxyUpnpOrgAVTransport1Cpp& aProxy)
-    : iService(aProxy)
+: iService(aProxy)
 {
 }
 
@@ -242,7 +242,7 @@ private:
 };
 
 SyncPlayUpnpOrgAVTransport1Cpp::SyncPlayUpnpOrgAVTransport1Cpp(CpProxyUpnpOrgAVTransport1Cpp& aProxy)
-    : iService(aProxy)
+: iService(aProxy)
 {
 }
 
@@ -263,7 +263,7 @@ private:
 };
 
 SyncPauseUpnpOrgAVTransport1Cpp::SyncPauseUpnpOrgAVTransport1Cpp(CpProxyUpnpOrgAVTransport1Cpp& aProxy)
-    : iService(aProxy)
+: iService(aProxy)
 {
 }
 
@@ -284,7 +284,7 @@ private:
 };
 
 SyncRecordUpnpOrgAVTransport1Cpp::SyncRecordUpnpOrgAVTransport1Cpp(CpProxyUpnpOrgAVTransport1Cpp& aProxy)
-    : iService(aProxy)
+: iService(aProxy)
 {
 }
 
@@ -305,7 +305,7 @@ private:
 };
 
 SyncSeekUpnpOrgAVTransport1Cpp::SyncSeekUpnpOrgAVTransport1Cpp(CpProxyUpnpOrgAVTransport1Cpp& aProxy)
-    : iService(aProxy)
+: iService(aProxy)
 {
 }
 
@@ -326,7 +326,7 @@ private:
 };
 
 SyncNextUpnpOrgAVTransport1Cpp::SyncNextUpnpOrgAVTransport1Cpp(CpProxyUpnpOrgAVTransport1Cpp& aProxy)
-    : iService(aProxy)
+: iService(aProxy)
 {
 }
 
@@ -347,7 +347,7 @@ private:
 };
 
 SyncPreviousUpnpOrgAVTransport1Cpp::SyncPreviousUpnpOrgAVTransport1Cpp(CpProxyUpnpOrgAVTransport1Cpp& aProxy)
-    : iService(aProxy)
+: iService(aProxy)
 {
 }
 
@@ -368,7 +368,7 @@ private:
 };
 
 SyncSetPlayModeUpnpOrgAVTransport1Cpp::SyncSetPlayModeUpnpOrgAVTransport1Cpp(CpProxyUpnpOrgAVTransport1Cpp& aProxy)
-    : iService(aProxy)
+: iService(aProxy)
 {
 }
 
@@ -389,7 +389,7 @@ private:
 };
 
 SyncSetRecordQualityModeUpnpOrgAVTransport1Cpp::SyncSetRecordQualityModeUpnpOrgAVTransport1Cpp(CpProxyUpnpOrgAVTransport1Cpp& aProxy)
-    : iService(aProxy)
+: iService(aProxy)
 {
 }
 
@@ -411,8 +411,8 @@ private:
 };
 
 SyncGetCurrentTransportActionsUpnpOrgAVTransport1Cpp::SyncGetCurrentTransportActionsUpnpOrgAVTransport1Cpp(CpProxyUpnpOrgAVTransport1Cpp& aProxy, std::string& aActions)
-    : iService(aProxy)
-    , iActions(aActions)
+: iService(aProxy)
+, iActions(aActions)
 {
 }
 
@@ -421,9 +421,71 @@ void SyncGetCurrentTransportActionsUpnpOrgAVTransport1Cpp::CompleteRequest(IAsyn
     iService.EndGetCurrentTransportActions(aAsync, iActions);
 }
 
+class SyncEnterManualStandbyUpnpOrgAVTransport1Cpp : public SyncProxyAction
+{
+public:
+    SyncEnterManualStandbyUpnpOrgAVTransport1Cpp(CpProxyUpnpOrgAVTransport1Cpp& aProxy);
+    virtual void CompleteRequest(IAsync& aAsync);
+    virtual ~SyncEnterManualStandbyUpnpOrgAVTransport1Cpp() {}
+private:
+    CpProxyUpnpOrgAVTransport1Cpp& iService;
+};
+
+SyncEnterManualStandbyUpnpOrgAVTransport1Cpp::SyncEnterManualStandbyUpnpOrgAVTransport1Cpp(CpProxyUpnpOrgAVTransport1Cpp& aProxy)
+: iService(aProxy)
+{
+}
+
+void SyncEnterManualStandbyUpnpOrgAVTransport1Cpp::CompleteRequest(IAsync& aAsync)
+{
+    iService.EndEnterManualStandby(aAsync);
+}
+
+
+class SyncEnterAutomaticStandbyUpnpOrgAVTransport1Cpp : public SyncProxyAction
+{
+public:
+    SyncEnterAutomaticStandbyUpnpOrgAVTransport1Cpp(CpProxyUpnpOrgAVTransport1Cpp& aProxy);
+    virtual void CompleteRequest(IAsync& aAsync);
+    virtual ~SyncEnterAutomaticStandbyUpnpOrgAVTransport1Cpp() {}
+private:
+    CpProxyUpnpOrgAVTransport1Cpp& iService;
+};
+
+SyncEnterAutomaticStandbyUpnpOrgAVTransport1Cpp::SyncEnterAutomaticStandbyUpnpOrgAVTransport1Cpp(CpProxyUpnpOrgAVTransport1Cpp& aProxy)
+: iService(aProxy)
+{
+}
+
+void SyncEnterAutomaticStandbyUpnpOrgAVTransport1Cpp::CompleteRequest(IAsync& aAsync)
+{
+    iService.EndEnterAutomaticStandby(aAsync);
+}
+
+
+class SyncLeaveStandbyUpnpOrgAVTransport1Cpp : public SyncProxyAction
+{
+public:
+    SyncLeaveStandbyUpnpOrgAVTransport1Cpp(CpProxyUpnpOrgAVTransport1Cpp& aProxy);
+    virtual void CompleteRequest(IAsync& aAsync);
+    virtual ~SyncLeaveStandbyUpnpOrgAVTransport1Cpp() {}
+private:
+    CpProxyUpnpOrgAVTransport1Cpp& iService;
+};
+
+SyncLeaveStandbyUpnpOrgAVTransport1Cpp::SyncLeaveStandbyUpnpOrgAVTransport1Cpp(CpProxyUpnpOrgAVTransport1Cpp& aProxy)
+: iService(aProxy)
+{
+}
+
+void SyncLeaveStandbyUpnpOrgAVTransport1Cpp::CompleteRequest(IAsync& aAsync)
+{
+    iService.EndLeaveStandby(aAsync);
+}
+
 
 CpProxyUpnpOrgAVTransport1Cpp::CpProxyUpnpOrgAVTransport1Cpp(CpDeviceCpp& aDevice)
-    : iCpProxy("schemas-upnp-org", "AVTransport", 1, aDevice.Device())
+: iCpProxy("schemas-upnp-org", "AVTransport", 1, aDevice.Device())
 {
     OpenHome::Net::Parameter* param;
     TChar** allowedValues;
@@ -596,6 +658,18 @@ CpProxyUpnpOrgAVTransport1Cpp::CpProxyUpnpOrgAVTransport1Cpp(CpDeviceCpp& aDevic
     param = new OpenHome::Net::ParameterString("NewPlayMode", allowedValues, 1);
     iActionSetPlayMode->AddInputParameter(param);
     delete[] allowedValues;
+
+    iActionEnterManualStandby = new Action("EnterManualStandby");
+    param = new OpenHome::Net::ParameterUint("InstanceID");
+    iActionEnterManualStandby->AddInputParameter(param);
+
+    iActionEnterAutomaticStandby = new Action("EnterAutomaticStandby");
+    param = new OpenHome::Net::ParameterUint("InstanceID");
+    iActionEnterAutomaticStandby->AddInputParameter(param);
+
+    iActionLeaveStandby = new Action("LeaveStandby");
+    param = new OpenHome::Net::ParameterUint("InstanceID");
+    iActionLeaveStandby->AddInputParameter(param);
 
     iActionSetRecordQualityMode = new Action("SetRecordQualityMode");
     param = new OpenHome::Net::ParameterUint("InstanceID");
@@ -1247,6 +1321,96 @@ void CpProxyUpnpOrgAVTransport1Cpp::EndSetPlayMode(IAsync& aAsync)
     }
 }
 
+void CpProxyUpnpOrgAVTransport1Cpp::SyncEnterManualStandby(uint32_t aInstanceID)
+{
+    SyncEnterManualStandbyUpnpOrgAVTransport1Cpp sync(*this);
+    BeginEnterManualStandby(aInstanceID, sync.Functor());
+    sync.Wait();
+}
+
+void CpProxyUpnpOrgAVTransport1Cpp::BeginEnterManualStandby(uint32_t aInstanceID, FunctorAsync& aFunctor)
+{
+    Invocation* invocation = iCpProxy.GetService().Invocation(*iActionEnterManualStandby, aFunctor);
+    TUint inIndex = 0;
+    const Action::VectorParameters& inParams = iActionEnterManualStandby->InputParameters();
+    invocation->AddInput(new ArgumentUint(*inParams[inIndex++], aInstanceID));
+    iCpProxy.GetInvocable().InvokeAction(*invocation);
+}
+
+void CpProxyUpnpOrgAVTransport1Cpp::EndEnterManualStandby(IAsync& aAsync)
+{
+    ASSERT(((Async&)aAsync).Type() == Async::eInvocation);
+    Invocation& invocation = (Invocation&)aAsync;
+    ASSERT(invocation.Action().Name() == Brn("EnterManualStandby"));
+
+    Error::ELevel level;
+    TUint code;
+    const TChar* ignore;
+    if (invocation.Error(level, code, ignore)) {
+        THROW_PROXYERROR(level, code);
+    }
+}
+
+void CpProxyUpnpOrgAVTransport1Cpp::SyncEnterAutomaticStandby(uint32_t aInstanceID)
+{
+    SyncEnterAutomaticStandbyUpnpOrgAVTransport1Cpp sync(*this);
+    BeginEnterAutomaticStandby(aInstanceID, sync.Functor());
+    sync.Wait();
+}
+
+void CpProxyUpnpOrgAVTransport1Cpp::BeginEnterAutomaticStandby(uint32_t aInstanceID, FunctorAsync& aFunctor)
+{
+    Invocation* invocation = iCpProxy.GetService().Invocation(*iActionEnterAutomaticStandby, aFunctor);
+    TUint inIndex = 0;
+    const Action::VectorParameters& inParams = iActionEnterAutomaticStandby->InputParameters();
+    invocation->AddInput(new ArgumentUint(*inParams[inIndex++], aInstanceID));
+    iCpProxy.GetInvocable().InvokeAction(*invocation);
+}
+
+void CpProxyUpnpOrgAVTransport1Cpp::EndEnterAutomaticStandby(IAsync& aAsync)
+{
+    ASSERT(((Async&)aAsync).Type() == Async::eInvocation);
+    Invocation& invocation = (Invocation&)aAsync;
+    ASSERT(invocation.Action().Name() == Brn("EnterAutomaticStandby"));
+
+    Error::ELevel level;
+    TUint code;
+    const TChar* ignore;
+    if (invocation.Error(level, code, ignore)) {
+        THROW_PROXYERROR(level, code);
+    }
+}
+
+void CpProxyUpnpOrgAVTransport1Cpp::SyncLeaveStandby(uint32_t aInstanceID)
+{
+    SyncLeaveStandbyUpnpOrgAVTransport1Cpp sync(*this);
+    BeginLeaveStandby(aInstanceID, sync.Functor());
+    sync.Wait();
+}
+
+void CpProxyUpnpOrgAVTransport1Cpp::BeginLeaveStandby(uint32_t aInstanceID, FunctorAsync& aFunctor)
+{
+    Invocation* invocation = iCpProxy.GetService().Invocation(*iActionLeaveStandby, aFunctor);
+    TUint inIndex = 0;
+    const Action::VectorParameters& inParams = iActionLeaveStandby->InputParameters();
+    invocation->AddInput(new ArgumentUint(*inParams[inIndex++], aInstanceID));
+    iCpProxy.GetInvocable().InvokeAction(*invocation);
+}
+
+void CpProxyUpnpOrgAVTransport1Cpp::EndLeaveStandby(IAsync& aAsync)
+{
+    ASSERT(((Async&)aAsync).Type() == Async::eInvocation);
+    Invocation& invocation = (Invocation&)aAsync;
+    ASSERT(invocation.Action().Name() == Brn("LeaveStandby"));
+
+    Error::ELevel level;
+    TUint code;
+    const TChar* ignore;
+    if (invocation.Error(level, code, ignore)) {
+        THROW_PROXYERROR(level, code);
+    }
+}
+
 void CpProxyUpnpOrgAVTransport1Cpp::SyncSetRecordQualityMode(uint32_t aInstanceID, const std::string& aNewRecordQualityMode)
 {
     SyncSetRecordQualityModeUpnpOrgAVTransport1Cpp sync(*this);
@@ -1341,40 +1505,39 @@ void CpProxyUpnpOrgAVTransport1Cpp::LastChangePropertyChanged()
 
 void CpProxyUpnpOrgAVTransport1Cpp::Subscribe()
 {
-  iCpProxy.Subscribe();
+    iCpProxy.Subscribe();
 }
 
 void CpProxyUpnpOrgAVTransport1Cpp::Unsubscribe()
 {
- iCpProxy.Unsubscribe();
+    iCpProxy.Unsubscribe();
 }
 
 void CpProxyUpnpOrgAVTransport1Cpp::SetPropertyChanged(Functor& aFunctor)
 {
-  iCpProxy.SetPropertyChanged(aFunctor);
+    iCpProxy.SetPropertyChanged(aFunctor);
 }
 
 void CpProxyUpnpOrgAVTransport1Cpp::SetPropertyInitialEvent(Functor& aFunctor)
 {
-  iCpProxy.SetPropertyInitialEvent(aFunctor);
+    iCpProxy.SetPropertyInitialEvent(aFunctor);
 }
 void CpProxyUpnpOrgAVTransport1Cpp::AddProperty(Property* aProperty)
 {
-  iCpProxy.AddProperty(aProperty);
+    iCpProxy.AddProperty(aProperty);
 }
 
 void CpProxyUpnpOrgAVTransport1Cpp::DestroyService()
 {
-  iCpProxy.DestroyService();
+    iCpProxy.DestroyService();
 }
 
 void CpProxyUpnpOrgAVTransport1Cpp::ReportEvent(Functor aFunctor)
 {
-  iCpProxy.ReportEvent(aFunctor);
+    iCpProxy.ReportEvent(aFunctor);
 }
 
 TUint CpProxyUpnpOrgAVTransport1Cpp::Version() const
 {
-  return iCpProxy.Version();
+    return iCpProxy.Version();
 }
-

@@ -167,6 +167,8 @@ namespace Raumkernel
 
             if (isRaumfeldRenderer && isVirtualRenderer)
                 mediaRenderer = std::shared_ptr<MediaRenderer_RaumfeldVirtual>(new MediaRenderer_RaumfeldVirtual());
+            else if(isRaumfeldRenderer)
+                mediaRenderer = std::shared_ptr<MediaRenderer_Raumfeld>(new MediaRenderer_Raumfeld());
             else
                 mediaRenderer = std::shared_ptr<MediaRenderer>(new MediaRenderer());
 

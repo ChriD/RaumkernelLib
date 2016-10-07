@@ -39,7 +39,20 @@ namespace Raumkernel
         {
             public:
                 MediaRenderer_Raumfeld();
-                virtual ~MediaRenderer_Raumfeld();               
+                virtual ~MediaRenderer_Raumfeld();   
+        
+                EXPORT virtual void enterAutomaticStandby(bool _sync = true);          
+                EXPORT virtual void enterManualStandby(bool _sync = true);          
+                EXPORT virtual void leaveStandby(bool _sync = true);
+
+            protected:
+                virtual void enterAutomaticStandbyProxy(bool _sync = true);
+                virtual void enterManualStandbyProxy(bool _sync = true);
+                virtual void leaveStandbyStandbyProxy(bool _sync = true);
+
+                virtual void onEnterAutomaticStandbyExecuted(OpenHome::Net::IAsync& _aAsync);
+                virtual void onEnterManualStandbyExecuted(OpenHome::Net::IAsync& _aAsync);
+                virtual void onLeaveStandbyStandbyExecuted(OpenHome::Net::IAsync& _aAsync);
         };
 
     }
