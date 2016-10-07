@@ -74,6 +74,7 @@ int main()
     rlutil::getkey();
 
     auto roomUDN = raumkernel.getManagerEngineer()->getZoneManager()->getRoomUDNForRoomName("Küche");
+    //auto roomUDN = raumkernel.getManagerEngineer()->getZoneManager()->getRoomUDNForRoomName("Wohnzimmer");
     auto rendererUDN = raumkernel.getManagerEngineer()->getZoneManager()->getRendererUDNForRoomUDN(roomUDN);
     auto mediaRenderer = std::dynamic_pointer_cast<Raumkernel::Devices::MediaRenderer_Raumfeld>(raumkernel.getManagerEngineer()->getDeviceManager()->getMediaRenderer(rendererUDN));
 

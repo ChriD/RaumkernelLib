@@ -19,7 +19,43 @@ namespace Raumkernel
 
         void MediaRenderer_Raumfeld::enterAutomaticStandby(bool _sync)
         {
-            enterAutomaticStandbyProxy(_sync);
+
+            if (!isAvTransportProxyAvailable())
+            {
+                logWarning("Calling 'enterAutomaticStandby' on renderer '" + getDeviceDescription() + "' without AvTransportProxy!", CURRENT_FUNCTION);
+                return;
+            }
+
+            logDebug("Calling 'enterAutomaticStandby' on renderer '" + getDeviceDescription() + "'", CURRENT_FUNCTION);
+
+            try
+            {
+                enterAutomaticStandbyProxy(_sync);
+            }
+            catch (Raumkernel::Exception::RaumkernelException &e)
+            {
+                if (e.type() == Raumkernel::Exception::ExceptionType::EXCEPTIONTYPE_APPCRASH)
+                    throw e;
+                logRendererError(e.what(), CURRENT_FUNCTION);
+            }
+            catch (std::exception &e)
+            {
+                logRendererError(e.what(), CURRENT_FUNCTION);
+            }
+            catch (std::string &e)
+            {
+                logRendererError(e, CURRENT_FUNCTION);
+            }
+            catch (OpenHome::Exception &e)
+            {
+                logRendererError(e.Message(), CURRENT_FUNCTION);
+            }
+            catch (...)
+            {
+                logRendererError("Unknown Exception", CURRENT_FUNCTION);
+            }
+
+            
         }
 
 
@@ -48,7 +84,40 @@ namespace Raumkernel
 
         void MediaRenderer_Raumfeld::enterManualStandby(bool _sync)
         {
-            enterManualStandbyProxy(_sync);
+            if (!isAvTransportProxyAvailable())
+            {
+                logWarning("Calling 'enterManualStandbyProxy' on renderer '" + getDeviceDescription() + "' without AvTransportProxy!", CURRENT_FUNCTION);
+                return;
+            }
+
+            logDebug("Calling 'enterManualStandbyProxy' on renderer '" + getDeviceDescription() + "'", CURRENT_FUNCTION);
+
+            try
+            {
+                enterManualStandbyProxy(_sync);
+            }
+            catch (Raumkernel::Exception::RaumkernelException &e)
+            {
+                if (e.type() == Raumkernel::Exception::ExceptionType::EXCEPTIONTYPE_APPCRASH)
+                    throw e;
+                logRendererError(e.what(), CURRENT_FUNCTION);
+            }
+            catch (std::exception &e)
+            {
+                logRendererError(e.what(), CURRENT_FUNCTION);
+            }
+            catch (std::string &e)
+            {
+                logRendererError(e, CURRENT_FUNCTION);
+            }
+            catch (OpenHome::Exception &e)
+            {
+                logRendererError(e.Message(), CURRENT_FUNCTION);
+            }
+            catch (...)
+            {
+                logRendererError("Unknown Exception", CURRENT_FUNCTION);
+            }
         }
 
 
@@ -76,8 +145,41 @@ namespace Raumkernel
 
 
         void MediaRenderer_Raumfeld::leaveStandby(bool _sync)
-        {
-            leaveStandbyStandbyProxy(_sync);
+        {            
+            if (!isAvTransportProxyAvailable())
+            {
+                logWarning("Calling 'leaveStandbyStandbyProxy' on renderer '" + getDeviceDescription() + "' without AvTransportProxy!", CURRENT_FUNCTION);
+                return;
+            }
+
+            logDebug("Calling 'leaveStandbyStandbyProxy' on renderer '" + getDeviceDescription() + "'", CURRENT_FUNCTION);
+
+            try
+            {
+                leaveStandbyStandbyProxy(_sync);
+            }
+            catch (Raumkernel::Exception::RaumkernelException &e)
+            {
+                if (e.type() == Raumkernel::Exception::ExceptionType::EXCEPTIONTYPE_APPCRASH)
+                    throw e;
+                logRendererError(e.what(), CURRENT_FUNCTION);
+            }
+            catch (std::exception &e)
+            {
+                logRendererError(e.what(), CURRENT_FUNCTION);
+            }
+            catch (std::string &e)
+            {
+                logRendererError(e, CURRENT_FUNCTION);
+            }
+            catch (OpenHome::Exception &e)
+            {
+                logRendererError(e.Message(), CURRENT_FUNCTION);
+            }
+            catch (...)
+            {
+                logRendererError("Unknown Exception", CURRENT_FUNCTION);
+            }
         }
 
 
