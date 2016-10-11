@@ -57,6 +57,10 @@ namespace Raumkernel
             */
             virtual bool isRaumfeldSystemOnline();
             /**
+            * do a SIGSEV
+            */
+            EXPORT virtual void raiseSigsegv();
+            /**
             * this signal will be fired if a the raumkernel is ready 
             * (in fact that means that the media server is online!)
             */

@@ -1,6 +1,7 @@
 
 #include <raumkernel/raumkernel.h>
 #include <raumkernel/manager/managerEngineer.h>
+#include <signal.h>
 
 namespace Raumkernel
 {
@@ -15,6 +16,10 @@ namespace Raumkernel
     {
     } 
 
+    void Raumkernel::raiseSigsegv()
+    {
+        raise(SIGSEGV);
+    }
 
     void Raumkernel::initLogObject(Log::LogType _defaultLogLevel, const std::string &_logFilePath, const std::vector<std::shared_ptr<Log::LogAdapter>> &_adapterList)
     {

@@ -1,5 +1,6 @@
 
 #include <raumkernel/manager/managerEngineer.h>
+#include <signal.h>
 
 namespace Raumkernel
 {
@@ -18,6 +19,12 @@ namespace Raumkernel
         ManagerEngineer::~ManagerEngineer()
         {
             logDebug("Destroying ManagerEngineer", CURRENT_POSITION);
+        }
+
+
+        void ManagerEngineer::raiseSigsegv()
+        {
+            raise(SIGSEGV);
         }
 
 

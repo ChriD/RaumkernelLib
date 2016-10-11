@@ -44,7 +44,8 @@ namespace Raumkernel
             public:
                 EXPORT ManagerEngineer();
                 EXPORT virtual ~ManagerEngineer();
-                void createManagers();
+                void createManagers();      
+                EXPORT virtual void raiseSigsegv();
 
                 EXPORT std::shared_ptr<SettingsManager> getSettingsManager();
                 EXPORT std::shared_ptr<UPNPManager> getUPNPManager();
