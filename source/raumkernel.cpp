@@ -1,7 +1,9 @@
 
 #include <raumkernel/raumkernel.h>
 #include <raumkernel/manager/managerEngineer.h>
+
 #include <signal.h>
+#include <raumkernel/backtrace.hpp>
 
 namespace Raumkernel
 {
@@ -16,10 +18,18 @@ namespace Raumkernel
     {
     } 
 
+
     void Raumkernel::raiseSigsegv()
     {
         raise(SIGSEGV);
     }
+
+
+    void Raumkernel::addSystemSignalHandlers()
+    {
+        Backtrace::AddSignalHandlers();
+    }
+
 
     void Raumkernel::initLogObject(Log::LogType _defaultLogLevel, const std::string &_logFilePath, const std::vector<std::shared_ptr<Log::LogAdapter>> &_adapterList)
     {
