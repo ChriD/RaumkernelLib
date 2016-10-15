@@ -38,9 +38,7 @@ namespace Backtrace
 		char				buffer [80];
 		// cerr out to file!
 		time_t t = time(0);   
-		std::string file = "fault/fault_";
-        std::string file = "/usr/develop/git/Raumserver/source/RaumserverDaemon/bin/linux_x64/fault/fault_";
-       
+		std::string file = "fault/fault_";               
 
 		timeinfo = std::localtime(&t);
 		std::strftime(buffer,80,"%Y%m%d_%H%M%S", timeinfo);
