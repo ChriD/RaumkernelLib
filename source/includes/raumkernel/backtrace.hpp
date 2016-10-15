@@ -3,9 +3,7 @@
 
 
 namespace Backtrace
-{
-
-	bool SIGNALERROR_KEEPALIVE = false;
+{	
 
 
 #ifndef _MSC_VER
@@ -130,11 +128,10 @@ namespace Backtrace
 		std::cerr.flush();
 		std::cerr.rdbuf(cerrbuf);
 
-		std::cout << "SIGNAL FAULT! Check files in fault directory";
-		if (!SIGNALERROR_KEEPALIVE)
-		{			
-			exit(EXIT_FAILURE);
-		}	
+		std::cout << "SIGNAL FAULT! Check files in fault directory";		
+		
+	    exit(EXIT_FAILURE);
+			
 	}
 
 
