@@ -65,7 +65,7 @@ namespace Raumkernel
 
                 // add upnpDevice reference to our internal list and then inform ohNet UPNP Stack that we are holding a reference
                 // to be sure we do not have any lost reference we check the map if there is the same device already inserted
-                // (this should not be because "removeDevice" will alwayys be called before "addDevice")
+                // (this should not be because "removeDevice" will always be called before "addDevice")
                 if (upnpDeviceMap.find(deviceUDN) != upnpDeviceMap.end())
                 {
                     upnpDeviceMap.erase(deviceUDN);
@@ -93,7 +93,7 @@ namespace Raumkernel
                         logDebug("Media Renderer '" + friendlyName + "' is now useable!", CURRENT_POSITION);     
 
                         // set room state to "online" if renderer which is added is found in zone management 
-                        getManagerEngineer()->getZoneManager()->setRoomOnlineForRenderer(deviceUDN, true);
+                        getManagerEngineer()->getZoneManager()->setRoomOnlineForRenderer(deviceUDN, true);                      
                     }
                     else if (std::dynamic_pointer_cast<Devices::MediaServer>(device))
                     {

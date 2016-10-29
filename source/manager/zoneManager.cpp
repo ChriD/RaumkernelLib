@@ -271,7 +271,7 @@ namespace Raumkernel
                 roomInformationMap.insert(std::make_pair(roomInfo.UDN, roomInfo));                
 
                 roomNode = roomNode.next_sibling("room");
-            }
+            }                        
         }
 
         void ZoneManager::addZoneInformationFromXmlNode(pugi::xml_node _parentNode)
