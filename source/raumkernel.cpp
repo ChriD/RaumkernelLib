@@ -60,7 +60,7 @@ namespace Raumkernel
         }
 
         logObject->setLogLevel(_defaultLogLevel);
-    }
+    }    
 
 
     void Raumkernel::init(const std::string &_settingsFileName)
