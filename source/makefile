@@ -66,8 +66,8 @@ endif
 
 INCPATH = -I includes/
 
-CFLAGS = $(ARCHITECTURE) -std=c++11 -fPIC -Wall -Wno-unknown-pragmas -Wno-unused-parameter -mapcs-frame -funwind-tables -Wextra -O2 $(DEBUG) -c -pthread $(INCPATH)
-CXXFLAGS = $(ARCHITECTURE) -std=c++11 -fPIC -Wall -Wno-unknown-pragmas -Wno-unused-parameter -mapcs-frame -funwind-tables -Wextra -O2 $(DEBUG) -c -pthread $(INCPATH)
+CFLAGS = $(ARCHITECTURE) -std=c++11 -fPIC -Wall -Wno-unknown-pragmas -Wno-unused-parameter -funwind-tables -Wextra -O2 $(DEBUG) -c -pthread $(INCPATH)
+CXXFLAGS = $(ARCHITECTURE) -std=c++11 -fPIC -Wall -Wno-unknown-pragmas -Wno-unused-parameter -funwind-tables -Wextra -O2 $(DEBUG) -c -pthread $(INCPATH)
 LDFLAGS = $(ARCHITECTURE) -shared -pthread -static-libgcc -static-libstdc++ -rdynamic
 
 RM = rm -f 
