@@ -359,6 +359,7 @@ namespace Raumkernel
                 EXPORT virtual void unlockRendererState();
 
                 EXPORT virtual bool isZoneRenderer();
+                EXPORT virtual std::string getName();
 
                 EXPORT bool isRenderingControlProxyAvailable();
                 EXPORT bool isConnectionManagerProxyAvailable();

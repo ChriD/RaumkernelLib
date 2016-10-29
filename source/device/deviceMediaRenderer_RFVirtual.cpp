@@ -19,7 +19,27 @@ namespace Raumkernel
             return true;
         }
 
+
+        std::string MediaRenderer_RaumfeldVirtual::getName()
+        {
+            std::string rendererName;
+            getManagerEngineer()->getZoneManager()->lockLists();
+            try
+            {
+                auto zoneInfoMap = managerEngineer->getZoneManager()->getZoneInformationMap();
+                if (zoneInfoMap.find(UDN) != zoneInfoMap.end())
+                {
+                    rendererName = zoneInfoMap[UDN].name;
+                }
+            }
+            catch (...)
+            {
+            }
+            getManagerEngineer()->getZoneManager()->unlockLists();
+            return rendererName;
+        }
         
+
         MediaRenderer_RaumfeldVirtual::~MediaRenderer_RaumfeldVirtual()
         {
             stopFadeToVolumeThread = true;

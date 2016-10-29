@@ -31,6 +31,11 @@ namespace Raumkernel
         }
 
 
+        std::string MediaRenderer::getName()
+        {
+            return friendlyName;
+        }
+
         void MediaRenderer::deleteProxies()
         {
             // due the proxies are shared pointers we can set them to nullptr instead of deleteing them first

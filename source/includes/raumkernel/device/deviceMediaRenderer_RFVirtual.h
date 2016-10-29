@@ -104,6 +104,7 @@ namespace Raumkernel
                 EXPORT virtual void fadeToVolume(const std::uint32_t _volume, std::uint32_t _duration, bool sync);   
 
                 EXPORT virtual bool isZoneRenderer() override;
+                EXPORT virtual std::string getName() override;
                              
             protected:                
                 virtual void createProxyAvTransport() override;
