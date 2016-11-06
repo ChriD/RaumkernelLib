@@ -45,24 +45,8 @@ void myCallback(Raumkernel::HttpClient::HttpRequest *_request)
 
 /// https://httpbin.org/
 
-int main()
+int main(int argc, char** argv)
 {
-   // doSomething(std::bind(myCallback, 1, 2));
-
-    /*
-    std::chrono::steady_clock::time_point timePointStart, timePointEnd;
-    std::chrono::milliseconds miliseconds;
-
-    // test object and the performance of the logger by writing 1000 log entries to file 
-    Raumkernel::Log::Log	logObjectFile; 
-    logObjectFile.registerAdapter(std::shared_ptr<Raumkernel::Log::LogAdapter>(new Raumkernel::Log::LogAdapter_File()));
-    timePointStart = std::chrono::steady_clock::now();    
-    testLog(logObjectFile);
-    
-    timePointEnd = std::chrono::steady_clock::now();
-    miliseconds = std::chrono::duration_cast<std::chrono::milliseconds>(timePointEnd.time_since_epoch() - timePointStart.time_since_epoch());
-    std::cout << "Average time to create one log entry [FILE]: " + std::to_string((float)miliseconds.count() / 1000) + "ms\n";
-    */
 
     Backtrace::AddSignalHandlers();
 

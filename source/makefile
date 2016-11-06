@@ -1,6 +1,6 @@
 # Makefile template for shared library
-DTARGET := build/raumkernel.so
-STARGET := build/raumkernel.a
+DTARGET := build/libraumkernel.so
+STARGET := build/libraumkernel.a
 
 # defining the source files for the project
 SRCFILES := $(wildcard *.cpp)
@@ -17,7 +17,8 @@ SRCFILES += $(wildcard xml/pugixml/*.cpp)
 
 INCPATH  := -I includes/
 LIBSPATH := libs/linux_$(arch)/
-LIBSDEF  :=  $(LIBSPATH)libohNetCore.a $(LIBSPATH)libohNetDevices.a $(LIBSPATH)libohNetProxies.a
+DLIBSDEF  :=  $(LIBSPATH)libohNetCore.a $(LIBSPATH)libohNetDevices.a $(LIBSPATH)libohNetProxies.a
+SLIBSDEF  :=  $(LIBSPATH)libohNetCore.a $(LIBSPATH)libohNetDevices.a $(LIBSPATH)libohNetProxies.a
 
 
 ifeq ($(arch),) 
@@ -54,13 +55,16 @@ ifeq ($(dbg),1)
   DEBUG = -g
 endif
 
-DLINKERFLAGS  	 := $(ARCHITECTURE) $(LINKERFLAGS)
-SLINKERFLAGS  	 := $(ARCHITECTURE) $(LINKERFLAGS) -shared
+DLINKERFLAGS  	 := $(ARCHITECTURE) $(LINKERFLAGS) -shared
+SLINKERFLAGS  	 := $(ARCHITECTURE) $(LINKERFLAGS)
 DCOMPILERFLAGS   := $(ARCHITECTURE) $(COMPILERFLAGS) $(DEBUG) $(ARCHCOMPILERFLAGS) $(INCPATH)
 SCOMPILERFLAGS   := $(ARCHITECTURE) $(COMPILERFLAGS) $(DEBUG) $(ARCHCOMPILERFLAGS) $(INCPATH)
 
 RM  := rm -f 
 RMR := rm -rf
+AR  := ar
+
+ARFLAGS := rcs
 
 DOBJDIR := build/obj-dyn/
 SOBJDIR := build/obj-stat/
@@ -75,9 +79,10 @@ SOBJFILES := $(addprefix $(SOBJDIR), $(SRCFILES:.cpp=.o))
 ### when calling make then build static and dynamic target
 all: ${DTARGET} ${STARGET}
 	
+
 ### create dynamic library
 $(DTARGET): $(DOBJFILES)	
-	$(COMPILER) ${DLINKERFLAGS} -o $@ $^ $(LIBSDEF) 
+	$(COMPILER) ${DLINKERFLAGS} -o $@ $^ $(DLIBSDEF) 
 
 $(DOBJDIR)%.o: %.cpp
 	@ mkdir -p $(basename $@)
@@ -87,15 +92,14 @@ $(DOBJDIR)%.o: %.cpp
 
 
 ### create static library
-$(STARGET): $(SOBJFILES)	
-	$(COMPILER) ${SLINKERFLAGS} -o $@ $^ $(LIBSDEF) 
+$(STARGET): $(SOBJFILES)
+	$(AR) $(ARFLAGS) $@ $^ $(SLIBSDEF) 
 
 $(SOBJDIR)%.o: %.cpp
 	@ mkdir -p $(basename $@)
 	$(COMPILER) $(SCOMPILERFLAGS) -MMD -c -o $@ $<
 
 -include $(SOBJFILES:.o=.d)
-
 
 
 ### clear all build relevant files 
