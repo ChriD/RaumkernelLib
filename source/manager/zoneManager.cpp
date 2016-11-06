@@ -90,6 +90,9 @@ namespace Raumkernel
             else
             {
                 logError("Zone configuration request finished with Error: " + std::to_string(_request->getResponse()->getErrorCode()), CURRENT_POSITION);
+                // be sure we do not flood the system with endless requests if there is an unrecoverable error, so we do wait 
+                // here a little bit until we do a new request
+                std::this_thread::sleep_for(std::chrono::milliseconds(2000));
             }
 
             // we have now parsed the zone xml, so we may now call the long pollong request again (we have to use the 

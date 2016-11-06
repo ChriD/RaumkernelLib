@@ -75,14 +75,20 @@ int main()
 
     auto roomUDN = raumkernel.getManagerEngineer()->getZoneManager()->getRoomUDNForRoomName("Küche");
     //auto roomUDN = raumkernel.getManagerEngineer()->getZoneManager()->getRoomUDNForRoomName("Wohnzimmer");
-    auto rendererUDN = raumkernel.getManagerEngineer()->getZoneManager()->getRendererUDNForRoomUDN(roomUDN);
-    auto mediaRenderer = std::dynamic_pointer_cast<Raumkernel::Devices::MediaRenderer_Raumfeld>(raumkernel.getManagerEngineer()->getDeviceManager()->getMediaRenderer(rendererUDN));
+    //auto rendererUDN = raumkernel.getManagerEngineer()->getZoneManager()->getRendererUDNForRoomUDN(roomUDN);
+    auto rendererUDN = raumkernel.getManagerEngineer()->getZoneManager()->getZoneUDNForRoomUDN(roomUDN);
+    //auto mediaRenderer = std::dynamic_pointer_cast<Raumkernel::Devices::MediaRenderer_Raumfeld>(raumkernel.getManagerEngineer()->getDeviceManager()->getMediaRenderer(rendererUDN));
+    auto mediaRenderer = std::dynamic_pointer_cast<Raumkernel::Devices::MediaRenderer_RaumfeldVirtual>(raumkernel.getManagerEngineer()->getDeviceManager()->getMediaRenderer(rendererUDN));
 
-    mediaRenderer->enterManualStandby();
+    auto name = mediaRenderer->getName();
 
     rlutil::getkey();
 
-    mediaRenderer->leaveStandby();
+    //mediaRenderer->enterManualStandby();
+
+    rlutil::getkey();
+
+    //mediaRenderer->leaveStandby();
 
     rlutil::getkey();
 
