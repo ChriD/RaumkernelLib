@@ -1,107 +1,105 @@
 # Makefile template for shared library
+DTARGET := build/raumkernel.so
+STARGET := build/raumkernel.a
+
+# defining the source files for the project
+SRCFILES := $(wildcard *.cpp)
+SRCFILES += $(wildcard device/*.cpp)
+SRCFILES += $(wildcard device/eventParser/*.cpp)
+SRCFILES += $(wildcard device/proxies/*.cpp)
+SRCFILES += $(wildcard httpclient/*.cpp)
+SRCFILES += $(wildcard logger/*.cpp)
+SRCFILES += $(wildcard manager/*.cpp)
+SRCFILES += $(wildcard media/*.cpp)
+SRCFILES += $(wildcard media/item/*.cpp)
+SRCFILES += $(wildcard tools/*.cpp)
+SRCFILES += $(wildcard xml/pugixml/*.cpp)
+
+INCPATH  := -I includes/
+LIBSPATH := libs/linux_$(arch)/
+LIBSDEF  :=  $(LIBSPATH)libohNetCore.a $(LIBSPATH)libohNetDevices.a $(LIBSPATH)libohNetProxies.a
+
+
+ifeq ($(arch),) 
+  COMPILER          := g++
+  ARCHITECTURE      := 
+  ARCHCOMPILERFLAGS :=
+endif
 
 ifeq ($(arch),X64) 
-  ARCHITECTURE = -m64
-  CC = g++-4.9
-  CXX = g++-4.9
-  LIBSPATH = libs/linux_x64/
-  TARGET = libs/_tmpBuild/raumkernel.so
-endif
-	
-ifeq ($(arch),X86) 
-  ARCHITECTURE = -m32 
-  CC = g++-4.9
-  CXX = g++-4.9
-  LIBSPATH = libs/linux_x86/
-  TARGET = libs/_tmpBuild/raumkernel.so
-endif
-
-ifeq ($(arch),ARMA53)
-  ARCHITECTURE = -march=armv8-a
-  CC = arm-linux-gnueabihf-g++-4.9 
-  CXX = arm-linux-gnueabihf-g++-4.9
-  LIBSPATH = libs/linux_ARMA53/
-  TARGET = libs/_tmpBuild/raumkernel.so
+  COMPILER          := g++-4.9
+  ARCHITECTURE      := -m64
+  ARCHCOMPILERFLAGS :=
 endif
 
 ifeq ($(arch),ARMV7HF)
-  ARCHITECTURE = -march=armv7-a
-  CC = arm-linux-gnueabihf-g++-4.9 
-  CXX = arm-linux-gnueabihf-g++-4.9
-  LIBSPATH = libs/linux_ARMV7/
-  TARGET = libs/_tmpBuild/raumkernel.so
-endif
-
-ifeq ($(arch),ARMV6)
-  ARCHITECTURE = -march=armv6
-  CC = arm-linux-gnueabi-g++-4.9 
-  CXX = arm-linux-gnueabi-g++-4.9
-  LIBSPATH = libs/linux_ARMV6/
-  TARGET = libs/_tmpBuild/raumkernel.so
+  COMPILER          := arm-linux-gnueabihf-g++-4.9 
+  ARCHITECTURE      := -march=armv7-a
+  ARCHCOMPILERFLAGS := -fasynchronous-unwind-tables -mapcs-frame
 endif
 
 ifeq ($(arch),ARMV5TE)
-  ARCHITECTURE = -march=armv5te -mtune=xscale
-  CC = arm-linux-gnueabi-g++-4.9 
-  CXX = arm-linux-gnueabi-g++-4.9
-  LIBSPATH = libs/linux_ARMV5/
-  TARGET = libs/_tmpBuild/raumkernel.so
-endif 
-
-ifeq ($(arch),AMDGEODE)
-  ARCHITECTURE = -m32 -march=geode -mtune=generic
-  CC = g++-4.9 
-  CXX = g++-4.9
-  LIBSPATH = libs/linux_AMDGEODE/
-  TARGET = libs/_tmpBuild/raumkernel.so
+  COMPILER          := arm-linux-gnueabi-g++-4.9 
+  ARCHITECTURE      := -march=armv5te -mtune=xscale
+  ARCHCOMPILERFLAGS := -fasynchronous-unwind-tables -mapcs-frame
 endif 
 
 
-LIBSDEF =  $(LIBSPATH)libohNetCore.a $(LIBSPATH)libohNetDevices.a $(LIBSPATH)libohNetProxies.a
+COMPILERFLAGS :=  -std=c++11 -fPIC -Wall -Wno-unknown-pragmas -Wno-unused-parameter -funwind-tables -Wextra -O2 -c -pthread 
+LINKERFLAGS   :=  -pthread -static-libgcc -static-libstdc++ -rdynamic
+
 
 DEBUG = 
 ifeq ($(dbg),1)
   DEBUG = -g
 endif
 
-INCPATH = -I includes/
+DLINKERFLAGS  	 := $(ARCHITECTURE) $(LINKERFLAGS)
+SLINKERFLAGS  	 := $(ARCHITECTURE) $(LINKERFLAGS) -shared
+DCOMPILERFLAGS   := $(ARCHITECTURE) $(COMPILERFLAGS) $(DEBUG) $(ARCHCOMPILERFLAGS) $(INCPATH)
+SCOMPILERFLAGS   := $(ARCHITECTURE) $(COMPILERFLAGS) $(DEBUG) $(ARCHCOMPILERFLAGS) $(INCPATH)
 
-CFLAGS = $(ARCHITECTURE) -std=c++11 -fPIC -Wall -Wno-unknown-pragmas -Wno-unused-parameter -funwind-tables -Wextra -O2 $(DEBUG) -c -pthread $(INCPATH)
-CXXFLAGS = $(ARCHITECTURE) -std=c++11 -fPIC -Wall -Wno-unknown-pragmas -Wno-unused-parameter -funwind-tables -Wextra -O2 $(DEBUG) -c -pthread $(INCPATH)
-LDFLAGS = $(ARCHITECTURE) -shared -pthread -static-libgcc -static-libstdc++ -rdynamic
+RM  := rm -f 
+RMR := rm -rf
 
-RM = rm -f 
+DOBJDIR := build/obj-dyn/
+SOBJDIR := build/obj-stat/
 
-SRCS = $(wildcard *.cpp)
-SRCS += $(wildcard device/*.cpp)
-SRCS += $(wildcard device/eventParser/*.cpp)
-SRCS += $(wildcard device/proxies/*.cpp)
-SRCS += $(wildcard httpclient/*.cpp)
-SRCS += $(wildcard logger/*.cpp)
-SRCS += $(wildcard manager/*.cpp)
-SRCS += $(wildcard media/*.cpp)
-SRCS += $(wildcard media/item/*.cpp)
-SRCS += $(wildcard tools/*.cpp)
-SRCS += $(wildcard xml/pugixml/*.cpp)
-
-OBJS = $(SRCS:.cpp=.o)
+DOBJFILES := $(addprefix $(DOBJDIR), $(SRCFILES:.cpp=.o))
+SOBJFILES := $(addprefix $(SOBJDIR), $(SRCFILES:.cpp=.o))
 
 
 .PHONY: all
-all: ${TARGET}
-
-$(TARGET): $(OBJS)
-	$(CC) ${LDFLAGS} -o $@ $^ $(LIBSDEF)
- 
-$(SRCS:.cpp=.d):%.d:%.cpp
-	$(CC) $(CFLAGS) -MM $< >$@
-
-include $(SRCS:.cpp=.d)
 
 
-#.PHONY: clean
-#clean:
-#	-${RM} ${TARGET} ${OBJS} $(SRCS:.cpp=.d) 
+### when calling make then build static and dynamic target
+all: ${DTARGET} ${STARGET}
+	
+### create dynamic library
+$(DTARGET): $(DOBJFILES)	
+	$(COMPILER) ${DLINKERFLAGS} -o $@ $^ $(LIBSDEF) 
+
+$(DOBJDIR)%.o: %.cpp
+	@ mkdir -p $(basename $@)
+	$(COMPILER) $(DCOMPILERFLAGS) -MMD -c -o $@ $<
+
+-include $(DOBJFILES:.o=.d)
+
+
+### create static library
+$(STARGET): $(SOBJFILES)	
+	$(COMPILER) ${SLINKERFLAGS} -o $@ $^ $(LIBSDEF) 
+
+$(SOBJDIR)%.o: %.cpp
+	@ mkdir -p $(basename $@)
+	$(COMPILER) $(SCOMPILERFLAGS) -MMD -c -o $@ $<
+
+-include $(SOBJFILES:.o=.d)
+
+
+
+### clear all build relevant files 
 .PHONY: clean
 clean:
-	-${RM} ${TARGET} ${OBJS} $(SRCS:.cpp=.d) 
+	-${RM} ${DTARGET} ${STARGET} ${DOBJFILES} ${SOBJFILES} $(DOBJFILES:.o=.d) 
+	-${RMR} ${DOBJDIR} ${SOBJDIR}
