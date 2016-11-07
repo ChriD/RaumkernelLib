@@ -6,8 +6,8 @@ STARGET := build/testStat
 SRCFILES := tests/test.cpp
 
 INCPATH    := -I includes/
-LIBSPATH    := build/libs/linux_$(arch)/
-LIBSPATHEXE := libs/linux_$(arch)
+LIBSPATH    := build/linux_$(arch)/libs/
+LIBSPATHEXE := libs
 DLIBSDEF    :=  -lraumkernel
 SLIBSDEF    :=  -Bstatic $(LIBSPATH)libraumkernel.a libs/linux_$(arch)/libohNetCore.a libs/linux_$(arch)/libohNetDevices.a libs/linux_$(arch)/libohNetProxies.a
 

@@ -1,12 +1,12 @@
 #!/bin/bash
 ARCH=$1
-rm -rf build/libs/linux_$ARCH
+rm -rf build/linux_$ARCH/libs
 mkdir -p build
-mkdir -p build/libs/
-mkdir -p build/libs/linux_$ARCH
+mkdir -p build/linux_$ARCH
+mkdir -p build/linux_$ARCH/libs
 make arch=$ARCH dbg=1 clean
 make arch=$ARCH dbg=1
-/bin/cp -rf build/libraumkernel.so build/libs/linux_$ARCH/libraumkernel.so
-/bin/cp -rf build/libraumkernel.a build/libs/linux_$ARCH/libraumkernel.a
+/bin/cp -rf build/libraumkernel.so build/linux_$ARCH/libs/libraumkernel.so
+/bin/cp -rf build/libraumkernel.a build/linux_$ARCH/libs/libraumkernel.a
 make arch=$ARCH dbg=1 clean
 
