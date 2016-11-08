@@ -5,7 +5,6 @@
 #include <raumkernel/device/deviceMediaRenderer_RFVirtual.h>
 #include <raumkernel/rlutil/rlutil.h>
 
-#include "raumkernel/backtrace.hpp"
 
 #include <random>
 #include <iostream>
@@ -47,8 +46,6 @@ void myCallback(Raumkernel::HttpClient::HttpRequest *_request)
 
 int main(int argc, char** argv)
 {
-
-    Backtrace::AddSignalHandlers();
 
     Raumkernel::Raumkernel  raumkernel;
 

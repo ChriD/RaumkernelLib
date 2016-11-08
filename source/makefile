@@ -15,10 +15,12 @@ SRCFILES += $(wildcard media/item/*.cpp)
 SRCFILES += $(wildcard tools/*.cpp)
 SRCFILES += $(wildcard xml/pugixml/*.cpp)
 
-INCPATH  := -I includes/
-LIBSPATH := libs/linux_$(arch)/
-DLIBSDEF  :=  $(LIBSPATH)libohNetCore.a $(LIBSPATH)libohNetDevices.a $(LIBSPATH)libohNetProxies.a
-SLIBSDEF  :=  $(LIBSPATH)libohNetCore.a $(LIBSPATH)libohNetDevices.a $(LIBSPATH)libohNetProxies.a
+INCPATH     := -I includes/
+LIBSPATH    := libs/linux_$(arch)/
+LIBSPATHEXE := libs
+#LIBSPATHEXE := ./
+DLIBSDEF    :=  $(LIBSPATH)libohNetCore.a $(LIBSPATH)libohNetDevices.a $(LIBSPATH)libohNetProxies.a
+SLIBSDEF    :=  $(LIBSPATH)libohNetCore.a $(LIBSPATH)libohNetDevices.a $(LIBSPATH)libohNetProxies.a
 
 
 ifeq ($(arch),) 
@@ -47,7 +49,7 @@ endif
 
 
 COMPILERFLAGS :=  -std=c++11 -fPIC -Wall -Wno-unknown-pragmas -Wno-unused-parameter -funwind-tables -Wextra -O2 -c -pthread 
-LINKERFLAGS   :=  -pthread -static-libgcc -static-libstdc++ -rdynamic
+LINKERFLAGS   :=  -pthread -static-libgcc -static-libstdc++ -rdynamic -Wl,--no-as-needed -ldl -L$(LIBSPATH) -Wl,-rpath,$(LIBSPATHEXE) 
 
 
 DEBUG = 

@@ -3,8 +3,6 @@
 #include <raumkernel/manager/managerEngineer.h>
 
 #include <signal.h>
-#include <raumkernel/backtrace.hpp>
-
 
 
 namespace Raumkernel
@@ -24,12 +22,6 @@ namespace Raumkernel
     void Raumkernel::raiseSigsegv()
     {
         raise(SIGSEGV);
-    }
-
-
-    void Raumkernel::addSystemSignalHandlers()
-    {
-        Backtrace::AddSignalHandlers();
     }
 
 
