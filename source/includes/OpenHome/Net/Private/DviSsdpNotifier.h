@@ -5,9 +5,12 @@
 #include <OpenHome/Private/Network.h>
 #include <OpenHome/Types.h>
 #include <OpenHome/Buffer.h>
+#include <OpenHome/Exception.h>
 #include <OpenHome/Net/Private/Ssdp.h>
 
 #include <vector>
+
+EXCEPTION(MsearchResponseLimit)
 
 namespace OpenHome {
 namespace Net {
@@ -26,23 +29,26 @@ class SsdpNotifierScheduler : private INonCopyable
 public:
     virtual ~SsdpNotifierScheduler();
     void Stop();
+    void SetUdn(const Brx& aUdn);
 protected:
-    SsdpNotifierScheduler(DvStack& aDvStack, ISsdpNotifyListener& aListener);
+    SsdpNotifierScheduler(DvStack& aDvStack, ISsdpNotifyListener& aListener, const TChar* aId);
     void Start(TUint aDuration, TUint aMsgCount);
+    virtual void NotifyComplete(TBool aCancelled);
 private:
     virtual TUint NextMsg() = 0;
-    virtual void NotifyComplete();
     void SendNextMsg();
     void ScheduleNextTimer(TUint aRemainingMsgs) const;
 protected:
     void LogNotifierStart(const TChar* aType);
     const TChar* iType;
+    const TChar* iId;
 private:
     Timer* iTimer;
     DvStack& iDvStack;
     TUint iEndTimeMs;
     ISsdpNotifyListener& iListener;
     TBool iStop;
+    Brn iUdn;
 };
 
 
@@ -56,6 +62,7 @@ public:
     void StartUuid(IUpnpAnnouncementData& aAnnouncementData, const Endpoint& aRemote, TUint aMx, const Brx& aUri, TUint aConfigId, TIpAddress aAdapter);
     void StartDeviceType(IUpnpAnnouncementData& aAnnouncementData, const Endpoint& aRemote, TUint aMx, const Brx& aUri, TUint aConfigId, TIpAddress aAdapter);
     void StartServiceType(IUpnpAnnouncementData& aAnnouncementData, const Endpoint& aRemote, TUint aMx, const OpenHome::Net::ServiceType& aServiceType, const Brx& aUri, TUint aConfigId, TIpAddress aAdapter);
+    Endpoint Remote() const;
 private:
     void Start(IUpnpAnnouncementData& aAnnouncementData, TUint aTotalMsgs, TUint aNextMsgIndex, const Endpoint& aRemote, TUint aMx, const Brx& aUri, TUint aConfigId, TIpAddress aAdapter);
 private: // from DviMsg
@@ -64,6 +71,7 @@ private:
     static const TUint kMaxUriBytes = 256;
     IUpnpAnnouncementData* iAnnouncementData;
     ISsdpNotify* iNotifier;
+    Endpoint iRemote;
     Bws<kMaxUriBytes> iUri;
     TUint iRemainingMsgs;
     TUint iNextMsgIndex;
@@ -77,13 +85,13 @@ class DeviceAnnouncement : public SsdpNotifierScheduler
 public:
     DeviceAnnouncement(DvStack& aDvStack, ISsdpNotifyListener& aListener);
     void StartAlive(IUpnpAnnouncementData& aAnnouncementData, TIpAddress aAdapter, const Brx& aUri, TUint aConfigId);
-    void StartByeBye(IUpnpAnnouncementData& aAnnouncementData, TIpAddress aAdapter, const Brx& aUri, TUint aConfigId, Functor& aCompleted);
-    void StartUpdate(IUpnpAnnouncementData& aAnnouncementData, TIpAddress aAdapter, const Brx& aUri, TUint aConfigId, Functor& aCompleted);
+    void StartByeBye(IUpnpAnnouncementData& aAnnouncementData, TIpAddress aAdapter, const Brx& aUri, TUint aConfigId, FunctorGeneric<TBool>& aCompleted);
+    void StartUpdate(IUpnpAnnouncementData& aAnnouncementData, TIpAddress aAdapter, const Brx& aUri, TUint aConfigId, FunctorGeneric<TBool>& aCompleted);
 private:
     void Start(ISsdpNotify& aNotifier, IUpnpAnnouncementData& aAnnouncementData, TIpAddress aAdapter, const Brx& aUri, TUint aConfigId, TUint aMsgInterval);
 private: // from DviMsg
     TUint NextMsg();
-    void NotifyComplete();
+    void NotifyComplete(TBool aCancelled);
 private:
     static const TUint kMaxUriBytes = 256;
     SsdpNotifier iSsdpNotifier;
@@ -93,19 +101,20 @@ private:
     IUpnpAnnouncementData* iAnnouncementData;
     Bws<kMaxUriBytes> iUri;
     ISsdpNotify* iCurrentNotifier;
-    Functor iCompleted;
+    FunctorGeneric<TBool> iCompleted;
     TUint iTotalMsgs;
     TUint iNextMsgIndex;
 };
 
 class DviSsdpNotifierManager : private ISsdpNotifyListener
 {
+    static const TUint kMaxMsearchResponsesPerEndpoint;
 public:
     DviSsdpNotifierManager(DvStack& aDvStack);
     ~DviSsdpNotifierManager();
     void AnnouncementAlive(IUpnpAnnouncementData& aAnnouncementData, TIpAddress aAdapter, const Brx& aUri, TUint aConfigId);
-    void AnnouncementByeBye(IUpnpAnnouncementData& aAnnouncementData, TIpAddress aAdapter, const Brx& aUri, TUint aConfigId, Functor& aCompleted);
-    void AnnouncementUpdate(IUpnpAnnouncementData& aAnnouncementData, TIpAddress aAdapter, const Brx& aUri, TUint aConfigId, Functor& aCompleted);
+    void AnnouncementByeBye(IUpnpAnnouncementData& aAnnouncementData, TIpAddress aAdapter, const Brx& aUri, TUint aConfigId, FunctorGeneric<TBool>& aCompleted);
+    void AnnouncementUpdate(IUpnpAnnouncementData& aAnnouncementData, TIpAddress aAdapter, const Brx& aUri, TUint aConfigId, FunctorGeneric<TBool>& aCompleted);
     void MsearchResponseAll(IUpnpAnnouncementData& aAnnouncementData, const Endpoint& aRemote, TUint aMx, const Brx& aUri, TUint aConfigId, TIpAddress aAdapter);
     void MsearchResponseRoot(IUpnpAnnouncementData& aAnnouncementData, const Endpoint& aRemote, TUint aMx, const Brx& aUri, TUint aConfigId, TIpAddress aAdapter);
     void MsearchResponseUuid(IUpnpAnnouncementData& aAnnouncementData, const Endpoint& aRemote, TUint aMx, const Brx& aUri, TUint aConfigId, TIpAddress aAdapter);
@@ -143,7 +152,7 @@ private:
 private:
     void Stop(std::list<Notifier*>& aList, const Brx& aUdn);
     void Delete(std::list<Notifier*>& aList);
-    Responder* GetResponder(IUpnpAnnouncementData& aAnnouncementData);
+    Responder* GetResponder(IUpnpAnnouncementData& aAnnouncementData, const Endpoint& aRemote);
     Announcer* GetAnnouncer(IUpnpAnnouncementData& aAnnouncementData);
     TBool TryMove(SsdpNotifierScheduler* aScheduler, std::list<Notifier*>& aFrom, std::list<Notifier*>& aTo);
 private: // from ISsdpNotifyListener

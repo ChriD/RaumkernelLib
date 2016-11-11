@@ -499,6 +499,7 @@ private:
     static const TUint kWriteBufferBytes = 1024;
     static const TUint kConnectTimeoutMs = 3000;
     static const TUint kResponseTimeoutMs = 60 * 1000;
+    static const TUint kReceiveTimeoutMs = 10*1000;
 
 public:
     HttpReader(Environment& aEnv);
@@ -524,8 +525,8 @@ private:
     HttpHeaderContentLength iHeaderContentLength;
     HttpHeaderLocation iHeaderLocation;
     HttpHeaderTransferEncoding iHeaderTransferEncoding;
-    Srs<1024> iReadBuffer;
-    ReaderUntilS<1024> iReaderUntil;
+    Srs<kReadBufferBytes> iReadBuffer;
+    ReaderUntilS<kReadBufferBytes> iReaderUntil;
     ReaderHttpResponse iReaderResponse;
     Sws<kWriteBufferBytes> iWriteBuffer;
     WriterHttpRequest iWriterRequest;

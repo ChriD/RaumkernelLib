@@ -220,7 +220,7 @@ namespace Raumkernel
 
                 }
                 // the emited callback method may throw errors, so we have to catch all kind of exceptions
-                // to be sure the client does not
+                // to be sure the client does not crash
                 catch (Raumkernel::Exception::RaumkernelException &e)
                 {
                     if (e.type() == Raumkernel::Exception::ExceptionType::EXCEPTIONTYPE_APPCRASH)

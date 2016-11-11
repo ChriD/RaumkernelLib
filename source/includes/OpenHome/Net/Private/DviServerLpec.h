@@ -83,7 +83,8 @@ public:
     void SubscriptionAdded(DviSubscription& aSubscription);
     void Disable();
 private: // from IPropertyWriterFactory
-    IPropertyWriter* CreateWriter(const IDviSubscriptionUserData* aUserData, const Brx& aSid, TUint aSequenceNumber);
+    IPropertyWriter* ClaimWriter(const IDviSubscriptionUserData* aUserData, const Brx& aSid, TUint aSequenceNumber);
+    void ReleaseWriter(IPropertyWriter* aWriter);
     void NotifySubscriptionCreated(const Brx& aSid);
     void NotifySubscriptionDeleted(const Brx& aSid);
     void NotifySubscriptionExpired(const Brx& aSid);
@@ -214,13 +215,14 @@ private:
     mutable Bws<128> iResourceUriPrefix;
     std::vector<SubscriptionData> iSubscriptions;
 };
-    
+
 class DvStack;
 
 class DviServerLpec : public DviServer
 {
 public:
     DviServerLpec(DvStack& aDvStack, TUint aPort = 0);
+    ~DviServerLpec();
     void NotifyDeviceDisabled(const Brx& aName, const Brx& aUdn);
     TUint Port() const;
 private: // from DviServerUpnp

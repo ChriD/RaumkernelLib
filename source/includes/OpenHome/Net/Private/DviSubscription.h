@@ -32,8 +32,9 @@ class IPropertyWriterFactory
 {
 public:
     virtual ~IPropertyWriterFactory() {}
-    virtual IPropertyWriter* CreateWriter(const IDviSubscriptionUserData* aUserData, 
-                                          const Brx& aSid, TUint aSequenceNumber) = 0;
+    virtual IPropertyWriter* ClaimWriter(const IDviSubscriptionUserData* aUserData, 
+                                         const Brx& aSid, TUint aSequenceNumber) = 0;
+    virtual void ReleaseWriter(IPropertyWriter* aWriter) = 0;
     virtual void NotifySubscriptionCreated(const Brx& aSid) = 0;
     virtual void NotifySubscriptionDeleted(const Brx& aSid) = 0;
     virtual void NotifySubscriptionExpired(const Brx& aSid) = 0;
@@ -93,7 +94,6 @@ private: // IPropertyWriter
     void PropertyWriteUint(const Brx& aName, TUint aValue);
     void PropertyWriteBool(const Brx& aName, TBool aValue);
     void PropertyWriteBinary(const Brx& aName, const Brx& aValue);
-    void Release();
 private:
     void WriteVariable(const Brx& aName, const Brx& aValue);
 private:
@@ -103,7 +103,7 @@ private:
 class Publisher : public Thread
 {
 public:
-    Publisher(const TChar* aName, Fifo<Publisher*>& aFree);
+    Publisher(const TChar* aName, TUint aPriority, Fifo<Publisher*>& aFree);
     ~Publisher();
     void Publish(DviSubscription* aSubscription);
 private:

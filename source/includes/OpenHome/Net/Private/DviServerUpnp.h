@@ -24,7 +24,14 @@ class IRedirector
 public:
     virtual TBool RedirectUri(const Brx& aUri, Brn& aRedirectTo) = 0;
 };
-    
+
+class IPathMapperUpnp
+{
+public:
+    virtual ~IPathMapperUpnp() {}
+    virtual TBool TryMapPath(const Brx& aReqPath, Bwx& aMappedPath) = 0;
+};
+
 class HeaderSoapAction : public HttpHeader
 {
 public:
@@ -102,25 +109,32 @@ private:
 class PropertyWriterUpnp : public PropertyWriter
 {
 public:
-    static PropertyWriterUpnp* Create(DvStack& aDvStack, const Endpoint& aPublisher, const Endpoint& aSubscriber,
-                                      const Brx& aSubscriberPath, const Http::EVersion aHttpVersion, const Brx& aSid, TUint aSequenceNumber);
-private:
-    PropertyWriterUpnp(DvStack& aDvStack);
-    void Connect(const Endpoint& aSubscriber);
-    void WriteHeaders(const Endpoint& aPublisher, const Brx& aSubscriberPath,
-                      const Http::EVersion aHttpVersion, const Brx& aSid, TUint aSequenceNumber);
-private: // IPropertyWriter
+    PropertyWriterUpnp(Environment& aEnv);
     ~PropertyWriterUpnp();
+    void Initialise(const Endpoint& aPublisher, const Endpoint& aSubscriber, const Brx& aSubscriberPath,
+                    Http::EVersion aHttpVersion, const Brx& aSid, TUint aSequenceNumber);
+    void Reset();
+private:
+    void Connect();
+    void WriteHeaders(TUint aContentLength);
+private: // from IPropertyWriter
     void PropertyWriteEnd();
 private:
-    static const TUint kMaxRequestBytes = 12*1024;
+    static const TUint kWriteGranularity = 4 * 1024;
     static const TUint kMaxResponseBytes = 128;
     static const TUint kReadTimeoutMs = 5 * 1000;
-    DvStack& iDvStack;
+    Environment& iEnv;
     SocketTcpClient iSocket;
-    Sws<kMaxRequestBytes>* iWriteBuffer;
+    Sws<kWriteGranularity>* iWriteBuffer;
     WriterHttpRequest* iWriterEvent;
-    WriterHttpChunked* iWriterChunked;
+    WriterBwh iEventBody;
+    // event specific members follow
+    Endpoint iPublisher;
+    Endpoint iSubscriber;
+    Brn iSubscriberPath;
+    Http::EVersion iHttpVersion;
+    Brn iSid;
+    TUint iSequenceNumber;
 };
 
 class DvStack;
@@ -129,10 +143,12 @@ class PropertyWriterFactory : public IPropertyWriterFactory
 {
 public:
     PropertyWriterFactory(DvStack& aDvStack, TIpAddress aAdapter, TUint aPort);
+    TUint Adapter() const;
     void SubscriptionAdded(DviSubscription& aSubscription);
     void Disable();
 private: // IPropertyWriterFactory
-    IPropertyWriter* CreateWriter(const IDviSubscriptionUserData* aUserData, const Brx& aSid, TUint aSequenceNumber);
+    IPropertyWriter* ClaimWriter(const IDviSubscriptionUserData* aUserData, const Brx& aSid, TUint aSequenceNumber);
+    void ReleaseWriter(IPropertyWriter* aWriter);
     void NotifySubscriptionCreated(const Brx& aSid);
     void NotifySubscriptionDeleted(const Brx& aSid);
     void NotifySubscriptionExpired(const Brx& aSid);
@@ -149,13 +165,16 @@ private:
     typedef std::map<Brn,DviSubscription*,BufferCmp> SubscriptionMap;
     SubscriptionMap iSubscriptionMap;
     Mutex iSubscriptionMapLock;
+    Fifo<PropertyWriterUpnp*> iFifo;
 };
 
 
 class DviSessionUpnp : public SocketTcpSession, private IResourceWriter, private IDviInvocation
 {
 public:
-    DviSessionUpnp(DvStack& aDvStack, TIpAddress aInterface, TUint aPort, IRedirector& aRedirector);
+    DviSessionUpnp(DvStack& aDvStack, TIpAddress aInterface, TUint aPort,
+                   PropertyWriterFactory& aPropertyWriterFactory,
+                   IPathMapperUpnp& aPathMapper, IRedirector& aRedirector);
     ~DviSessionUpnp();
 private:
     void Run();
@@ -203,10 +222,13 @@ private:
     static const TUint kMaxRequestBytes = 64*1024;
     static const TUint kMaxResponseBytes = 4*1024;
     static const TUint kReadTimeoutMs = 5 * 1000;
+    static const TUint kMaxRequestPathBytes = 256;
 private:
     DvStack& iDvStack;
     TIpAddress iInterface;
     TUint iPort;
+    PropertyWriterFactory& iPropertyWriterFactory;
+    IPathMapperUpnp& iPathMapper;
     IRedirector& iRedirector;
     Srx* iReadBuffer;
     ReaderUntil* iReaderUntil;
@@ -230,26 +252,33 @@ private:
     TBool iResponseStarted;
     TBool iResponseEnded;
     Bws<kMaxRequestBytes> iSoapRequest;
+    Bws<kMaxRequestPathBytes> iMappedRequestUri;
     DviDevice* iInvocationDevice;
     DviService* iInvocationService;
     mutable Bws<128> iResourceUriPrefix;
     TBool iResourceWriterHeadersOnly;
-    PropertyWriterFactory* iPropertyWriterFactory;
     Semaphore iShutdownSem;
 };
 
 
-class DviServerUpnp : public DviServer, private IRedirector
+class DviServerUpnp : public DviServer, private IPathMapperUpnp, private IRedirector
 {
 public:
     DviServerUpnp(DvStack& aDvStack, TUint aPort = 0);
+    ~DviServerUpnp();
+    void SetPathMapper(IPathMapperUpnp& aPathMapper);
     void Redirect(const Brx& aUriRequested, const Brx& aUriRedirectedTo);
-protected:
-    virtual SocketTcpServer* CreateServer(const NetworkAdapter& aNif);
-private:
+protected: // from DviServer
+    SocketTcpServer* CreateServer(const NetworkAdapter& aNif);
+    void NotifyServerDeleted(TIpAddress aInterface);
+private: // from IPathMapperUpnp
+    TBool TryMapPath(const Brx& aReqPath, Bwx& aMappedPath);
+private: // from IRedirector
     TBool RedirectUri(const Brx& aUri, Brn& aRedirectTo);
 private:
     TUint iPort;
+    std::vector<PropertyWriterFactory*> iPropertyWriterFactories;
+    IPathMapperUpnp* iPathMapper;
     Brh iRedirectUriRequested;
     Brh iRedirectUriRedirectedTo;
 };
