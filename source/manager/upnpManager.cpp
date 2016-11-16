@@ -38,9 +38,8 @@ namespace Raumkernel
 
         void UPNPManager::addLogLevels()
         {
-            std::string logLevelString = managerEngineer->getSettingsManager()->getValue(Manager::SETTINGS_RAUMKERNEL_LOGLEVELUPNP);
-            // always log errors!            
-            OpenHome::Debug::AddLevel(OpenHome::Debug::kError);
+            std::string logLevelString = managerEngineer->getSettingsManager()->getValue(Manager::SETTINGS_RAUMKERNEL_LOGLEVELUPNP);            
+            //OpenHome::Debug::AddLevel(OpenHome::Debug::kError);
             auto logLevels = Tools::StringUtil::explodeString(logLevelString, ",");
             for (auto it : logLevels)
             {
