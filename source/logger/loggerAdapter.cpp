@@ -78,7 +78,10 @@ namespace Raumkernel
 
         void LogAdapter_File::log(LogData _logData)
         {            
-            std::string logString = getFormattedCurrentDateTimeString(_logData.logDateTimeStamp) + " " + Raumkernel::Tools::StringUtil::padR(getLogTypeString(_logData.type) + ":", 10) + _logData.log + " [" + _logData.location + "]";
+            std::string logString = getFormattedCurrentDateTimeString(_logData.logDateTimeStamp) + " " + Raumkernel::Tools::StringUtil::padR(getLogTypeString(_logData.type) + ":", 10) + _logData.log;
+            
+            if (!_logData.location.empty())
+                logString += " [" + _logData.location + "]";
 
             // write log into logFile. we do open and close the file each time we write a log. This is a little bit slower than keeping the handle open (about 0.3ms per log entry)  
             // But we will be sure the log file is not locked in the worst case of an unexpected application shutdown.            

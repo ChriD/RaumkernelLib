@@ -117,6 +117,12 @@ namespace Raumkernel
                 * ist a thread which will do the refresh of the device list in a periodical manner
                 */
                 void refreshDeviceListThread(std::atomic_bool &_stopThread, std::uint32_t _refreshTimeMS);
+                /**
+                * Not intended for external use
+                * will catch logs from the upnp stack
+                */
+                void upnpStackLog(const char* _log);
+                void addLogLevels();
 
         };
     }

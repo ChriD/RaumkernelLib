@@ -7,7 +7,7 @@ namespace Raumkernel
     namespace Manager
     {
         UPNPManager::UPNPManager() : ManagerBase()
-        {    
+        {
             upupDeviceListAll = nullptr;
             stopThreads = false;
             refreshDeviceListThreadStarted = false;
@@ -30,6 +30,53 @@ namespace Raumkernel
         }
 
 
+        void UPNPManager::upnpStackLog(const char* _log)
+        {
+            logDebug("UPNP: " + std::string(_log), "");
+        }
+
+
+        void UPNPManager::addLogLevels()
+        {
+            std::string logLevelString = managerEngineer->getSettingsManager()->getValue(Manager::SETTINGS_RAUMKERNEL_LOGLEVELUPNP);
+            // always log errors!            
+            OpenHome::Debug::AddLevel(OpenHome::Debug::kError);
+            auto logLevels = Tools::StringUtil::explodeString(logLevelString, ",");
+            for (auto it : logLevels)
+            {
+                OpenHome::TUint64 logPart = 0;
+                it = Tools::StringUtil::toupper(it);
+
+                if (it == "ALL")                logPart = OpenHome::Debug::kAll;     
+                if (it == "ADAPTERCHANGE")      logPart = OpenHome::Debug::kAdapterChange;
+                if (it == "BONJOUR")            logPart = OpenHome::Debug::kBonjour;
+                if (it == "DEVICE")             logPart = OpenHome::Debug::kDevice;
+                if (it == "DVDEVICE")           logPart = OpenHome::Debug::kDvDevice;
+                if (it == "DVEVENT")            logPart = OpenHome::Debug::kDvEvent;
+                if (it == "DVWEBSOCKET")        logPart = OpenHome::Debug::kDvWebSocket;
+                if (it == "DVINVOCATION")       logPart = OpenHome::Debug::kDvInvocation;
+                if (it == "DVSSDPNOTIFIER")     logPart = OpenHome::Debug::kDvSsdpNotifier;
+                if (it == "ERROR")              logPart = OpenHome::Debug::kError;
+                if (it == "EVENT")              logPart = OpenHome::Debug::kEvent;
+                if (it == "HTTP")               logPart = OpenHome::Debug::kHttp;
+                if (it == "LPEC")               logPart = OpenHome::Debug::kLpec;
+                if (it == "NETWORK")            logPart = OpenHome::Debug::kNetwork;
+                if (it == "NONE")               logPart = OpenHome::Debug::kNone;
+                if (it == "SERVICE")            logPart = OpenHome::Debug::kService;
+                if (it == "SSDPMULTICAST")      logPart = OpenHome::Debug::kSsdpMulticast;
+                if (it == "SSDPUNICAST")        logPart = OpenHome::Debug::kSsdpUnicast;
+                if (it == "TRACE")              logPart = OpenHome::Debug::kTrace;
+                if (it == "THREAD")             logPart = OpenHome::Debug::kThread;
+                if (it == "TIMER")              logPart = OpenHome::Debug::kTimer;
+                if (it == "VERBOSE")            logPart = OpenHome::Debug::kVerbose;
+                if (it == "XMLFETCH")           logPart = OpenHome::Debug::kXmlFetch;                
+                
+                if (logPart)
+                    OpenHome::Debug::AddLevel(logPart);
+            }            
+        }
+
+
         void UPNPManager::init(std::string _networkAdapterName)
         {            
             OpenHome::Net::InitialisationParams*		initParams;
@@ -43,12 +90,13 @@ namespace Raumkernel
 
                 logDebug("Init OpenHome UPNP Control Stack", CURRENT_POSITION);
 
-                initParams = OpenHome::Net::InitialisationParams::Create();
-                OpenHome::Net::UpnpLibrary::Initialise(initParams);  
+                initParams = OpenHome::Net::InitialisationParams::Create();                                                       
+                initParams->SetLogOutput(OpenHome::MakeFunctorMsg(*this, &UPNPManager::upnpStackLog));                
+                addLogLevels();
+                OpenHome::Net::UpnpLibrary::Initialise(initParams);                                  
 
                 //UpnpLibrary::SetSubnetListChangedListener(...) and UpnpLibrary::SetNetworkAdapterChangedListener(...).
                 //OpenHome::Net::UpnpLibrary::
-
 
                 if (!_networkAdapterName.empty())
                     preferedNetworkAdapterList.emplace_back(NetworkAdapterIdentifier(_networkAdapterName, 0));

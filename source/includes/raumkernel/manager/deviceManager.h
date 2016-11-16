@@ -33,6 +33,7 @@
 
 #include <OpenHome/Net/Cpp/OhNet.h>
 #include <OpenHome/Net/Cpp/CpDevice.h>
+#include <OpenHome/Private/Debug.h>
 
 
 namespace Raumkernel

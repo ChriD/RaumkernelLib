@@ -37,6 +37,7 @@ namespace Raumkernel
     {
 
         const std::string SETTINGS_RAUMKERNEL_LOGLEVEL = ".//Raumkernel//Log//Level";
+        const std::string SETTINGS_RAUMKERNEL_LOGLEVELUPNP = ".//Raumkernel//Log//LevelUpnp";
         const std::string SETTINGS_RAUMKERNEL_LOGADAPTERS = ".//Raumkernel//Log//Adapters";
         const std::string SETTINGS_RAUMKERNEL_NETWORKADAPTERNAME = ".//Raumkernel//NetworkAdapterName";        
         const std::string SETTINGS_RAUMKERNEL_HOSTCONFIGDEVICENAME = ".//Raumkernel//Raumfeld//HostConfigDeviceName";
