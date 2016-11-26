@@ -19,6 +19,7 @@ namespace Raumkernel
             deviceXML = "";
             modelNumber = "";
             serialNumber = "";
+            isRaumfeldDevice = false;
         }
 
         Device::~Device()
@@ -132,6 +133,16 @@ namespace Raumkernel
             return UDN;
         }
 
+
+        bool Device::getIsRaumfeldDevice()
+        {
+            return isRaumfeldDevice;
+        }
+
+        void Device::setIsRaumfeldDevice(bool _isRaumfeldDevice)
+        {
+            isRaumfeldDevice = _isRaumfeldDevice;
+        }
 
         void Device::setCpDevice(OpenHome::Net::CpDeviceCpp *_cpDevice)
         {      

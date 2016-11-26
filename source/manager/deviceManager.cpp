@@ -59,7 +59,7 @@ namespace Raumkernel
 
                 _device.GetAttribute("Upnp.DeviceXml", deviceXML);
                 _device.GetAttribute("Upnp.Location", location);
-                _device.GetAttribute("Upnp.FriendlyName", friendlyName);
+                _device.GetAttribute("Upnp.FriendlyName", friendlyName);              
 
                 logDebug("Adding device '" + friendlyName + "' to manager", CURRENT_POSITION);    
 
@@ -79,6 +79,15 @@ namespace Raumkernel
                 deviceCreator.setLogObject(getLogObject());
                 deviceCreator.setManagerEngineer(getManagerEngineer());                
                 device = deviceCreator.createDeviceFromDeviceXML(deviceXML);
+
+                // do not add non raumfeld devices
+                if (device != nullptr && device->getIsRaumfeldDevice() == false && getManagerEngineer()->getSettingsManager()->getValue(Manager::SETTINGS_RAUMKERNEL_ADDNONRAUMFELDDEVICES) == "0")
+                {
+                    logDebug("Sevice '" + friendlyName + "' is not a Raumfeld Device! Skip adding!", CURRENT_POSITION);
+                    // this will release the memory because its a shared pointer;
+                    device = nullptr;
+                }
+
                 // if we got a pointer to a device, than the device is useable for the kernel
                 if (device != nullptr)
                 {
@@ -110,12 +119,18 @@ namespace Raumkernel
                             std::int16_t firstPosIP = location.find_first_of(":") + 3;
                             raumfeldHostIP = location.substr(firstPosIP, location.find_last_of(":") - firstPosIP);                             
                         }
-                    }                  
-                }
+                    }  
 
-                sigMediaRendererAdded.fire_if(std::dynamic_pointer_cast<Devices::MediaRenderer>(device) != nullptr, std::dynamic_pointer_cast<Devices::MediaRenderer>(device));
-                sigMediaServerAdded.fire_if(std::dynamic_pointer_cast<Devices::MediaServer>(device) != nullptr, std::dynamic_pointer_cast<Devices::MediaServer>(device));
-                sigDeviceListChanged.fire();
+                    sigMediaRendererAdded.fire_if(std::dynamic_pointer_cast<Devices::MediaRenderer>(device) != nullptr, std::dynamic_pointer_cast<Devices::MediaRenderer>(device));
+                    sigMediaServerAdded.fire_if(std::dynamic_pointer_cast<Devices::MediaServer>(device) != nullptr, std::dynamic_pointer_cast<Devices::MediaServer>(device));
+                    sigDeviceListChanged.fire();
+                }
+                else
+                {
+                
+                    _device.RemoveRef();
+                }
+               
             }
             catch (Raumkernel::Exception::RaumkernelException &e)
             {

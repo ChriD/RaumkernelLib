@@ -50,6 +50,7 @@ namespace Raumkernel
                 void setDeviceXML(std::string _deviceXML);
                 void setModelNumber(std::string _modelNumber);
                 void setSerialNumber(std::string _serialNumber);
+                void setIsRaumfeldDevice(bool _isRaumfeldDevice);
 
                 void setCpDevice(OpenHome::Net::CpDeviceCpp* _cpDevice);
 
@@ -64,6 +65,7 @@ namespace Raumkernel
                 EXPORT std::string getModelNumber();
                 EXPORT std::string getSerialNumber();
                 EXPORT std::string getDeviceDescription();
+                EXPORT bool getIsRaumfeldDevice();
 
             protected:
                 std::string UDN;
@@ -76,6 +78,7 @@ namespace Raumkernel
                 std::string deviceXML;
                 std::string modelNumber;
                 std::string serialNumber;
+                bool isRaumfeldDevice;
 
                 // because the ohNet gives us a raw pointer instead a shared one we are sticked to this raw pointer
                 // not very nice but if we handle it with care it should be no problem

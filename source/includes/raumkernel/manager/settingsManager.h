@@ -51,6 +51,7 @@ namespace Raumkernel
         const std::string SETTINGS_RAUMKERNEL_UPNPREFRESHTIME = ".//Raumkernel//UPNPRefreshTime";
         const std::string SETTINGS_RAUMKERNEL_HTTPREQUESTPUMPSLEEP = ".//Raumkernel//HTTPRequestPumpSleep";
         const std::string SETTINGS_RAUMKERNEL_HTTPREQUESTHANDLERSLEEP = ".//Raumkernel//HTTPRequestHandlerSleep";
+        const std::string SETTINGS_RAUMKERNEL_ADDNONRAUMFELDDEVICES = ".//Raumkernel//AddNonRaumfeldDevices";
 
 
         class SettingsManager : public ManagerBase

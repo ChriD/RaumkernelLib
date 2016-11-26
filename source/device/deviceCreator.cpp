@@ -165,6 +165,8 @@ namespace Raumkernel
             isVirtualRenderer = deviceModelDescription.find(getManagerEngineer()->getSettingsManager()->getValue(Manager::SETTINGS_RAUMKERNEL_RAUMFELDDESCRIPTIONVIRTUALMEDIAPLAYER)) != std::string::npos;
             isRaumfeldRenderer = deviceManufacturer.find(getManagerEngineer()->getSettingsManager()->getValue(Manager::SETTINGS_RAUMKERNEL_RAUMFELDMANUFACTURER)) != std::string::npos;
 
+
+
             if (isRaumfeldRenderer && isVirtualRenderer)
                 mediaRenderer = std::shared_ptr<MediaRenderer_RaumfeldVirtual>(new MediaRenderer_RaumfeldVirtual());
             else if(isRaumfeldRenderer)
@@ -172,6 +174,7 @@ namespace Raumkernel
             else
                 mediaRenderer = std::shared_ptr<MediaRenderer>(new MediaRenderer());
 
+            mediaRenderer->setIsRaumfeldDevice(isRaumfeldRenderer);
             setDeviceInformationFromDeviceXML(mediaRenderer, _deviceNode);
 
             return mediaRenderer;
@@ -196,6 +199,7 @@ namespace Raumkernel
             else
                 mediaServer = std::shared_ptr<MediaServer>(new MediaServer());
             
+            mediaServer->setIsRaumfeldDevice(isRaumfeldMediaServer);
             setDeviceInformationFromDeviceXML(mediaServer, _deviceNode);
 
             return mediaServer;
