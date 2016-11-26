@@ -127,7 +127,7 @@ namespace Raumkernel
                 }
                 else
                 {
-                
+                    upnpDeviceMap.erase(deviceUDN);
                     _device.RemoveRef();
                 }
                
