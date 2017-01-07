@@ -51,6 +51,7 @@ namespace Raumkernel
                 void setModelNumber(std::string _modelNumber);
                 void setSerialNumber(std::string _serialNumber);
                 void setIsRaumfeldDevice(bool _isRaumfeldDevice);
+                void beforeDelete();
 
                 void setCpDevice(OpenHome::Net::CpDeviceCpp* _cpDevice);
 

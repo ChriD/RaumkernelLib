@@ -17,7 +17,7 @@ namespace Raumkernel
         }
 
 
-        void DeviceCreator::setDeviceInformationFromDeviceXML(std::shared_ptr<Device> _device, pugi::xml_node _deviceNode)
+        void DeviceCreator::setDeviceInformationFromDeviceXML(Device* _device, pugi::xml_node _deviceNode)
         {
             pugi::xml_document doc;
             pugi::xml_node deviceNode = _deviceNode, valueNode;
@@ -62,13 +62,13 @@ namespace Raumkernel
         }
 
         
-        std::shared_ptr<Devices::Device> DeviceCreator::createDeviceFromDeviceXML(std::string _deviceXML)
+        Devices::Device* DeviceCreator::createDeviceFromDeviceXML(std::string _deviceXML)
         {
             pugi::xml_document doc;
             pugi::xml_node deviceNode, rootNode, valueNode;
-            std::shared_ptr<Devices::MediaRenderer> mediaRenderer = nullptr;
-            std::shared_ptr<Devices::MediaServer > mediaServer = nullptr;
-            std::shared_ptr<Devices::Device> createdDevice = nullptr;;
+            Devices::MediaRenderer* mediaRenderer = nullptr;
+            Devices::MediaServer* mediaServer = nullptr;
+            Devices::Device* createdDevice = nullptr;
             std::string deviceType, deviceUDN;     
 
             logDebug("Try to create device from device XML", CURRENT_POSITION);
@@ -148,11 +148,11 @@ namespace Raumkernel
         }
 
 
-        std::shared_ptr<Devices::MediaRenderer> DeviceCreator::createMediaRendererFromDeviceNode(pugi::xml_node _deviceNode)
+        Devices::MediaRenderer* DeviceCreator::createMediaRendererFromDeviceNode(pugi::xml_node _deviceNode)
         {  
             pugi::xml_node valueNode;
             std::string deviceModelDescription, deviceManufacturer;
-            std::shared_ptr<Devices::MediaRenderer> mediaRenderer;
+            Devices::MediaRenderer* mediaRenderer;
             bool isVirtualRenderer = false, isRaumfeldRenderer = false;            
 
             valueNode = _deviceNode.child("manufacturer");
@@ -168,11 +168,11 @@ namespace Raumkernel
 
 
             if (isRaumfeldRenderer && isVirtualRenderer)
-                mediaRenderer = std::shared_ptr<MediaRenderer_RaumfeldVirtual>(new MediaRenderer_RaumfeldVirtual());
+                mediaRenderer = new MediaRenderer_RaumfeldVirtual();
             else if(isRaumfeldRenderer)
-                mediaRenderer = std::shared_ptr<MediaRenderer_Raumfeld>(new MediaRenderer_Raumfeld());
+                mediaRenderer = new MediaRenderer_Raumfeld();
             else
-                mediaRenderer = std::shared_ptr<MediaRenderer>(new MediaRenderer());
+                mediaRenderer = new MediaRenderer();
 
             mediaRenderer->setIsRaumfeldDevice(isRaumfeldRenderer);
             setDeviceInformationFromDeviceXML(mediaRenderer, _deviceNode);
@@ -181,11 +181,11 @@ namespace Raumkernel
         }
 
 
-        std::shared_ptr<Devices::MediaServer> DeviceCreator::createMediaServerFromDeviceNode(pugi::xml_node _deviceNode)
+        Devices::MediaServer* DeviceCreator::createMediaServerFromDeviceNode(pugi::xml_node _deviceNode)
         {
             pugi::xml_node valueNode;
             std::string deviceModelDescription, deviceManufacturer;
-            std::shared_ptr<Devices::MediaServer> mediaServer;
+            Devices::MediaServer* mediaServer;
             bool isRaumfeldMediaServer = false;           
 
             valueNode = _deviceNode.child("manufacturer");
@@ -195,9 +195,9 @@ namespace Raumkernel
             isRaumfeldMediaServer = deviceManufacturer.find(getManagerEngineer()->getSettingsManager()->getValue(Manager::SETTINGS_RAUMKERNEL_RAUMFELDMANUFACTURER)) != std::string::npos;
 
             if (isRaumfeldMediaServer)
-                mediaServer = std::shared_ptr<MediaServer_Raumfeld>(new MediaServer_Raumfeld());
+                mediaServer = new MediaServer_Raumfeld();
             else
-                mediaServer = std::shared_ptr<MediaServer>(new MediaServer());
+                mediaServer = new MediaServer();
             
             mediaServer->setIsRaumfeldDevice(isRaumfeldMediaServer);
             setDeviceInformationFromDeviceXML(mediaServer, _deviceNode);

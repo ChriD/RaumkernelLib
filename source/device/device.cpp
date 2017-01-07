@@ -161,6 +161,11 @@ namespace Raumkernel
             deleteProxies();
         }
 
+
+        void Device::beforeDelete()
+        {            
+        }
+
         void Device::createProxies()
         {
             // overload this method to create the proxies

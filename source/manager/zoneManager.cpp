@@ -335,8 +335,8 @@ namespace Raumkernel
 
             lastZoneConfigurationXML = _zonesXML;
                                  
-            getManagerEngineer()->getDeviceManager()->lockDeviceList();
-            lockLists();
+            getManagerEngineer()->getDeviceManager()->lock();
+            lock();
             
             try
             {
@@ -404,8 +404,8 @@ namespace Raumkernel
 
             logDebug("Parsing zone configuration XML finished", CURRENT_POSITION);
 
-            unlockLists();
-            getManagerEngineer()->getDeviceManager()->unlockDeviceList();                        
+            unlock();
+            getManagerEngineer()->getDeviceManager()->unlock();                        
         }
 
 
@@ -423,8 +423,8 @@ namespace Raumkernel
 
         void ZoneManager::clearMaps()
         {
-            getManagerEngineer()->getDeviceManager()->lockDeviceList();
-            lockLists();
+            getManagerEngineer()->getDeviceManager()->lock();
+            lock();
 
             try
             {
@@ -436,8 +436,8 @@ namespace Raumkernel
                 logError("Unknown Error!", CURRENT_POSITION);
             }
 
-            unlockLists();
-            getManagerEngineer()->getDeviceManager()->unlockDeviceList();
+            unlock();
+            getManagerEngineer()->getDeviceManager()->unlock();
         }
 
 
@@ -613,13 +613,13 @@ namespace Raumkernel
         }
 
 
-        void ZoneManager::lockLists()
+        void ZoneManager::lock()
         {
             //logDebug("LOCK ZONELIST", CURRENT_POSITION);
             mutexMapAccess.lock();
         }
 
-        void ZoneManager::unlockLists()
+        void ZoneManager::unlock()
         {
             //logDebug("UNLOCK ZONELIST", CURRENT_POSITION);
             mutexMapAccess.unlock();

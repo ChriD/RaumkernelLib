@@ -104,17 +104,16 @@ namespace Raumkernel
     }
 
 
-    void Raumkernel::onMediaServerAdded(std::shared_ptr<Devices::MediaServer> _mediaServer)
+    void Raumkernel::onMediaServerAdded(Devices::MediaServer* _mediaServer)
     {
+        // The _mediaServer pointer can be used due ist tn the lock mutex of the device manager
+
         // if the raumfeld media server was added, we can be sure that we have a ip for the requests
         // so we can start the zone configuration request    
         if (_mediaServer->isRaumfeldMediaServer())
         {
             managerEngineer->getZoneManager()->startZoneRequests();
-            managerEngineer->getMediaListManager()->setMediaServer(std::dynamic_pointer_cast<Devices::MediaServer_Raumfeld>(_mediaServer));
-
-            //getManagerEngineer()->getDeviceManager()->lockDeviceList();
-            //getManagerEngineer()->getZoneManager()->lockLists();
+            managerEngineer->getMediaListManager()->setMediaServer(dynamic_cast<Devices::MediaServer_Raumfeld*>(_mediaServer));
 
             try
             {
@@ -124,7 +123,7 @@ namespace Raumkernel
                 // so we tell him now to do so...
                 for (auto pair : getManagerEngineer()->getDeviceManager()->getMediaRenderers())
                 {
-                    if (std::dynamic_pointer_cast<Devices::MediaRenderer_RaumfeldVirtual>(pair.second))
+                    if (dynamic_cast<Devices::MediaRenderer_RaumfeldVirtual*>(pair.second))                    
                         getManagerEngineer()->getMediaListManager()->loadMediaItemListByZoneUDN(pair.first);
                 }
             }
@@ -133,18 +132,16 @@ namespace Raumkernel
                 logError("Error while updateing zone lists on media server appearance!", CURRENT_POSITION);
             }
 
-            //getManagerEngineer()->getDeviceManager()->unlockDeviceList();
-            //getManagerEngineer()->getZoneManager()->unlockLists();
-
-
             isOnline = true;
             sigRaumfeldSystemOnline.fire();
         }
     }
 
 
-    void Raumkernel::onMediaServerRemoved(std::shared_ptr<Devices::MediaServer> _mediaServer)
+    void Raumkernel::onMediaServerRemoved(Devices::MediaServer* _mediaServer)
     {
+        // The _mediaServer pointer can be used due ist tn the lock mutex of the device manager
+
         // if the raumfeld media server was removed, we have to stop the zone configuration request
         if (_mediaServer->isRaumfeldMediaServer())
         {

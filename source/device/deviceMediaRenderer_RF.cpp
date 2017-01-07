@@ -74,10 +74,21 @@ namespace Raumkernel
 
         void MediaRenderer_Raumfeld::onEnterAutomaticStandbyExecuted(OpenHome::Net::IAsync& _aAsync)
         {
-            if (!isAvTransportProxyAvailable())
-                return;
-            auto proxy = std::dynamic_pointer_cast<OpenHome::Net::CpProxyUpnpOrgAVTransport1Cpp>(getAvTransportProxy());
-            proxy->EndEnterAutomaticStandby(_aAsync);
+            try
+            {
+                if (!isAvTransportProxyAvailable())
+                    return;
+                auto proxy = std::dynamic_pointer_cast<OpenHome::Net::CpProxyUpnpOrgAVTransport1Cpp>(getAvTransportProxy());
+                proxy->EndEnterAutomaticStandby(_aAsync);
+            }
+            catch (OpenHome::Exception &e)
+            {
+                logRendererError(e.Message(), CURRENT_POSITION);
+            }
+            catch (...)
+            {
+                logRendererError("Unknown exception!", CURRENT_POSITION);
+            }
         }
 
 
@@ -136,10 +147,21 @@ namespace Raumkernel
 
         void MediaRenderer_Raumfeld::onEnterManualStandbyExecuted(OpenHome::Net::IAsync& _aAsync)
         {
-            if (!isAvTransportProxyAvailable())
-                return;
-            auto proxy = std::dynamic_pointer_cast<OpenHome::Net::CpProxyUpnpOrgAVTransport1Cpp>(getAvTransportProxy());
-            proxy->EndEnterManualStandby(_aAsync);
+            try
+            {
+                if (!isAvTransportProxyAvailable())
+                    return;
+                auto proxy = std::dynamic_pointer_cast<OpenHome::Net::CpProxyUpnpOrgAVTransport1Cpp>(getAvTransportProxy());
+                proxy->EndEnterManualStandby(_aAsync);
+            }
+            catch (OpenHome::Exception &e)
+            {
+                logRendererError(e.Message(), CURRENT_POSITION);
+            }
+            catch (...)
+            {
+                logRendererError("Unknown exception!", CURRENT_POSITION);
+            }
         }
 
 
@@ -198,10 +220,21 @@ namespace Raumkernel
 
         void MediaRenderer_Raumfeld::onLeaveStandbyStandbyExecuted(OpenHome::Net::IAsync& _aAsync)
         {
-            if (!isAvTransportProxyAvailable())
-                return;
-            auto proxy = std::dynamic_pointer_cast<OpenHome::Net::CpProxyUpnpOrgAVTransport1Cpp>(getAvTransportProxy());
-            proxy->EndLeaveStandby(_aAsync);
+            try
+            {
+                if (!isAvTransportProxyAvailable())
+                    return;
+                auto proxy = std::dynamic_pointer_cast<OpenHome::Net::CpProxyUpnpOrgAVTransport1Cpp>(getAvTransportProxy());
+                proxy->EndLeaveStandby(_aAsync);
+            }
+            catch (OpenHome::Exception &e)
+            {
+                logRendererError(e.Message(), CURRENT_POSITION);
+            }
+            catch (...)
+            {
+                logRendererError("Unknown exception!", CURRENT_POSITION);
+            }
         }
 
 

@@ -39,26 +39,36 @@ namespace Raumkernel
 
         void MediaServer::createProxies()
         {
-            if (!cpDevice)
+            try
             {
-                logWarning("Calling 'createProxies' on server " + this->getDeviceDescription() + " without cpDevice!", CURRENT_POSITION);
-                this->deleteProxies();
-                return;
-            }
+                if (!cpDevice)
+                {
+                    logWarning("Calling 'createProxies' on server " + this->getDeviceDescription() + " without cpDevice!", CURRENT_POSITION);
+                    this->deleteProxies();
+                    return;
+                }
 
-            // create standard proxies for the common media servers
-            if (!contentDirectoryProxy)
+                // create standard proxies for the common media servers
+                if (!contentDirectoryProxy)
+                {
+                    logDebug("Create ContentDirectory-Proxy for media server " + this->getDeviceDescription(), CURRENT_POSITION);
+                    createProxyContentDirectory();
+                }
+
+                if (!connectionManagerProxy)
+                {
+                    logDebug("Create ConnectionManager-Proxy for media server " + this->getDeviceDescription(), CURRENT_POSITION);
+                    createProxyConnectionManager();
+                }
+            }
+            catch (OpenHome::Exception &e)
             {
-                logDebug("Create ContentDirectory-Proxy for media server " + this->getDeviceDescription(), CURRENT_POSITION);
-                createProxyContentDirectory();
+                logServerError(e.Message(), CURRENT_POSITION);
             }
-
-            if (!connectionManagerProxy)
+            catch (...)
             {
-                logDebug("Create ConnectionManager-Proxy for media server " + this->getDeviceDescription(), CURRENT_POSITION);
-                createProxyConnectionManager();
+                logServerError("Unknown exception!", CURRENT_POSITION);
             }
-
         }
 
 
@@ -124,23 +134,56 @@ namespace Raumkernel
 
 
         void MediaServer::onContentDirectoryProxyPropertyChanged()
-        {            
-            auto proxy = std::dynamic_pointer_cast<OpenHome::Net::CpProxyUpnpOrgContentDirectory1Cpp>(getContentDirectoryProxy());
-            // not needed
+        {  
+            try
+            {
+                auto proxy = std::dynamic_pointer_cast<OpenHome::Net::CpProxyUpnpOrgContentDirectory1Cpp>(getContentDirectoryProxy());
+                // not needed
+            }
+            catch (OpenHome::Exception &e)
+            {
+                logServerError(e.Message(), CURRENT_POSITION);
+            }
+            catch (...)
+            {
+                logServerError("Unknown exception!", CURRENT_POSITION);
+            }
         }
 
 
         void MediaServer::oConnectionManagerProxyPropertyChanged()
         {
-            auto proxy = std::dynamic_pointer_cast<OpenHome::Net::CpProxyUpnpOrgConnectionManager1Cpp>(getConnectionManagerProxy());
-            // not needed
+            try
+            {
+                auto proxy = std::dynamic_pointer_cast<OpenHome::Net::CpProxyUpnpOrgConnectionManager1Cpp>(getConnectionManagerProxy());
+                // not needed
+            }
+            catch (OpenHome::Exception &e)
+            {
+                logServerError(e.Message(), CURRENT_POSITION);
+            }
+            catch (...)
+            {
+                logServerError("Unknown exception!", CURRENT_POSITION);
+            }
         }
 
 
         void MediaServer::onContentDirectoryProxyContainerUpdateIdsChanged()
         {
-            auto proxy = std::dynamic_pointer_cast<OpenHome::Net::CpProxyUpnpOrgContentDirectory1Cpp>(getContentDirectoryProxy());
-            // not needed
+            try
+            {
+                auto proxy = std::dynamic_pointer_cast<OpenHome::Net::CpProxyUpnpOrgContentDirectory1Cpp>(getContentDirectoryProxy());
+                // not needed
+            }
+            catch (OpenHome::Exception &e)
+            {
+                logServerError(e.Message(), CURRENT_POSITION);
+            }
+            catch (...)
+            {
+                logServerError("Unknown exception!", CURRENT_POSITION);
+            }
         }        
 
         
@@ -257,23 +300,56 @@ namespace Raumkernel
 
         void MediaServer::browseThreadProxy(const std::string _containerId, const std::string _browseFlag, const std::string _extraData)
         {
-            std::string	result = "";
-            std::uint32_t numberReturned = 0, totalMatches = 0, updateId = 0;
-            auto proxy = std::dynamic_pointer_cast<OpenHome::Net::CpProxyUpnpOrgContentDirectory1Cpp>(getContentDirectoryProxy());
-            proxy->SyncBrowse(_containerId, _browseFlag, "*", 0, 0, "", result, numberReturned, totalMatches, updateId);
-            browseThreadExecuted(result, numberReturned, totalMatches, updateId, _extraData);
+            try
+            {
+                std::string	result = "";
+                std::uint32_t numberReturned = 0, totalMatches = 0, updateId = 0;
+                auto proxy = std::dynamic_pointer_cast<OpenHome::Net::CpProxyUpnpOrgContentDirectory1Cpp>(getContentDirectoryProxy());
+                proxy->SyncBrowse(_containerId, _browseFlag, "*", 0, 0, "", result, numberReturned, totalMatches, updateId);
+                browseThreadExecuted(result, numberReturned, totalMatches, updateId, _extraData);
+            }
+            catch (OpenHome::Exception &e)
+            {
+                logServerError(e.Message(), CURRENT_POSITION);
+            }
+            catch (...)
+            {
+                logServerError("Unknown exception!", CURRENT_POSITION);
+            }
         }
 
 
         void MediaServer::searchThreadExecuted(std::string _result, std::uint32_t _numberReturned, std::uint32_t _totalMatches, std::uint32_t _updateId, std::string _extraData)
         {
-            sigSearchExecuted.fire(_result, _numberReturned, _totalMatches, _updateId, _extraData);
+            try
+            {
+                sigSearchExecuted.fire(_result, _numberReturned, _totalMatches, _updateId, _extraData);
+            }
+            catch (OpenHome::Exception &e)
+            {
+                logServerError(e.Message(), CURRENT_POSITION);
+            }
+            catch (...)
+            {
+                logServerError("Unknown exception!", CURRENT_POSITION);
+        }
         }
 
 
         void MediaServer::browseThreadExecuted(std::string _result, std::uint32_t _numberReturned, std::uint32_t _totalMatches, std::uint32_t _updateId, std::string _extraData)
         {
-            sigBrowseExecuted.fire(_result, _numberReturned, _totalMatches, _updateId, _extraData);
+            try
+            {
+                sigBrowseExecuted.fire(_result, _numberReturned, _totalMatches, _updateId, _extraData);
+            }
+            catch (OpenHome::Exception &e)
+            {
+                logServerError(e.Message(), CURRENT_POSITION);
+            }
+            catch (...)
+            {
+                logServerError("Unknown exception!", CURRENT_POSITION);
+            }
         }
 
 

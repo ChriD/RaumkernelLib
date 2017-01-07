@@ -52,12 +52,12 @@ namespace Raumkernel
                 * Not intended for external use
                 * Creates a device from a device xml gathered by upnp discovery
                 */
-                std::shared_ptr<Devices::Device>  createDeviceFromDeviceXML(std::string _deviceXML);
+                Devices::Device*  createDeviceFromDeviceXML(std::string _deviceXML);
                 
             protected:
-                void setDeviceInformationFromDeviceXML(std::shared_ptr<Device> _device, pugi::xml_node _deviceNode);                           
-                std::shared_ptr<Devices::MediaRenderer> createMediaRendererFromDeviceNode(pugi::xml_node _deviceNode);
-                std::shared_ptr<Devices::MediaServer> createMediaServerFromDeviceNode(pugi::xml_node _deviceNode);
+                void setDeviceInformationFromDeviceXML(Device* _device, pugi::xml_node _deviceNode);                           
+                Devices::MediaRenderer* createMediaRendererFromDeviceNode(pugi::xml_node _deviceNode);
+                Devices::MediaServer* createMediaServerFromDeviceNode(pugi::xml_node _deviceNode);
         };
 
     }

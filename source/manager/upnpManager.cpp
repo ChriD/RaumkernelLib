@@ -256,29 +256,62 @@ namespace Raumkernel
         
         void UPNPManager::refresh()
         {
-            // force refreshing of the upnpDevice list which may lead to 'deviceFound' or 'deviceLost' signals
-            if (upupDeviceListAll != nullptr)                
-                upupDeviceListAll->Refresh();
+            try
+            {
+                // force refreshing of the upnpDevice list which may lead to 'deviceFound' or 'deviceLost' signals
+                if (upupDeviceListAll != nullptr)
+                    upupDeviceListAll->Refresh();
+            }
+            catch (OpenHome::Exception &e)
+            {
+                logError(e.Message(), CURRENT_POSITION);
+            }
+            catch (...)
+            {
+                logError("Unknown exception![UPNPManager::refresh]", CURRENT_POSITION);
+            }
         }
 
 
         // will be called if a UPNP Device is found in the network
         void UPNPManager::onDeviceFound(OpenHome::Net::CpDeviceCpp& _device)
         {
-            std::string deviceFriendlyName;
-            _device.GetAttribute("Upnp.FriendlyName", deviceFriendlyName);
-            logDebug("UPNP Device found: " + deviceFriendlyName + "(" + _device.Udn() + ")", CURRENT_POSITION);
-            getManagerEngineer()->getDeviceManager()->addDevice(_device);           
+            try
+            {
+                std::string deviceFriendlyName;
+                _device.GetAttribute("Upnp.FriendlyName", deviceFriendlyName);
+                logDebug("UPNP Device found: " + deviceFriendlyName + "(" + _device.Udn() + ")", CURRENT_POSITION);
+                getManagerEngineer()->getDeviceManager()->addDevice(_device);
+            }
+            catch (OpenHome::Exception &e)
+            {
+                logError(e.Message(), CURRENT_POSITION);
+            }
+            catch (...)
+            {
+                logError("Unknown exception![UPNPManager::onDeviceFound]", CURRENT_POSITION);
+            }
         }
 
 
         // will be called if a UPNP Device disappears from the network
         void UPNPManager::onDeviceLost(OpenHome::Net::CpDeviceCpp& _device)
         {
-            std::string deviceFriendlyName;
-            _device.GetAttribute("Upnp.FriendlyName", deviceFriendlyName);
-            logDebug("UPNP Device lost: " + deviceFriendlyName + "(" + _device.Udn() + ")", CURRENT_POSITION);
-            getManagerEngineer()->getDeviceManager()->removeDevice(_device);
+            try
+            {
+                std::string deviceFriendlyName;
+                _device.GetAttribute("Upnp.FriendlyName", deviceFriendlyName);
+                logDebug("UPNP Device lost: " + deviceFriendlyName + "(" + _device.Udn() + ")", CURRENT_POSITION);
+                getManagerEngineer()->getDeviceManager()->removeDevice(_device);
+            }
+            catch (OpenHome::Exception &e)
+            {
+                logError(e.Message(), CURRENT_POSITION);
+            }
+            catch (...)
+            {
+                logError("Unknown exception![UPNPManager::onDeviceLost]", CURRENT_POSITION);
+            }
         }
 
    

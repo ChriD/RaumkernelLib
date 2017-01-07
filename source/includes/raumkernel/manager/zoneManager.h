@@ -178,8 +178,8 @@ namespace Raumkernel
                 */
                 EXPORT std::string getLastUpdateId();
            
-                EXPORT void lockLists();
-                EXPORT void unlockLists();
+                EXPORT void lock();
+                EXPORT void unlock();
 
                 /**
                 * this signal will be fired if the zone configuration changes                

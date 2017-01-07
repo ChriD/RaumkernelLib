@@ -63,35 +63,36 @@ namespace Raumkernel
                 void removeDevice(OpenHome::Net::CpDeviceCpp& _device);
 
                 /**               
-                * locks the internal device lists
+                * locks the manager so he is not able to add or delete devices
                 * device lists should always be locked when updateing the list or when performing an action on any of those devices
+                * so the pointer does go out of scope
                 * do not forget to unlock those lists again
                 */
-                EXPORT void lockDeviceList();
+                EXPORT void lock();
                 /**             
                 * unlocks the internal device lists
                 * device lists should always be locked when updateing the list or when performing an action on any of those devices
                 * do not forget to unlock those lists again
                 */
-                EXPORT void unlockDeviceList();
+                EXPORT void unlock();
                 /**
-                * Returns a shared pointer to a media renderer device
-                * Returns nullptr if no devive was found!
+                * Returns a pointer to a media renderer device
+                * Returns nullptr if no device was found!
                 * do not forget to lock / unock the internal list when using the media renderer object
                 */
-                EXPORT std::shared_ptr<Devices::MediaRenderer> getMediaRenderer(std::string _udn);
+                EXPORT Devices::MediaRenderer* getMediaRenderer(std::string _udn);
                 /**
-                * Returns a shared pointer to a media server device
+                * Returns a pointer to a media server device
                 * Returns nullptr if no devive was found!
                 * do not forget to lock / unock the internal list when using the media server object
                 */
-                EXPORT std::shared_ptr<Devices::MediaServer> getMediaServer(std::string _udn);
+                EXPORT  Devices::MediaServer* getMediaServer(std::string _udn);
                 /**
-                * Returns a shared pointer to  theraumfeld media server device
+                * Returns a pointer to  theraumfeld media server device
                 * Returns nullptr if media server was not found!
                 * do not forget to lock / unock the internal list when using the media server object
                 */
-                EXPORT std::shared_ptr<Devices::MediaServer_Raumfeld> getRaumfeldMediaServer();
+                EXPORT Devices::MediaServer_Raumfeld* getRaumfeldMediaServer();
                 /**
                 * Returns a string with the ip to the raumfeld host
                 * will be empty if host was not found
@@ -100,28 +101,28 @@ namespace Raumkernel
                 /**
                 * Returns a copy of the media renderer map
                 */
-                EXPORT std::unordered_map<std::string, std::shared_ptr<Devices::MediaRenderer>> getMediaRenderers();
+                EXPORT std::unordered_map<std::string, Devices::MediaRenderer*> getMediaRenderers();
                 /**
                 * Returns a copy of the media renderer map
                 */
-                EXPORT std::unordered_map<std::string, std::shared_ptr<Devices::MediaServer>> getMediaServers();
+                EXPORT std::unordered_map<std::string, Devices::MediaServer*> getMediaServers();
 
                 /**
                 * this signal will be fired if a media renderer was added to the internal list.        
                 */
-                sigs::signal<void(std::shared_ptr<Devices::MediaRenderer>)> sigMediaRendererAdded;
+                sigs::signal<void(Devices::MediaRenderer*)> sigMediaRendererAdded;
                 /**
                 * this signal will be fired if a media renderer was removed from the internal list.        
                 */
-                sigs::signal<void(std::shared_ptr<Devices::MediaRenderer>)> sigMediaRendererRemoved;
+                sigs::signal<void(Devices::MediaRenderer*)> sigMediaRendererRemoved;
                 /**
                 * this signal will be fired if a media server was added to the internal list.              
                 */
-                sigs::signal<void(std::shared_ptr<Devices::MediaServer>)> sigMediaServerAdded;
+                sigs::signal<void(Devices::MediaServer*)> sigMediaServerAdded;
                 /**
                 * this signal will be fired if a media server was removed from the internal list.             
                 */
-                sigs::signal<void(std::shared_ptr<Devices::MediaServer>)> sigMediaServerRemoved;              
+                sigs::signal<void(Devices::MediaServer*)> sigMediaServerRemoved;              
                 /**
                 * this signal will be fired if a usable device (MediaServer, MediaRenderer, ...) was added to the internal list.            
                 */
@@ -129,15 +130,15 @@ namespace Raumkernel
 
             protected:
               
-                // this map holds references to all the UPNP devices found by the UPNP control point, no matter if they ar usable by th kenrel or not
+                // this map holds references to all the UPNP devices found by the UPNP control point, no matter if they ar usable by the kenrel or not
                 std::unordered_map<std::string, OpenHome::Net::CpDeviceCpp*> upnpDeviceMap;
 
                 // this map holds all the media renderer devices found, no matter if they are virtual ones or not
-                std::unordered_map<std::string, std::shared_ptr<Devices::MediaRenderer>> mediaRendererMap;
+                std::unordered_map<std::string, Devices::MediaRenderer*> mediaRendererMap;
 
                 // this map holds all the media server devices found, no matter if they are raumfeld media servers or not
                 // but in fact only the raumfeld media server will be used
-                std::unordered_map<std::string, std::shared_ptr<Devices::MediaServer>> mediaServerMap;                
+                std::unordered_map<std::string, Devices::MediaServer*> mediaServerMap;                
 
                 // a mutex that will secure our device lists
                 std::mutex mutexDeviceLists;

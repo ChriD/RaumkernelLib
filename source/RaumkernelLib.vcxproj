@@ -232,7 +232,9 @@
     <None Include="..\README.md" />
   </ItemGroup>
   <ItemGroup>
-    <Xml Include="settings.xml" />
+    <Xml Include="settings.xml">
+      <SubType>Designer</SubType>
+    </Xml>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -10,6 +10,7 @@ namespace Raumkernel
     {
         MediaListManager::MediaListManager() : ManagerBase()
         {
+            mediaServer = nullptr;
         }
 
 
@@ -24,21 +25,21 @@ namespace Raumkernel
         }
 
 
-        void MediaListManager::lockLists()
+        void MediaListManager::lock()
         {
             mutexMapAccess.lock();
         }
 
 
-        void MediaListManager::unlockLists()
+        void MediaListManager::unlock()
         {
             mutexMapAccess.unlock();
         }
 
 
-        void MediaListManager::setMediaServer(std::shared_ptr<Devices::MediaServer_Raumfeld> _mediaServer)
+        void MediaListManager::setMediaServer(Devices::MediaServer_Raumfeld* _mediaServer)
         {
-            lockLists();
+            lock();
 
             try
             {
@@ -67,7 +68,7 @@ namespace Raumkernel
                 logError("Unknown error!", CURRENT_POSITION);
             }
 
-            unlockLists();
+            unlock();
         }
 
 
@@ -75,7 +76,7 @@ namespace Raumkernel
         {
             std::vector<std::shared_ptr<Media::Item::MediaItem>> tmpVector;
 
-            lockLists();
+            lock();
 
             try
             {
@@ -90,7 +91,7 @@ namespace Raumkernel
                 logError("Unknown error!", CURRENT_POSITION);
             }
 
-            unlockLists();
+            unlock();
 
             return tmpVector;
         }
@@ -156,7 +157,7 @@ namespace Raumkernel
         {
             std::string zoneUDN = Tools::CommonUtil::formatUDN(Tools::UriUtil::unescape(_zoneUDN));
             std::string containerId = "";            
-            std::shared_ptr<Devices::MediaRenderer> mediaRenderer;
+            Devices::MediaRenderer* mediaRenderer;
    
             try
             {
@@ -181,7 +182,7 @@ namespace Raumkernel
                         if (mediaRenderer->state().numberOfTracks <= 1)
                         {
                             std::vector<std::shared_ptr<Media::Item::MediaItem>> mediaItemList;
-                            lockLists();
+                            lock();
                             try
                             {
                                 if (mediaRenderer->state().currentMediaItem != nullptr)
@@ -195,7 +196,7 @@ namespace Raumkernel
 
                             setLastUpdateIdForList(listId);
 
-                            unlockLists();                            
+                            unlock();                            
                             
                             listChanged(listId);
                         } 
@@ -236,47 +237,80 @@ namespace Raumkernel
 
         void MediaListManager::loadMediaItemListByContainerId(const std::string &_containerId, const std::string &_searchCriteria, const std::string &_listId)
         {
-            // do nothing if we have no media server reference, but give a warning
-            if (!mediaServer)
+            try
             {
-                logWarning("Trying to get list from mediaServer without media server object!", CURRENT_POSITION);
-                return;
-            }
+                // do nothing if we have no media server reference, but give a warning
+                if (!mediaServer)
+                {
+                    logWarning("Trying to get list from mediaServer without media server object!", CURRENT_POSITION);
+                    return;
+                }
            
-            logDebug("Get MediaList: " + _listId + "  for container: " + _containerId, CURRENT_POSITION);
+                logDebug("Get MediaList: " + _listId + "  for container: " + _containerId, CURRENT_POSITION);                
 
-            if (_containerId.empty() && !_listId.empty())
-            {
-                createEmptyList(_listId);
-                return;
-            }
+                if (_containerId.empty() && !_listId.empty())
+                {
+                    createEmptyList(_listId);
+                    return;
+                }
            
-            // if we have specified no list id we create some
-            std::string listId = _listId;
-            if (listId.empty())
-                listId = _containerId + (_searchCriteria.empty() == true ? "" : (":" + _searchCriteria));
+                // if we have specified no list id we create some
+                std::string listId = _listId;
+                if (listId.empty())
+                    listId = _containerId + (_searchCriteria.empty() == true ? "" : (":" + _searchCriteria));
 
-            if (!_searchCriteria.empty())
-            {
-                mediaServer->search(_containerId, _searchCriteria, listId);
+                if (!_searchCriteria.empty())
+                {
+                    mediaServer->search(_containerId, _searchCriteria, listId);
+                }
+                else
+                {
+                    mediaServer->browse(_containerId, Devices::MediaServer_BrowseFlag::MSBF_BrowseDirectChildren, listId);            
+                }
             }
-            else
+            catch (OpenHome::Exception &e)
             {
-                mediaServer->browse(_containerId, Devices::MediaServer_BrowseFlag::MSBF_BrowseDirectChildren, listId);            
+                logError(e.Message(), CURRENT_POSITION);
             }
+            catch (...)
+            {
+                logError("Unknown exception!", CURRENT_POSITION);
+        }
 
         }
 
 
         void MediaListManager::onMediaServerBrowseExecuted(const std::string &_result, const std::uint32_t &_numberReturned, const std::uint32_t &_totalMatches, const std::uint32_t &_updateId, const std::string &_extraData)
-        {            
-            createListFromResultXML(_result, _extraData);
+        {   
+            try
+            {
+                createListFromResultXML(_result, _extraData);
+            }
+            catch (OpenHome::Exception &e)
+            {
+                logError(e.Message(), CURRENT_POSITION);
+            }
+            catch (...)
+            {
+                logError("Unknown exception!", CURRENT_POSITION);
+            }
         }
 
 
         void MediaListManager::onMediaServerSearchExecuted(const std::string &_result, const std::uint32_t &_numberReturned, const std::uint32_t &_totalMatches, const std::uint32_t &_updateId, const std::string &_extraData)
-        {            
-            createListFromResultXML(_result, _extraData);
+        {
+            try
+            {
+                createListFromResultXML(_result, _extraData);
+            }
+            catch (OpenHome::Exception &e)
+            {
+                logError(e.Message(), CURRENT_POSITION);
+            }
+            catch (...)
+            {
+                logError("Unknown exception!", CURRENT_POSITION);
+            }
         }
 
 
@@ -284,7 +318,7 @@ namespace Raumkernel
         {
             std::vector<std::shared_ptr<Media::Item::MediaItem>> mediaItemList;
 
-            lockLists();
+            lock();
             try
             {
                 mediaListCache[_listId] = mediaItemList;                
@@ -296,7 +330,7 @@ namespace Raumkernel
 
             setLastUpdateIdForList(_listId);
 
-            unlockLists();            
+            unlock();            
 
             listChanged(_listId);           
         }
@@ -309,7 +343,7 @@ namespace Raumkernel
             Media::MediaItemCreator mediaItemCreator;
             std::vector<std::shared_ptr<Media::Item::MediaItem>> mediaItemList;
 
-            lockLists();
+            lock();
 
             try
             {              
@@ -346,7 +380,7 @@ namespace Raumkernel
 
             setLastUpdateIdForList(_extraData);
 
-            unlockLists();          
+            unlock();          
 
             listChanged(_extraData);
         }        

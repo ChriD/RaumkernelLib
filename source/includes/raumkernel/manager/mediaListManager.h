@@ -57,7 +57,7 @@ namespace Raumkernel
                 /**
                 * this method is used to set the media server link the mediaServerList manager should use for retrieving the data
                 */
-                virtual void setMediaServer(std::shared_ptr<Devices::MediaServer_Raumfeld> _mediaServer);
+                virtual void setMediaServer(Devices::MediaServer_Raumfeld* _mediaServer);
                 
                 /**
                 * will retrieve the list for the given containerId
@@ -81,8 +81,8 @@ namespace Raumkernel
                 */
                 EXPORT std::string getLastUpdateIdForList(std::string _listId);
 
-                EXPORT void lockLists();
-                EXPORT void unlockLists();
+                EXPORT void lock();
+                EXPORT void unlock();
 
                 /**
                 * this signal will be fired if any list has been updated                
@@ -102,7 +102,7 @@ namespace Raumkernel
                 /**
                 * a raumfeld media server reference which we will use to get the data from 
                 */
-                std::shared_ptr<Devices::MediaServer_Raumfeld> mediaServer;
+                Devices::MediaServer_Raumfeld* mediaServer;
                 /**
                 * a map which contains all cached and selected lists
                 * the key may consists od an identifier and a listId. eg. zpls:[zoneUDN] or pls:[playlistID]

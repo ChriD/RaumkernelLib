@@ -54,17 +54,21 @@ int main(int argc, char** argv)
 
     rlutil::getkey();
 
+   
     auto roomUDN = raumkernel.getManagerEngineer()->getZoneManager()->getRoomUDNForRoomName("Küche");
     //auto roomUDN = raumkernel.getManagerEngineer()->getZoneManager()->getRoomUDNForRoomName("Wohnzimmer");
     //auto rendererUDN = raumkernel.getManagerEngineer()->getZoneManager()->getRendererUDNForRoomUDN(roomUDN);
     auto rendererUDN = raumkernel.getManagerEngineer()->getZoneManager()->getZoneUDNForRoomUDN(roomUDN);
     //auto mediaRenderer = std::dynamic_pointer_cast<Raumkernel::Devices::MediaRenderer_Raumfeld>(raumkernel.getManagerEngineer()->getDeviceManager()->getMediaRenderer(rendererUDN));
-    auto mediaRenderer = std::dynamic_pointer_cast<Raumkernel::Devices::MediaRenderer_RaumfeldVirtual>(raumkernel.getManagerEngineer()->getDeviceManager()->getMediaRenderer(rendererUDN));
+    auto mediaRenderer = dynamic_cast<Raumkernel::Devices::MediaRenderer_RaumfeldVirtual*>(raumkernel.getManagerEngineer()->getDeviceManager()->getMediaRenderer(rendererUDN));
 
     auto name = mediaRenderer->getName();
 
     rlutil::getkey();
 
+    //raumkernel.getManagerEngineer()->getDeviceManager()->getRaumfeldMediaServer()->browse("0/My Music/AllTracks", Raumkernel::Devices::MediaServer_BrowseFlag::MSBF_BrowseDirectChildren, "", true);
+    raumkernel.getManagerEngineer()->getMediaListManager()->loadMediaItemListByContainerId("0/My Music/AllTracks", "", "TESTID001");
+    
     //mediaRenderer->enterManualStandby();
 
     rlutil::getkey();

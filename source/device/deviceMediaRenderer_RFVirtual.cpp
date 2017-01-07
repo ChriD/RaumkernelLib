@@ -23,7 +23,7 @@ namespace Raumkernel
         std::string MediaRenderer_RaumfeldVirtual::getName()
         {
             std::string rendererName;
-            getManagerEngineer()->getZoneManager()->lockLists();
+            getManagerEngineer()->getZoneManager()->lock();
             try
             {
                 auto zoneInfoMap = managerEngineer->getZoneManager()->getZoneInformationMap();
@@ -35,7 +35,7 @@ namespace Raumkernel
             catch (...)
             {
             }
-            getManagerEngineer()->getZoneManager()->unlockLists();
+            getManagerEngineer()->getZoneManager()->unlock();
             return rendererName;
         }
         
@@ -53,36 +53,93 @@ namespace Raumkernel
  
         void MediaRenderer_RaumfeldVirtual::createProxyAvTransport()
         {
-            avTransportProxy = std::shared_ptr<OpenHome::Net::CpProxyUpnpOrgAVTransport_RaumfeldVirtual1Cpp>(new OpenHome::Net::CpProxyUpnpOrgAVTransport_RaumfeldVirtual1Cpp(*cpDevice));            
-            OpenHome::Functor functor = OpenHome::MakeFunctor(*this, &MediaRenderer_RaumfeldVirtual::onAvTransportProxyPropertyChanged);
-            auto proxy = std::dynamic_pointer_cast<OpenHome::Net::CpProxyUpnpOrgAVTransport_RaumfeldVirtual1Cpp>(getAvTransportProxy());
-            proxy->SetPropertyInitialEvent(functor);
-            proxy->SetPropertyChanged(functor);
-            proxy->SetPropertyLastChangeChanged(functor);
-            proxy->Subscribe();
+            try
+            {
+                avTransportProxy = std::shared_ptr<OpenHome::Net::CpProxyUpnpOrgAVTransport_RaumfeldVirtual1Cpp>(new OpenHome::Net::CpProxyUpnpOrgAVTransport_RaumfeldVirtual1Cpp(*cpDevice));            
+                OpenHome::Functor functor = OpenHome::MakeFunctor(*this, &MediaRenderer_RaumfeldVirtual::onAvTransportProxyPropertyChanged);
+                auto proxy = std::dynamic_pointer_cast<OpenHome::Net::CpProxyUpnpOrgAVTransport_RaumfeldVirtual1Cpp>(getAvTransportProxy());
+                proxy->SetPropertyInitialEvent(functor);
+                proxy->SetPropertyChanged(functor);
+                proxy->SetPropertyLastChangeChanged(functor);
+                proxy->Subscribe();
+            }
+            catch (std::exception &e)
+            {
+                logError(e.what(), CURRENT_FUNCTION);
+            }
+            catch (std::string &e)
+            {
+                logError(e, CURRENT_FUNCTION);
+            }
+            catch (OpenHome::Exception &e)
+            {
+                logError(e.Message(), CURRENT_FUNCTION);
+            }
+            catch (...)
+            {
+                logError("Unknown Exception", CURRENT_FUNCTION);
+            }
         }
 
 
         void MediaRenderer_RaumfeldVirtual::createProxyConnectionManager()
         {
-            connectionManagerProxy = std::shared_ptr<OpenHome::Net::CpProxyUpnpOrgConnectionManager_RaumfeldVirtual1Cpp>(new OpenHome::Net::CpProxyUpnpOrgConnectionManager_RaumfeldVirtual1Cpp(*cpDevice));
-            OpenHome::Functor functor = OpenHome::MakeFunctor(*this, &MediaRenderer_RaumfeldVirtual::oConnectionManagerProxyPropertyChanged);
-            auto proxy = std::dynamic_pointer_cast<OpenHome::Net::CpProxyUpnpOrgConnectionManager_RaumfeldVirtual1Cpp>(getConnectionManagerProxy());
-            proxy->SetPropertyInitialEvent(functor);
-            proxy->SetPropertyChanged(functor);
-            proxy->Subscribe();
+            try
+            {
+                connectionManagerProxy = std::shared_ptr<OpenHome::Net::CpProxyUpnpOrgConnectionManager_RaumfeldVirtual1Cpp>(new OpenHome::Net::CpProxyUpnpOrgConnectionManager_RaumfeldVirtual1Cpp(*cpDevice));
+                OpenHome::Functor functor = OpenHome::MakeFunctor(*this, &MediaRenderer_RaumfeldVirtual::oConnectionManagerProxyPropertyChanged);
+                auto proxy = std::dynamic_pointer_cast<OpenHome::Net::CpProxyUpnpOrgConnectionManager_RaumfeldVirtual1Cpp>(getConnectionManagerProxy());
+                proxy->SetPropertyInitialEvent(functor);
+                proxy->SetPropertyChanged(functor);
+                proxy->Subscribe();
+            }
+            catch (std::exception &e)
+            {
+                logError(e.what(), CURRENT_FUNCTION);
+            }
+            catch (std::string &e)
+            {
+                logError(e, CURRENT_FUNCTION);
+            }
+            catch (OpenHome::Exception &e)
+            {
+                logError(e.Message(), CURRENT_FUNCTION);
+            }
+            catch (...)
+            {
+                logError("Unknown Exception", CURRENT_FUNCTION);
+            }
         }
 
 
         void MediaRenderer_RaumfeldVirtual::createProxyRenderingControl()
         {
-            renderingControlProxy = std::shared_ptr<OpenHome::Net::CpProxyUpnpOrgRenderingControl_RaumfeldVirtual1Cpp>(new OpenHome::Net::CpProxyUpnpOrgRenderingControl_RaumfeldVirtual1Cpp(*cpDevice));
-            OpenHome::Functor functor = OpenHome::MakeFunctor(*this, &MediaRenderer_RaumfeldVirtual::onRenderingControlProxyPropertyChanged);
-            auto proxy = std::dynamic_pointer_cast<OpenHome::Net::CpProxyUpnpOrgRenderingControl_RaumfeldVirtual1Cpp>(getRenderingControlProxy());
-            proxy->SetPropertyInitialEvent(functor);
-            proxy->SetPropertyChanged(functor);
-            proxy->SetPropertyLastChangeChanged(functor);
-            proxy->Subscribe();
+            try
+            {
+                renderingControlProxy = std::shared_ptr<OpenHome::Net::CpProxyUpnpOrgRenderingControl_RaumfeldVirtual1Cpp>(new OpenHome::Net::CpProxyUpnpOrgRenderingControl_RaumfeldVirtual1Cpp(*cpDevice));
+                OpenHome::Functor functor = OpenHome::MakeFunctor(*this, &MediaRenderer_RaumfeldVirtual::onRenderingControlProxyPropertyChanged);
+                auto proxy = std::dynamic_pointer_cast<OpenHome::Net::CpProxyUpnpOrgRenderingControl_RaumfeldVirtual1Cpp>(getRenderingControlProxy());
+                proxy->SetPropertyInitialEvent(functor);
+                proxy->SetPropertyChanged(functor);
+                proxy->SetPropertyLastChangeChanged(functor);
+                proxy->Subscribe();
+            }
+            catch (std::exception &e)
+            {
+                logError(e.what(), CURRENT_FUNCTION);
+            }
+            catch (std::string &e)
+            {
+                logError(e, CURRENT_FUNCTION);
+            }
+            catch (OpenHome::Exception &e)
+            {
+                logError(e.Message(), CURRENT_FUNCTION);
+            }
+            catch (...)
+            {
+                logError("Unknown Exception", CURRENT_FUNCTION);
+            }
         }
 
 
@@ -104,11 +161,22 @@ namespace Raumkernel
 
         void MediaRenderer_RaumfeldVirtual::onPlayExecuted(OpenHome::Net::IAsync& _aAsync)
         {
-            if (!isAvTransportProxyAvailable())
-                return;
+            try
+            {
+                if (!isAvTransportProxyAvailable())
+                    return;
 
-            auto proxy = std::dynamic_pointer_cast<OpenHome::Net::CpProxyUpnpOrgAVTransport_RaumfeldVirtual1Cpp>(getAvTransportProxy());            
-            proxy->EndPlay(_aAsync);
+                auto proxy = std::dynamic_pointer_cast<OpenHome::Net::CpProxyUpnpOrgAVTransport_RaumfeldVirtual1Cpp>(getAvTransportProxy());            
+                proxy->EndPlay(_aAsync);
+            }
+            catch (OpenHome::Exception &e)
+            {
+                logRendererError(e.Message(), CURRENT_POSITION);
+            }
+            catch (...)
+            {
+                logRendererError("Unknown exception![MediaRenderer_RaumfeldVirtual::onPlayExecuted]", CURRENT_POSITION);
+            }
         }
               
 
@@ -128,11 +196,22 @@ namespace Raumkernel
 
         void MediaRenderer_RaumfeldVirtual::onStopExecuted(OpenHome::Net::IAsync& _aAsync)
         {
-            if (!isAvTransportProxyAvailable())
-                return;
+            try
+            {
+                if (!isAvTransportProxyAvailable())
+                    return;
 
-            auto proxy = std::dynamic_pointer_cast<OpenHome::Net::CpProxyUpnpOrgAVTransport_RaumfeldVirtual1Cpp>(getAvTransportProxy());
-            proxy->EndStop(_aAsync);
+                auto proxy = std::dynamic_pointer_cast<OpenHome::Net::CpProxyUpnpOrgAVTransport_RaumfeldVirtual1Cpp>(getAvTransportProxy());
+                proxy->EndStop(_aAsync);
+            }
+            catch (OpenHome::Exception &e)
+            {
+                logRendererError(e.Message(), CURRENT_POSITION);
+            }
+            catch (...)
+            {
+                logRendererError("Unknown exception![MediaRenderer_RaumfeldVirtual::onStopExecuted]", CURRENT_POSITION);
+        }
         }
 
        
@@ -152,11 +231,22 @@ namespace Raumkernel
 
         void MediaRenderer_RaumfeldVirtual::onPauseExecuted(OpenHome::Net::IAsync& _aAsync)
         {
-            if (!isAvTransportProxyAvailable())
-                return;
+            try
+            {
+                if (!isAvTransportProxyAvailable())
+                    return;
 
-            auto proxy = std::dynamic_pointer_cast<OpenHome::Net::CpProxyUpnpOrgAVTransport_RaumfeldVirtual1Cpp>(getAvTransportProxy());
-            proxy->EndPause(_aAsync);
+                auto proxy = std::dynamic_pointer_cast<OpenHome::Net::CpProxyUpnpOrgAVTransport_RaumfeldVirtual1Cpp>(getAvTransportProxy());
+                proxy->EndPause(_aAsync);
+            }
+            catch (OpenHome::Exception &e)
+            {
+                logRendererError(e.Message(), CURRENT_POSITION);
+            }
+            catch (...)
+            {
+                logRendererError("Unknown exception![MediaRenderer_RaumfeldVirtual::onPauseExecuted]", CURRENT_POSITION);
+            }
         }
 
 
@@ -176,11 +266,22 @@ namespace Raumkernel
 
         void MediaRenderer_RaumfeldVirtual::onNextExecuted(OpenHome::Net::IAsync& _aAsync)
         {
-            if (!isAvTransportProxyAvailable())
-                return;
+            try
+            {
+                if (!isAvTransportProxyAvailable())
+                    return;
 
-            auto proxy = std::dynamic_pointer_cast<OpenHome::Net::CpProxyUpnpOrgAVTransport_RaumfeldVirtual1Cpp>(getAvTransportProxy());
-            proxy->EndNext(_aAsync);
+                auto proxy = std::dynamic_pointer_cast<OpenHome::Net::CpProxyUpnpOrgAVTransport_RaumfeldVirtual1Cpp>(getAvTransportProxy());
+                proxy->EndNext(_aAsync);
+            }
+            catch (OpenHome::Exception &e)
+            {
+                logRendererError(e.Message(), CURRENT_POSITION);
+            }
+            catch (...)
+            {
+                logRendererError("Unknown exception![MediaRenderer_RaumfeldVirtual::onNextExecuted]", CURRENT_POSITION);
+            }
         }
 
 
@@ -200,11 +301,22 @@ namespace Raumkernel
 
         void MediaRenderer_RaumfeldVirtual::onPreviousExecuted(OpenHome::Net::IAsync& _aAsync)
         {
-            if (!isAvTransportProxyAvailable())
-                return;
+            try
+            {
+                if (!isAvTransportProxyAvailable())
+                    return;
 
-            auto proxy = std::dynamic_pointer_cast<OpenHome::Net::CpProxyUpnpOrgAVTransport_RaumfeldVirtual1Cpp>(getAvTransportProxy());
-            proxy->EndPrevious(_aAsync);
+                auto proxy = std::dynamic_pointer_cast<OpenHome::Net::CpProxyUpnpOrgAVTransport_RaumfeldVirtual1Cpp>(getAvTransportProxy());
+                proxy->EndPrevious(_aAsync);
+            }
+            catch (OpenHome::Exception &e)
+            {
+                logRendererError(e.Message(), CURRENT_POSITION);
+            }
+            catch (...)
+            {
+                logRendererError("Unknown exception![MediaRenderer_RaumfeldVirtual::onPreviousExecuted]", CURRENT_POSITION);
+            }
         }
 
 
@@ -224,11 +336,22 @@ namespace Raumkernel
 
         void MediaRenderer_RaumfeldVirtual::onSeekExecuted(OpenHome::Net::IAsync& _aAsync)
         {
-            if (!isAvTransportProxyAvailable())
-                return;
+            try
+            {
+                if (!isAvTransportProxyAvailable())
+                    return;
 
-            auto proxy = std::dynamic_pointer_cast<OpenHome::Net::CpProxyUpnpOrgAVTransport_RaumfeldVirtual1Cpp>(getAvTransportProxy());
-            proxy->EndSeek(_aAsync);
+                auto proxy = std::dynamic_pointer_cast<OpenHome::Net::CpProxyUpnpOrgAVTransport_RaumfeldVirtual1Cpp>(getAvTransportProxy());
+                proxy->EndSeek(_aAsync);
+            }
+            catch (OpenHome::Exception &e)
+            {
+                logRendererError(e.Message(), CURRENT_POSITION);
+            }
+            catch (...)
+            {
+                logRendererError("Unknown exception![MediaRenderer_RaumfeldVirtual::onSeekExecuted]", CURRENT_POSITION);
+            }
         }
 
 
@@ -248,11 +371,22 @@ namespace Raumkernel
 
         void MediaRenderer_RaumfeldVirtual::onSetPlayModeExecuted(OpenHome::Net::IAsync& _aAsync)
         {
-            if (!isAvTransportProxyAvailable())
-                return;
+            try
+            {
+                if (!isAvTransportProxyAvailable())
+                    return;
 
-            auto proxy = std::dynamic_pointer_cast<OpenHome::Net::CpProxyUpnpOrgAVTransport_RaumfeldVirtual1Cpp>(getAvTransportProxy());
-            proxy->EndSetPlayMode(_aAsync);
+                auto proxy = std::dynamic_pointer_cast<OpenHome::Net::CpProxyUpnpOrgAVTransport_RaumfeldVirtual1Cpp>(getAvTransportProxy());
+                proxy->EndSetPlayMode(_aAsync);
+            }
+            catch (OpenHome::Exception &e)
+            {
+                logRendererError(e.Message(), CURRENT_POSITION);
+            }
+            catch (...)
+            {
+                logRendererError("Unknown exception![MediaRenderer_RaumfeldVirtual::onSetPlayModeExecuted]", CURRENT_POSITION);
+            }
         }
 
 
@@ -280,18 +414,29 @@ namespace Raumkernel
 
         void MediaRenderer_RaumfeldVirtual::onGetMediaInfoExecuted(OpenHome::Net::IAsync& _aAsync)
         {
-            AvTransportMediaInfo mediaInfo;
+            try
+            {
+                AvTransportMediaInfo mediaInfo;
 
-            if (!isAvTransportProxyAvailable())
-                return;
+                if (!isAvTransportProxyAvailable())
+                    return;
 
-            auto proxy = std::dynamic_pointer_cast<OpenHome::Net::CpProxyUpnpOrgAVTransport_RaumfeldVirtual1Cpp>(getAvTransportProxy());
-            proxy->EndGetMediaInfo(_aAsync, mediaInfo.nrTracks, mediaInfo.mediaDuration, mediaInfo.currentUri, mediaInfo.currentUriMetaData, mediaInfo.nextUri, mediaInfo.nextUriMetaData, mediaInfo.playMedium, mediaInfo.recordMedium, mediaInfo.writeStatus);
-            if (mediaInfo.mediaDuration == MEDIARENDERER_NOT_IMPLEMENTED)
-                mediaInfo.mediaDurationMS = 0;
-            else
-                mediaInfo.mediaDurationMS = Tools::StringUtil::toTimeMs(mediaInfo.mediaDuration);
-            sigGetMediaInfoExecuted.fire(mediaInfo);
+                auto proxy = std::dynamic_pointer_cast<OpenHome::Net::CpProxyUpnpOrgAVTransport_RaumfeldVirtual1Cpp>(getAvTransportProxy());
+                proxy->EndGetMediaInfo(_aAsync, mediaInfo.nrTracks, mediaInfo.mediaDuration, mediaInfo.currentUri, mediaInfo.currentUriMetaData, mediaInfo.nextUri, mediaInfo.nextUriMetaData, mediaInfo.playMedium, mediaInfo.recordMedium, mediaInfo.writeStatus);
+                if (mediaInfo.mediaDuration == MEDIARENDERER_NOT_IMPLEMENTED)
+                    mediaInfo.mediaDurationMS = 0;
+                else
+                    mediaInfo.mediaDurationMS = Tools::StringUtil::toTimeMs(mediaInfo.mediaDuration);
+                sigGetMediaInfoExecuted.fire(mediaInfo);
+            }
+            catch (OpenHome::Exception &e)
+            {
+                logRendererError(e.Message(), CURRENT_POSITION);
+            }
+            catch (...)
+            {
+                logRendererError("Unknown exception![MediaRenderer_RaumfeldVirtual::onGetMediaInfoExecuted]", CURRENT_POSITION);
+            }
         }
 
 
@@ -326,25 +471,36 @@ namespace Raumkernel
 
         void MediaRenderer_RaumfeldVirtual::onGetPositionInfoExecuted(OpenHome::Net::IAsync& _aAsync)
         {
-            AvTransportPositionInfo positionInfo;
+            try
+            {
+                AvTransportPositionInfo positionInfo;
 
-            if (!isAvTransportProxyAvailable())
-                return;
+                if (!isAvTransportProxyAvailable())
+                    return;
 
-            auto proxy = std::dynamic_pointer_cast<OpenHome::Net::CpProxyUpnpOrgAVTransport_RaumfeldVirtual1Cpp>(getAvTransportProxy());
-            proxy->EndGetPositionInfo(_aAsync, positionInfo.track, positionInfo.trackDuration, positionInfo.trackMetaData, positionInfo.trackUri, positionInfo.relTime, positionInfo.absTime, positionInfo.relCount, positionInfo.absCount);
-            positionInfo.absTimeMS = Tools::StringUtil::toTimeMs(positionInfo.absTime);
-            positionInfo.relTimeMS = Tools::StringUtil::toTimeMs(positionInfo.relTime);
-            positionInfo.trackDurationMS = Tools::StringUtil::toTimeMs(positionInfo.trackDuration);
+                auto proxy = std::dynamic_pointer_cast<OpenHome::Net::CpProxyUpnpOrgAVTransport_RaumfeldVirtual1Cpp>(getAvTransportProxy());
+                proxy->EndGetPositionInfo(_aAsync, positionInfo.track, positionInfo.trackDuration, positionInfo.trackMetaData, positionInfo.trackUri, positionInfo.relTime, positionInfo.absTime, positionInfo.relCount, positionInfo.absCount);
+                positionInfo.absTimeMS = Tools::StringUtil::toTimeMs(positionInfo.absTime);
+                positionInfo.relTimeMS = Tools::StringUtil::toTimeMs(positionInfo.relTime);
+                positionInfo.trackDurationMS = Tools::StringUtil::toTimeMs(positionInfo.trackDuration);
 
-            if (positionInfo.absTime == MEDIARENDERER_NOT_IMPLEMENTED)
-                positionInfo.absTimeMS = 0;
-            if (positionInfo.relTime == MEDIARENDERER_NOT_IMPLEMENTED)
-                positionInfo.relTimeMS = 0;
-            if (positionInfo.trackDuration == MEDIARENDERER_NOT_IMPLEMENTED)
-                positionInfo.trackDurationMS = 0;
+                if (positionInfo.absTime == MEDIARENDERER_NOT_IMPLEMENTED)
+                    positionInfo.absTimeMS = 0;
+                if (positionInfo.relTime == MEDIARENDERER_NOT_IMPLEMENTED)
+                    positionInfo.relTimeMS = 0;
+                if (positionInfo.trackDuration == MEDIARENDERER_NOT_IMPLEMENTED)
+                    positionInfo.trackDurationMS = 0;
 
-            sigGetPositionInfoExecuted.fire(positionInfo);
+                sigGetPositionInfoExecuted.fire(positionInfo);
+            }
+            catch (OpenHome::Exception &e)
+            {
+                logRendererError(e.Message(), CURRENT_POSITION);
+            }
+            catch (...)
+            {
+                logRendererError("Unknown exception![MediaRenderer_RaumfeldVirtual::onGetPositionInfoExecuted]", CURRENT_POSITION);
+            }
         }
 
 
@@ -364,11 +520,22 @@ namespace Raumkernel
 
         void MediaRenderer_RaumfeldVirtual::onSetAvTransportUriExecuted(OpenHome::Net::IAsync& _aAsync)
         {
-            if (!isAvTransportProxyAvailable())
-                return;
+            try
+            {
+                if (!isAvTransportProxyAvailable())
+                    return;
 
-            auto proxy = std::dynamic_pointer_cast<OpenHome::Net::CpProxyUpnpOrgAVTransport_RaumfeldVirtual1Cpp>(getAvTransportProxy());
-            proxy->EndSetAVTransportURI(_aAsync);
+                auto proxy = std::dynamic_pointer_cast<OpenHome::Net::CpProxyUpnpOrgAVTransport_RaumfeldVirtual1Cpp>(getAvTransportProxy());
+                proxy->EndSetAVTransportURI(_aAsync);
+            }
+            catch (OpenHome::Exception &e)
+            {
+                logRendererError(e.Message(), CURRENT_POSITION);
+            }
+            catch (...)
+            {
+                logRendererError("Unknown exception![MediaRenderer_RaumfeldVirtual::onSetAvTransportUriExecuted]", CURRENT_POSITION);
+            }
         }
 
 
@@ -392,14 +559,25 @@ namespace Raumkernel
 
         void MediaRenderer_RaumfeldVirtual::onGetTransportInfoExecuted(OpenHome::Net::IAsync& _aAsync)
         {
-            AvTransportInfo transportInfo;
+            try
+            {
+                AvTransportInfo transportInfo;
 
-            if (!isAvTransportProxyAvailable())
-                return;
+                if (!isAvTransportProxyAvailable())
+                    return;
 
-            auto proxy = std::dynamic_pointer_cast<OpenHome::Net::CpProxyUpnpOrgAVTransport_RaumfeldVirtual1Cpp>(getAvTransportProxy());
-            proxy->EndGetTransportInfo(_aAsync, transportInfo.currentTransportState, transportInfo.currentTransportStatus, transportInfo.currentSpeed);
-            sigGetTransportInfoExecuted.fire(transportInfo);
+                auto proxy = std::dynamic_pointer_cast<OpenHome::Net::CpProxyUpnpOrgAVTransport_RaumfeldVirtual1Cpp>(getAvTransportProxy());
+                proxy->EndGetTransportInfo(_aAsync, transportInfo.currentTransportState, transportInfo.currentTransportStatus, transportInfo.currentSpeed);
+                sigGetTransportInfoExecuted.fire(transportInfo);
+            }
+            catch (OpenHome::Exception &e)
+            {
+                logRendererError(e.Message(), CURRENT_POSITION);
+            }
+            catch (...)
+            {
+                logRendererError("Unknown exception![MediaRenderer_RaumfeldVirtual::onGetTransportInfoExecuted]", CURRENT_POSITION);
+        }
         }
 
 
@@ -423,14 +601,25 @@ namespace Raumkernel
 
         void MediaRenderer_RaumfeldVirtual::onGetTransportSettingsExecuted(OpenHome::Net::IAsync& _aAsync)
         {
-            AvTransportSettings transportSettings;
+            try
+            {
+                AvTransportSettings transportSettings;
 
-            if (!isAvTransportProxyAvailable())
-                return;
+                if (!isAvTransportProxyAvailable())
+                    return;
 
-            auto proxy = std::dynamic_pointer_cast<OpenHome::Net::CpProxyUpnpOrgAVTransport_RaumfeldVirtual1Cpp>(getAvTransportProxy());
-            proxy->EndGetTransportSettings(_aAsync, transportSettings.playMode, transportSettings.recQualityMode);
-            sigGetTransportSettingsExecuted.fire(transportSettings);
+                auto proxy = std::dynamic_pointer_cast<OpenHome::Net::CpProxyUpnpOrgAVTransport_RaumfeldVirtual1Cpp>(getAvTransportProxy());
+                proxy->EndGetTransportSettings(_aAsync, transportSettings.playMode, transportSettings.recQualityMode);
+                sigGetTransportSettingsExecuted.fire(transportSettings);
+            }
+            catch (OpenHome::Exception &e)
+            {
+                logRendererError(e.Message(), CURRENT_POSITION);
+            }
+            catch (...)
+            {
+                logRendererError("Unknown exception![MediaRenderer_RaumfeldVirtual::onGetTransportSettingsExecuted]", CURRENT_POSITION);
+            }
         }
 
 
@@ -450,11 +639,22 @@ namespace Raumkernel
 
         void MediaRenderer_RaumfeldVirtual::onSetMuteExecuted(OpenHome::Net::IAsync& _aAsync)
         {
-            if (!isRenderingControlProxyAvailable())
-                return;
+            try
+            {
+                if (!isRenderingControlProxyAvailable())
+                    return;
 
-            auto proxy = std::dynamic_pointer_cast<OpenHome::Net::CpProxyUpnpOrgRenderingControl_RaumfeldVirtual1Cpp>(getRenderingControlProxy());
-            proxy->EndSetMute(_aAsync);
+                auto proxy = std::dynamic_pointer_cast<OpenHome::Net::CpProxyUpnpOrgRenderingControl_RaumfeldVirtual1Cpp>(getRenderingControlProxy());
+                proxy->EndSetMute(_aAsync);
+            }
+            catch (OpenHome::Exception &e)
+            {
+                logRendererError(e.Message(), CURRENT_POSITION);
+            }
+            catch (...)
+            {
+                logRendererError("Unknown exception![MediaRenderer_RaumfeldVirtual::onSetMuteExecuted]", CURRENT_POSITION);
+        }
         }
 
 
@@ -474,11 +674,22 @@ namespace Raumkernel
 
         void MediaRenderer_RaumfeldVirtual::onSetVolumeExecuted(OpenHome::Net::IAsync& _aAsync)
         {
-            if (!isRenderingControlProxyAvailable())
-                return;
+            try
+            {
+                if (!isRenderingControlProxyAvailable())
+                    return;
 
-            auto proxy = std::dynamic_pointer_cast<OpenHome::Net::CpProxyUpnpOrgRenderingControl_RaumfeldVirtual1Cpp>(getRenderingControlProxy());
-            proxy->EndSetVolume(_aAsync);
+                auto proxy = std::dynamic_pointer_cast<OpenHome::Net::CpProxyUpnpOrgRenderingControl_RaumfeldVirtual1Cpp>(getRenderingControlProxy());
+                proxy->EndSetVolume(_aAsync);
+            }
+            catch (OpenHome::Exception &e)
+            {
+                logRendererError(e.Message(), CURRENT_POSITION);
+            }
+            catch (...)
+            {
+                logRendererError("Unknown exception![MediaRenderer_RaumfeldVirtual::onSetVolumeExecuted]", CURRENT_POSITION);
+            }
         }
 
 
@@ -500,94 +711,160 @@ namespace Raumkernel
 
         void MediaRenderer_RaumfeldVirtual::onGetMuteExecuted(OpenHome::Net::IAsync& _aAsync)
         {
-            bool mute = false;
+            try
+            {
+                bool mute = false;
 
-            if (!isRenderingControlProxyAvailable())
-                return;
+                if (!isRenderingControlProxyAvailable())
+                    return;
 
-            auto proxy = std::dynamic_pointer_cast<OpenHome::Net::CpProxyUpnpOrgRenderingControl_RaumfeldVirtual1Cpp>(getRenderingControlProxy());
-            proxy->EndGetMute(_aAsync, mute);
-            sigGetMuteExecuted.fire(mute);
+                auto proxy = std::dynamic_pointer_cast<OpenHome::Net::CpProxyUpnpOrgRenderingControl_RaumfeldVirtual1Cpp>(getRenderingControlProxy());
+                proxy->EndGetMute(_aAsync, mute);
+                sigGetMuteExecuted.fire(mute);
+            }
+            catch (OpenHome::Exception &e)
+            {
+                logRendererError(e.Message(), CURRENT_POSITION);
+            }
+            catch (...)
+            {
+                logRendererError("Unknown exception![MediaRenderer_RaumfeldVirtual::onGetMuteExecuted]", CURRENT_POSITION);
+            }
         }
 
 
         std::uint32_t MediaRenderer_RaumfeldVirtual::getVolumeProxy(bool _sync)
         {
-            auto proxy = std::dynamic_pointer_cast<OpenHome::Net::CpProxyUpnpOrgRenderingControl_RaumfeldVirtual1Cpp >(getRenderingControlProxy());
             std::uint32_t volume = 0;
-
-            if (_sync)
-                proxy->SyncGetVolume(instance, MEDIARENDERER_MASTER_CHANNEL, volume);
-            else
+            try
             {
-                OpenHome::Net::FunctorAsync functorAsync = OpenHome::Net::MakeFunctorAsync(*this, &MediaRenderer_RaumfeldVirtual::onGetVolumeExecuted);
-                proxy->BeginGetVolume(instance, MEDIARENDERER_MASTER_CHANNEL, functorAsync);
+                auto proxy = std::dynamic_pointer_cast<OpenHome::Net::CpProxyUpnpOrgRenderingControl_RaumfeldVirtual1Cpp >(getRenderingControlProxy());                
+                if (_sync)
+                    proxy->SyncGetVolume(instance, MEDIARENDERER_MASTER_CHANNEL, volume);
+                else
+                {
+                    OpenHome::Net::FunctorAsync functorAsync = OpenHome::Net::MakeFunctorAsync(*this, &MediaRenderer_RaumfeldVirtual::onGetVolumeExecuted);
+                    proxy->BeginGetVolume(instance, MEDIARENDERER_MASTER_CHANNEL, functorAsync);
+                }
             }
+            catch (OpenHome::Exception &e)
+            {
+                logRendererError(e.Message(), CURRENT_POSITION);
+            }
+            catch (...)
+            {
+                logRendererError("Unknown exception!", CURRENT_POSITION);
+            }
+
             return volume;
         }
 
 
         void MediaRenderer_RaumfeldVirtual::onGetVolumeExecuted(OpenHome::Net::IAsync& _aAsync)
         {
-            std::uint32_t volume = 0;
+            try
+            {
+                std::uint32_t volume = 0;
 
-            if (!isRenderingControlProxyAvailable())
-                return;
+                if (!isRenderingControlProxyAvailable())
+                    return;
 
-            auto proxy = std::dynamic_pointer_cast<OpenHome::Net::CpProxyUpnpOrgRenderingControl_RaumfeldVirtual1Cpp>(getRenderingControlProxy());
-            proxy->EndGetVolume(_aAsync, volume);
-            sigGetVolumeExecuted.fire(volume);
+                auto proxy = std::dynamic_pointer_cast<OpenHome::Net::CpProxyUpnpOrgRenderingControl_RaumfeldVirtual1Cpp>(getRenderingControlProxy());
+                proxy->EndGetVolume(_aAsync, volume);
+                sigGetVolumeExecuted.fire(volume);
+            }
+            catch (OpenHome::Exception &e)
+            {
+                logRendererError(e.Message(), CURRENT_POSITION);
+            }
+            catch (...)
+            {
+                logRendererError("Unknown exception![MediaRenderer_RaumfeldVirtual::onGetVolumeExecuted]", CURRENT_POSITION);
+            }
         }
 
 
         void MediaRenderer_RaumfeldVirtual::onAvTransportProxyPropertyChanged()
         {
-            std::string propertyXML = "";
-            auto proxy = std::dynamic_pointer_cast<OpenHome::Net::CpProxyUpnpOrgAVTransport_RaumfeldVirtual1Cpp>(getAvTransportProxy());
-            proxy->PropertyLastChange(propertyXML);            
+            try
+            {
+                std::string propertyXML = "";
+                auto proxy = std::dynamic_pointer_cast<OpenHome::Net::CpProxyUpnpOrgAVTransport_RaumfeldVirtual1Cpp>(getAvTransportProxy());
+                proxy->PropertyLastChange(propertyXML);            
             
-            // lock the device list to be sure the "this" object will not be deleted while parsing event subscriptions
-            getManagerEngineer()->getDeviceManager()->lockDeviceList();
-            getManagerEngineer()->getZoneManager()->lockLists();
+                // lock the device list to be sure the "this" object will not be deleted while parsing event subscriptions
+                getManagerEngineer()->getDeviceManager()->lock();
+                getManagerEngineer()->getZoneManager()->lock();
 
-            // parse the event subscription xml, the object will fill the appropriate structure for the given renderer object
-            EventParser::DeviceEventParserMediaRenderer eventParser;
-            eventParser.setLogObject(getLogObject());
-            eventParser.setManagerEngineer(getManagerEngineer());
-            eventParser.setDevice(this);
-            eventParser.propertyChangedAvTransportProxy(propertyXML);
+                // parse the event subscription xml, the object will fill the appropriate structure for the given renderer object
+                EventParser::DeviceEventParserMediaRenderer eventParser;
+                eventParser.setLogObject(getLogObject());
+                eventParser.setManagerEngineer(getManagerEngineer());
+                eventParser.setDevice(this);
+                eventParser.propertyChangedAvTransportProxy(propertyXML);
 
-            getManagerEngineer()->getZoneManager()->unlockLists();
-            getManagerEngineer()->getDeviceManager()->unlockDeviceList();
+                getManagerEngineer()->getZoneManager()->unlock();
+                getManagerEngineer()->getDeviceManager()->unlock();
+            }
+            catch (OpenHome::Exception &e)
+            {
+                logRendererError(e.Message(), CURRENT_POSITION);
+            }
+            catch (...)
+            {
+                logRendererError("Unknown exception![MediaRenderer_RaumfeldVirtual::onAvTransportProxyPropertyChanged]", CURRENT_POSITION);
+            }
         }
 
 
         void MediaRenderer_RaumfeldVirtual::onRenderingControlProxyPropertyChanged()
         {
-            std::string propertyXML = "";
-            auto proxy = std::dynamic_pointer_cast<OpenHome::Net::CpProxyUpnpOrgRenderingControl_RaumfeldVirtual1Cpp>(getRenderingControlProxy());            
-            proxy->PropertyLastChange(propertyXML);
-           
-            // lock the device list to be sure the "this" object will not be deleted while parsing event subscriptions
-            getManagerEngineer()->getDeviceManager()->lockDeviceList();
-            getManagerEngineer()->getZoneManager()->lockLists();
+            try
+            {
+                std::string propertyXML = "";
+                auto proxy = std::dynamic_pointer_cast<OpenHome::Net::CpProxyUpnpOrgRenderingControl_RaumfeldVirtual1Cpp>(getRenderingControlProxy());
+                proxy->PropertyLastChange(propertyXML);
 
-            // parse the event subscription xml, the object will fill the appropriate structure for the given renderer object
-            EventParser::DeviceEventParserMediaRenderer eventParser;
-            eventParser.setLogObject(getLogObject());
-            eventParser.setManagerEngineer(getManagerEngineer());
-            eventParser.setDevice(this);
-            eventParser.propertyChangedRenderingControlProxy(propertyXML);
+                // lock the device list to be sure the "this" object will not be deleted while parsing event subscriptions
+                getManagerEngineer()->getDeviceManager()->lock();
+                getManagerEngineer()->getZoneManager()->lock();
 
-            getManagerEngineer()->getZoneManager()->unlockLists();
-            getManagerEngineer()->getDeviceManager()->unlockDeviceList();
+                // parse the event subscription xml, the object will fill the appropriate structure for the given renderer object
+                EventParser::DeviceEventParserMediaRenderer eventParser;
+                eventParser.setLogObject(getLogObject());
+                eventParser.setManagerEngineer(getManagerEngineer());
+                eventParser.setDevice(this);
+                eventParser.propertyChangedRenderingControlProxy(propertyXML);
+
+                getManagerEngineer()->getZoneManager()->unlock();
+                getManagerEngineer()->getDeviceManager()->unlock();
+            }
+            catch (OpenHome::Exception &e)
+            {
+                logRendererError(e.Message(), CURRENT_POSITION);
+            }
+            catch (...)
+            {
+                logRendererError("Unknown exception![MediaRenderer_RaumfeldVirtual::onRenderingControlProxyPropertyChanged]", CURRENT_POSITION);
+            }
         }
 
 
         void MediaRenderer_RaumfeldVirtual::oConnectionManagerProxyPropertyChanged()
         {
-            auto proxy = std::dynamic_pointer_cast<OpenHome::Net::CpProxyUpnpOrgConnectionManager_RaumfeldVirtual1Cpp>(getConnectionManagerProxy());
-            // not needed
+            try
+            {
+                auto proxy = std::dynamic_pointer_cast<OpenHome::Net::CpProxyUpnpOrgConnectionManager_RaumfeldVirtual1Cpp>(getConnectionManagerProxy());
+                // not needed
+            }
+            catch (OpenHome::Exception &e)
+            {
+                logRendererError(e.Message(), CURRENT_POSITION);
+            }
+            catch (...)
+            {
+                logRendererError("Unknown exception![MediaRenderer_RaumfeldVirtual::oConnectionManagerProxyPropertyChanged]", CURRENT_POSITION);
+            }
         }
 
 
@@ -632,25 +909,47 @@ namespace Raumkernel
 
         void MediaRenderer_RaumfeldVirtual::bendAvTransportUriProxy(std::string _avTransportUri, std::string _avTransportUriMetaData, bool _sync)
         {
-            auto proxy = std::dynamic_pointer_cast<OpenHome::Net::CpProxyUpnpOrgAVTransport_RaumfeldVirtual1Cpp>(getAvTransportProxy());
-
-            if (_sync)
-                proxy->SyncBendAVTransportURI(instance, _avTransportUri, _avTransportUriMetaData);
-            else
+            try
             {
-                OpenHome::Net::FunctorAsync functorAsync = OpenHome::Net::MakeFunctorAsync(*this, &MediaRenderer_RaumfeldVirtual::onBendAvTransportUriExecuted);
-                proxy->BeginBendAVTransportURI(instance, _avTransportUri, _avTransportUriMetaData, functorAsync);
+                auto proxy = std::dynamic_pointer_cast<OpenHome::Net::CpProxyUpnpOrgAVTransport_RaumfeldVirtual1Cpp>(getAvTransportProxy());
+
+                if (_sync)
+                    proxy->SyncBendAVTransportURI(instance, _avTransportUri, _avTransportUriMetaData);
+                else
+                {
+                    OpenHome::Net::FunctorAsync functorAsync = OpenHome::Net::MakeFunctorAsync(*this, &MediaRenderer_RaumfeldVirtual::onBendAvTransportUriExecuted);
+                    proxy->BeginBendAVTransportURI(instance, _avTransportUri, _avTransportUriMetaData, functorAsync);
+                }
+            }
+            catch (OpenHome::Exception &e)
+            {
+                logRendererError(e.Message(), CURRENT_POSITION);
+            }
+            catch (...)
+            {
+                logRendererError("Unknown exception!", CURRENT_POSITION);
             }
         }
 
 
         void MediaRenderer_RaumfeldVirtual::onBendAvTransportUriExecuted(OpenHome::Net::IAsync& _aAsync)
         {
-            if (!isAvTransportProxyAvailable())
-                return;
+            try
+            {
+                if (!isAvTransportProxyAvailable())
+                    return;
 
-            auto proxy = std::dynamic_pointer_cast<OpenHome::Net::CpProxyUpnpOrgAVTransport_RaumfeldVirtual1Cpp>(getAvTransportProxy());
-            proxy->EndBendAVTransportURI(_aAsync);
+                auto proxy = std::dynamic_pointer_cast<OpenHome::Net::CpProxyUpnpOrgAVTransport_RaumfeldVirtual1Cpp>(getAvTransportProxy());
+                proxy->EndBendAVTransportURI(_aAsync);
+            }
+            catch (OpenHome::Exception &e)
+            {
+                logRendererError(e.Message(), CURRENT_POSITION);
+            }
+            catch (...)
+            {
+                logRendererError("Unknown exception![MediaRenderer_RaumfeldVirtual::onBendAvTransportUriExecuted]", CURRENT_POSITION);
+            }
         }
 
 
@@ -695,25 +994,47 @@ namespace Raumkernel
 
         void MediaRenderer_RaumfeldVirtual::startSleepTimerProxy(std::int16_t _instanceId, std::uint16_t _secondsUntilSleep, std::int16_t _secondsForVolumeRamp, bool _sync)
         {
-            auto proxy = std::dynamic_pointer_cast<OpenHome::Net::CpProxyUpnpOrgAVTransport_RaumfeldVirtual1Cpp>(getAvTransportProxy());
-
-            if (_sync)
-                proxy->SyncStartSleepTimer(_instanceId, _secondsUntilSleep, _secondsForVolumeRamp);
-            else
+            try
             {
-                OpenHome::Net::FunctorAsync functorAsync = OpenHome::Net::MakeFunctorAsync(*this, &MediaRenderer_RaumfeldVirtual::onStartSleepTimerExecuted);
-                proxy->BeginStartSleepTimer(_instanceId, _secondsUntilSleep, _secondsForVolumeRamp, functorAsync);
+                auto proxy = std::dynamic_pointer_cast<OpenHome::Net::CpProxyUpnpOrgAVTransport_RaumfeldVirtual1Cpp>(getAvTransportProxy());
+
+                if (_sync)
+                    proxy->SyncStartSleepTimer(_instanceId, _secondsUntilSleep, _secondsForVolumeRamp);
+                else
+                {
+                    OpenHome::Net::FunctorAsync functorAsync = OpenHome::Net::MakeFunctorAsync(*this, &MediaRenderer_RaumfeldVirtual::onStartSleepTimerExecuted);
+                    proxy->BeginStartSleepTimer(_instanceId, _secondsUntilSleep, _secondsForVolumeRamp, functorAsync);
+                }
+            }
+            catch (OpenHome::Exception &e)
+            {
+                logRendererError(e.Message(), CURRENT_POSITION);
+            }
+            catch (...)
+            {
+                logRendererError("Unknown exception!", CURRENT_POSITION);
             }
         }
 
 
         void MediaRenderer_RaumfeldVirtual::onStartSleepTimerExecuted(OpenHome::Net::IAsync& _aAsync)
         {
-            if (!isAvTransportProxyAvailable())
-                return;
+            try
+            {
+                if (!isAvTransportProxyAvailable())
+                    return;
 
-            auto proxy = std::dynamic_pointer_cast<OpenHome::Net::CpProxyUpnpOrgAVTransport_RaumfeldVirtual1Cpp>(getAvTransportProxy());
-            proxy->EndStartSleepTimer(_aAsync);
+                auto proxy = std::dynamic_pointer_cast<OpenHome::Net::CpProxyUpnpOrgAVTransport_RaumfeldVirtual1Cpp>(getAvTransportProxy());
+                proxy->EndStartSleepTimer(_aAsync);
+            }
+            catch (OpenHome::Exception &e)
+            {
+                logRendererError(e.Message(), CURRENT_POSITION);
+            }
+            catch (...)
+            {
+                logRendererError("Unknown exception![MediaRenderer_RaumfeldVirtual::onStartSleepTimerExecuted]", CURRENT_POSITION);
+            }
         }
 
 
@@ -758,25 +1079,47 @@ namespace Raumkernel
 
         void MediaRenderer_RaumfeldVirtual::cancelSleepTimerProxy(std::int16_t _instanceId, bool _sync)
         {
-            auto proxy = std::dynamic_pointer_cast<OpenHome::Net::CpProxyUpnpOrgAVTransport_RaumfeldVirtual1Cpp>(getAvTransportProxy());
-
-            if (_sync)
-                proxy->SyncCancelSleepTimer(_instanceId);
-            else
+            try
             {
-                OpenHome::Net::FunctorAsync functorAsync = OpenHome::Net::MakeFunctorAsync(*this, &MediaRenderer_RaumfeldVirtual::onCancelSleepTimerExecuted);
-                proxy->BeginCancelSleepTimer(_instanceId, functorAsync);
+                auto proxy = std::dynamic_pointer_cast<OpenHome::Net::CpProxyUpnpOrgAVTransport_RaumfeldVirtual1Cpp>(getAvTransportProxy());
+
+                if (_sync)
+                    proxy->SyncCancelSleepTimer(_instanceId);
+                else
+                {
+                    OpenHome::Net::FunctorAsync functorAsync = OpenHome::Net::MakeFunctorAsync(*this, &MediaRenderer_RaumfeldVirtual::onCancelSleepTimerExecuted);
+                    proxy->BeginCancelSleepTimer(_instanceId, functorAsync);
+                }
+            }
+            catch (OpenHome::Exception &e)
+            {
+                logRendererError(e.Message(), CURRENT_POSITION);
+            }
+            catch (...)
+            {
+                logRendererError("Unknown exception!", CURRENT_POSITION);
             }
         }
 
 
         void MediaRenderer_RaumfeldVirtual::onCancelSleepTimerExecuted(OpenHome::Net::IAsync& _aAsync)
         {
-            if (!isAvTransportProxyAvailable())
-                return;
+            try
+            {
+                if (!isAvTransportProxyAvailable())
+                    return;
 
-            auto proxy = std::dynamic_pointer_cast<OpenHome::Net::CpProxyUpnpOrgAVTransport_RaumfeldVirtual1Cpp>(getAvTransportProxy());
-            proxy->EndCancelSleepTimer(_aAsync);
+                auto proxy = std::dynamic_pointer_cast<OpenHome::Net::CpProxyUpnpOrgAVTransport_RaumfeldVirtual1Cpp>(getAvTransportProxy());
+                proxy->EndCancelSleepTimer(_aAsync);
+            }
+            catch (OpenHome::Exception &e)
+            {
+                logRendererError(e.Message(), CURRENT_POSITION);
+            }
+            catch (...)
+            {
+                logRendererError("Unknown exception![MediaRenderer_RaumfeldVirtual::onCancelSleepTimerExecuted]", CURRENT_POSITION);
+            }
         }
 
 
@@ -821,25 +1164,48 @@ namespace Raumkernel
 
         void MediaRenderer_RaumfeldVirtual::setRoomMuteProxy(std::string _roomUDN, bool _mute, bool _sync)
         {
-            auto proxy = std::dynamic_pointer_cast<OpenHome::Net::CpProxyUpnpOrgRenderingControl_RaumfeldVirtual1Cpp>(getRenderingControlProxy());
-
-            if (_sync)
-                proxy->SyncSetRoomMute(instance, _roomUDN, _mute);
-            else
+            try
             {
-                OpenHome::Net::FunctorAsync functorAsync = OpenHome::Net::MakeFunctorAsync(*this, &MediaRenderer_RaumfeldVirtual::onSetRoomMuteExecuted);
-                proxy->BeginSetRoomMute(instance, _roomUDN, _mute, functorAsync);
+                auto proxy = std::dynamic_pointer_cast<OpenHome::Net::CpProxyUpnpOrgRenderingControl_RaumfeldVirtual1Cpp>(getRenderingControlProxy());
+
+                if (_sync)
+                    proxy->SyncSetRoomMute(instance, _roomUDN, _mute);
+                else
+                {
+                    OpenHome::Net::FunctorAsync functorAsync = OpenHome::Net::MakeFunctorAsync(*this, &MediaRenderer_RaumfeldVirtual::onSetRoomMuteExecuted);
+                    proxy->BeginSetRoomMute(instance, _roomUDN, _mute, functorAsync);
+                }
+            }
+            catch (OpenHome::Exception &e)
+            {
+                logRendererError(e.Message(), CURRENT_POSITION);
+            }
+            catch (...)
+            {
+                logRendererError("Unknown exception!", CURRENT_POSITION);
             }
         }
 
 
+
         void MediaRenderer_RaumfeldVirtual::onSetRoomMuteExecuted(OpenHome::Net::IAsync& _aAsync)
         {
-            if (!isRenderingControlProxyAvailable())
-                return;
+            try
+            {
+                if (!isRenderingControlProxyAvailable())
+                    return;
 
-            auto proxy = std::dynamic_pointer_cast<OpenHome::Net::CpProxyUpnpOrgRenderingControl_RaumfeldVirtual1Cpp>(getRenderingControlProxy());
-            proxy->EndSetRoomMute(_aAsync);
+                auto proxy = std::dynamic_pointer_cast<OpenHome::Net::CpProxyUpnpOrgRenderingControl_RaumfeldVirtual1Cpp>(getRenderingControlProxy());
+                proxy->EndSetRoomMute(_aAsync);
+            }
+            catch (OpenHome::Exception &e)
+            {
+                logRendererError(e.Message(), CURRENT_POSITION);
+            }
+            catch (...)
+            {
+                logRendererError("Unknown exception![MediaRenderer_RaumfeldVirtual::onSetRoomMuteExecuted]", CURRENT_POSITION);
+            }
         }
 
 
@@ -888,15 +1254,25 @@ namespace Raumkernel
 
         bool MediaRenderer_RaumfeldVirtual::getRoomMuteProxy(std::string _roomUDN, bool _sync)
         {
-            auto proxy = std::dynamic_pointer_cast<OpenHome::Net::CpProxyUpnpOrgRenderingControl_RaumfeldVirtual1Cpp>(getRenderingControlProxy());
             bool mute = false;
-
-            if (_sync)
-                proxy->SyncGetRoomMute(instance, _roomUDN, mute);
-            else
+            try
             {
-                OpenHome::Net::FunctorAsync functorAsync = OpenHome::Net::MakeFunctorAsync(*this, &MediaRenderer_RaumfeldVirtual::onGetRoomMuteExecuted);
-                proxy->BeginGetRoomMute(instance, _roomUDN, functorAsync);
+                auto proxy = std::dynamic_pointer_cast<OpenHome::Net::CpProxyUpnpOrgRenderingControl_RaumfeldVirtual1Cpp>(getRenderingControlProxy());                
+                if (_sync)
+                    proxy->SyncGetRoomMute(instance, _roomUDN, mute);
+                else
+                {
+                    OpenHome::Net::FunctorAsync functorAsync = OpenHome::Net::MakeFunctorAsync(*this, &MediaRenderer_RaumfeldVirtual::onGetRoomMuteExecuted);
+                    proxy->BeginGetRoomMute(instance, _roomUDN, functorAsync);
+                }
+            }
+            catch (OpenHome::Exception &e)
+            {
+                logRendererError(e.Message(), CURRENT_POSITION);
+            }
+            catch (...)
+            {
+                logRendererError("Unknown exception!", CURRENT_POSITION);
             }
 
             return mute;
@@ -905,14 +1281,25 @@ namespace Raumkernel
 
         void MediaRenderer_RaumfeldVirtual::onGetRoomMuteExecuted(OpenHome::Net::IAsync& _aAsync)
         {
-            bool mute = false;
+            try
+            {
+                bool mute = false;
 
-            if (!isRenderingControlProxyAvailable())
-                return;
+                if (!isRenderingControlProxyAvailable())
+                    return;
 
-            auto proxy = std::dynamic_pointer_cast<OpenHome::Net::CpProxyUpnpOrgRenderingControl_RaumfeldVirtual1Cpp>(getRenderingControlProxy());
-            proxy->EndGetRoomMute(_aAsync, mute);
-            sigGetRoomMuteExecuted.fire(mute);
+                auto proxy = std::dynamic_pointer_cast<OpenHome::Net::CpProxyUpnpOrgRenderingControl_RaumfeldVirtual1Cpp>(getRenderingControlProxy());
+                proxy->EndGetRoomMute(_aAsync, mute);
+                sigGetRoomMuteExecuted.fire(mute);
+            }
+            catch (OpenHome::Exception &e)
+            {
+                logRendererError(e.Message(), CURRENT_POSITION);
+            }
+            catch (...)
+            {
+                logRendererError("Unknown exception![MediaRenderer_RaumfeldVirtual::onGetRoomMuteExecuted]", CURRENT_POSITION);
+            }
         }
 
 
@@ -964,25 +1351,47 @@ namespace Raumkernel
 
         void MediaRenderer_RaumfeldVirtual::setRoomVolumeProxy(std::string _roomUDN, std::uint32_t _volume, bool _sync)
         {
-            auto proxy = std::dynamic_pointer_cast<OpenHome::Net::CpProxyUpnpOrgRenderingControl_RaumfeldVirtual1Cpp >(getRenderingControlProxy());
-
-            if (_sync)
-                proxy->SyncSetRoomVolume(instance, _roomUDN, _volume);
-            else
+            try
             {
-                OpenHome::Net::FunctorAsync functorAsync = OpenHome::Net::MakeFunctorAsync(*this, &MediaRenderer_RaumfeldVirtual::onSetRoomVolumeExecuted);
-                proxy->BeginSetRoomVolume(instance, _roomUDN, _volume, functorAsync);
+                auto proxy = std::dynamic_pointer_cast<OpenHome::Net::CpProxyUpnpOrgRenderingControl_RaumfeldVirtual1Cpp >(getRenderingControlProxy());
+
+                if (_sync)
+                    proxy->SyncSetRoomVolume(instance, _roomUDN, _volume);
+                else
+                {
+                    OpenHome::Net::FunctorAsync functorAsync = OpenHome::Net::MakeFunctorAsync(*this, &MediaRenderer_RaumfeldVirtual::onSetRoomVolumeExecuted);
+                    proxy->BeginSetRoomVolume(instance, _roomUDN, _volume, functorAsync);
+                }
+            }
+            catch (OpenHome::Exception &e)
+            {
+                logRendererError(e.Message(), CURRENT_POSITION);
+            }
+            catch (...)
+            {
+                logRendererError("Unknown exception!", CURRENT_POSITION);
             }
         }
 
 
         void MediaRenderer_RaumfeldVirtual::onSetRoomVolumeExecuted(OpenHome::Net::IAsync& _aAsync)
         {
-            if (!isRenderingControlProxyAvailable())
-                return;
+            try
+            {
+                if (!isRenderingControlProxyAvailable())
+                    return;
 
-            auto proxy = std::dynamic_pointer_cast<OpenHome::Net::CpProxyUpnpOrgRenderingControl_RaumfeldVirtual1Cpp>(getRenderingControlProxy());
-            proxy->EndSetRoomVolume(_aAsync);
+                auto proxy = std::dynamic_pointer_cast<OpenHome::Net::CpProxyUpnpOrgRenderingControl_RaumfeldVirtual1Cpp>(getRenderingControlProxy());
+                proxy->EndSetRoomVolume(_aAsync);
+            }
+            catch (OpenHome::Exception &e)
+            {
+                logRendererError(e.Message(), CURRENT_POSITION);
+            }
+            catch (...)
+            {
+                logRendererError("Unknown exception![MediaRenderer_RaumfeldVirtual::onSetRoomVolumeExecuted]", CURRENT_POSITION);
+        }
         }
 
 
@@ -1031,30 +1440,52 @@ namespace Raumkernel
 
         std::uint32_t MediaRenderer_RaumfeldVirtual::getRoomVolumeProxy(std::string _roomUDN, bool _sync)
         {
-            auto proxy = std::dynamic_pointer_cast<OpenHome::Net::CpProxyUpnpOrgRenderingControl_RaumfeldVirtual1Cpp >(getRenderingControlProxy());
-            std::uint32_t volume = 0;
-
-            if (_sync)
-                proxy->SyncGetRoomVolume(instance, _roomUDN, volume);
-            else
+            try
             {
-                OpenHome::Net::FunctorAsync functorAsync = OpenHome::Net::MakeFunctorAsync(*this, &MediaRenderer_RaumfeldVirtual::onGetRoomVolumeExecuted);
-                proxy->BeginGetRoomVolume(instance, _roomUDN, functorAsync);
+                auto proxy = std::dynamic_pointer_cast<OpenHome::Net::CpProxyUpnpOrgRenderingControl_RaumfeldVirtual1Cpp >(getRenderingControlProxy());
+                std::uint32_t volume = 0;
+
+                if (_sync)
+                    proxy->SyncGetRoomVolume(instance, _roomUDN, volume);
+                else
+                {
+                    OpenHome::Net::FunctorAsync functorAsync = OpenHome::Net::MakeFunctorAsync(*this, &MediaRenderer_RaumfeldVirtual::onGetRoomVolumeExecuted);
+                    proxy->BeginGetRoomVolume(instance, _roomUDN, functorAsync);
+                }
+                return volume;
             }
-            return volume;
+            catch (OpenHome::Exception &e)
+            {
+                logRendererError(e.Message(), CURRENT_POSITION);
+            }
+            catch (...)
+            {
+                logRendererError("Unknown exception!", CURRENT_POSITION);
+            }
         }
 
 
         void MediaRenderer_RaumfeldVirtual::onGetRoomVolumeExecuted(OpenHome::Net::IAsync& _aAsync)
         {
-            std::uint32_t volume = 0;
+            try
+            {
+                std::uint32_t volume = 0;
 
-            if (!isRenderingControlProxyAvailable())
-                return;
+                if (!isRenderingControlProxyAvailable())
+                    return;
 
-            auto proxy = std::dynamic_pointer_cast<OpenHome::Net::CpProxyUpnpOrgRenderingControl_RaumfeldVirtual1Cpp>(getRenderingControlProxy());
-            proxy->EndGetRoomVolume(_aAsync, volume);
-            sigGetRoomVolumeExecuted.fire(volume);
+                auto proxy = std::dynamic_pointer_cast<OpenHome::Net::CpProxyUpnpOrgRenderingControl_RaumfeldVirtual1Cpp>(getRenderingControlProxy());
+                proxy->EndGetRoomVolume(_aAsync, volume);
+                sigGetRoomVolumeExecuted.fire(volume);
+            }
+            catch (OpenHome::Exception &e)
+            {
+                logRendererError(e.Message(), CURRENT_POSITION);
+            }
+            catch (...)
+            {
+                logRendererError("Unknown exception![MediaRenderer_RaumfeldVirtual::onGetRoomVolumeExecuted]", CURRENT_POSITION);
+            }
         }
 
 
@@ -1100,25 +1531,47 @@ namespace Raumkernel
 
         void MediaRenderer_RaumfeldVirtual::changeVolumeProxy(std::uint32_t _volumeDifference, bool _sync)
         {
-            auto proxy = std::dynamic_pointer_cast<OpenHome::Net::CpProxyUpnpOrgRenderingControl_RaumfeldVirtual1Cpp >(getRenderingControlProxy());
-
-            if (_sync)
-                proxy->SyncChangeVolume(instance, _volumeDifference);
-            else
+            try
             {
-                OpenHome::Net::FunctorAsync functorAsync = OpenHome::Net::MakeFunctorAsync(*this, &MediaRenderer_RaumfeldVirtual::onChangeVolumeExecuted);
-                proxy->BeginChangeVolume(instance, _volumeDifference, functorAsync);
+                auto proxy = std::dynamic_pointer_cast<OpenHome::Net::CpProxyUpnpOrgRenderingControl_RaumfeldVirtual1Cpp >(getRenderingControlProxy());
+
+                if (_sync)
+                    proxy->SyncChangeVolume(instance, _volumeDifference);
+                else
+                {
+                    OpenHome::Net::FunctorAsync functorAsync = OpenHome::Net::MakeFunctorAsync(*this, &MediaRenderer_RaumfeldVirtual::onChangeVolumeExecuted);
+                    proxy->BeginChangeVolume(instance, _volumeDifference, functorAsync);
+                }
+            }
+            catch (OpenHome::Exception &e)
+            {
+                logRendererError(e.Message(), CURRENT_POSITION);
+            }
+            catch (...)
+            {
+                logRendererError("Unknown exception!", CURRENT_POSITION);
             }
         }
 
 
         void MediaRenderer_RaumfeldVirtual::onChangeVolumeExecuted(OpenHome::Net::IAsync& _aAsync)
         {
-            if (!isRenderingControlProxyAvailable())
-                return;
+            try
+            {
+                if (!isRenderingControlProxyAvailable())
+                    return;
 
-            auto proxy = std::dynamic_pointer_cast<OpenHome::Net::CpProxyUpnpOrgRenderingControl_RaumfeldVirtual1Cpp>(getRenderingControlProxy());
-            proxy->EndChangeVolume(_aAsync);
+                auto proxy = std::dynamic_pointer_cast<OpenHome::Net::CpProxyUpnpOrgRenderingControl_RaumfeldVirtual1Cpp>(getRenderingControlProxy());
+                proxy->EndChangeVolume(_aAsync);
+            }
+            catch (OpenHome::Exception &e)
+            {
+                logRendererError(e.Message(), CURRENT_POSITION);
+            }
+            catch (...)
+            {
+                logRendererError("Unknown exception![MediaRenderer_RaumfeldVirtual::onChangeVolumeExecuted]", CURRENT_POSITION);
+            }
         }
 
 
@@ -1206,6 +1659,7 @@ namespace Raumkernel
 
         void MediaRenderer_RaumfeldVirtual::fadeToVolumeThread(const std::uint32_t &_volume, const std::uint32_t &_duration)
         {
+            // TODO: KIl lthread when device will be destroyed!!!!!
             std::uint32_t waitTime = 25;
             std::uint32_t currentGap = 0;            
 
@@ -1244,19 +1698,19 @@ namespace Raumkernel
                 }
                 catch (std::exception &e)
                 {
-                    logError(e.what(), CURRENT_POSITION);
+                    logRendererError(e.what(), CURRENT_POSITION);
                 }
                 catch (std::string &e)
                 {
-                    logError(e, CURRENT_POSITION);
+                    logRendererError(e, CURRENT_POSITION);
                 }
                 catch (OpenHome::Exception &e)
                 {
-                    logError(e.Message(), CURRENT_POSITION);;
+                    logRendererError(e.Message(), CURRENT_POSITION);;
                 }
                 catch (...)
                 {
-                    logError("Unknown exception!", CURRENT_POSITION);
+                    logRendererError("Unknown exception!", CURRENT_POSITION);
                 }
             }
         }

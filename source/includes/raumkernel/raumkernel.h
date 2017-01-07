@@ -76,8 +76,8 @@ namespace Raumkernel
             sigs::signal<void(Log::LogData)> sigLog;
 
         protected:
-            void onMediaServerAdded(std::shared_ptr<Devices::MediaServer> _mediaServer);
-            void onMediaServerRemoved(std::shared_ptr<Devices::MediaServer> _mediaServer);                      
+            void onMediaServerAdded(Devices::MediaServer* _mediaServer);
+            void onMediaServerRemoved(Devices::MediaServer* _mediaServer);                      
             void onLog(Log::LogData _logData);
 
             bool isOnline;
