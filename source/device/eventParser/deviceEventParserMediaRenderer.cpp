@@ -77,6 +77,10 @@ namespace Raumkernel
                     rendererState.roomTransportStatesCombined = getNodeVal(instanceNode, "RoomStates", rendererState.roomTransportStatesCombined, roomTransitionStateChanged);          
                     rendererState.playMode = Devices::ConversionTool::stringToPlayMode(getNodeVal(instanceNode, "CurrentPlayMode", Devices::ConversionTool::playModeToString(rendererState.playMode), roomTransitionStateChanged));
 
+                    
+                    if (transportStateChanged)
+                        this->logDebug("Transport State '" + Devices::ConversionTool::transportStateToString(rendererState.transportState) + "' on " + mediaRenderer->getFriendlyName(), CURRENT_POSITION);
+
                     // get the information if any of the states has changed
                     anyStateChanged = anyStateChanged || avTransportUriValueChanged || currentTrackMetadataChanged || transportStateChanged || roomTransitionStateChanged;
 

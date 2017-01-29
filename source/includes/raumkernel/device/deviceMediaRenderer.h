@@ -215,7 +215,7 @@ namespace Raumkernel
 
                 static MediaRenderer_TransportState stringToTransportState(std::string _transportState)
                 {
-                    _transportState = Tools::StringUtil::tolower(_transportState);
+                    _transportState = Tools::StringUtil::toupper(_transportState);
                     if (_transportState == "PLAYING")
                         return MediaRenderer_TransportState::MRTS_PLAYING;
                     if (_transportState == "STOPPED")

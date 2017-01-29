@@ -24,6 +24,11 @@ namespace Raumkernel
             httpClient.setLogObject(getLogObject());
             httpClient.setManagerEngineer(getManagerEngineer());
             httpClient.init();
+
+            // be sure we  get an update id when initializing the zone manager, otherwise if there are
+            // no zones found we would run into an CPU rising endless loop between server and client when using
+            // long polling
+            setLastUpdateId("0");
         }    
 
 
@@ -517,7 +522,7 @@ namespace Raumkernel
 
         void ZoneManager::setRoomOnlineForRenderer(const std::string &_rendererUDN, bool _isOnline)
         {            
-            // retrievev a new update id from the old one (because zone condig status has changed)
+            // retrievev a new update id from the old one (because zone config status has changed)
             setLastUpdateId(getNewUpdateId());
 
             std::string roomUDN = getRoomUDNFromRendererUDN(_rendererUDN);
