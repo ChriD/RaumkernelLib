@@ -15,6 +15,9 @@ namespace Raumkernel
             connectionManagerProxy = nullptr;
             rendererStateLastUpdateId = "";
             instance = 0;
+
+            unsigned int seed = (unsigned int)time(NULL);
+            randomSequence = new Tools::RandomSequenceOfUnique(seed, seed + 1);
         }
 
 
@@ -22,6 +25,7 @@ namespace Raumkernel
         {
             // no need to remove subscriptions! delete of proxies will handle this correct!
             this->deleteProxies();
+            delete randomSequence;
         }
 
 
@@ -1489,6 +1493,7 @@ namespace Raumkernel
         {
             std::lock_guard<std::mutex> lock(mutexLastUpdateId);
             rendererStateLastUpdateId = _lastUpdateId;
+            this->logDebug("Set Renderer UpdateId: " + rendererStateLastUpdateId + " (" +  this->friendlyName + ")", CURRENT_POSITION);
         }
 
 
@@ -1502,11 +1507,13 @@ namespace Raumkernel
         std::string MediaRenderer::getNewRendererStateUpdateId()
         {
             auto updateId = getLastRendererStateUpdateId();
-            auto random = Tools::CommonUtil::randomUInt32();
+            //auto random = Tools::CommonUtil::randomUInt32();
+            auto random = randomSequence->next();
             while (std::to_string(random) == updateId)
             {
                 random++;
             }
+            this->logDebug("Rand Renderer UpdateId: " + std::to_string(random) + " (" + this->friendlyName + ")", CURRENT_POSITION);
             return std::to_string(random);
         }
 

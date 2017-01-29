@@ -36,6 +36,7 @@
 #include <raumkernel/device/proxies/CpUpnpOrgRenderingControl1.h>
 #include <raumkernel/device/eventParser/deviceEventParserMediaRenderer.h>
 #include <raumkernel/media/item/mediaItems.h>
+#include <raumkernel/tools/commonUtil.h>
 
 
 namespace Raumkernel
@@ -383,6 +384,8 @@ namespace Raumkernel
                 
                 MediaRendererState rendererState;
                 std::mutex mutexRendererStateChange;
+
+                Tools::RandomSequenceOfUnique *randomSequence;
              
                 void setLastRendererStateUpdateId(std::string _lastUpdateId);          
                 std::string getNewRendererStateUpdateId();

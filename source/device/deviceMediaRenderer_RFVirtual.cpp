@@ -23,7 +23,7 @@ namespace Raumkernel
         std::string MediaRenderer_RaumfeldVirtual::getName()
         {
             std::string rendererName;
-            getManagerEngineer()->getZoneManager()->lock();
+            //getManagerEngineer()->getZoneManager()->lock();
             try
             {
                 auto zoneInfoMap = managerEngineer->getZoneManager()->getZoneInformationMap();
@@ -35,7 +35,7 @@ namespace Raumkernel
             catch (...)
             {
             }
-            getManagerEngineer()->getZoneManager()->unlock();
+            //getManagerEngineer()->getZoneManager()->unlock();
             return rendererName;
         }
         
@@ -1462,6 +1462,7 @@ namespace Raumkernel
             {
                 logRendererError("Unknown exception!", CURRENT_POSITION);
             }
+            return 0;
         }
 
 
@@ -1659,7 +1660,6 @@ namespace Raumkernel
 
         void MediaRenderer_RaumfeldVirtual::fadeToVolumeThread(const std::uint32_t &_volume, const std::uint32_t &_duration)
         {
-            // TODO: KIl lthread when device will be destroyed!!!!!
             std::uint32_t waitTime = 25;
             std::uint32_t currentGap = 0;            
 
